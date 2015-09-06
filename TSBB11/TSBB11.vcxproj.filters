@@ -43,4 +43,12 @@
       <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\main.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\main.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+  </ItemGroup>
 </Project>
