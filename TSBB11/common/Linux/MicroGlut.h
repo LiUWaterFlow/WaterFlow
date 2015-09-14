@@ -5,6 +5,11 @@
 extern "C" {
 #endif
 
+// If this is compiled on the Mac, tell me!
+#ifdef __APPLE__
+	ERROR! This is NOT the Mac version of MicroGlut and will not work on the Mac!
+#endif
+
 // Same or similar to old GLUT calls
 void glutMainLoop();
 void glutCheckLoop();
@@ -22,7 +27,7 @@ void glutMotionFunc(void (*func)(int x, int y));
 
 void glutInitWindowPosition (int x, int y);
 void glutInitWindowSize (int width, int height);
-void glutCreateWindow (char *windowTitle);
+void glutCreateWindow (const char *windowTitle);
 
 void glutSwapBuffers();
 
@@ -35,15 +40,24 @@ void glutIdleFunc(void (*func)(void));
 // Standard GLUT timer
 void glutTimerFunc(int millis, void (*func)(int arg), int arg);
 // Ingemar's version
-void glutRepeatingTimerFunc(int millis); // Old name, will be removed
 void glutRepeatingTimer(int millis);
+ // Old name, will be removed:
+#define glutRepeatingTimerFunc glutRepeatingTimer
+
 // New call for polling the keyboard, good for games
 char glutKeyIsDown(unsigned char c);
-void glutWarpPointer( int x, int y );
+// And the same for the mouse
+char glutMouseIsDown(unsigned char c);
 
+void glutWarpPointer( int x, int y );
 void glutReshapeWindow(int width, int height);
-void glutSetWindowTitle(char *title);
+void glutPositionWindow(int x, int y);
+void glutSetWindowTitle(const char *title);
 void glutInitContextVersion(int major, int minor);
+
+void glutFullScreen();
+void glutExitFullScreen();
+void glutToggleFullScreen();
 
 /* Mouse buttons. */
 #define GLUT_LEFT_BUTTON		0
@@ -57,10 +71,11 @@ void glutInitContextVersion(int major, int minor);
 
 // Only some modes supported
 #define GLUT_STENCIL			32
-//#define GLUT_MULTISAMPLE		128
+#define GLUT_MULTISAMPLE		128
 //#define GLUT_STEREO			256
 #define GLUT_RGB			0
 #define GLUT_RGBA			GLUT_RGB
+#define GLUT_ALPHA			GLUT_RGB
 #define GLUT_SINGLE			0
 #define GLUT_DOUBLE			2
 #define GLUT_DEPTH			16

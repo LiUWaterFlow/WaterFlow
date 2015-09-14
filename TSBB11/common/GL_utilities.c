@@ -264,7 +264,7 @@ void CHECK_FRAMEBUFFER_STATUS()
 // FP buffer, suitable for HDR
 FBOstruct *initFBO(int width, int height, int int_method)
 {
-	FBOstruct *fbo = malloc(sizeof(FBOstruct));
+	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
 
 	fbo->width = width;
 	fbo->height = height;
@@ -307,7 +307,7 @@ FBOstruct *initFBO(int width, int height, int int_method)
 // Integer buffer, not suitable for HDR!
 FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage)
 {
-    FBOstruct *fbo = malloc(sizeof(FBOstruct));
+    FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
 
     fbo->width = width;
     fbo->height = height;

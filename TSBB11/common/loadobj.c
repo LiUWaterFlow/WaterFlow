@@ -431,7 +431,7 @@ static struct Mesh * LoadOBJ(const char *filename)
 {
 	Mesh *theMesh;
 	
-	theMesh = malloc(sizeof(Mesh));
+	theMesh = (Mesh *)malloc(sizeof(Mesh));
 	theMesh->coordIndex = NULL;
 	theMesh->vertices = NULL;
 	// ProcessMesh may deal with these
@@ -463,17 +463,17 @@ static struct Mesh * LoadOBJ(const char *filename)
 
 	// Allocate arrays!
 	if (vertCount > 0)
-		theMesh->vertices = malloc(sizeof(GLfloat) * vertCount);
+		theMesh->vertices = (GLfloat *)malloc(sizeof(GLfloat) * vertCount);
 	if (texCount > 0)
-		theMesh->textureCoords = malloc(sizeof(GLfloat) * texCount);
+		theMesh->textureCoords = (GLfloat *)malloc(sizeof(GLfloat) * texCount);
 	if (normalsCount > 0)
-		theMesh->vertexNormals = malloc(sizeof(GLfloat) * normalsCount);
+		theMesh->vertexNormals = (GLfloat *)malloc(sizeof(GLfloat) * normalsCount);
 	if (hasPositionIndices)
-		theMesh->coordIndex = malloc(sizeof(int) * coordCount);
+		theMesh->coordIndex = (int *)malloc(sizeof(int) * coordCount);
 	if (hasNormalIndices)
-		theMesh->normalsIndex = malloc(sizeof(int) * coordCount);
+		theMesh->normalsIndex = (int *)malloc(sizeof(int) * coordCount);
 	if (hasTexCoordIndices)
-		theMesh->textureIndex = malloc(sizeof(int) * coordCount);
+		theMesh->textureIndex = (int *)malloc(sizeof(int) * coordCount);
 	
 	// Zero again
 	vertCount=0;
@@ -524,11 +524,11 @@ void DecomposeToTriangles(struct Mesh *theMesh)
 	
 	fprintf(stderr, "Found %d triangles\n", triangleCount);
 	
-	newCoords = malloc(sizeof(int) * triangleCount * 3);
+	newCoords = (int *)malloc(sizeof(int) * triangleCount * 3);
 	if (theMesh->normalsIndex != NULL)
-		newNormalsIndex = malloc(sizeof(int) * triangleCount * 3);
+		newNormalsIndex = (int *)malloc(sizeof(int) * triangleCount * 3);
 	if (theMesh->textureIndex != NULL)
-		newTextureIndex = malloc(sizeof(int) * triangleCount * 3);
+		newTextureIndex = (int *)malloc(sizeof(int) * triangleCount * 3);
 	
 	// 1.2 Loop through old list and write the new one
 	// Almost same loop but now it has space to write the result
@@ -593,12 +593,12 @@ static void generateNormals(Mesh* mesh)
 		int face;
 		int normalIndex;
 
-		mesh->vertexNormals = malloc(3 * sizeof(GLfloat) * mesh->vertexCount);
+		mesh->vertexNormals = (GLfloat *)malloc(3 * sizeof(GLfloat) * mesh->vertexCount);
 		memset(mesh->vertexNormals, 0, 3 * sizeof(GLfloat) * mesh->vertexCount);
 
 		mesh->normalsCount = mesh->vertexCount;
 
-		mesh->normalsIndex = malloc(sizeof(GLuint) * mesh->coordCount);
+		mesh->normalsIndex = (int *)malloc(sizeof(GLuint) * mesh->coordCount);
 		memcpy(mesh->normalsIndex, mesh->coordIndex,
 			sizeof(GLuint) * mesh->coordCount);
 
@@ -700,7 +700,7 @@ static Model* generateModel(Mesh* mesh)
 
 	int indexHashMapSize = (mesh->vertexCount * hashGap + mesh->coordCount);
 
-	IndexTriplet* indexHashMap = malloc(sizeof(IndexTriplet)
+	IndexTriplet* indexHashMap = (IndexTriplet*)malloc(sizeof(IndexTriplet)
 							* indexHashMapSize);
 
 	int numNewVertices = 0;
@@ -708,10 +708,10 @@ static Model* generateModel(Mesh* mesh)
 
 	int maxValue = 0;
 		
-	Model* model = malloc(sizeof(Model));
+	Model* model = (Model*)malloc(sizeof(Model));
 	memset(model, 0, sizeof(Model));
 
-	model->indexArray = malloc(sizeof(GLuint) * mesh->coordCount);
+	model->indexArray = (GLuint *)malloc(sizeof(GLuint) * mesh->coordCount);
 	model->numIndices = mesh->coordCount;
 
 	memset(indexHashMap, 0xff, sizeof(IndexTriplet) * indexHashMapSize);
@@ -759,11 +759,11 @@ static Model* generateModel(Mesh* mesh)
 	}
 
 	if (mesh->vertices)
-		model->vertexArray = malloc(sizeof(GLfloat) * 3 * numNewVertices);
+		model->vertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * numNewVertices);
 	if (mesh->vertexNormals)
-		model->normalArray = malloc(sizeof(GLfloat) * 3 * numNewVertices);
+		model->normalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * numNewVertices);
 	if (mesh->textureCoords)
-		model->texCoordArray = malloc(sizeof(GLfloat) * 2 * numNewVertices);
+		model->texCoordArray = (GLfloat *)malloc(sizeof(GLfloat) * 2 * numNewVertices);
 	
 	model->numVertices = numNewVertices;
 
@@ -797,7 +797,7 @@ static Model* generateModel(Mesh* mesh)
 }
 
 
-Model* LoadModel(char* name)
+Model* LoadModel(const char* name)
 {
 	Model* model = 0;
 	Mesh* mesh = LoadOBJ(name);
@@ -859,7 +859,7 @@ void ScaleModel(Model *m, float sx, float sy, float sz)
 // and to get attribute locations. This is clearly not optimal, but the
 // goal is stability.
 
-void DrawModel(Model *m, GLuint program, char* vertexVariableName, char* normalVariableName, char* texCoordVariableName)
+void DrawModel(Model *m, GLuint program, const char* vertexVariableName, const char* normalVariableName, const char* texCoordVariableName)
 {
 	if (m != NULL)
 	{
@@ -908,7 +908,7 @@ void DrawModel(Model *m, GLuint program, char* vertexVariableName, char* normalV
 	}
 }
 
-void DrawWireframeModel(Model *m, GLuint program, char* vertexVariableName, char* normalVariableName, char* texCoordVariableName)
+void DrawWireframeModel(Model *m, GLuint program, const char* vertexVariableName, const char* normalVariableName, const char* texCoordVariableName)
 {
 	if (m != NULL)
 	{
@@ -990,7 +990,7 @@ void ReloadModelData(Model *m)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m->numIndices*sizeof(GLuint), m->indexArray, GL_STATIC_DRAW);
 }
 
-Model* LoadModelPlus(char* name/*,
+Model* LoadModelPlus(const char* name/*,
 			GLuint program,
 			char* vertexVariableName,
 			char* normalVariableName,
@@ -1022,7 +1022,7 @@ Model* LoadDataToModel(
 			int numVert,
 			int numInd)
 {
-	Model* m = malloc(sizeof(Model));
+	Model* m = (Model*)malloc(sizeof(Model));
 	memset(m, 0, sizeof(Model));
 	
 	m->vertexArray = vertices;

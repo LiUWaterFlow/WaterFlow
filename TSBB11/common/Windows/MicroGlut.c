@@ -16,6 +16,8 @@
 // Menus and warp pointer are missing, but this looks good enough for "first beta version"!
 // Tested mainly with the Psychedelic Teapot example.
 
+#define UNICODE
+#define _UNICODE
 
 #include <windows.h>
 #include "glew.h"
@@ -77,7 +79,7 @@ void EnableOpenGL(HWND hWnd, HDC * hDC, HGLRC * hRC)
 		zdepth = 32;
 	else
 		zdepth = 0;
-	
+
 	if (gContextInitMode & GLUT_STENCIL)
 		sdepth = 32;
 	else
@@ -170,7 +172,7 @@ HDC hDC;
 HGLRC hRC;
 HINSTANCE hInstance;
 
-void glutCreateWindow(char *title)
+void glutCreateWindow(const char *title)
 {
 	// Convert title to szTitle!
 	#define MAX_LOADSTRING 100
@@ -181,7 +183,7 @@ void glutCreateWindow(char *title)
 
 	// create main window
 	hWnd = CreateWindow( 
-		"GLSample" /*This is really wrong, should be 16-bit text like the title!*/, szTitle, 
+		L"GLSample" /*This is really wrong, should be 16-bit text like the title!*/, szTitle, 
 		WS_CAPTION | WS_POPUPWINDOW | WS_VISIBLE | WS_OVERLAPPEDWINDOW, // WS_OVERLAPPEDWINDOW gives rescalable window
 		0, 0, 256, 256,
 		NULL, NULL, hInstance, NULL );
@@ -405,7 +407,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	wc.hCursor = LoadCursor( NULL, IDC_ARROW );
 	wc.hbrBackground = (HBRUSH)GetStockObject( BLACK_BRUSH );
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = "GLSample";
+	wc.lpszClassName = L"GLSample";
 	RegisterClass( &wc );
 	
 	main();

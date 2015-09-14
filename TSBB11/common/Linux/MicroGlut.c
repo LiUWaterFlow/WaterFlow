@@ -1,5 +1,6 @@
-// MicroGlut is a stripped-down reimplementation of the classic GLUT/FreeGLUT library. By Ingemar Ragnemalm 2012-2014.
+// MicroGlut is a stripped-down reimplementation of the classic GLUT/FreeGLUT library. By Ingemar Ragnemalm 2012-2015.
 // This is the Linux version. There is also a Mac version (and drafts for a Windows version).
+
 // Why do we use MicroGlut?
 // 1) Transparency! Including it as a single source file makes it easy to see what it does.
 // 2) Editability. Missing something? Want something to work a bit different? Just hack it in.
@@ -17,6 +18,16 @@
 // 130926: Cleaned up warnings, added missing #includes.
 // 140130: A bit more cleanup for avoiding warnings (_BSD_SOURCE below).
 // 140401: glutKeyIsDown and glutWarpPointer added and got an extra round of testing.
+// 150205: glutRepeatingTimer new, better name for glutRepeatingTimerFunc
+// Added a default glViewport call when the window is resized.
+// Made a bug fix in the event processing so that mouse drag events won't stack up.
+// Somewhere here I added a kind of full-screen support (but without removing window borders).
+// 150216: Added proper OpenGL3 initalization. (Based on a patch by Sebastian Parborg.)
+// 150223: Finally, decent handling on the GLUT configuration!
+// 150227: Resize triggers an update!
+// 150302: Window position, multisample, even better config
+// 150618: Added glutMouseIsDown() (not in the old GLUT API but a nice extension!).
+// Added #ifdefs to produce errors if compiled on the wrong platform!
 
 #define _BSD_SOURCE
 #include <math.h>
@@ -37,6 +48,10 @@
 #define M_PI 3.14159265
 #endif
 
+// If this is compiled on the Mac, tell me!
+#ifdef __APPLE__
+	ERROR! This is NOT the Mac version of MicroGlut and will not work on the Mac!
+#endif
 
 unsigned int winWidth = 300, winHeight = 300;
 unsigned int winPosX = 40, winPosY = 40;
@@ -69,6 +84,12 @@ void glutInitWindowSize(int w, int h)
 	winHeight = h;
 }
 
+void glutInitWindowPosition (int x, int y)
+{
+	winPosX = x;
+	winPosY = y;
+}
+
 static void checktimers();
 
 /*
@@ -81,22 +102,6 @@ make_window( Display *dpy, const char *name,
              int x, int y, int width, int height,
              Window *winRet, GLXContext *ctxRet)
 {
-   int attribs[] = { GLX_RGBA,
-                     GLX_RED_SIZE, 1,
-                     GLX_GREEN_SIZE, 1,
-                     GLX_BLUE_SIZE, 1,
-                     GLX_DOUBLEBUFFER,
-                     GLX_DEPTH_SIZE, 1,
-                     None };
-/*   int stereoAttribs[] = { GLX_RGBA,
-                           GLX_RED_SIZE, 1,
-                           GLX_GREEN_SIZE, 1,
-                           GLX_BLUE_SIZE, 1,
-                           GLX_DOUBLEBUFFER,
-                           GLX_DEPTH_SIZE, 1,
-                           GLX_STEREO,
-                           None };*/
-
    int scrnum;
    XSetWindowAttributes attr;
    unsigned long mask;
@@ -108,35 +113,157 @@ make_window( Display *dpy, const char *name,
    scrnum = DefaultScreen( dpy );
    root = RootWindow( dpy, scrnum );
 
-//   if (fullscreen)
-//   {
-//      x = 0; y = 0;
-//      width = DisplayWidth( dpy, scrnum );
-//      height = DisplayHeight( dpy, scrnum );
-//   }
+// 3.2 support
+//#ifdef glXCreateContextAttribsARB
+	if (gContextVersionMajor > 2)
+	{
+// We asked for OpenGL3+, but can we do it?
 
-//   if (stereo)
-//      visinfo = glXChooseVisual( dpy, scrnum, stereoAttribs );
-//   else
-      visinfo = glXChooseVisual( dpy, scrnum, attribs );
-   if (!visinfo)
-   {
-//      if (stereo) {
-//         printf("Error: couldn't get an RGB, "
-//                "Double-buffered, Stereo visual\n");
-//      } else
-         printf("Error: couldn't get an RGB, Double-buffered visual\n");
+		typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
 
-      exit(1);
-   }
+		// Verify GL driver supports glXCreateContextAttribsARB()
+		glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
+
+		// Verify that GLX implementation supports the new context create call
+		if ( strstr( glXQueryExtensionsString( dpy, scrnum ), 
+			"GLX_ARB_create_context" ) != 0 )
+		glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)
+			glXGetProcAddress( (const GLubyte *) "glXCreateContextAttribsARB" );
+
+		if ( !glXCreateContextAttribsARB )
+		{
+			printf( "Can't create new-style GL context\n" );
+		}
+
+// We need this for OpenGL3
+		int elemc;
+		GLXFBConfig *fbcfg;
+
+	   int attribs[] = { GLX_RENDER_TYPE, GLX_RGBA_BIT,
+                     GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT, // ?
+                     GLX_RED_SIZE, 1, // 1 = prefer high precision
+                     GLX_GREEN_SIZE, 1,
+                     GLX_BLUE_SIZE, 1,
+                     GLX_ALPHA_SIZE, 1,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None };
+
+		int i = 12;
+		if (gMode & GLUT_DOUBLE)
+		{
+			attribs[i++] = GLX_DOUBLEBUFFER;
+			attribs[i++] = 1;
+		}
+		if (gMode & GLUT_DEPTH)
+		{
+			attribs[i++] = GLX_DEPTH_SIZE;
+			attribs[i++] = 1;
+		}
+		if (gMode & GLUT_STENCIL)
+		{
+			attribs[i++] = GLX_STENCIL_SIZE;
+			attribs[i++] = 8; // Smallest available, at least 8. Configurable setting needed!
+		}
+		if (gMode & GLUT_MULTISAMPLE)
+		{
+			attribs[i++] = GLX_SAMPLE_BUFFERS;
+			attribs[i++] = 1;
+			attribs[i++] = GLX_SAMPLES;
+			attribs[i++] = 4;
+		}
+
+		fbcfg = glXChooseFBConfig(dpy, scrnum, attribs, &elemc);
+		if (!fbcfg)
+		{
+			fbcfg = glXChooseFBConfig(dpy, scrnum, NULL, &elemc);
+		}
+		if (!fbcfg)
+			printf("Couldn't get FB configs\n");
+
+		int gl3attr[] =
+		{
+			GLX_CONTEXT_MAJOR_VERSION_ARB, gContextVersionMajor,
+			GLX_CONTEXT_MINOR_VERSION_ARB, gContextVersionMinor,
+//			GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+			GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_DEBUG_BIT_ARB,
+			GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+			None
+		};
+		ctx = glXCreateContextAttribsARB(dpy, fbcfg[0], NULL, 1, gl3attr);
+		if (ctx == NULL) printf("No ctx!\n");
+
+        visinfo = glXGetVisualFromFBConfig(dpy, fbcfg[0]);
+        if (!visinfo)
+            printf("Error: couldn't create OpenGL window with this pixel format.\n");
+
+	}
+	else // old style
+//#endif
+	{
+	   int attribs[] = { GLX_RGBA,
+                     GLX_RED_SIZE, 1, // 1 = prefer high precision
+                     GLX_GREEN_SIZE, 1,
+                     GLX_BLUE_SIZE, 1,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None,
+                     None };
+
+		int i = 7;
+		if (gMode & GLUT_DOUBLE)
+			attribs[i++] = GLX_DOUBLEBUFFER;
+		if (gMode & GLUT_DEPTH)
+		{
+			attribs[i++] = GLX_DEPTH_SIZE;
+			attribs[i++] = 1;
+		}
+		if (gMode & GLUT_STENCIL)
+		{
+			attribs[i++] = GLX_STENCIL_SIZE;
+			attribs[i++] = 8; // Smallest available, at least 8. Configurable setting needed!
+		}
+    	visinfo = glXChooseVisual( dpy, scrnum, attribs );
+		if (!visinfo)
+		{
+			printf("Error: couldn't get a visual according to settings\n");
+			exit(1);
+		}
+
+		ctx = glXCreateContext( dpy, visinfo, 0, True );
+		if (ctx == NULL) printf("No ctx!\n");
+	}
 
    /* window attributes */
    attr.background_pixel = 0;
    attr.border_pixel = 0;
    attr.colormap = XCreateColormap( dpy, root, visinfo->visual, AllocNone);
    attr.event_mask = StructureNotifyMask | ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPress | ButtonReleaseMask | Button1MotionMask | PointerMotionMask;
-   /* XXX this is a bad way to get a borderless window! */
-//   attr.override_redirect = fullscreen;
    attr.override_redirect = 0;
    mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask | CWOverrideRedirect;
 
@@ -144,31 +271,6 @@ make_window( Display *dpy, const char *name,
 		        0, visinfo->depth, InputOutput,
 		        visinfo->visual, mask, &attr );
 
-// 3.2 support
-#ifdef glXCreateContextAttribsARB
-	if (gContextVersionMajor > 2)
-	{
-// We need this for OpenGL3
-		int elemc;
-		GLXFBConfig *fbcfg = glXChooseFBConfig(dpy, scrnum, NULL, &elemc);
-		if (!fbcfg)
-			printf("Couldn't get FB configs\n");
-		else
-			printf("Got %d FB configs\n", elemc);
-
-		int gl3attr[] =
-		{
-			GLX_CONTEXT_MAJOR_VERSION_ARB, gContextVersionMajor,
-			GLX_CONTEXT_MINOR_VERSION_ARB, gContextVersionMinor,
-			GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-			None
-		};
-		ctx = glXCreateContextAttribsARB(dpy, fbcfg[0], NULL, 1, gl3attr);
-	}
-	else
-#endif
-	   ctx = glXCreateContext( dpy, visinfo, NULL, True );
-	
 // Register delete!
 	wmDeleteMessage = XInternAtom(dpy, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(dpy, win, &wmDeleteMessage, 1); // Register
@@ -196,7 +298,7 @@ make_window( Display *dpy, const char *name,
    *ctxRet = ctx;
 }
 
-void glutCreateWindow(char *windowTitle)
+void glutCreateWindow(const char *windowTitle)
 {
    dpy = XOpenDisplay(NULL);
    if (!dpy)
@@ -264,7 +366,7 @@ void glutMainLoop()
 	while (!done)
 	{
       int op = 0;
-      if (XPending(dpy) > 0)
+      while (XPending(dpy) > 0)
       {
          XEvent event;
          XNextEvent(dpy, &event);
@@ -272,14 +374,19 @@ void glutMainLoop()
          switch (event.type)
          {
          	case ClientMessage:
-         		if (event.xclient.data.l[0] == wmDeleteMessage) // quit!
+         		if (event.xclient.data.l[0] == (int)wmDeleteMessage) // quit!
          			done = 1;
 	         	break;
          	case Expose: 
 			op = 1; break; // Update event! Should do draw here.
          	case ConfigureNotify:
-			if (gReshape)
+				if (gReshape)
 	      			gReshape(event.xconfigure.width, event.xconfigure.height);
+				else
+				{
+					glViewport(0, 0, event.xconfigure.width, event.xconfigure.height);
+				}
+				animate = 1;
       			break;
       		case KeyPress:
       		case KeyRelease:
@@ -290,9 +397,6 @@ void glutMainLoop()
 	      		{	if (gKey) gKey(buffer[0], 0, 0); gKeymap[(int)buffer[0]] = 1;}
 	      		else
 	      		{	if (gKeyUp) gKeyUp(buffer[0], 0, 0); gKeymap[(int)buffer[0]] = 0;}
-//	      		{	if (gKey) gKey(buffer[0], 0, 0);}
-//	      		else
-//	      		{	if (gKeyUp) gKeyUp(buffer[0], 0, 0);}
       			break;
 			case ButtonPress:
 				gButtonPressed[event.xbutton.button] = 1;
@@ -323,7 +427,10 @@ void glutMainLoop()
       if (animate)
       {
       	animate = 0;
-	  	gDisplay();
+		if (gDisplay)
+		  	gDisplay();
+		else
+			printf("No display function!\n");
       	op = 0;
       }
 		else
@@ -385,7 +492,8 @@ void glutTimerFunc(int millis, void (*func)(int arg), int arg)
 }
 
 // Added by Ingemar
-void glutRepeatingTimerFunc(int millis)
+// void glutRepeatingTimerFunc(int millis)
+void glutRepeatingTimer(int millis)
 {
 	TimerRec *t	= (TimerRec *)malloc(sizeof(TimerRec));
 	t->arg = 0;
@@ -486,4 +594,66 @@ char glutKeyIsDown(unsigned char c)
 {
 	return gKeymap[(unsigned int)c];
 }
+
+// Added by the Risinger/RŒberg/Wikstršm project! But... gButtonPressed
+// was already here! Did I miss something?
+char glutMouseIsDown(unsigned char c)
+{
+	return gButtonPressed[(unsigned int)c];
+}
+
+
+
+// These were missing up to 150205
+
+void glutReshapeWindow(int width, int height)
+{
+	XResizeWindow(dpy, win, width, height);
+}
+void glutPositionWindow(int x, int y)
+{
+	XMoveWindow(dpy, win, x, y);
+}
+void glutSetWindowTitle(const char *title)
+{
+	XStoreName(dpy, win, title);
+}
+
+// Not complete full screen mode yet since the window frame and menu are not hidden yet
+
+char gFullScreen = 0;
+unsigned int savedHeight, savedWidth;
+int savedX, savedY;
+
+void glutFullScreen()
+{
+	gFullScreen = 1;
+
+
+	Drawable d;
+	unsigned int a, b;
+
+	XGetGeometry(dpy, win, &d, &savedX, &savedY, &savedWidth, &savedHeight, &a, &b);
+
+    int scrnum = DefaultScreen(dpy);
+    int width = DisplayWidth( dpy, scrnum );
+    int height = DisplayHeight( dpy, scrnum );
+
+	XMoveResizeWindow(dpy, win, 0, 0, width, height);
+}
+
+void glutExitFullScreen()
+{
+	gFullScreen = 0;
+	XMoveResizeWindow(dpy, win, savedX, savedY, savedWidth, savedHeight);
+}
+
+void glutToggleFullScreen()
+{
+	if (gFullScreen)
+		glutExitFullScreen();
+	else
+		glutFullScreen();
+}
+
 

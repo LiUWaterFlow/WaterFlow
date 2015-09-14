@@ -21,7 +21,7 @@ void glutPassiveMotionFunc(void (*func)(int x, int y));
 
 void glutInitWindowPosition (int x, int y);
 void glutInitWindowSize (int width, int height);
-void glutCreateWindow (char *windowTitle);
+void glutCreateWindow (const char *windowTitle);
 
 void glutSwapBuffers();
 

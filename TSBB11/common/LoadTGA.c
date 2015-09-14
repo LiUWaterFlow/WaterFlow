@@ -22,7 +22,7 @@ void LoadTGASetMipmapping(bool active)
 	gMipmap = active;
 }
 
-bool LoadTGATextureData(char *filename, TextureData *texture)	// Loads A TGA File Into Memory
+bool LoadTGATextureData(const char *filename, TextureData *texture)	// Loads A TGA File Into Memory
 {
 	GLuint i;
 	GLubyte
@@ -36,12 +36,12 @@ bool LoadTGATextureData(char *filename, TextureData *texture)	// Loads A TGA Fil
 		imageSize,		// Used To Store The Image Size When Setting Aside Ram
 		temp;			// Temporary Variable
 	long rowSize, stepSize, bytesRead;
-	long w, h;
+	unsigned long w, h;
 	GLubyte *rowP;
 	int err;
 	GLubyte rle;
-	int b;
-	long row, rowLimit;
+	unsigned int b;
+	unsigned long row, rowLimit;
 	GLubyte pixelData[4];
 	
 	// Nytt fšr flipping-stšd 111114
@@ -175,7 +175,7 @@ bool LoadTGATextureData(char *filename, TextureData *texture)	// Loads A TGA Fil
 		} while (i < imageSize);
 	}
 
-	for (i = 0; i < (int)(imageSize); i += bytesPerPixel)	// Loop Through The Image Data
+	for (i = 0; i < imageSize; i += bytesPerPixel)	// Loop Through The Image Data
 	{		// Swaps The 1st And 3rd Bytes ('R'ed and 'B'lue)
 		temp = texture->imageData[i];		// Temporarily Store The Value At Image Data 'i'
 		texture->imageData[i] = texture->imageData[i + 2];	// Set The 1st Byte To The Value Of The 3rd Byte
@@ -189,7 +189,7 @@ texture->h = h;
 	return true;				// Texture loading Went Ok, Return True
 }
 
-bool LoadTGATexture(char *filename, TextureData *texture)	// Loads A TGA File Into Memory and creates texture object
+bool LoadTGATexture(const char *filename, TextureData *texture)	// Loads A TGA File Into Memory and creates texture object
 {
 	char ok;
 	GLuint type = GL_RGBA;		// Set The Default GL Mode To RBGA (32 BPP)
@@ -222,7 +222,7 @@ bool LoadTGATexture(char *filename, TextureData *texture)	// Loads A TGA File In
 	return true;				// Texture Building Went Ok, Return True
 }
 
-void LoadTGATextureSimple(char *filename, GLuint *tex) // If you really only need the texture object.
+void LoadTGATextureSimple(const char *filename, GLuint *tex) // If you really only need the texture object.
 {
 	TextureData texture;
 	memset(&texture, 0, sizeof(texture)); // Bug fix 130905.
@@ -248,9 +248,8 @@ int SaveDataToTGA(char			*filename,
 			 unsigned char	pixelDepth,
 			 unsigned char	*imageData)
 {
-	unsigned char cGarbage = 0, type,mode,aux;
-	short int iGarbage = 0;
-	int i, w, bytesPerPixel, row, ix;
+	unsigned char cGarbage = 0, mode,aux; // type,
+	int i, w, ix; // row, bytesPerPixel, 
 	FILE *file;
 	char /*GLubyte*/ TGAuncompressedheader[12]={ 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};	// Uncompressed TGA Header
 
@@ -261,11 +260,13 @@ int SaveDataToTGA(char			*filename,
 
 // compute image type: 2 for RGB(A), 3 for greyscale
 	mode = pixelDepth / 8;
+	/* Not used ???
 	if ((pixelDepth == 24) || (pixelDepth == 32))
 		type = 2;
 	else
 		type = 3;
-
+	*/
+	
 // write the header
 	fwrite(&TGAuncompressedheader, 12, 1, file);
 	fwrite(&width, sizeof(short int), 1, file);
@@ -286,8 +287,8 @@ int SaveDataToTGA(char			*filename,
 // save the image data
 	w = 1;
 	while (w < width) w = w << 1;
-	bytesPerPixel = pixelDepth/8;	
-	row = width * bytesPerPixel;
+	//bytesPerPixel = pixelDepth/8;	
+	//row = width * bytesPerPixel;
 	
 // Write one row at a time
 	for (i = 0; i < height; i++)
@@ -314,7 +315,7 @@ void SaveTGA(TextureData *tex, char *filename)
 void SaveFramebufferToTGA(char *filename, GLint x, GLint y, GLint w, GLint h)
 {
 	int err;
-	void *buffer = malloc(h*w*3);
+	unsigned char *buffer = (unsigned char*)malloc(h*w*3);
 	glReadPixels(x, y, w, h, GL_RGB, GL_UNSIGNED_BYTE, buffer);
 	err = SaveDataToTGA(filename, w, h, 
 			3*8, buffer);

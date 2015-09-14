@@ -3,16 +3,19 @@
 // http://www.ragnemalm.se/lightweight/psychteapot+MicroGlut-Windows-b1.zip
 // which according to the web site was updated 2015-08-17.
 
-#ifdef __APPLE__
-	#include <OpenGL/gl3.h>
-// uses framework Cocoa
-#endif
+
+#ifdef __APPLE__// Mac	#include <OpenGL/gl3.h>	// uses framework Cocoa#else	#ifdef _WIN32// MS		#include <windows.h>		#include <stdio.h>		#include "glew.h"	#else// Linux		#include <stdio.h>		#include <GL/gl.h>//		#include <GL/glut.h>	#endif#endif
+
 #include "MicroGlut.h"
 #include "GL_utilities.h"
 #include "VectorUtils3.h"
 #include "loadobj.h"
 #include "LoadTGA.h"
 #include <cstdlib>
+
+#include "readData.h"
+
+#include <iostream>
 
 #ifndef NULL
 #define NULL 0L
@@ -96,6 +99,9 @@ int main(int argc, char *argv[])
 	glutRepeatingTimer(20);
 	glutReshapeFunc(resize);
 	init ();
+	
+	//mapdata* test = readDEM("../../Data/output.min.asc");
+	
 	glutMainLoop();
 	exit(0);
 }

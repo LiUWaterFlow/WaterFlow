@@ -7,15 +7,17 @@ extern "C" {
 
 #ifdef __APPLE__
 	#include <OpenGL/gl3.h>
+	#include "MicroGlut.h"
 #else
 	#if defined(_WIN32)
 		#include "glew.h"
+		#include "freeglut.h"
 		#include <GL/gl.h>
 	#else
 		#include <GL/gl.h>
+		#include "MicroGlut.h"
 	#endif
 #endif
-#include "MicroGlut.h"
 
 
 void printError(const char *functionName);
