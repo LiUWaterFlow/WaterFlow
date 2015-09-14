@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{36821e69-36ad-46a4-9ec5-e09448474903}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Resources">
+      <UniqueIdentifier>{5f8ba054-98d1-408a-8c7b-dcbb384d5523}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,6 +65,12 @@
     <None Include="shaders\main.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="resources\fft-terrain.tga">
+      <Filter>Resource Files\Resources</Filter>
+    </None>
+    <None Include="resources\output.min.asc">
+      <Filter>Resource Files\Resources</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\readData.h">
@@ -85,5 +94,10 @@
     <ClInclude Include="common\Windows\MicroGlut.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="resources\teapot.obj">
+      <Filter>Resource Files\Resources</Filter>
+    </Object>
   </ItemGroup>
 </Project>
