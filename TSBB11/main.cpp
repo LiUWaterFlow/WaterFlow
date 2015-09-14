@@ -37,7 +37,7 @@
 #define NULL 0L
 #endif
 #ifndef PI
-#define PI 3.14159265358979323846
+#define PI 3.14159265358979323846f
 #endif
 
 mat4 projectionMatrix, camMatrix;
@@ -61,7 +61,7 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 void init(void)
 {
 	// GL inits
-	glClearColor(0.3,0.3,0.3,0);
+	glClearColor(0.3f,0.3f,0.3f,0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
@@ -87,25 +87,25 @@ GLfloat a, b = 0.0;
 
 void display(void)
 {
-	mat4 rot, trans, scale, total, tMat;
+	mat4 rot, trans, scale, total;
 	GLfloat t;
 
 	// clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
+	t = glutGet(GLUT_ELAPSED_TIME) / 100.0f;
 
 	trans = T(-5, -10, 20); // Move teapot to center it
 	scale = S(10, 10, 10);
 	rot = Mult(Ry(b / 50), Rx(a / 50)); // Rotation by mouse movements
-	total = Mult(Mult(rot, trans), Rx(-M_PI / 2)); // Rx rotates the teapot to a comfortable default
+	total = Mult(Mult(rot, trans), Rx(-M_PI / 2.0f)); // Rx rotates the teapot to a comfortable default
 	glUniformMatrix4fv(glGetUniformLocation(program, "mdlMatrix"), 1, GL_TRUE, total.m);
 	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); // Use glUniform1fv because glUniform1f has a bug under Linux!
 	DrawModel(terrain, program, "inPosition", NULL, "inTexCoord");
 
 	trans = T(0, -1, 0); // Move teapot to center it
 	rot = Mult(Ry(b/50), Rx(a/50)); // Rotation by mouse movements
-	total = Mult(Mult(rot, trans), Rx(-M_PI/2)); // Rx rotates the teapot to a comfortable default
+	total = Mult(Mult(rot, trans), Rx(-M_PI/2.0f)); // Rx rotates the teapot to a comfortable default
 	glUniformMatrix4fv(glGetUniformLocation(program, "mdlMatrix"), 1, GL_TRUE, total.m);
 	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); // Use glUniform1fv because glUniform1f has a bug under Linux!
 	DrawModel(m, program, "inPosition", NULL, "inTexCoord");
@@ -115,8 +115,8 @@ void display(void)
 
 void mouse(int x, int y)
 {
-	b = x * 1.0;
-	a = y * 1.0;
+	b = x * 1.0f;
+	a = y * 1.0f;
 	glutPostRedisplay();
 }
 
@@ -150,7 +150,7 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale) // Generates a mo
 {
 	int vertexCount = tex->width * tex->height;
 	int triangleCount = (tex->width - 1) * (tex->height - 1) * 2;
-	int x, z;
+	unsigned int x, z;
 
 	GLfloat *vertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * vertexCount);
 	GLfloat *normalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * vertexCount);
@@ -165,13 +165,13 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale) // Generates a mo
 		for (z = 0; z < tex->height; z++)
 		{
 			// Vertex array.
-			vertexArray[(x + z * tex->width) * 3 + 0] = x / 1.0;
+			vertexArray[(x + z * tex->width) * 3 + 0] = x / 1.0f;
 			vertexArray[(x + z * tex->width) * 3 + 1] = tex->imageData[(x + z * tex->width) * (tex->bpp / 8)] / terrainScale; // Terrain height.
-			vertexArray[(x + z * tex->width) * 3 + 2] = z / 1.0;
+			vertexArray[(x + z * tex->width) * 3 + 2] = z / 1.0f;
 
 			// Texture coordinates.
-			texCoordArray[(x + z * tex->width) * 2 + 0] = x;
-			texCoordArray[(x + z * tex->width) * 2 + 1] = z;
+			texCoordArray[(x + z * tex->width) * 2 + 0] = (GLfloat)x;
+			texCoordArray[(x + z * tex->width) * 2 + 1] = (GLfloat)z;
 		}
 	}
 
@@ -195,7 +195,7 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale) // Generates a mo
 		for (z = 0; z < tex->height; z++)
 		{
 			// Normal vectors.
-			tempNormal = giveNormal(x, tex->imageData[(x + z * tex->width) * (tex->bpp / 8)] / 10.0, z, vertexArray, indexArray, tex->width, tex->height);
+			tempNormal = giveNormal(x, (int)(tex->imageData[(x + z * tex->width) * (tex->bpp / 8)] / 10.0), z, vertexArray, indexArray, tex->width, tex->height);
 			normalArray[(x + z * tex->width) * 3 + 0] = -tempNormal.x;
 			normalArray[(x + z * tex->width) * 3 + 1] = -tempNormal.y;
 			normalArray[(x + z * tex->width) * 3 + 2] = -tempNormal.z;
@@ -219,7 +219,7 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale) // Generates a mo
 
 vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
 {
-	vec3 vertex( x, y, z );
+	vec3 vertex( (GLfloat)x, (GLfloat)y, (GLfloat)z );
 	vec3 normal( 0, 1, 0 );
 
 	vec3 normal1( 0, 0, 0 );
@@ -277,11 +277,11 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 {
 	GLfloat yheight = 0;
 
-	int vertX1 = floor(x);
-	int vertZ1 = floor(z);
+	int vertX1 = (int)floor(x);
+	int vertZ1 = (int)floor(z);
 
-	int vertX2 = floor(x) + 1;
-	int vertZ2 = floor(z) + 1;
+	int vertX2 = (int)floor(x) + 1;
+	int vertZ2 = (int)floor(z) + 1;
 
 	int vertX3 = 0;
 	int vertZ3 = 0;

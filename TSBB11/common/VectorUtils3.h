@@ -16,7 +16,7 @@
 
 
 #ifndef M_PI
-#define M_PI           3.14159265358979323846
+#define M_PI           3.14159265358979323846f
 #endif
 
 #define Vector3f Point3D
@@ -157,19 +157,19 @@ float operator*(const vec3 &a, const vec3 &b) // vec3 dot vec3
 }
 
 inline
-vec3 operator*(const vec3 &b, double a) // vec3 * scalar
+vec3 operator*(const vec3 &b, float a) // vec3 * scalar
 {
 	return vec3(a*b.x, a*b.y, a*b.z);
 }
 
 inline
-vec3 operator*(double a, const vec3 &b) // scalar * vec3
+vec3 operator*(float a, const vec3 &b) // scalar * vec3
 {
 	return vec3(a*b.x, a*b.y, a*b.z);
 }
 
 inline
-vec3 operator/(const vec3 &b, double a) // vec3 / scalar
+vec3 operator/(const vec3 &b, float a) // vec3 / scalar
 {
 	return vec3(b.x/a, b.y/a, b.z/a);
 }
@@ -220,19 +220,19 @@ float operator*(const vec4 &a, const vec4 &b) // vec4 dot vec4
 }
 
 inline
-vec4 operator*(const vec4 &b, double a) // vec4 * scalar
+vec4 operator*(const vec4 &b, float a) // vec4 * scalar
 {
 	return vec4(a*b.x, a*b.y, a*b.z, a*b.w);
 }
 
 inline
-vec4 operator*(double a, const vec4 &b) // scalar * vec4
+vec4 operator*(float a, const vec4 &b) // scalar * vec4
 {
 	return vec4(a*b.x, a*b.y, a*b.z, a*b.w);
 }
 
 inline
-vec4 operator/(const vec4 &b, double a) // vec4 / scalar
+vec4 operator/(const vec4 &b, float a) // vec4 / scalar
 {
 	return vec4(b.x/a, b.y/a, b.z/a, b.w/a);
 }
