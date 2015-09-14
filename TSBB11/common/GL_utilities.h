@@ -11,7 +11,7 @@ extern "C" {
 #else
 	#if defined(_WIN32)
 		#include "glew.h"
-		#include "freeglut.h"
+		#include "MicroGlut.h"
 		#include <GL/gl.h>
 	#else
 		#include <GL/gl.h>

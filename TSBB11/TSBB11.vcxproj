@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,7 +20,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>common;common/Windows</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>common;common/Windows;inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -81,14 +81,24 @@
     <ClCompile Include="common\GL_utilities.c" />
     <ClCompile Include="common\loadobj.c" />
     <ClCompile Include="common\LoadTGA.c" />
-    <ClCompile Include="common\VectorUtils3.c" />
+    <ClCompile Include="common\VectorUtils3.cpp" />
     <ClCompile Include="common\Windows\glew.c" />
     <ClCompile Include="common\Windows\MicroGlut.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\readData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\main.frag" />
     <None Include="shaders\main.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\GL_utilities.h" />
+    <ClInclude Include="common\loadobj.h" />
+    <ClInclude Include="common\LoadTGA.h" />
+    <ClInclude Include="common\VectorUtils3.h" />
+    <ClInclude Include="common\Windows\MicroGlut.h" />
+    <ClInclude Include="common\zpr.h" />
+    <ClInclude Include="inc\readData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

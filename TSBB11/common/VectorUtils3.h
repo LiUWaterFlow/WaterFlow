@@ -32,12 +32,12 @@
 	typedef struct vec3
 	{
 		GLfloat x, y, z;
-		#ifdef __cplusplus
+
 			vec3() : x(0), y(0), z(0) {}
 			vec3(GLfloat x2, GLfloat y2, GLfloat z2) : x(x2), y(y2), z(z2) {}
 
 //			vec3(vec4 v) : x(v.x), y(v.y), z(v.z) {}
-		#endif
+
 	}
 	vec3, *vec3Ptr;
 	
@@ -46,12 +46,12 @@
 	typedef struct vec4
 	{
 		GLfloat x, y, z, w; // w or h
-		#ifdef __cplusplus
+
 			vec4() : x(0), y(0), z(0), w(0) {}
 			vec4(GLfloat x2, GLfloat y2, GLfloat z2, GLfloat w2) : x(x2), y(y2), z(z2), w(w2) {}
 			
 			vec4(vec3 v) : x(v.x), y(v.y), z(v.z), w(1) {}
-		#endif
+
 	}
 	vec4, *vec4Ptr;
 	typedef struct mat4
@@ -62,10 +62,6 @@
 	{
 		GLfloat m[9];
 	} mat3;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 //	void CopyVector(vec3 *v, vec3 *dest); // Will probably be removed
 	vec3 SetVector(GLfloat x, GLfloat y, GLfloat z);
@@ -135,11 +131,8 @@ extern "C" {
 	mat4 mat3tomat4(mat3 m);
 	vec3 vec4tovec3(vec4 v);
 	vec4 vec3tovec4(vec3 v);
-#ifdef __cplusplus
-}
-#endif
 
-#ifdef __cplusplus
+
 // Some C++ operator overloads
 // Non-member C++ operators!
 
@@ -305,8 +298,5 @@ vec3 operator*(const mat3 &a, const vec3 &b)
 {
 	return MultMat3Vec3(a, b); // result = a * b
 }
-
-#endif
-
 
 #endif

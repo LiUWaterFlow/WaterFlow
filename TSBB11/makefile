@@ -26,7 +26,7 @@ BIN=bin
 NAME=main.cpp
 
 # Compile with
-UTILS=$(COM)/*.c $(SRC)/*.cpp
+UTILS=$(COM)/*.c $(COM)/*.cpp $(SRC)/*.cpp
 LUTILS=$(COM)/Linux/MicroGlut.c $(UTILS)
 
 all: main
