@@ -21,6 +21,9 @@
 #define PI 3.14159265358979323846
 #endif
 
+#define WIDTH 800
+#define HEIGHT 600
+
 mat4 projectionMatrix, camMatrix;
 
 Model *m;
@@ -38,6 +41,10 @@ vec3 s = lookAtPoint - cam;
 Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale); // Generates a model given a height map (grayscale .tga file for now).
 vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
 GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height); // Returns the height of a height map.
+
+void CheckMouse(int x, int y);
+void SetCameraVector(float fi, float theta);
+void CheckKeys();
 
 void init(void)
 {
@@ -76,6 +83,9 @@ void display(void)
 	
 	t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
 
+	CheckKeys();
+	glUniformMatrix4fv(glGetUniformLocation(program, "camMatrix"), 1, GL_TRUE, camMatrix.m);
+
 	trans = T(-5, -10, 20); // Move teapot to center it
 	scale = S(10, 10, 10);
 	rot = Mult(Ry(b / 50), Rx(a / 50)); // Rotation by mouse movements
@@ -111,15 +121,18 @@ int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitContextVersion(3, 2);
+	glutInitWindowSize(WIDTH, HEIGHT);
 	glutCreateWindow ("Ingemar's psychedelic teapot 2");
 #ifdef WIN32
 	glewInit();
 #endif
 	glutDisplayFunc(display); 
-	glutPassiveMotionFunc(mouse);
+	//glutPassiveMotionFunc(mouse);
+	glutPassiveMotionFunc(CheckMouse);
 	glutRepeatingTimer(20);
-	glutReshapeFunc(resize);
+	//glutReshapeFunc(resize);
 	init();
+	initKeymapManager();
 	glutMainLoop();
 	exit(0);
 }
@@ -310,4 +323,62 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
 	}
 	return yheight;
+}
+
+void CheckMouse(int x, int y)	// Aligns camera direction after mouse cursor location.
+{
+	float xSensMultiplier = 2.0;
+	float fi = 2 * PI * (float)x / WIDTH;
+	float theta = PI * (float)y / HEIGHT;
+	SetCameraVector(xSensMultiplier * (PI - fi), -theta);
+}
+
+void SetCameraVector(float fi, float theta)	// Sets the camera matrix.
+{
+	// Sets s, the direction you're looking at.
+	s.z = sinf(theta) * cosf(fi);
+	s.x = sinf(theta) * sinf(fi);
+	s.y = cosf(theta);
+	// Translates this into l, the point "just in front of your face" when looking along s.
+	lookAtPoint = cam + s;
+	camMatrix = lookAtv(cam, lookAtPoint, v);
+}
+
+void CheckKeys()	// Checks if keys are being pressed.
+{
+	float moveSpeed = 0.2;
+	// 'w' moves the camera forwards.
+	if (keyIsDown('w'))
+	{
+		cam += moveSpeed * s;
+	}
+	// 'a' moves the camera to the left.
+	if (keyIsDown('a'))
+	{
+		cam -= moveSpeed * Normalize(CrossProduct(s, v));
+	}
+	// 'w' moves the camera backwards.
+	if (keyIsDown('s'))
+	{
+		cam -= moveSpeed * s;
+	}
+	// 'd' moves the camera to the left.
+	if (keyIsDown('d'))
+	{
+		cam += moveSpeed * Normalize(CrossProduct(s, v));
+	}
+	// 'a' moves the camera up.
+	if (keyIsDown('e'))
+	{
+		cam += moveSpeed * v;
+	}
+	// 'c' moves the camera to the down.
+	if (keyIsDown('c'))
+	{
+		cam -= moveSpeed * v;
+	}
+
+	lookAtPoint = cam + s;
+	// Updates the camera.
+	camMatrix = lookAtv(cam, lookAtPoint, v);
 }
