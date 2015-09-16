@@ -1,5 +1,5 @@
 // The code below is based upon Ingemar Ragnemalm's code provided for the
-// course TSBK03 at Linköping University. The link to the original shell is
+// course TSBK03 at LinkÃ¶ping University. The link to the original shell is
 // http://www.ragnemalm.se/lightweight/psychteapot+MicroGlut-Windows-b1.zip
 // which according to the web site was updated 2015-08-17.
 
@@ -62,12 +62,6 @@ FBOstruct *fbo1, *fbo2, *fbo3;
 GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
 Point3D cam, point;
 
-void OnTimer(int value)
-{
-	glutPostRedisplay();
-	glutTimerFunc(5, &OnTimer, value);
-}
-
 void resize(int w, int h) // TEST
 {
 	glViewport(0,0,w, h);
@@ -77,6 +71,8 @@ void resize(int w, int h) // TEST
 mat4 viewMatrix;
 
 int W, H;
+
+DataHandler* test;
 //==============================
 
 mat4 projectionMatrix, camMatrix;
@@ -132,7 +128,6 @@ FBOstruct *initFBO3(int width, int height, void* data)
 	return fbo;
 }
 
-
 void init(void)
 {
 	dumpInfo();  // shader info
@@ -153,19 +148,19 @@ void init(void)
 	glUseProgram(program);
 	
 	// Upload geometry to the GPU:
-	DataHandler test("resources/output.min.asc",1.0f);
+	test = new DataHandler("resources/output.min.asc",1.0f);
 	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 	//terrain = test.datamodel;
 	m = LoadModelPlus("resources/teapot.obj");
 	
-	W = test.getWidth();
-	H = test.getHeight();
+	W = test->getWidth();
+	H = test->getHeight();
 	
 	resize(W, H);
 	
 	fbo1 = initFBO3(W, H, NULL);
 	fbo2 = initFBO3(W, H, NULL);
-	fbo3 = initFBO3(W, H, test.getData());
+	fbo3 = initFBO3(W, H, test->getData());
 
 	
 	printError("init shader");
@@ -190,11 +185,33 @@ void init(void)
 
 	zprInit(&viewMatrix, cam, point);
 	
+
 }
 
 GLfloat a, b = 0.0;
 
 void display(void)
+{
+	// render to fbo1!
+	useFBO(0L, fbo3, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1, 0.1, 0.3, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(plaintextureshader);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
+
+	
+
+	glutSwapBuffers();
+}
+
+void performNormConv()
 {
 	for(int i = 0; i < 1; i++)
 	{
@@ -259,7 +276,7 @@ void display(void)
 		glDisable(GL_DEPTH_TEST);
 		DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");	
 		
-		// render to fbo1!
+		// Swap FBOs
 		useFBO(fbo3, fbo2, 0L);
 
 		// Clear framebuffer & zbuffer
@@ -273,38 +290,37 @@ void display(void)
 		glDisable(GL_DEPTH_TEST);
 		DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 	}
-
-	// render to fbo1!
-	useFBO(0L, fbo3, 0L);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1, 0.1, 0.3, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(plaintextureshader);
-
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
-
-	
-
-	glutSwapBuffers();
 }
+
 
 void mouse(int x, int y)
 {
+	std::cout << "Random Pixel before: " << test->getCoord(10, 1830) << std::endl;
+
 	b = x * 1.0f;
 	a = y * 1.0f;
+	
+	bool isNODATA = false;
+	for(int i = 0;i < test->getElem() && !isNODATA; i++)
+	{
+		float data = test->getData()[i];
+		
+		if (data <0.0001f)
+		{
+			isNODATA = true;
+		}
+	}
+	
+	if(isNODATA)
+	{
+		performNormConv();
+		glReadPixels(0, 0, W, H, GL_RED, GL_FLOAT, test->getData());
+		std::cout << "Random Pixel after: " << test->getCoord(10, 1830) << std::endl;
+	}
 	glutPostRedisplay();
+
 }
 
-
-/*void idle()
-{
-  glutPostRedisplay();
-}*/
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
@@ -317,7 +333,7 @@ int main(int argc, char *argv[])
 #endif
 	glutDisplayFunc(display); 
 	glutPassiveMotionFunc(mouse);
-	glutRepeatingTimer(200);
+	//glutRepeatingTimer(200);
 	glutReshapeFunc(resize);
 	//glutIdleFunc(idle);
 	init ();

@@ -6,6 +6,7 @@
 struct mapdata {
 	int	ncols;
 	int nrows;
+	int nelem;
 	float xllcorner;
 	float yllcorner;
 	float cellsize;
@@ -34,6 +35,7 @@ public:
 	
 	int getWidth();
 	int getHeight();
+	int getElem();
 	
 };
 

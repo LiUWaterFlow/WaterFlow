@@ -49,6 +49,10 @@ int DataHandler::getHeight()
 {
 	return readdata->nrows;
 }
+int DataHandler::getElem()
+{
+	return readdata->nelem;
+}
 
 void DataHandler::readDEM(const char* inputfile)
 {
@@ -70,9 +74,9 @@ void DataHandler::readDEM(const char* inputfile)
 		readdata->max_value = readdata->NODATA_value;
 		readdata->min_value = 20000000;
 	
-		int numelem = readdata->ncols * readdata->nrows;
+		readdata->nelem = readdata->ncols * readdata->nrows;
 		
-		for (int i = 0; i < numelem; i++)
+		for (int i = 0; i < readdata->nelem; i++)
 		{
 			infile >> incoord;
 			
@@ -112,6 +116,7 @@ DataHandler::DataHandler(const char* inputfile, GLfloat tScale){
 
 	//datamodel = GenerateTerrain(tScale);
 }
+
 
 DataHandler::~DataHandler()
 {

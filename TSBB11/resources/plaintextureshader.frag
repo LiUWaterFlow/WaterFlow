@@ -8,7 +8,7 @@ void main(void)
 {
 	vec4 color = texture(texUnit, outTexCoord);
 	color = vec4(color.x);
-	if(color.x < 0.05)
+	if(color.x < 0.05f)
 	{
 		color.x = 0.0f;
 		color.y = 1.0f;
