@@ -1,5 +1,5 @@
 // The code below is based upon Ingemar Ragnemalm's code provided for the
-// course TSBK03 at Linköping University. The link to the original shell is
+// course TSBK03 at Linkï¿½ping University. The link to the original shell is
 // http://www.ragnemalm.se/lightweight/psychteapot+MicroGlut-Windows-b1.zip
 // which according to the web site was updated 2015-08-17.
 
@@ -57,16 +57,16 @@ void init(void)
 	// Load and compile shader
 	program = loadShaders("shaders/main.vert", "shaders/main.frag");
 	glUseProgram(program);
-	
+
 	// Upload geometry to the GPU:
 	LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 	m = LoadModelPlus("resources/teapot.obj");
-	terrain = GenerateTerrain(&ttex, 2);
+	terrain = GenerateTerrain(&ttex, 10);
 	// End of upload of geometry
-	
-	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, 30.0);
+
+	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, 260.0);
 	camMatrix = lookAt(0, 1, 8, 0,0,0, 0,1,0);
-	
+
 	glUniformMatrix4fv(glGetUniformLocation(program, "camMatrix"), 1, GL_TRUE, camMatrix.m);
 	glUniformMatrix4fv(glGetUniformLocation(program, "projMatrix"), 1, GL_TRUE, projectionMatrix.m);
 }
@@ -80,8 +80,9 @@ void display(void)
 
 	// clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
+	t = 0;
 
 	CheckKeys();
 	glUniformMatrix4fv(glGetUniformLocation(program, "camMatrix"), 1, GL_TRUE, camMatrix.m);
@@ -100,7 +101,7 @@ void display(void)
 	glUniformMatrix4fv(glGetUniformLocation(program, "mdlMatrix"), 1, GL_TRUE, total.m);
 	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); // Use glUniform1fv because glUniform1f has a bug under Linux!
 	DrawModel(m, program, "inPosition", NULL, "inTexCoord");
-	
+
 	glutSwapBuffers();
 }
 
@@ -126,7 +127,7 @@ int main(int argc, char *argv[])
 #ifdef WIN32
 	glewInit();
 #endif
-	glutDisplayFunc(display); 
+	glutDisplayFunc(display);
 	//glutPassiveMotionFunc(mouse);
 	glutPassiveMotionFunc(CheckMouse);
 	glutRepeatingTimer(20);
