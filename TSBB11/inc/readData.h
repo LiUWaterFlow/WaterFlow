@@ -10,6 +10,8 @@ struct mapdata {
 	float yllcorner;
 	float cellsize;
 	float NODATA_value;
+	float max_value;
+	float min_value;
 	std::vector<float> data; 
 };
 
@@ -19,6 +21,7 @@ class DataHandler
 	mapdata* readdata;
 	
 	void readDEM(const char* inputfile);
+	void scaleData();
 	Model* GenerateTerrain(GLfloat tScale);
 
 public:
@@ -26,7 +29,12 @@ public:
 
 	DataHandler(const char* inputfile, GLfloat tScale = 5000.0f);
 	~DataHandler();
-	float getData(int col, int row);
+	float getCoord(int col, int row);
+	float* getData();
+	
+	int getWidth();
+	int getHeight();
+	
 };
 
 vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);

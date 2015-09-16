@@ -11,7 +11,7 @@
 
 using namespace std;
 
-float DataHandler::getData(int col, int row)
+float DataHandler::getCoord(int col, int row)
 {
 	int index;
 	float retdata = 0;
@@ -36,6 +36,20 @@ float DataHandler::getData(int col, int row)
 	return retdata;
 }
 
+float* DataHandler::getData()
+{
+	return &readdata->data[0];
+}
+
+int DataHandler::getWidth()
+{
+	return readdata->ncols;
+}
+int DataHandler::getHeight()
+{
+	return readdata->nrows;
+}
+
 void DataHandler::readDEM(const char* inputfile)
 {
 	ifstream infile;
@@ -53,10 +67,24 @@ void DataHandler::readDEM(const char* inputfile)
 		infile >> intext >> readdata->cellsize;
 		infile >> intext >> readdata->NODATA_value;
 	
+		readdata->max_value = readdata->NODATA_value;
+		readdata->min_value = 20000000;
+	
 		int numelem = readdata->ncols * readdata->nrows;
+		
 		for (int i = 0; i < numelem; i++)
 		{
 			infile >> incoord;
+			
+			if(incoord > readdata->max_value)
+			{
+				readdata->max_value = incoord;
+			}
+			if(incoord > readdata->NODATA_value + 1 && incoord < readdata->min_value)
+			{
+				readdata->min_value = incoord;
+			}
+			
 			readdata->data.push_back(incoord);
 		}
 		
@@ -67,12 +95,22 @@ void DataHandler::readDEM(const char* inputfile)
 	}
 }
 
+void DataHandler::scaleData()
+{
+	for(auto i = readdata->data.begin(); i != readdata->data.end(); i++)
+	{
+		float diff = readdata->max_value - readdata->min_value;
+		*i = ((*i - readdata->min_value) / diff) * 0.9f + 0.1f;
+	} 
+}
+
 DataHandler::DataHandler(const char* inputfile, GLfloat tScale){
 	readdata = new mapdata();
 	readDEM(inputfile);
-	GenerateTerrain(tScale);
+	scaleData();
+	//GenerateTerrain(tScale);
 
-	datamodel = GenerateTerrain(tScale);
+	//datamodel = GenerateTerrain(tScale);
 }
 
 DataHandler::~DataHandler()
@@ -101,7 +139,7 @@ Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a
 		{
 			// Vertex array.
 			vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
-			vertexArray[(x + z * width) * 3 + 1] = getData(x,z) / tScale; // Terrain height.
+			vertexArray[(x + z * width) * 3 + 1] = getCoord(x,z) / tScale; // Terrain height.
 			vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
 
 			// Texture coordinates.
@@ -130,7 +168,7 @@ Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a
 		for (z = 0; z < height; z++)
 		{
 			// Normal vectors.
-			tempNormal = giveNormal(x, (int)(getData(x,z) / 10.0f), z, vertexArray, indexArray, width, height);
+			tempNormal = giveNormal(x, (int)(getCoord(x,z) / 10.0f), z, vertexArray, indexArray, width, height);
 			normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
 			normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
 			normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
