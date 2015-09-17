@@ -111,7 +111,7 @@ FBOstruct *initFBO3(int width, int height, void* data)
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, data);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->texid, 0);
 
@@ -131,7 +131,7 @@ FBOstruct *initFBO3(int width, int height, void* data)
 void init(void)
 {
 	dumpInfo();  // shader info
-	
+
 	// GL inits
 	glClearColor(0.1, 0.1, 0.3, 0);
 	glClearDepth(1.0);
@@ -142,38 +142,38 @@ void init(void)
 	// Load and compile shader
 	program = loadShaders("shaders/main.vert", "shaders/main.frag");
 	plaintextureshader = loadShaders("resources/plaintextureshader.vert", "resources/plaintextureshader.frag");  // puts texture on teapot
-	filtershader = loadShaders("resources/plaintextureshader.vert", "resources/filtershader.frag"); 
-	confidenceshader = loadShaders("resources/plaintextureshader.vert", "resources/confidenceshader.frag"); 
-	combineshader = loadShaders("resources/plaintextureshader.vert", "resources/combineshader.frag"); 
+	filtershader = loadShaders("resources/plaintextureshader.vert", "resources/filtershader.frag");
+	confidenceshader = loadShaders("resources/plaintextureshader.vert", "resources/confidenceshader.frag");
+	combineshader = loadShaders("resources/plaintextureshader.vert", "resources/combineshader.frag");
 	glUseProgram(program);
-	
+
 	// Upload geometry to the GPU:
 	test = new DataHandler("resources/output.min.asc",1.0f);
 	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 	//terrain = test.datamodel;
 	m = LoadModelPlus("resources/teapot.obj");
-	
+
 	W = test->getWidth();
 	H = test->getHeight();
-	
+
 	resize(W, H);
-	
+
 	fbo1 = initFBO3(W, H, NULL);
 	fbo2 = initFBO3(W, H, NULL);
 	fbo3 = initFBO3(W, H, test->getData());
 
-	
+
 	printError("init shader");
 
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
 
-	
-	
+
+
 	// End of upload of geometry
 	/*
 	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, 30.0);
 	camMatrix = lookAt(0, 1, 8, 0,0,0, 0,1,0);
-	
+
 	glUniformMatrix4fv(glGetUniformLocation(program, "camMatrix"), 1, GL_TRUE, camMatrix.m);
 	glUniformMatrix4fv(glGetUniformLocation(program, "projMatrix"), 1, GL_TRUE, projectionMatrix.m);
 	*/
@@ -184,7 +184,7 @@ void init(void)
 	//glutTimerFunc(50, &OnTimer, 0);
 
 	zprInit(&viewMatrix, cam, point);
-	
+
 
 }
 
@@ -206,7 +206,7 @@ void display(void)
 	glDisable(GL_DEPTH_TEST);
 	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 
-	
+
 
 	glutSwapBuffers();
 }
@@ -230,7 +230,7 @@ void performNormConv()
 		glDisable(GL_DEPTH_TEST);
 		DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
 
-		
+
 		// Create confidence
 		useFBO(fbo2, fbo3, 0L);
 
@@ -244,8 +244,8 @@ void performNormConv()
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 		DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
-		
-		
+
+
 		// Filter confidence
 		useFBO(fbo3, fbo2, 0L);
 
@@ -260,7 +260,7 @@ void performNormConv()
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 		DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
-		
+
 		// Combine
 		useFBO(fbo2, fbo1, fbo3);
 
@@ -274,8 +274,8 @@ void performNormConv()
 		glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
-		DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");	
-		
+		DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
+
 		// Swap FBOs
 		useFBO(fbo3, fbo2, 0L);
 
@@ -299,18 +299,18 @@ void mouse(int x, int y)
 
 	b = x * 1.0f;
 	a = y * 1.0f;
-	
+
 	bool isNODATA = false;
 	for(int i = 0;i < test->getElem() && !isNODATA; i++)
 	{
 		float data = test->getData()[i];
-		
+
 		if (data <0.0001f)
 		{
 			isNODATA = true;
 		}
 	}
-	
+
 	if(isNODATA)
 	{
 		performNormConv();
@@ -331,14 +331,13 @@ int main(int argc, char *argv[])
 #ifdef WIN32
 	glewInit();
 #endif
-	glutDisplayFunc(display); 
+	glutDisplayFunc(display);
 	glutPassiveMotionFunc(mouse);
 	//glutRepeatingTimer(200);
 	glutReshapeFunc(resize);
 	//glutIdleFunc(idle);
 	init ();
-	
+
 	glutMainLoop();
 	exit(0);
 }
-
