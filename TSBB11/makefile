@@ -1,3 +1,14 @@
+###########################################################
+###														###
+###				          MAKEFILE			  			###
+###											  			###
+### 		         Project in TSBB11	      			###
+###											  			###
+###########################################################
+
+CXX=g++
+RM=rm -f
+
 ifeq ($(shell uname), Darwin)
   PLATFORM=mac
 endif
@@ -5,48 +16,57 @@ endif
 ifeq ($(shell uname), Linux)
   PLATFORM=linux
 endif
+
+
+# Utilities
+COM=common
+
+# Folders
+SRC=src
+BIN=bin
+NAME=main.cpp
+
+
+#windows settings
+FLAGS = -lm -DGL_GLEXT_PROTOTYPES -lfreeglut -lglew32 -lopengl32 -L$(COM)/Windows/lib
+INC = -I$(COM) -I$(COM)/Windows -Iinc
+
+# Compile with
+UTILS=$(COM)/*.c $(COM)/*.cpp $(SRC)/*.cpp
+MICRO = $(COM)/Windows/MicroGlut.c
+
+
+LUTILS=	MicroGlut.o $(UTILS)
+
+#mac settings
 ifeq ($(PLATFORM),mac)
-
-
 #Mac frameworks
-LDFLAGS = -framework GLUT -framework OpenGL -framework Cocoa
-MICRO = common/mac/MicroGlut.m
-INC = -I common/mac -I common/
+FLAGS = -framework GLUT -framework OpenGL -framework Cocoa
+MICRO = $(COM)/mac/MicroGlut.m
+INC = -I$(COM) -I$(COM)/mac -Iinc
 
 endif
 
+#linux settings
 ifeq ($(PLATFORM),linux)
-LDFLAGS = -lGL -lm -DGL_GLEXT_PROTOTYPES -lXt -lX11
-MICRO = common/Linux/MicroGlut.c
-INC = -I common/Linux
+
+FLAGS= -lGL -lm -DGL_GLEXT_PROTOTYPES
+#-lXt -lX11
+INC = -I$(COM) -I$(COM)/Linux -Iinc
+MICRO = $(COM)/Linux/MicroGlut.c
+
 endif
 
-
-#Compiler flags, enable warnings and c99 standard
-G++FLAGS = -Wall -std=c++0x $(INC)
-GCCFLAGS = -Wall $(INC)
-#SOURCES that are needed for all sub-compilations
-SOURCES = common/GL_utilities.c common/VectorUtils3.c common/LoadTGA.c common/loadobj.c
-OBJECTS = GL_utilities.o VectorUtils3.o LoadTGA.o loadobj.o MicroGlut.o
+CPPFLAGS = -Wall -pedantic -std=c++0x
 
 
 all: main
-#target: dependencies
-#’tab’ 	compilation commands
 
+main: $(NAME) MicroGlut.o
+	$(CXX) $(CPPFLAGS) -o $(BIN)/WaterFlow $(NAME) $(LUTILS) $(FLAGS) $(INC) $(MIRCO)
 
-main: main.cpp $(OBJECTS)
-	g++ $(G++FLAGS) $(OBJECTS) main.cpp -o flow.out $(LDFLAGS)
-
-$(OBJECTS):
-	g++ -c $(GCCFLAGS) $(SOURCES) $(LDFLAGS)
-
-#compile MicroGlut on it’s own and ignore warnings.
 MicroGlut.o: $(MICRO)
-	g++ -w -c $(MICRO)
+	$(CXX) -c $(MICRO)
 
-clean:
-	rm *.o
-
-system:
-	printf $(shell uname)
+clean :
+	@ $(RM) $(BIN)/*
