@@ -767,12 +767,12 @@ mat4 ortho(GLfloat left, GLfloat right, GLfloat bottom, GLfloat top, GLfloat nea
         float ty = - (top + bottom)/(top - bottom);
         float tz = - (far + near)/(far - near);
 
-        float ortho[16] = {
+        mat4 o = SetMat4(
             a, 0, 0, tx,
             0, b, 0, ty,
             0, 0, c, tz,
-            0, 0, 0, 1
-        };
+            0, 0, 0, 1);
+        return o;
 }
 
 // The code below is based on code from:
@@ -967,4 +967,4 @@ mat4 InvertMat4(mat4 a)
 	b.m[14]=(-n*u+p*B-r*A)*q;
 	b.m[15]=(k*u-l*B+o*A)*q;
 	return b;
-};
+}
