@@ -30,6 +30,7 @@ int glutGet(int type);
 
 void glutInitDisplayMode(unsigned int mode);
 void glutIdleFunc(void (*func)(void));
+char glutKeyIsDown(unsigned char c);
 
 // Standard GLUT timer
 void glutTimerFunc(int millis, void (*func)(int arg), int arg);

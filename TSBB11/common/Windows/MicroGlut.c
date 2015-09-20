@@ -15,6 +15,7 @@
 // 150817: Timers and rescaling runs fine!
 // Menus and warp pointer are missing, but this looks good enough for "first beta version"!
 // Tested mainly with the Psychedelic Teapot example.
+// 150919 Added the very useful glutKeyIsDown plus support for key up events.
 
 
 #include <windows.h>
@@ -42,6 +43,7 @@ char updatePending = 1;
 char gRunning = 1;
 int gContextVersionMajor = 0;
 int gContextVersionMinor = 0;
+char gKeymap[256];
 
 // Prototype
 static void checktimers();
@@ -147,6 +149,8 @@ static struct timeval timeStart;
 
 void glutInit(int *argcp, char **argv)
 {
+	int i;
+	for (i = 0; i < 256; i++) gKeymap[i] = 0;
 }
 
 int gWindowPosX = 10;
@@ -306,6 +310,10 @@ void glutIdleFunc(void (*func)(void))
 	glutRepeatingTimer(10);
 }
 
+char glutKeyIsDown(unsigned char c)
+{
+	return gKeymap[c];
+}
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -361,10 +369,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			gKey(wParam, 0, 0); // TO DO: x and y
 		}
+		gKeymap[wParam] = 1;
 		return 0;
 
 	case WM_KEYUP:
-		break;
+		if (gKeyUp != NULL)
+		{
+			gKeyUp(wParam, 0, 0); // TO DO: x and y
+		}
+		gKeymap[wParam] = 0;
+		return 0;
 	
 	case WM_SIZE:
 		if (gReshape != NULL)

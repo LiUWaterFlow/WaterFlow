@@ -51,4 +51,24 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\Windows\glew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Windows\MicroGlut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\GL_utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\loadobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\LoadTGA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\VectorUtils3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

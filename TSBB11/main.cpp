@@ -17,14 +17,12 @@
 #ifndef NULL
 #define NULL 0L
 #endif
-#ifndef PI
-#define PI 3.14159265358979323846
-#endif
 
-#define WIDTH 800
+#define WIDTH 600
 #define HEIGHT 600
+#define DRAW_DISTANCE 3000.0
 
-mat4 projectionMatrix, camMatrix;
+mat4 projectionMatrix, viewMatrix;
 
 Model *m;
 Model *terrain;
@@ -32,10 +30,17 @@ TextureData ttex; // Dummy terrain.
 // Reference to shader program
 GLuint program;
 
-vec3 cam = { 10, 10, 10 };
-vec3 lookAtPoint = { 2, 0, 2 };
-vec3 v = { 0.0, 1.0, 0.0 };
-vec3 s = lookAtPoint - cam;
+// Cam vecs
+vec3 camPos = { 0, 20, 20 };				//p
+vec3 camLookAtPoint = { 0, 0, 0 };			//l
+vec3 camUp = { 0, 1, 0 };					//v
+vec3 camForward = camLookAtPoint - camPos;	//s
+
+// Light information
+vec3 sunPos = { 0.58f, 0.58f, 0.58f };	// Since directional, "position"
+bool sunIsDirectional = 1;
+float sunSpecularExponent = 50.0;
+vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
 // Some basic functions. TODO: Move appropriate ones (most of them) to separate source file(s).
 Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale); // Generates a model given a height map (grayscale .tga file for now).
@@ -48,8 +53,14 @@ void CheckKeys();
 
 void init(void)
 {
+#ifdef WIN32
+	glewInit();
+#endif
+	initKeymapManager();
+	dumpInfo();
+
 	// GL inits
-	glClearColor(0.3,0.3,0.3,0);
+	glClearColor(0.1, 0.1, 0.1, 0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
@@ -60,79 +71,78 @@ void init(void)
 	
 	// Upload geometry to the GPU:
 	LoadTGATextureData("resources/fft-terrain.tga", &ttex);
-	m = LoadModelPlus("resources/teapot.obj");
 	terrain = GenerateTerrain(&ttex, 2);
+
+	m = LoadModelPlus("resources/teapot.obj");
 	// End of upload of geometry
 	
-	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, 30.0);
-	camMatrix = lookAt(0, 1, 8, 0,0,0, 0,1,0);
+	// One-time camera stuff
+	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, DRAW_DISTANCE);
+	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
 	
-	glUniformMatrix4fv(glGetUniformLocation(program, "camMatrix"), 1, GL_TRUE, camMatrix.m);
-	glUniformMatrix4fv(glGetUniformLocation(program, "projMatrix"), 1, GL_TRUE, projectionMatrix.m);
+	// One-time shader data
+	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_TRUE, projectionMatrix.m);
+	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
+	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
+	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
+	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
+	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
+	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 }
-
-GLfloat a, b = 0.0;
 
 void display(void)
 {
-	mat4 rot, trans, scale, total, tMat;
-	GLfloat t;
+	mat4 rot, trans, scale, total;
 
-	// clear the screen
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	// Time
+	GLfloat t;
 	t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
 
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	// Check keystrokes
 	CheckKeys();
-	glUniformMatrix4fv(glGetUniformLocation(program, "camMatrix"), 1, GL_TRUE, camMatrix.m);
 
-	trans = T(-5, -10, 20); // Move teapot to center it
-	scale = S(10, 10, 10);
-	rot = Mult(Ry(b / 50), Rx(a / 50)); // Rotation by mouse movements
-	total = Mult(Mult(rot, trans), Rx(-M_PI / 2)); // Rx rotates the teapot to a comfortable default
-	glUniformMatrix4fv(glGetUniformLocation(program, "mdlMatrix"), 1, GL_TRUE, total.m);
+	// Model-independent shader data
+	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_TRUE, viewMatrix.m);
+	GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
+	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
 	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); // Use glUniform1fv because glUniform1f has a bug under Linux!
-	DrawModel(terrain, program, "inPosition", NULL, "inTexCoord");
 
-	trans = T(0, -1, 0); // Move teapot to center it
-	rot = Mult(Ry(b/50), Rx(a/50)); // Rotation by mouse movements
-	total = Mult(Mult(rot, trans), Rx(-M_PI/2)); // Rx rotates the teapot to a comfortable default
-	glUniformMatrix4fv(glGetUniformLocation(program, "mdlMatrix"), 1, GL_TRUE, total.m);
-	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); // Use glUniform1fv because glUniform1f has a bug under Linux!
-	DrawModel(m, program, "inPosition", NULL, "inTexCoord");
+	// Model transformations
+	// Terrain
+	trans = T(-100, -100, -100);
+	total = trans;
+	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_TRUE, total.m);
+	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
+
+	// Teapot
+	trans = T(0, 0, 0);
+	scale = S(0.5, 0.5, 0.5);
+	total = Mult(trans, scale);
+	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_TRUE, total.m);
+	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
 	
 	glutSwapBuffers();
 }
 
-void mouse(int x, int y)
-{
-	b = x * 1.0;
-	a = y * 1.0;
-	glutPostRedisplay();
-}
-
 void resize(int w, int h) // TEST
 {
-	glViewport(0,0,w, h);
+	glViewport(0, 0, w, h);
 	glutPostRedisplay();
 }
 
 int main(int argc, char *argv[])
 {
-	glutInit(&argc, argv);
+	glutInit(&argc, (char**)argv);
 	glutInitContextVersion(3, 2);
-	glutInitWindowSize(WIDTH, HEIGHT);
-	glutCreateWindow ("Ingemar's psychedelic teapot 2");
-#ifdef WIN32
-	glewInit();
-#endif
+	glutCreateWindow("Ingemar's psychedelic teapot 2");
 	glutDisplayFunc(display); 
-	//glutPassiveMotionFunc(mouse);
 	glutPassiveMotionFunc(CheckMouse);
 	glutRepeatingTimer(20);
-	//glutReshapeFunc(resize);
+	glutReshapeFunc(resize);
 	init();
-	initKeymapManager();
 	glutMainLoop();
 	exit(0);
 }
@@ -327,58 +337,58 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 
 void CheckMouse(int x, int y)	// Aligns camera direction after mouse cursor location.
 {
-	float xSensMultiplier = 2.0;
-	float fi = 2 * PI * (float)x / WIDTH;
-	float theta = PI * (float)y / HEIGHT;
-	SetCameraVector(xSensMultiplier * (PI - fi), -theta);
+	float xSensMultiplier = 1.0;
+	float fi = 2 * M_PI * (float)x / WIDTH;
+	float theta = M_PI * (float)y / HEIGHT;
+	SetCameraVector(xSensMultiplier * (M_PI - fi), -theta);
 }
 
 void SetCameraVector(float fi, float theta)	// Sets the camera matrix.
 {
 	// Sets s, the direction you're looking at.
-	s.z = sinf(theta) * cosf(fi);
-	s.x = sinf(theta) * sinf(fi);
-	s.y = cosf(theta);
+	camForward.z = sinf(theta) * cosf(fi);
+	camForward.x = sinf(theta) * sinf(fi);
+	camForward.y = cosf(theta);
 	// Translates this into l, the point "just in front of your face" when looking along s.
-	lookAtPoint = cam + s;
-	camMatrix = lookAtv(cam, lookAtPoint, v);
+	camLookAtPoint = camPos + camForward;
+	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
 }
 
 void CheckKeys()	// Checks if keys are being pressed.
 {
-	float moveSpeed = 0.2;
+	float moveSpeed = 0.1;
 	// 'w' moves the camera forwards.
-	if (keyIsDown('w'))
+	if (keyIsDown('W'))
 	{
-		cam += moveSpeed * s;
+		camPos += moveSpeed * camForward;
 	}
 	// 'a' moves the camera to the left.
-	if (keyIsDown('a'))
+	if (keyIsDown('A'))
 	{
-		cam -= moveSpeed * Normalize(CrossProduct(s, v));
+		camPos -= moveSpeed * Normalize(CrossProduct(camForward, camUp));
 	}
 	// 'w' moves the camera backwards.
-	if (keyIsDown('s'))
+	if (keyIsDown('S'))
 	{
-		cam -= moveSpeed * s;
+		camPos -= moveSpeed * camForward;
 	}
 	// 'd' moves the camera to the left.
-	if (keyIsDown('d'))
+	if (keyIsDown('D'))
 	{
-		cam += moveSpeed * Normalize(CrossProduct(s, v));
+		camPos += moveSpeed * Normalize(CrossProduct(camForward, camUp));
 	}
 	// 'a' moves the camera up.
-	if (keyIsDown('e'))
+	if (keyIsDown('E'))
 	{
-		cam += moveSpeed * v;
+		camPos += moveSpeed * camUp;
 	}
 	// 'c' moves the camera to the down.
-	if (keyIsDown('c'))
+	if (keyIsDown('C'))
 	{
-		cam -= moveSpeed * v;
+		camPos -= moveSpeed * camUp;
 	}
 
-	lookAtPoint = cam + s;
+	camLookAtPoint = camPos + camForward;
 	// Updates the camera.
-	camMatrix = lookAtv(cam, lookAtPoint, v);
+	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
 }
