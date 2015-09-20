@@ -3,9 +3,12 @@
 // http://www.ragnemalm.se/lightweight/psychteapot+MicroGlut-Windows-b1.zip
 // which according to the web site was updated 2015-08-17.
 
+// Notes:
+// * Use glUniform1fv instead of glUniform1f, since glUniform1f has a bug under Linux.
+
 #ifdef __APPLE__
-	#include <OpenGL/gl3.h>
-// uses framework Cocoa
+#include <OpenGL/gl3.h>
+// Uses framework Cocoa.
 #endif
 #include "MicroGlut.h"
 #include "GL_utilities.h"
@@ -13,6 +16,7 @@
 #include "loadobj.h"
 #include "LoadTGA.h"
 #include <cstdlib>
+#include "inc\controls.h"
 
 #ifndef NULL
 #define NULL 0L
@@ -22,34 +26,35 @@
 #define HEIGHT 600
 #define DRAW_DISTANCE 3000.0
 
+// Transformation matrices:
 mat4 projectionMatrix, viewMatrix;
 
+// Models:
 Model *m;
 Model *terrain;
-TextureData ttex; // Dummy terrain.
-// Reference to shader program
+
+// Textures:
+TextureData ttex; // Terrain heightmap.
+
+// References to shader programs:
 GLuint program;
 
-// Cam vecs
-vec3 camPos = { 0, 20, 20 };				//p
-vec3 camLookAtPoint = { 0, 0, 0 };			//l
-vec3 camUp = { 0, 1, 0 };					//v
-vec3 camForward = camLookAtPoint - camPos;	//s
+// Camera variables:
+vec3 camPos = { 0, 20, 20 }; // p.
+vec3 camLookAtPoint = { 0, 0, 0 }; // l.
+vec3 camUp = { 0, 1, 0 }; // v.
+vec3 camForward = camLookAtPoint - camPos; // s.
 
-// Light information
-vec3 sunPos = { 0.58f, 0.58f, 0.58f };	// Since directional, "position"
+// Light information:
+vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
 bool sunIsDirectional = 1;
 float sunSpecularExponent = 50.0;
 vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
-// Some basic functions. TODO: Move appropriate ones (most of them) to separate source file(s).
+// Some basic functions. These should already be moved to a separate source file in the dataset branch.
 Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale); // Generates a model given a height map (grayscale .tga file for now).
 vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
 GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height); // Returns the height of a height map.
-
-void CheckMouse(int x, int y);
-void SetCameraVector(float fi, float theta);
-void CheckKeys();
 
 void init(void)
 {
@@ -59,28 +64,28 @@ void init(void)
 	initKeymapManager();
 	dumpInfo();
 
-	// GL inits
+	// GL inits.
 	glClearColor(0.1, 0.1, 0.1, 0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
 
-	// Load and compile shader
+	// Load and compile shaders.
 	program = loadShaders("shaders/main.vert", "shaders/main.frag");
 	glUseProgram(program);
 	
-	// Upload geometry to the GPU:
+	// ---Upload geometry to the GPU---
 	LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 	terrain = GenerateTerrain(&ttex, 2);
 
 	m = LoadModelPlus("resources/teapot.obj");
-	// End of upload of geometry
+	// --------------------------------
 	
-	// One-time camera stuff
+	// Camera inits.
 	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, DRAW_DISTANCE);
 	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
 	
-	// One-time shader data
+	// Initial one-time shader uploads.
 	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_TRUE, projectionMatrix.m);
 	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
@@ -94,35 +99,37 @@ void display(void)
 {
 	mat4 rot, trans, scale, total;
 
-	// Time
+	// Time.
 	GLfloat t;
 	t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
 
-	// Clear the screen
+	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	// Check keystrokes
-	CheckKeys();
+	// Check keystrokes.
+	CheckKeys(&camPos, &camLookAtPoint, camUp, camForward, &viewMatrix);
 
-	// Model-independent shader data
+	// ---Model-independent shader data---
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_TRUE, viewMatrix.m);
 	GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
 	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
-	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); // Use glUniform1fv because glUniform1f has a bug under Linux!
+	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); 
+	// ---Model-independent shader data---
 
-	// Model transformations
-	// Terrain
+	// ---Model transformations, rendering---
+	// Terrain:
 	trans = T(-100, -100, -100);
 	total = trans;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_TRUE, total.m);
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 
-	// Teapot
+	// Teapot:
 	trans = T(0, 0, 0);
 	scale = S(0.5, 0.5, 0.5);
 	total = Mult(trans, scale);
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_TRUE, total.m);
 	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
+	// --------------------------------------
 	
 	glutSwapBuffers();
 }
@@ -133,11 +140,21 @@ void resize(int w, int h) // TEST
 	glutPostRedisplay();
 }
 
+void CheckMouse(int x, int y) // Aligns camera direction after mouse cursor location.
+{
+	// This should be in controls.cpp, but since we're eventually changing to a cursor locking alternative let's deal with that then.
+	float xSensMultiplier = 1.0;
+	float fi = 2 * M_PI * (float)x / WIDTH;
+	float theta = M_PI * (float)y / HEIGHT;
+	MouseSetCamera(xSensMultiplier * (M_PI - fi), -theta, camForward, &camLookAtPoint, camUp, &camForward, &viewMatrix);
+}
+
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, (char**)argv);
 	glutInitContextVersion(3, 2);
-	glutCreateWindow("Ingemar's psychedelic teapot 2");
+	glutInitWindowSize(WIDTH, HEIGHT); // For now this doesn't seem to actually do anything in Windows.
+	glutCreateWindow("Water visualization");
 	glutDisplayFunc(display); 
 	glutPassiveMotionFunc(CheckMouse);
 	glutRepeatingTimer(20);
@@ -147,7 +164,7 @@ int main(int argc, char *argv[])
 	exit(0);
 }
 
-Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale) // Generates a model given a height map (grayscale .tga file for now).
+Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale)
 {
 	int vertexCount = tex->width * tex->height;
 	int triangleCount = (tex->width - 1) * (tex->height - 1) * 2;
@@ -218,7 +235,7 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale) // Generates a mo
 	return model;
 }
 
-vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
+vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height)
 {
 	vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
 	vec3 normal = { 0, 1, 0 };
@@ -274,7 +291,7 @@ vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, i
 	return normal;
 }
 
-GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
+GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height)
 {
 	GLfloat yheight = 0;
 
@@ -333,62 +350,4 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
 	}
 	return yheight;
-}
-
-void CheckMouse(int x, int y)	// Aligns camera direction after mouse cursor location.
-{
-	float xSensMultiplier = 1.0;
-	float fi = 2 * M_PI * (float)x / WIDTH;
-	float theta = M_PI * (float)y / HEIGHT;
-	SetCameraVector(xSensMultiplier * (M_PI - fi), -theta);
-}
-
-void SetCameraVector(float fi, float theta)	// Sets the camera matrix.
-{
-	// Sets s, the direction you're looking at.
-	camForward.z = sinf(theta) * cosf(fi);
-	camForward.x = sinf(theta) * sinf(fi);
-	camForward.y = cosf(theta);
-	// Translates this into l, the point "just in front of your face" when looking along s.
-	camLookAtPoint = camPos + camForward;
-	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
-}
-
-void CheckKeys()	// Checks if keys are being pressed.
-{
-	float moveSpeed = 0.1;
-	// 'w' moves the camera forwards.
-	if (keyIsDown('W'))
-	{
-		camPos += moveSpeed * camForward;
-	}
-	// 'a' moves the camera to the left.
-	if (keyIsDown('A'))
-	{
-		camPos -= moveSpeed * Normalize(CrossProduct(camForward, camUp));
-	}
-	// 'w' moves the camera backwards.
-	if (keyIsDown('S'))
-	{
-		camPos -= moveSpeed * camForward;
-	}
-	// 'd' moves the camera to the left.
-	if (keyIsDown('D'))
-	{
-		camPos += moveSpeed * Normalize(CrossProduct(camForward, camUp));
-	}
-	// 'a' moves the camera up.
-	if (keyIsDown('E'))
-	{
-		camPos += moveSpeed * camUp;
-	}
-	// 'c' moves the camera to the down.
-	if (keyIsDown('C'))
-	{
-		camPos -= moveSpeed * camUp;
-	}
-
-	camLookAtPoint = camPos + camForward;
-	// Updates the camera.
-	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
 }

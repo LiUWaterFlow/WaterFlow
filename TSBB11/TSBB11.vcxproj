@@ -85,6 +85,7 @@
     <ClCompile Include="common\Windows\glew.c" />
     <ClCompile Include="common\Windows\MicroGlut.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\controls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\main.frag" />
@@ -97,6 +98,7 @@
     <ClInclude Include="common\VectorUtils3.h" />
     <ClInclude Include="common\Windows\glew.h" />
     <ClInclude Include="common\Windows\MicroGlut.h" />
+    <ClInclude Include="inc\controls.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
