@@ -85,10 +85,20 @@
     <ClCompile Include="common\Windows\glew.c" />
     <ClCompile Include="common\Windows\MicroGlut.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\controls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\main.frag" />
     <None Include="shaders\main.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\GL_utilities.h" />
+    <ClInclude Include="common\loadobj.h" />
+    <ClInclude Include="common\LoadTGA.h" />
+    <ClInclude Include="common\VectorUtils3.h" />
+    <ClInclude Include="common\Windows\glew.h" />
+    <ClInclude Include="common\Windows\MicroGlut.h" />
+    <ClInclude Include="inc\controls.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

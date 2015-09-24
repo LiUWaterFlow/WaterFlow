@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{cd04c138-1b2e-4f0a-8674-cc619a1c4031}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Custom">
+      <UniqueIdentifier>{aacdb6d8-f1ae-4f54-8fc4-da4ba15d7f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Custom">
+      <UniqueIdentifier>{b05267cf-1923-48ae-8912-26a54c11ee4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +48,9 @@
     <ClCompile Include="common\VectorUtils3.c">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="src\controls.cpp">
+      <Filter>Source Files\Custom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\main.frag">
@@ -50,5 +59,28 @@
     <None Include="shaders\main.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\Windows\glew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Windows\MicroGlut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\GL_utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\loadobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\LoadTGA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\VectorUtils3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\controls.h">
+      <Filter>Header Files\Custom</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
