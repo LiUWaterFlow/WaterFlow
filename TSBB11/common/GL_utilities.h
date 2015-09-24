@@ -11,7 +11,7 @@ extern "C" {
 #else
 	#if defined(_WIN32)
 		#include "glew.h"
-		#include "freeglut.h"
+		#include "MicroGlut.h"
 		#include <GL/gl.h>
 	#else
 		#include <GL/gl.h>
@@ -41,7 +41,7 @@ typedef struct
 	GLuint depth;
 	int width, height;
 } FBOstruct;
-
+void CHECK_FRAMEBUFFER_STATUS();
 FBOstruct *initFBO(int width, int height, int int_method);
 FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage);
 void useFBO(FBOstruct *out, FBOstruct *in1, FBOstruct *in2);
