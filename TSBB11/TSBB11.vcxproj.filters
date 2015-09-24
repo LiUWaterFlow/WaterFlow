@@ -19,74 +19,65 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{cd04c138-1b2e-4f0a-8674-cc619a1c4031}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Custom">
-      <UniqueIdentifier>{aacdb6d8-f1ae-4f54-8fc4-da4ba15d7f0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Custom">
-      <UniqueIdentifier>{b05267cf-1923-48ae-8912-26a54c11ee4b}</UniqueIdentifier>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{b90cfd10-025a-471f-a396-c11a1583074b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\GL_utilities.c">
+    <ClCompile Include="src\common\Windows\glew.c">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="common\Windows\glew.c">
+    <ClCompile Include="src\common\GL_utilities.c">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="common\loadobj.c">
+    <ClCompile Include="src\common\loadobj.c">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="common\LoadTGA.c">
+    <ClCompile Include="src\common\LoadTGA.c">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\controls.cpp">
-      <Filter>Source Files\Custom</Filter>
+    <ClCompile Include="src\camera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="common\VectorUtils3.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\SDL_util.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\custom\camera.cpp">
-      <Filter>Source Files\Common</Filter>
+    <ClCompile Include="src\SDL_util.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\main.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\main.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
+    <ClInclude Include="src\common\GL_utilities.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\loadobj.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\LoadTGA.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SDL_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Windows\glew.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Windows\wglew.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Windows\sdl2\SDL.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common\Windows\glew.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\GL_utilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\loadobj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\LoadTGA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\VectorUtils3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\controls.h">
-      <Filter>Header Files\Custom</Filter>
-    </ClInclude>
-    <ClInclude Include="common\SDL_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\custom\camera.h">
-      <Filter>Source Files\Common</Filter>
-    </ClInclude>
+    <None Include="src\shaders\main.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\main.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

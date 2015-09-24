@@ -13,13 +13,11 @@
 #include <OpenGL/gl3.h>
 // Uses framework Cocoa.
 #endif
-#include "GL_utilities.h"
-#include "VectorUtils3.h"
-#include "loadobj.h"
-#include "LoadTGA.h"
 #include <cstdlib>
 #include <iostream>
-#include "controls.h"
+#include "GL_utilities.h"
+#include "loadobj.h"
+#include "LoadTGA.h"
 #include "sdl2/SDL.h"
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
@@ -28,8 +26,8 @@
 #include "gtx/transform2.hpp"
 #include "ext.hpp"
 #include "gtx/string_cast.hpp"
-#include "custom\camera.h"
 #include "SDL_util.h"
+#include "camera.h"
 
 #ifndef NULL
 #define NULL 0L
@@ -60,7 +58,7 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix);
 // -------------------------------------------------------------
 
 // Transformation matrices:
-mat4 projMat, viewMat;
+glm::mat4 projMat, viewMat;
 
 // Models:
 Model *m;
@@ -78,20 +76,20 @@ Camera cam;
 glm::mat4 projectionMatrix;
 glm::mat4 viewMatrix;
 
-vec3 camPos = { 0, 20, 20 }; // p.
-vec3 camLookAtPoint = { 0, 0, 0 }; // l.
-vec3 camUp = { 0, 1, 0 }; // v.
-vec3 camForward = camLookAtPoint - camPos; // s.
+glm::vec3 camPos = { 0, 20, 20 }; // p.
+glm::vec3 camLookAtPoint = { 0, 0, 0 }; // l.
+glm::vec3 camUp = { 0, 1, 0 }; // v.
+glm::vec3 camForward = camLookAtPoint - camPos; // s.
 
 // Light information:
-vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
+glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
 bool sunIsDirectional = 1;
 float sunSpecularExponent = 50.0;
-vec3 sunColor = { 1.0f, 1.0f, 1.0f };
+glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
 // Some basic functions. These should already be moved to a separate source file in the dataset branch.
 Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale); // Generates a model given a height map (grayscale .tga file for now).
-vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
+glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
 GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height); // Returns the height of a height map.
 
 void init(void)
@@ -109,7 +107,7 @@ void init(void)
 	glCullFace(GL_TRUE);
 
 	// Load and compile shaders.
-	program = loadShaders("shaders/main.vert", "shaders/main.frag");
+	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
 	glUseProgram(program);
 	// Initial placement of camera.
 	cam = Camera(program, &viewMatrix);
@@ -136,7 +134,7 @@ void init(void)
 
 void display(void)
 {
-	mat4 rot, trans, scale, total;
+	glm::mat4 rot, trans, scale, total;
 
 	// Time.
 	//GLfloat t;
@@ -154,16 +152,18 @@ void display(void)
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	trans = T(-100, -100, -100);
+	glm::vec3 terrainTrans = glm::vec3(-100, -100, -100);
+	trans = glm::translate(terrainTrans);
 	total = trans;
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_TRUE, total.m);
+	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 
 	// Teapot:
-	trans = T(0, 0, 0);
-	scale = S(0.5, 0.5, 0.5);
-	total = Mult(trans, scale);
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_TRUE, total.m);
+	glm::vec3 teapotTrans = glm::vec3(0, 0, 0);
+	trans = glm::translate(teapotTrans);
+	scale = glm::scale(glm::vec3(0.5, 0.5, 0.5));
+	total = trans * scale;
+	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
 	
@@ -320,7 +320,7 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale)
 	GLfloat *texCoordArray = (GLfloat *)malloc(sizeof(GLfloat) * 2 * vertexCount);
 	GLuint *indexArray = (GLuint *)malloc(sizeof(GLuint)* triangleCount * 3);
 
-	vec3 tempNormal = { 0, 0, 0 };
+	glm::vec3 tempNormal = { 0, 0, 0 };
 
 	printf("bpp %d\n", tex->bpp);
 	for (x = 0; x < tex->width; x++)
@@ -380,57 +380,57 @@ Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale)
 	return model;
 }
 
-vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height)
+glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height)
 {
-	vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
-	vec3 normal = { 0, 1, 0 };
+	glm::vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
+	glm::vec3 normal = { 0, 1, 0 };
 
-	vec3 normal1 = { 0, 0, 0 };
-	vec3 normal2 = { 0, 0, 0 };
-	vec3 normal3 = { 0, 0, 0 };
-	vec3 normal4 = { 0, 0, 0 };
-	vec3 normal5 = { 0, 0, 0 };
-	vec3 normal6 = { 0, 0, 0 };
+	glm::vec3 normal1 = { 0, 0, 0 };
+	glm::vec3 normal2 = { 0, 0, 0 };
+	glm::vec3 normal3 = { 0, 0, 0 };
+	glm::vec3 normal4 = { 0, 0, 0 };
+	glm::vec3 normal5 = { 0, 0, 0 };
+	glm::vec3 normal6 = { 0, 0, 0 };
 
 	if ((x > 1) && (z > 1) && (z < height - 2) && (x < width - 2))
 	{
-		vec3 tempVec1 = { vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
+		glm::vec3 tempVec1 = { vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
 			vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
 			vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
-		vec3 tempVec2 = { vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
+		glm::vec3 tempVec2 = { vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
 			vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
 			vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
-		vec3 tempVec3 = { vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
+		glm::vec3 tempVec3 = { vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
 			vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
 			vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
 
-		vec3 tempVec4 = { vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
+		glm::vec3 tempVec4 = { vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
 			vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
 			vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
 
-		vec3 tempVec5 = { vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
+		glm::vec3 tempVec5 = { vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
 			vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
 			vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
-		vec3 tempVec6 = { vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
+		glm::vec3 tempVec6 = { vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
 			vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
 			vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
 
-		normal1 = CrossProduct(VectorSub(tempVec1, vertex), VectorSub(tempVec2, vertex));
-		normal2 = CrossProduct(VectorSub(tempVec3, vertex), VectorSub(tempVec1, vertex));
-		vec3 weighted1 = Normalize(VectorAdd(Normalize(normal1), Normalize(normal2)));
-		normal3 = CrossProduct(VectorSub(tempVec2, vertex), VectorSub(tempVec4, vertex));
-		vec3 weighted2 = Normalize(normal3);
-		normal4 = CrossProduct(VectorSub(tempVec4, vertex), VectorSub(tempVec5, vertex));
-		normal5 = CrossProduct(VectorSub(tempVec5, vertex), VectorSub(tempVec6, vertex));
-		vec3 weighted3 = Normalize(VectorAdd(Normalize(normal4), Normalize(normal5)));
-		normal6 = CrossProduct(VectorSub(tempVec6, vertex), VectorSub(tempVec3, vertex));
-		vec3 weighted4 = Normalize(normal6);
+		normal1 = glm::cross(tempVec1 - vertex, tempVec2 - vertex);
+		normal2 = glm::cross(tempVec3 - vertex, tempVec1 - vertex);
+		glm::vec3 weighted1 = normalize(normalize(normal1) + normalize(normal2));
+		normal3 = glm::cross(tempVec2 - vertex, tempVec4 - vertex);
+		glm::vec3 weighted2 = normalize(normal3);
+		normal4 = glm::cross(tempVec4 - vertex, tempVec5 - vertex);
+		normal5 = glm::cross(tempVec5 - vertex, tempVec6 - vertex);
+		glm::vec3 weighted3 = normalize(normalize(normal4) + normalize(normal5));
+		normal6 = glm::cross(tempVec6 - vertex, tempVec3 - vertex);
+		glm::vec3 weighted4 = normalize(normal6);
 
-		normal = Normalize(VectorAdd(weighted1, VectorAdd(weighted2, VectorAdd(weighted3, weighted4))));
+		normal = normalize(weighted1 + weighted2 + weighted3 + weighted4);
 
 	}
 	return normal;
@@ -473,24 +473,24 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 
 		GLfloat vertY3 = vertexArray[(vertX3 + vertZ3 * width) * 3 + 1];
 
-		vec3 p1 = { vertexArray[(vertX1 + vertZ1 * width) * 3 + 0], vertY1, vertexArray[(vertX1 + vertZ1 * width) * 3 + 2] };
-		vec3 p2 = { vertexArray[(vertX2 + vertZ2 * width) * 3 + 0], vertY2, vertexArray[(vertX2 + vertZ2 * width) * 3 + 2] };
-		vec3 p3 = { vertexArray[(vertX3 + vertZ3 * width) * 3 + 0], vertY3, vertexArray[(vertX3 + vertZ3 * width) * 3 + 2] };
+		glm::vec3 p1 = { vertexArray[(vertX1 + vertZ1 * width) * 3 + 0], vertY1, vertexArray[(vertX1 + vertZ1 * width) * 3 + 2] };
+		glm::vec3 p2 = { vertexArray[(vertX2 + vertZ2 * width) * 3 + 0], vertY2, vertexArray[(vertX2 + vertZ2 * width) * 3 + 2] };
+		glm::vec3 p3 = { vertexArray[(vertX3 + vertZ3 * width) * 3 + 0], vertY3, vertexArray[(vertX3 + vertZ3 * width) * 3 + 2] };
 
-		vec3 planeNormal = { 0, 0, 0 };
+		glm::vec3 planeNormal = { 0, 0, 0 };
 
 		// This if/else might not be making any difference whatsoever.
 		if (dist1 > dist2)
 		{
-			planeNormal = Normalize(CrossProduct(VectorSub(p2, p1), VectorSub(p3, p1)));
+			planeNormal = normalize(glm::cross(p2 - p1, p3 - p1));
 		}
 		else
 		{
-			planeNormal = Normalize(CrossProduct(VectorSub(p3, p1), VectorSub(p2, p1)));
+			planeNormal = normalize(glm::cross(p3 - p1, p2 - p1));
 		}
 
 		GLfloat D;
-		D = DotProduct(planeNormal, p1);
+		D = glm::dot(planeNormal, p1);
 
 		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
 	}
