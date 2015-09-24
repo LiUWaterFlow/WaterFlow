@@ -2,6 +2,9 @@
 // course TSBK03 at Linkï¿½ping University. The link to the original shell is
 // http://www.ragnemalm.se/lightweight/psychteapot+MicroGlut-Windows-b1.zip
 // which according to the web site was updated 2015-08-17.
+//
+// SDL functions written by Gustav Svensk, acquired with permissions from
+// https://github.com/DrDante/TSBK03Project/ 2015-09-24. Some related code
 
 // Notes:
 // * Use glUniform1fv instead of glUniform1f, since glUniform1f has a bug under Linux.
@@ -10,24 +13,54 @@
 #include <OpenGL/gl3.h>
 // Uses framework Cocoa.
 #endif
-#include "MicroGlut.h"
 #include "GL_utilities.h"
 #include "VectorUtils3.h"
 #include "loadobj.h"
 #include "LoadTGA.h"
 #include <cstdlib>
+#include <iostream>
 #include "inc\controls.h"
+#include "common\Windows\sdl2\SDL.h"
+#include "common\glm\glm.hpp"
+#include "common\glm\gtc/matrix_transform.hpp"
+#include "common\glm\gtc/type_ptr.hpp"
+#include "common\glm\gtx/transform.hpp"
+#include "common\glm\gtx/transform2.hpp"
+#include "common\glm\ext.hpp"
+#include "common\glm\gtx/string_cast.hpp"
+#include "common\custom\camera.h"
+#include "common\SDL_util.h"
 
 #ifndef NULL
 #define NULL 0L
 #endif
 
-#define WIDTH 600
-#define HEIGHT 600
+// Skärmstorlek
+int width = 600;
+int height = 600; // Defines instead?
+float scl = 6;
 #define DRAW_DISTANCE 3000.0
 
+#define DISPLAY_TIMER 0
+#define UPDATE_TIMER 1
+
+#define SPEED 2
+
+#define PI 3.14159265358979323846f
+
+// SDL functions
+void handle_keypress(SDL_Event event);
+void handle_mouse(SDL_Event event);
+static void event_handler(SDL_Event event);
+void handle_userevent(SDL_Event event);
+void check_keys();
+// -------------
+
+void reshape(int w, int h, glm::mat4 &projectionMatrix);
+// -------------------------------------------------------------
+
 // Transformation matrices:
-mat4 projectionMatrix, viewMatrix;
+mat4 projMat, viewMat;
 
 // Models:
 Model *m;
@@ -40,6 +73,11 @@ TextureData ttex; // Terrain heightmap.
 GLuint program;
 
 // Camera variables:
+Camera cam;
+// Matrices.
+glm::mat4 projectionMatrix;
+glm::mat4 viewMatrix;
+
 vec3 camPos = { 0, 20, 20 }; // p.
 vec3 camLookAtPoint = { 0, 0, 0 }; // l.
 vec3 camUp = { 0, 1, 0 }; // v.
@@ -61,7 +99,7 @@ void init(void)
 #ifdef WIN32
 	glewInit();
 #endif
-	initKeymapManager();
+	//initKeymapManager();
 	dumpInfo();
 
 	// GL inits.
@@ -73,7 +111,8 @@ void init(void)
 	// Load and compile shaders.
 	program = loadShaders("shaders/main.vert", "shaders/main.frag");
 	glUseProgram(program);
-	
+	// Initial placement of camera.
+	cam = Camera(program, &viewMatrix);
 	// ---Upload geometry to the GPU---
 	LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 	terrain = GenerateTerrain(&ttex, 2);
@@ -82,11 +121,11 @@ void init(void)
 	// --------------------------------
 	
 	// Camera inits.
-	projectionMatrix = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, DRAW_DISTANCE);
-	viewMatrix = lookAtv(camPos, camLookAtPoint, camUp);
+	//projMat = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, DRAW_DISTANCE);
+	//viewMat = lookAtv(camPos, camLookAtPoint, camUp);
 	
 	// Initial one-time shader uploads.
-	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_TRUE, projectionMatrix.m);
+	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
 	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
@@ -100,20 +139,17 @@ void display(void)
 	mat4 rot, trans, scale, total;
 
 	// Time.
-	GLfloat t;
-	t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
+	//GLfloat t;
+	//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
 
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	// Check keystrokes.
-	CheckKeys(&camPos, &camLookAtPoint, camUp, camForward, &viewMatrix);
 
 	// ---Model-independent shader data---
-	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_TRUE, viewMatrix.m);
+	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
 	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
-	glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); 
+	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); 
 	// ---Model-independent shader data---
 
 	// ---Model transformations, rendering---
@@ -131,38 +167,147 @@ void display(void)
 	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
 	
-	glutSwapBuffers();
+	swap_buffers();
 }
 
-void resize(int w, int h) // TEST
+// Display timer. User made functions may NOT be called from here.
+Uint32 display_timer(Uint32 interval, void* param)
 {
-	glViewport(0, 0, w, h);
-	glutPostRedisplay();
+	SDL_Event event;
+
+	event.type = SDL_USEREVENT;
+	event.user.code = DISPLAY_TIMER;
+	event.user.data1 = 0;
+	event.user.data2 = 0;
+
+	SDL_PushEvent(&event);
+	return interval;
 }
 
-void CheckMouse(int x, int y) // Aligns camera direction after mouse cursor location.
+Uint32 update_timer(Uint32 interval, void* param)
 {
-	// This should be in controls.cpp, but since we're eventually changing to a cursor locking alternative let's deal with that then.
-	float xSensMultiplier = 1.0;
-	float fi = 2 * M_PI * (float)x / WIDTH;
-	float theta = M_PI * (float)y / HEIGHT;
-	MouseSetCamera(xSensMultiplier * (M_PI - fi), -theta, camForward, &camLookAtPoint, camUp, &camForward, &viewMatrix);
+	SDL_Event event;
+
+	event.type = SDL_USEREVENT;
+	event.user.code = UPDATE_TIMER;
+	event.user.data1 = (void*)(intptr_t)interval;
+	event.user.data2 = 0;
+
+	SDL_PushEvent(&event);
+	return interval;
+}
+
+// Handle events.
+void event_handler(SDL_Event event)
+{
+	switch (event.type){
+		case SDL_USEREVENT:
+			handle_userevent(event);
+			break;
+		case SDL_QUIT:
+			exit(0);
+			break;
+		case SDL_KEYDOWN:
+			handle_keypress(event);
+			break;
+		case SDL_WINDOWEVENT:
+			switch (event.window.event){
+			case SDL_WINDOWEVENT_RESIZED:
+				get_window_size(&width, &height);
+				resize_window(event);
+				reshape(width, height, projectionMatrix);
+				break;
+			}
+			break;
+		case SDL_MOUSEMOTION:
+			handle_mouse(event);
+			break;
+		default:
+			break;
+	}
+}
+
+// Handle user defined events.
+void handle_userevent(SDL_Event event)
+{
+	switch (event.user.code){
+	case (int)DISPLAY_TIMER:
+		display();
+		break;
+	case (int)UPDATE_TIMER:
+		check_keys();
+		break;
+	default:
+		break;
+	}
+}
+
+// Handle keys
+void handle_keypress(SDL_Event event)
+{
+	switch (event.key.keysym.sym){
+		case SDLK_ESCAPE:
+		case SDLK_q:
+			exit(0);
+			break;
+		case SDLK_g:
+			SDL_SetRelativeMouseMode(SDL_FALSE);
+			break;
+		case SDLK_h:
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+			break;
+		default:
+			break;
+	}
+}
+
+void handle_mouse(SDL_Event event)
+{
+	get_window_size(&width, &height);
+	cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
+}
+
+void check_keys()
+{
+	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+	if (keystate[SDL_SCANCODE_W]) {
+		cam.forward(0.05*scl*SPEED);
+	}
+	else if (keystate[SDL_SCANCODE_S]) {
+		cam.forward(-0.05*scl*SPEED);
+	}
+	if (keystate[SDL_SCANCODE_A]) {
+		cam.strafe(0.05*scl*SPEED);
+	}
+	else if (keystate[SDL_SCANCODE_D]) {
+		cam.strafe(-0.05*scl*SPEED);
+	}
 }
 
 int main(int argc, char *argv[])
 {
-	glutInit(&argc, (char**)argv);
-	glutInitContextVersion(3, 2);
-	glutInitWindowSize(WIDTH, HEIGHT); // For now this doesn't seem to actually do anything in Windows.
-	glutCreateWindow("Water visualization");
-	glutDisplayFunc(display); 
-	glutPassiveMotionFunc(CheckMouse);
-	glutRepeatingTimer(20);
-	glutReshapeFunc(resize);
+	init_SDL((const char*) "TSBB11, Waterflow visualization (SDL)", width, height);
+	reshape(width, height, projectionMatrix);
 	init();
-	glutMainLoop();
-	exit(0);
+	SDL_TimerID timer_id;
+	timer_id = SDL_AddTimer(30, &display_timer, NULL);
+	timer_id = SDL_AddTimer(10, &update_timer, NULL);
+	if (timer_id == 0){
+		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
+	}
+	set_event_handler(&event_handler);
+	inf_loop();
+	return 0;
 }
+
+// -----------------Ingemars hjälpfunktioner-----------------
+void reshape(int w, int h, glm::mat4 &projectionMatrix)
+{
+	glViewport(0, 0, w, h);
+	float ratio = (GLfloat)w / (GLfloat)h;
+	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
+}
+// ----------------------------------------------------------
 
 Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale)
 {

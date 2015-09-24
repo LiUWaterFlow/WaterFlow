@@ -10,9 +10,9 @@
 // Fixed FUBAR in InitFBO().
 // 130228: Changed most printf's to stderr.
 // 131014: Added tesselation shader support
-// 150812: Added a NULL check on file names in readFile, makes Visual Studio happier.
 
 //#define GL3_PROTOTYPES
+#define _CRT_SECURE_NO_DEPRECATE
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -27,10 +27,8 @@ char* readFile(char *file)
 	FILE *fptr;
 	long length;
 	char *buf;
-
 	if (file == NULL)
-			return NULL;
-
+		return NULL;
 	fptr = fopen(file, "rb"); /* Open file for reading */
 	if (!fptr) /* Return NULL on failure */
 		return NULL;
@@ -239,14 +237,14 @@ void keyDown(unsigned char key, int x, int y)
 	keymap[(unsigned int)key] = 1;
 }
 
-void initKeymapManager()
-{
-	int i;
-	for (i = 0; i < 256; i++) keymap[i] = 0;
+/* void initKeymapManager() */
+/* { */
+/* 	int i; */
+/* 	for (i = 0; i < 256; i++) keymap[i] = 0; */
 
-	glutKeyboardFunc(keyDown);
-	glutKeyboardUpFunc(keyUp);
-}
+/* 	glutKeyboardFunc(keyDown); */
+/* 	glutKeyboardUpFunc(keyUp); */
+/* } */
 
 
 // FBO
@@ -264,7 +262,7 @@ void CHECK_FRAMEBUFFER_STATUS()
 // FP buffer, suitable for HDR
 FBOstruct *initFBO(int width, int height, int int_method)
 {
-	FBOstruct *fbo = malloc(sizeof(FBOstruct));
+	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
 
 	fbo->width = width;
 	fbo->height = height;
@@ -307,7 +305,7 @@ FBOstruct *initFBO(int width, int height, int int_method)
 // Integer buffer, not suitable for HDR!
 FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage)
 {
-    FBOstruct *fbo = malloc(sizeof(FBOstruct));
+    FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
 
     fbo->width = width;
     fbo->height = height;

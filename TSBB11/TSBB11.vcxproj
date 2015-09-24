@@ -41,6 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ExtensionsToDeleteOnClean>*.cdf;*.cache;*.obj;*.ilk;*.resources;*.tlb;*.tli;*.tlh;*.tmp;*.rsp;*.pgc;*.pgd;*.meta;*.tlog;*.manifest;*.res;*.pch;*.exp;*.idb;*.rep;*.xdc;*.pdb;*_manifest.rc;*.bsc;*.sbr;*.xml;*.metagen;*.bi;*.dll;</ExtensionsToDeleteOnClean>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -55,10 +56,14 @@
       <AdditionalIncludeDirectories>common;common/Windows</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Eric\Source\Repos\WaterFlow\TSBB11\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(SolutionDir)"\lib\x86\*.DLL "$(TargetDir)" /D /K /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -78,12 +83,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="common\custom\camera.cpp" />
     <ClCompile Include="common\GL_utilities.c" />
     <ClCompile Include="common\loadobj.c" />
     <ClCompile Include="common\LoadTGA.c" />
-    <ClCompile Include="common\VectorUtils3.c" />
+    <ClCompile Include="common\SDL_util.c" />
+    <ClCompile Include="common\VectorUtils3.cpp" />
     <ClCompile Include="common\Windows\glew.c" />
-    <ClCompile Include="common\Windows\MicroGlut.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\controls.cpp" />
   </ItemGroup>
@@ -92,12 +98,13 @@
     <None Include="shaders\main.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\custom\camera.h" />
     <ClInclude Include="common\GL_utilities.h" />
     <ClInclude Include="common\loadobj.h" />
     <ClInclude Include="common\LoadTGA.h" />
+    <ClInclude Include="common\SDL_util.h" />
     <ClInclude Include="common\VectorUtils3.h" />
     <ClInclude Include="common\Windows\glew.h" />
-    <ClInclude Include="common\Windows\MicroGlut.h" />
     <ClInclude Include="inc\controls.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

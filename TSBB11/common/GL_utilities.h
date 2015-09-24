@@ -5,18 +5,11 @@
 extern "C" {
 #endif
 
-#ifdef __APPLE__
-	#include <OpenGL/gl3.h>
+#ifdef _WIN32
+	#include <GL/glew.h>
 #else
-	#if defined(_WIN32)
-		#include "glew.h"
-		#include <GL/gl.h>
-	#else
-		#include <GL/gl.h>
-	#endif
+	#include <GL/gl.h>
 #endif
-#include "MicroGlut.h"
-
 
 void printError(const char *functionName);
 GLuint loadShaders(const char *vertFileName, const char *fragFileName);

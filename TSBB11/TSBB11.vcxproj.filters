@@ -42,14 +42,17 @@
     <ClCompile Include="common\LoadTGA.c">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="common\Windows\MicroGlut.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\VectorUtils3.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="src\controls.cpp">
       <Filter>Source Files\Custom</Filter>
+    </ClCompile>
+    <ClCompile Include="common\VectorUtils3.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\SDL_util.c">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\custom\camera.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Windows\glew.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\Windows\MicroGlut.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\GL_utilities.h">
@@ -81,6 +81,12 @@
     </ClInclude>
     <ClInclude Include="inc\controls.h">
       <Filter>Header Files\Custom</Filter>
+    </ClInclude>
+    <ClInclude Include="common\SDL_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\custom\camera.h">
+      <Filter>Source Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
