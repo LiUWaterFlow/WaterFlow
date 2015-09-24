@@ -19,17 +19,17 @@
 #include "LoadTGA.h"
 #include <cstdlib>
 #include <iostream>
-#include "inc\controls.h"
-#include "common\Windows\sdl2\SDL.h"
-#include "common\glm\glm.hpp"
-#include "common\glm\gtc/matrix_transform.hpp"
-#include "common\glm\gtc/type_ptr.hpp"
-#include "common\glm\gtx/transform.hpp"
-#include "common\glm\gtx/transform2.hpp"
-#include "common\glm\ext.hpp"
-#include "common\glm\gtx/string_cast.hpp"
-#include "common\custom\camera.h"
-#include "common\SDL_util.h"
+#include "controls.h"
+#include "sdl2/SDL.h"
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
+#include "gtx/transform.hpp"
+#include "gtx/transform2.hpp"
+#include "ext.hpp"
+#include "gtx/string_cast.hpp"
+#include "custom\camera.h"
+#include "SDL_util.h"
 
 #ifndef NULL
 #define NULL 0L

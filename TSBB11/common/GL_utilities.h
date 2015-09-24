@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 #ifdef _WIN32
-	#include <GL/glew.h>
+	#include "glew.h"
 #else
 	#include <GL/gl.h>
 #endif

@@ -2,7 +2,7 @@
 #define SDL_UTIL_H
 #ifdef _WIN32
 // MS
-#include <gl/glew.h>
+#include "glew.h"
 #else
 // Linux
 #include <GL/gl.h>

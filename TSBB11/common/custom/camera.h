@@ -3,7 +3,7 @@
 
 #ifdef _WIN32
 // MS
-#include <gl/glew.h>
+#include "glew.h"
 #else
 // Linux
 #include <GL/gl.h>
@@ -14,10 +14,10 @@
 #endif
 
 #define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/rotate_vector.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#include "gtx/rotate_vector.hpp"
+#include "gtc/type_ptr.hpp"
 
 class Camera {
     private:
