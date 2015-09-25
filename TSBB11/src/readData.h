@@ -23,9 +23,10 @@ class DataHandler
 	
 	void readDEM(const char* inputfile);
 	void scaleData();
-	Model* GenerateTerrain(GLfloat tScale);
+	
 
 public:
+	Model* GenerateTerrain(GLfloat tScale);
 	Model* datamodel;
 
 	DataHandler(const char* inputfile, GLfloat tScale = 500.0f);

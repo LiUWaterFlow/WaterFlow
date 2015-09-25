@@ -93,7 +93,28 @@ glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 //glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
 //GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height); // Returns the height of a height map.
 
+// ====== Needed for Normalized Convolution =======
+
+GLfloat square[] = {-1, -1, 0,
+					-1, 1, 0,
+					1, 1, 0,
+					1, -1, 0 };
+GLfloat squareTexCoord[] = {0, 0,
+							0, 1,
+							1, 1,
+							1, 0 };
+GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
+
+Model* squareModel;
+FBOstruct *fbo1, *fbo2, *fbo3;
+GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
 DataHandler* dataHandler;
+int tW, tH;
+
+void loadNormConvModel();
+void performNormConv();
+
+// ============================================
 
 void init(void)
 {
@@ -110,16 +131,35 @@ void init(void)
 	glCullFace(GL_TRUE);
 
 	// Load and compile shaders.
-	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
-	glUseProgram(program);
+
 	// Initial placement of camera.
 	cam = Camera(program, &viewMatrix);
 	// ---Upload geometry to the GPU---
 	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
-	dataHandler = new DataHandler("resources/output.min.asc", 1000.0f);
-	terrain = dataHandler->datamodel;
 
 	m = LoadModelPlus("resources/teapot.obj");
+	dataHandler = new DataHandler("resources/output.min.asc", 500.0f);
+	terrain = dataHandler->datamodel;
+
+	
+	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");  // puts texture on teapot
+	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
+	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
+	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+
+	tW = dataHandler->getWidth();
+	tH = dataHandler->getHeight();
+
+	fbo1 = initFBO3(tW, tH, NULL);
+	fbo2 = initFBO3(tW, tH, NULL);
+	fbo3 = initFBO3(tW, tH, dataHandler->getData());
+
+	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
+	
+
+	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
+	glUseProgram(program);
+
 	// --------------------------------
 
 	// Camera inits.
@@ -260,6 +300,9 @@ void handle_keypress(SDL_Event event)
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
 			break;
+		case SDLK_l:
+			loadNormConvModel();
+			break;
 		default:
 			break;
 	}
@@ -288,7 +331,107 @@ void check_keys()
 	}
 }
 
+void loadNormConvModel()
+{
+	bool isNODATA = true;
+	while (isNODATA)
+	{
+		performNormConv();
+		glReadPixels(0, 0, tW, tH, GL_RED, GL_FLOAT, dataHandler->getData());
 
+		isNODATA = true;
+		for (int i = 0; i < dataHandler->getElem() && isNODATA; i++)
+		{
+			float data = dataHandler->getData()[i];
+			isNODATA = (data < 0.0001f);
+		}
+	}
+
+	dataHandler->datamodel = dataHandler->GenerateTerrain(500.0f);
+	terrain = dataHandler->datamodel;
+}
+
+
+void performNormConv()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		// Filter original
+		useFBO(fbo1, fbo3, 0L);
+
+		// Clear framebuffer & zbuffer
+		glClearColor(0.1, 0.1, 0.3, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Activate shader program
+		glUseProgram(filtershader);
+		glUniform2f(glGetUniformLocation(filtershader, "in_size"), tW, tH);
+
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
+
+
+		// Create confidence
+		useFBO(fbo2, fbo3, 0L);
+
+		// Clear framebuffer & zbuffer
+		glClearColor(0.1, 0.1, 0.3, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Activate shader program
+		glUseProgram(confidenceshader);
+
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
+
+
+		// Filter confidence
+		useFBO(fbo3, fbo2, 0L);
+
+		// Clear framebuffer & zbuffer
+		glClearColor(0.1, 0.1, 0.3, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Activate shader program
+		glUseProgram(filtershader);
+		glUniform2f(glGetUniformLocation(filtershader, "in_size"), tW, tH);
+
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
+
+		// Combine
+		useFBO(fbo2, fbo1, fbo3);
+
+		// Clear framebuffer & zbuffer
+		glClearColor(0.1, 0.1, 0.3, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Activate shader program
+		glUseProgram(combineshader);
+		glUniform1i(glGetUniformLocation(combineshader, "dataTex"), 0);
+		glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
+
+		// Swap FBOs
+		useFBO(fbo3, fbo2, 0L);
+
+		// Clear framebuffer & zbuffer
+		glClearColor(0.1, 0.1, 0.3, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Activate shader program
+		glUseProgram(plaintextureshader);
+
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
+	}
+}
 
 // -----------------Ingemars hj�lpfunktioner-----------------
 void reshape(int w, int h, glm::mat4 &projectionMatrix)

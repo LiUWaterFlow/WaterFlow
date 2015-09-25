@@ -36,6 +36,7 @@ typedef struct
 
 FBOstruct *initFBO(int width, int height, int int_method);
 FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage);
+FBOstruct *initFBO3(int width, int height, void* data);
 void useFBO(FBOstruct *out, FBOstruct *in1, FBOstruct *in2);
 void updateScreenSizeForFBOHandler(int w, int h); // Temporary workaround to inform useFBO of screen size changes
 

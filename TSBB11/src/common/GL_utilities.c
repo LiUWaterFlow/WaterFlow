@@ -356,6 +356,41 @@ FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage
     return fbo;
 }
 
+FBOstruct *initFBO3(int width, int height, void* data)
+{
+	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
+
+	fbo->width = width;
+	fbo->height = height;
+
+	// create objects
+	glGenFramebuffers(1, &fbo->fb); // frame buffer id
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
+	glGenTextures(1, &fbo->texid);
+	fprintf(stderr, "%i \n", fbo->texid);
+	glBindTexture(GL_TEXTURE_2D, fbo->texid);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, data);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->texid, 0);
+
+	// Renderbuffer
+	// initialize depth renderbuffer
+	glGenRenderbuffers(1, &fbo->rb);
+	glBindRenderbuffer(GL_RENDERBUFFER, fbo->rb);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, fbo->width, fbo->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo->rb);
+	CHECK_FRAMEBUFFER_STATUS();
+
+	fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	return fbo;
+}
+
 static int lastw = 0;
 static int lasth = 0;
 

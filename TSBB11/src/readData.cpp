@@ -123,8 +123,8 @@ DataHandler::~DataHandler()
 
 Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a height map (grayscale .tga file for now).
 {
-	int width = readdata->ncols;
-	int height = readdata->nrows;
+	int width = 100; // readdata->ncols;
+	int height = 100; // readdata->nrows;
 	int vertexCount = width * height;
 	int triangleCount = (width - 1) * (height - 1) * 2;
 	int x, z;
