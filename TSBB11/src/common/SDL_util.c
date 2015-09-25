@@ -103,11 +103,8 @@ void init_SDL(const char* title, int width, int height)
 	fprintf(stderr, "Current Version Error 1 :   %s \n", SDL_GetError());
 
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-#ifdef __APPLE__
-	screen =SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
-#else
 	screen = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-#endif
+
 	fprintf(stderr, "Current Version Error 2 :   %s \n", SDL_GetError());
 
 	glcontext = SDL_GL_CreateContext(screen);
