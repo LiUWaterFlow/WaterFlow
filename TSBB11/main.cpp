@@ -33,7 +33,7 @@
 #define NULL 0L
 #endif
 
-// Skärmstorlek
+// Skï¿½rmstorlek
 int width = 600;
 int height = 600; // Defines instead?
 float scl = 6;
@@ -117,11 +117,11 @@ void init(void)
 
 	m = LoadModelPlus("resources/teapot.obj");
 	// --------------------------------
-	
+
 	// Camera inits.
 	//projMat = frustum(-0.5, 0.5, -0.5, 0.5, 1.0, DRAW_DISTANCE);
 	//viewMat = lookAtv(camPos, camLookAtPoint, camUp);
-	
+
 	// Initial one-time shader uploads.
 	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
@@ -147,7 +147,7 @@ void display(void)
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
 	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
-	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t); 
+	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t);
 	// ---Model-independent shader data---
 
 	// ---Model transformations, rendering---
@@ -166,7 +166,7 @@ void display(void)
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
-	
+
 	swap_buffers();
 }
 
@@ -284,23 +284,9 @@ void check_keys()
 	}
 }
 
-int main(int argc, char *argv[])
-{
-	init_SDL((const char*) "TSBB11, Waterflow visualization (SDL)", width, height);
-	reshape(width, height, projectionMatrix);
-	init();
-	SDL_TimerID timer_id;
-	timer_id = SDL_AddTimer(30, &display_timer, NULL);
-	timer_id = SDL_AddTimer(10, &update_timer, NULL);
-	if (timer_id == 0){
-		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
-	}
-	set_event_handler(&event_handler);
-	inf_loop();
-	return 0;
-}
 
-// -----------------Ingemars hjälpfunktioner-----------------
+
+// -----------------Ingemars hjï¿½lpfunktioner-----------------
 void reshape(int w, int h, glm::mat4 &projectionMatrix)
 {
 	glViewport(0, 0, w, h);
@@ -495,4 +481,24 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
 	}
 	return yheight;
+}
+
+int main(int argc, char *argv[])
+{
+	init_SDL((const char*) "TSBB11, Waterflow visualization (SDL)", width, height);
+
+
+	reshape(width, height, projectionMatrix);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	init();
+
+	SDL_TimerID timer_id;
+	timer_id = SDL_AddTimer(30, &display_timer, NULL);
+	timer_id = SDL_AddTimer(10, &update_timer, NULL);
+	if (timer_id == 0){
+		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
+	}
+	set_event_handler(&event_handler);
+	inf_loop();
+	return 0;
 }

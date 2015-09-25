@@ -15,7 +15,7 @@ uniform vec3 lightSourceColor;
 
 vec3 r;
 vec3 s;				// Infallande ljus.
-vec3 eye;			// Vektor från objektet till kameran.
+vec3 eye;			// Vektor frï¿½n objektet till kameran.
 
 
 // Phong-modellen:
@@ -35,11 +35,11 @@ void main(void)
 	//lightSourceColor = vec3(1.0, 1.0, 1.0);
 	//specularExponent = 25.0;
 	// ------------
-	// Infallande och reflekterat ljus beräknas för alla ljuskällor.
+	// Infallande och reflekterat ljus berï¿½knas fï¿½r alla ljuskï¿½llor.
 	s = normalize(vec3(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z) - (1 - isDirectional) * out_ObjPos);
 	r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
 
-	// eye-vektorn beräknas.
+	// eye-vektorn berï¿½knas.
 	eye = normalize(camPos - out_ObjPos);
 
 	// Ljus enligt Phong-modellen:
@@ -49,9 +49,9 @@ void main(void)
 	ambLight = kamb * vec3(1.0, 1.0, 1.0);
 	diffLight = vec3(0.0, 0.0, 0.0);
 	specLight = vec3(0.0, 0.0, 0.0);
-	// Diffuse-ljus beräknas.
+	// Diffuse-ljus berï¿½knas.
 	diffLight += kdiff * lightSourceColor * max(0.0, dot(s, normalize(out_Normal)));
-	// Spekulärt ljus.
+	// Spekulï¿½rt ljus.
 	specLight += kspec * lightSourceColor * max(0.0, pow(dot(r, eye), specularExponent));
 
 	totalLight = vec3(0.0, 0.0, 0.0);

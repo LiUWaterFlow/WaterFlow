@@ -26,7 +26,7 @@ void set_event_handler(void (*event_func)(SDL_Event event))
 }
 
 void exit_prog(int value)
-{ 
+{
     SDL_GL_DeleteContext(glcontext);
     SDL_Quit();
     exit(value);
@@ -53,7 +53,7 @@ void inf_loop()
 
 	while(1){
 		while(SDL_PollEvent(&event)){
-			(*handle_event)(event);	
+			(*handle_event)(event);
 		}
 	}
 }
@@ -71,38 +71,53 @@ void get_window_size(int *w, int*h)
 void init_SDL(const char* title, int width, int height)
 {
 	int flags = 0;
-	
 
-	if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
+
+	if(SDL_Init(SDL_INIT_VIDEO) != 0){
 		fprintf(stderr, "Failed to initialise SDL: %s", SDL_GetError());
 		exit_prog(1);
 	}
-	
+
+	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
+
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
+
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#ifdef __APPLE__
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
+
+
+
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+	fprintf(stderr, "Current Version Error 1 :   %s \n", SDL_GetError());
 
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
-	screen = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		width, height, flags);
+	screen =SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+	fprintf(stderr, "Current Version Error 2 :   %s \n", SDL_GetError());
+
 	glcontext = SDL_GL_CreateContext(screen);
+
+	fprintf(stderr, "Current Version Error 3:   %s \n", SDL_GetError());
 
 	if(screen == 0){
 		fprintf(stderr, "Failed to set Video Mode: %s", SDL_GetError());
 		exit_prog(1);
 	}
-	
+
+	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
+/*
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(0, width, 0, height, -1, 1);
@@ -111,6 +126,6 @@ void init_SDL(const char* title, int width, int height)
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-
+*/
 	atexit(terminate_prog);
 }

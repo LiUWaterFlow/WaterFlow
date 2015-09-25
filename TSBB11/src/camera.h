@@ -1,12 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#ifdef _WIN32
-// MS
-#include "glew.h"
+#ifdef __APPLE__
+	#include <OpenGL/gl3.h>
+  #include <GLUT/glut.h>
+	//#include "MicroGlut.h"
 #else
-// Linux
-#include <GL/gl.h>
+	//#include "MicroGlut.h"
+	#include <GL/gl.h>
+  #include "glew.h"
 #endif
 
 #ifndef M_PI
@@ -21,7 +23,7 @@
 
 class Camera {
     private:
-        // x används för att musen inte ska fastna i kanterna på 
+        // x används för att musen inte ska fastna i kanterna på
         // fönstret
         int x{0};
         int program;

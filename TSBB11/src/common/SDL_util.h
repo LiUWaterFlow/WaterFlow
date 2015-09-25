@@ -1,18 +1,27 @@
 #ifndef SDL_UTIL_H
 #define SDL_UTIL_H
-#ifdef _WIN32
-// MS
-#include "glew.h"
+
+#ifdef __APPLE__
+	//#include <GLUT/glut.h>
+	#include <OpenGL/gl3.h>
 #else
-// Linux
-#include <GL/gl.h>
+	#include <GL/gl.h>
 #endif
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "Windows\sdl2\SDL.h"
+#ifdef __APPLE__
+	#include <SDL2/SDL.h>
+	//#include "MicroGlut.h"
+#else
+	//#include "MicroGlut.h"
+	##include "Windows/sdl2/SDL.h"
+#endif
+
+
 /******************************************************************************
  * Koder för egna event, såsom timers och liknande.
  * Används för att indentifiera ett specifikt event.

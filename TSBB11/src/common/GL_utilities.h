@@ -5,10 +5,14 @@
 extern "C" {
 #endif
 
-#ifdef _WIN32
-	#include "glew.h"
+#ifdef __APPLE__
+	#include <OpenGL/gl3.h>
+  #include <GLUT/glut.h>
+	//#include "MicroGlut.h"
 #else
+	//#include "MicroGlut.h"
 	#include <GL/gl.h>
+  #include "glew.h"
 #endif
 
 void printError(const char *functionName);

@@ -1,72 +1,31 @@
-###########################################################
-###														###
-###				          MAKEFILE			  			###
-###											  			###
-### 		         Project in TSBB11	      			###
-###											  			###
-###########################################################
+$SOURCEDIR = src
 
-CXX=g++
-RM=rm -f
-
-ifeq ($(shell uname), Darwin)
-  PLATFORM=mac
-endif
-
-ifeq ($(shell uname), Linux)
-  PLATFORM=linux
-endif
+CPP_FILES := $(wildcard src/*.cpp)
+OBJ_FILES_CPP := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
 
 
-# Utilities
-COM=common
+C_FILES_COMMON := $(wildcard src/common/*.c)
 
-# Folders
-SRC=src
-BIN=bin
-NAME=main.cpp
+OBJ_FILES_COMMON := $(addprefix obj/,$(notdir $(C_FILES_COMMON:.c=.o)))
 
+INC = -Isrc/ -Isrc/common/ -Isrc/common/glm
+MAIN = main.cpp
+OUT = bin/WaterFlow
 
-#windows settings
-FLAGS = -lm -DGL_GLEXT_PROTOTYPES -lfreeglut -lglew32 -lopengl32 -L$(COM)/Windows/lib
-INC = -I$(COM) -I$(COM)/Windows -Iinc
+#if MAC
+LINKS = -framework SDL2 -framework OpenGL -framework GLUT -framework Cocoa
 
-# Compile with
-UTILS=$(COM)/*.c $(COM)/*.cpp $(SRC)/*.cpp
-MICRO = $(COM)/Windows/MicroGlut.c
+GCC = g++ -Wall -pedantic -std=c++0x
+CC = gcc
 
+all: $(OBJ_FILES_COMMON) $(OBJ_FILES_CPP)
+	$(GCC) obj/*.o $(MAIN) -o $(OUT) $(INC) $(LINKS)
 
-LUTILS=	MicroGlut.o $(UTILS)
+obj/%.o : src/common/%.c
+	$(GCC) -c -o $@ $< $(INC)
 
-#mac settings
-ifeq ($(PLATFORM),mac)
-#Mac frameworks
-FLAGS = -framework GLUT -framework OpenGL -framework Cocoa
-MICRO = $(COM)/mac/MicroGlut.m
-INC = -I$(COM) -I$(COM)/mac -Iinc
-
-endif
-
-#linux settings
-ifeq ($(PLATFORM),linux)
-
-FLAGS= -lGL -lm -DGL_GLEXT_PROTOTYPES
-#-lXt -lX11
-INC = -I$(COM) -I$(COM)/Linux -Iinc
-MICRO = $(COM)/Linux/MicroGlut.c
-
-endif
-
-CPPFLAGS = -Wall -pedantic -std=c++0x
-
-
-all: main
-
-main: $(NAME) MicroGlut.o
-	$(CXX) $(CPPFLAGS) -o $(BIN)/WaterFlow $(NAME) $(LUTILS) $(FLAGS) $(INC) $(MIRCO)
-
-MicroGlut.o: $(MICRO)
-	$(CXX) -c $(MICRO)
+obj/%.o : src/%.cpp
+	$(GCC) -c -o $@ $< $(INC)
 
 clean :
-	@ $(RM) $(BIN)/*
+	rm obj/*.o
