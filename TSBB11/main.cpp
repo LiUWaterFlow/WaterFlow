@@ -28,6 +28,7 @@
 #include "gtx/string_cast.hpp"
 #include "SDL_util.h"
 #include "camera.h"
+#include "readData.h"
 
 #ifndef NULL
 #define NULL 0L
@@ -88,9 +89,11 @@ float sunSpecularExponent = 50.0;
 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
 // Some basic functions. These should already be moved to a separate source file in the dataset branch.
-Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale); // Generates a model given a height map (grayscale .tga file for now).
-glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
-GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height); // Returns the height of a height map.
+//Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale); // Generates a model given a height map (grayscale .tga file for now).
+//glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height); // Returns the normal of a vertex.
+//GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height); // Returns the height of a height map.
+
+DataHandler* dataHandler;
 
 void init(void)
 {
@@ -112,8 +115,9 @@ void init(void)
 	// Initial placement of camera.
 	cam = Camera(program, &viewMatrix);
 	// ---Upload geometry to the GPU---
-	LoadTGATextureData("resources/fft-terrain.tga", &ttex);
-	terrain = GenerateTerrain(&ttex, 2);
+	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
+	dataHandler = new DataHandler("resources/output.min.asc", 1000.0f);
+	terrain = dataHandler->datamodel;
 
 	m = LoadModelPlus("resources/teapot.obj");
 	// --------------------------------
@@ -247,7 +251,7 @@ void handle_keypress(SDL_Event event)
 {
 	switch (event.key.keysym.sym){
 		case SDLK_ESCAPE:
-		case SDLK_q:
+		//case SDLK_q:
 			exit(0);
 			break;
 		case SDLK_g:
@@ -294,7 +298,7 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix)
 	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
 }
 // ----------------------------------------------------------
-
+/*
 Model* GenerateTerrain(TextureData *tex, GLfloat terrainScale)
 {
 	int vertexCount = tex->width * tex->height;
@@ -482,7 +486,7 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 	}
 	return yheight;
 }
-
+*/
 int main(int argc, char *argv[])
 {
 	init_SDL((const char*) "TSBB11, Waterflow visualization (SDL)", width, height);
