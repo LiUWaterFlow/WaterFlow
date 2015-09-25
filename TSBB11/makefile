@@ -8,12 +8,12 @@ C_FILES_COMMON := $(wildcard src/common/*.c)
 
 OBJ_FILES_COMMON := $(addprefix obj/,$(notdir $(C_FILES_COMMON:.c=.o)))
 
-INC = -Isrc/ -Isrc/common/ -Isrc/common/glm
+INC = -Isrc/ -Isrc/common/ -Isrc/common/glm -F/Library/Frameworks/
 MAIN = main.cpp
 OUT = bin/WaterFlow
 
 #if MAC
-LINKS = -framework SDL2 -framework OpenGL -framework GLUT -framework Cocoa
+LINKS =  -framework OpenGL -framework GLUT -framework Cocoa -framework SDL2
 
 GCC = g++ -Wall -pedantic -std=c++0x
 CC = gcc
