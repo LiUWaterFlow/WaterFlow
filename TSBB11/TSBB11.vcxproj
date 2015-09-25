@@ -89,18 +89,18 @@
     <ClCompile Include="src\common\GL_utilities.c" />
     <ClCompile Include="src\common\loadobj.c" />
     <ClCompile Include="src\common\LoadTGA.c" />
+    <ClCompile Include="src\common\SDL_util.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
-    <ClCompile Include="src\SDL_util.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\common\GL_utilities.h" />
     <ClInclude Include="src\common\loadobj.h" />
     <ClInclude Include="src\common\LoadTGA.h" />
+    <ClInclude Include="src\common\SDL_util.h" />
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
-    <ClInclude Include="src\SDL_util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\main.frag" />

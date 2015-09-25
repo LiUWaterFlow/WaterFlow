@@ -88,8 +88,8 @@ void init_SDL(const char* title, int width, int height)
 
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 #ifdef __APPLE__
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
 
@@ -103,8 +103,11 @@ void init_SDL(const char* title, int width, int height)
 	fprintf(stderr, "Current Version Error 1 :   %s \n", SDL_GetError());
 
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-
+#ifdef __APPLE__
 	screen =SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+#else
+	screen = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+#endif
 	fprintf(stderr, "Current Version Error 2 :   %s \n", SDL_GetError());
 
 	glcontext = SDL_GL_CreateContext(screen);
@@ -117,7 +120,7 @@ void init_SDL(const char* title, int width, int height)
 	}
 
 	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
-/*
+#ifndef __APPLE__
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(0, width, 0, height, -1, 1);
@@ -126,6 +129,7 @@ void init_SDL(const char* title, int width, int height)
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-*/
+#endif
+
 	atexit(terminate_prog);
 }

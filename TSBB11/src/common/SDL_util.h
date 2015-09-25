@@ -1,24 +1,16 @@
 #ifndef SDL_UTIL_H
 #define SDL_UTIL_H
 
-#ifdef __APPLE__
-	//#include <GLUT/glut.h>
-	#include <OpenGL/gl3.h>
-#else
-	#include <GL/gl.h>
-#endif
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #ifdef __APPLE__
+	#include <OpenGL/gl3.h>
 	#include <SDL2/SDL.h>
-	//#include "MicroGlut.h"
 #else
-	//#include "MicroGlut.h"
-	##include "Windows/sdl2/SDL.h"
+	#include "glew.h"
+	#include "Windows/sdl2/SDL.h"
 #endif
 
 

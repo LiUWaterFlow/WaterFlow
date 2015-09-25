@@ -7,7 +7,7 @@
 	//#include "MicroGlut.h"
 #else
 	//#include "MicroGlut.h"
-	#include <GL/gl.h>
+	//#include <GL/gl.h>
   #include "glew.h"
 #endif
 

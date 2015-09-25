@@ -7,12 +7,9 @@ extern "C" {
 
 #ifdef __APPLE__
 	#include <OpenGL/gl3.h>
-  #include <GLUT/glut.h>
-	//#include "MicroGlut.h"
+	#include <GLUT/glut.h>
 #else
-	//#include "MicroGlut.h"
-	#include <GL/gl.h>
-  #include "glew.h"
+	#include "glew.h"
 #endif
 
 void printError(const char *functionName);

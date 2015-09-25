@@ -11,7 +11,6 @@ extern "C" {
 	#if defined(_WIN32)
 		#include "glew.h"
 	#endif
-	#include <GL/gl.h>
 #endif
 
 typedef struct

@@ -11,7 +11,7 @@ extern "C" {
 	#if defined(_WIN32)
 		#include "glew.h"
 	#endif
-	#include <GL/gl.h>
+	//#include <GL/gl.h>
 #endif
 #include <stdio.h>
 #include <stdlib.h>
