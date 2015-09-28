@@ -29,6 +29,7 @@
 #include "SDL_util.h"
 #include "camera.h"
 #include "readData.h"
+#include "voxel.h"
 
 #ifndef NULL
 #define NULL 0L
@@ -109,6 +110,7 @@ Model* squareModel;
 FBOstruct *fbo1, *fbo2, *fbo3;
 GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
 DataHandler* dataHandler;
+Voxelgrid* grid;
 int tW, tH;
 
 void loadNormConvModel();
@@ -138,10 +140,19 @@ void init(void)
 	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 
 	m = LoadModelPlus("resources/teapot.obj");
+
+	//Construct the voxelgrid of size x,y,z (for now 50,50,50 to not slow down
+	//the rest of the program
+
+	grid = new Voxelgrid(50,50,50);
+
+
 	dataHandler = new DataHandler("resources/output.min.asc", 500.0f);
 	terrain = dataHandler->datamodel;
 
-	
+
+
+
 	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");  // puts texture on teapot
 	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
 	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
@@ -155,7 +166,7 @@ void init(void)
 	fbo3 = initFBO3(tW, tH, dataHandler->getData());
 
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
-	
+
 
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
 	glUseProgram(program);
