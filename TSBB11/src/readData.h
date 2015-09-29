@@ -1,3 +1,6 @@
+#ifndef READDATA_H
+#define READDATA_H
+
 #include "glm.hpp"
 #include "loadobj.h"
 
@@ -19,26 +22,39 @@ struct mapdata {
 
 class DataHandler 
 {
+private:
 	mapdata* readdata;
-	
+	Model* datamodel;
+	GLfloat terrainScale;
+
 	void readDEM(const char* inputfile);
-	void scaleData();
+	void scaleDataBefore();
+	void scaleDataAfter();
 	
+
+	void performGPUNormConv();
+
+	void GenerateTerrain();
+	glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
+	GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height);
 
 public:
-	Model* GenerateTerrain(GLfloat tScale);
-	Model* datamodel;
-
 	DataHandler(const char* inputfile, GLfloat tScale = 500.0f);
 	~DataHandler();
+
+	void performNormalizedConvolution();
+
 	float getCoord(int col, int row);
 	float* getData();
 	
 	int getWidth();
 	int getHeight();
 	int getElem();
-	
+
+	Model *getModel();
 };
 
 glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
 GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height);
+
+#endif // READDATA_H

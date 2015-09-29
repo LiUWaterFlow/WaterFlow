@@ -1,5 +1,8 @@
+#include "stdio.h"
+
 #include "readData.h"
 
+#include "GL_utilities.h"
 #include "loadobj.h"
 #include "glm.hpp"
 
@@ -10,6 +13,58 @@
 
 
 using namespace std;
+
+GLfloat square[] = { -1, -1, 0,
+-1, 1, 0,
+1, 1, 0,
+1, -1, 0 };
+GLfloat squareTexCoord[] = { 0, 0,
+0, 1,
+1, 1,
+1, 0 };
+GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
+
+Model* squareModel;
+FBOstruct *fbo1, *fbo2, *fbo3;
+GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
+int tW, tH;
+
+DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
+{
+	readdata = new mapdata();
+	terrainScale = tScale;
+
+	cout << "Starting loading DEM data..." << endl;
+	readDEM(inputfile);
+	cout << "Finished loading DEM data..." << endl;
+
+	cout << "Scaling DEM data..." << endl;
+	scaleDataBefore();
+
+	cout << "Compiling shaders..." << endl;
+
+	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
+	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
+	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
+	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+
+	tW = getWidth();
+	tH = getHeight();
+
+	fbo1 = initFBO3(tW, tH, NULL);
+	fbo2 = initFBO3(tW, tH, NULL);
+	fbo3 = initFBO3(tW, tH, getData());
+	
+	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
+
+	cout << "Generating terrain from DEM data..." << endl;
+	GenerateTerrain();
+}
+
+DataHandler::~DataHandler()
+{
+	delete readdata;
+}
 
 float DataHandler::getCoord(int col, int row)
 {
@@ -30,7 +85,7 @@ float DataHandler::getCoord(int col, int row)
 		retdata = readdata->data[index];
 	}
 	else {
-		cout << "No mapdata exists!" << endl;
+		cerr << "No mapdata exists." << endl;
 	}
 
 	return retdata;
@@ -45,86 +100,221 @@ int DataHandler::getWidth()
 {
 	return readdata->ncols;
 }
+
 int DataHandler::getHeight()
 {
 	return readdata->nrows;
 }
+
 int DataHandler::getElem()
 {
 	return readdata->nelem;
 }
 
+Model* DataHandler::getModel()
+{
+	return datamodel;
+}
+
 void DataHandler::readDEM(const char* inputfile)
 {
-	ifstream infile;
-	infile.open(inputfile, ios::in);
-	
-	string intext;
-	float incoord;
-	
-	if (infile.is_open())
+	FILE* file = fopen(inputfile, "r");
+
+	char intext [80];
+	float incoord = 0;
+
+	if (file != NULL)
 	{
-		infile >> intext >> readdata->ncols;
-		infile >> intext >> readdata->nrows;
-		infile >> intext >> readdata->xllcorner;
-		infile >> intext >> readdata->yllcorner;
-		infile >> intext >> readdata->cellsize;
-		infile >> intext >> readdata->NODATA_value;
-	
+		fscanf(file, "%s %i", &intext, &readdata->ncols);
+		fscanf(file, "%s %i", &intext, &readdata->nrows);
+		fscanf(file, "%s %f", &intext, &readdata->xllcorner);
+		fscanf(file, "%s %f", &intext, &readdata->yllcorner);
+		fscanf(file, "%s %f", &intext, &readdata->cellsize);
+		fscanf(file, "%s %f", &intext, &readdata->NODATA_value);
+
 		readdata->max_value = readdata->NODATA_value;
 		readdata->min_value = 20000000;
-	
+
 		readdata->nelem = readdata->ncols * readdata->nrows;
-		
-		for (int i = 0; i < readdata->nelem; i++)
+		readdata->data.resize(getElem());
+
+		int nRead = 0;
+		for (int i = 0; i < getElem(); i++)
 		{
-			infile >> incoord;
-			
-			if(incoord > readdata->max_value)
+			nRead = fscanf(file, "%f", &incoord);
+
+			if (nRead != 1)
+			{
+				cerr << "Less values than it should be!" << endl;
+				break;
+			}
+
+			if (incoord > readdata->max_value)
 			{
 				readdata->max_value = incoord;
 			}
-			if(incoord > readdata->NODATA_value + 1 && incoord < readdata->min_value)
+			if (incoord > readdata->NODATA_value + 1.0f && incoord < readdata->min_value)
 			{
 				readdata->min_value = incoord;
 			}
-			
-			readdata->data.push_back(incoord);
+
+			readdata->data[i] = incoord;
 		}
-		
-    	infile.close();
+
+		fclose(file);
 	}
 	else {
 		cerr << "Could not open file: " << inputfile << endl;
 	}
 }
 
-void DataHandler::scaleData()
+// Will scale the data so that data before normalized convolution is between 0.0 and 1.0
+void DataHandler::scaleDataBefore()
 {
-	for(auto i = readdata->data.begin(); i != readdata->data.end(); i++)
+	for (int i = 0; i < getElem(); i++)
 	{
 		float diff = readdata->max_value - readdata->min_value;
-		*i = ((*i - readdata->min_value) / diff) * 0.9f + 0.1f;
+
+		// Scale real data between 0.1 and 1.0
+		getData()[i] = ((getData()[i] - readdata->min_value) / diff) * 0.9f + 0.1f;
+
+		// Set nodata to 0
+		if (getData()[i] < 0.05)
+			getData()[i] = 0.0f;
 	} 
 }
 
-DataHandler::DataHandler(const char* inputfile, GLfloat tScale){
-	readdata = new mapdata();
-	readDEM(inputfile);
-	scaleData();
-	datamodel = GenerateTerrain(tScale);
+// Data after normalized convolution should be between 0.1 and 1.0
+void DataHandler::scaleDataAfter()
+{
+	for (int i = 0; i < getElem(); i++)
+	{
+		// Scale real data between 0.0 and 1.0
+		getData()[i] = (getData()[i] - 0.1f) / 0.9f;
+	}
 }
 
 
-DataHandler::~DataHandler()
+void DataHandler::performNormalizedConvolution()
 {
-	delete readdata;
+	bool isNODATA = true;
+	float min;
+	while (isNODATA)
+	{
+		cout << "Starting five passes NC..." << endl;
+		for (int i = 0; i < 5; i++)
+			performGPUNormConv();
+
+		glReadPixels(0, 0, tW, tH, GL_RED, GL_FLOAT, getData());
+
+		cout << "Checking Data for NODATA..." << endl;
+		isNODATA = false;
+		
+		min = 2.0f;
+		for (int i = 0; i < getElem() && !isNODATA; i++)
+		{
+			float data = getData()[i];
+			if (data < min)
+				min = data;
+			isNODATA = (data < 0.0001f);
+		}
+	}
+	
+	cout << "Scaling Data after NC..." << endl;
+	scaleDataAfter();
+
+	cout << "Generating new Model..." << endl;
+	GenerateTerrain();
+	cout << "Done generating new model..." << endl;
+
+	// Reset initial GL inits
+	useFBO(0L, fbo3, 0L);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_TRUE);
 }
 
-Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a height map (grayscale .tga file for now).
+void DataHandler::performGPUNormConv()
 {
-	int width = 100; // readdata->ncols;
-	int height = 100; // readdata->nrows;
+	// Filter original
+	useFBO(fbo1, fbo3, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(filtershader);
+	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)tW, (float)tH);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
+
+	// Create confidence
+	useFBO(fbo2, fbo3, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(confidenceshader);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
+
+	// Filter confidence
+	useFBO(fbo3, fbo2, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(filtershader);
+	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)tW, (float)tH);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
+
+	// Combine
+	useFBO(fbo2, fbo1, fbo3);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(combineshader);
+	glUniform1i(glGetUniformLocation(combineshader, "dataTex"), 0);
+	glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
+
+	// Swap FBOs
+	useFBO(fbo3, fbo2, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(plaintextureshader);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
+}
+
+void DataHandler::GenerateTerrain() 
+{
+	int width = getWidth();
+	int height = getHeight();
 	int vertexCount = width * height;
 	int triangleCount = (width - 1) * (height - 1) * 2;
 	int x, z;
@@ -141,13 +331,13 @@ Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a
 		for (z = 0; z < height; z++)
 		{
 			// Vertex array.
-			vertexArray[(x + z * width) * 3 + 0] = x / 1.0;
-			vertexArray[(x + z * width) * 3 + 1] = getCoord(x, z) * tScale; // Terrain height.
-			vertexArray[(x + z * width) * 3 + 2] = z / 1.0;
+			vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
+			vertexArray[(x + z * width) * 3 + 1] = getCoord(x, z) * terrainScale; // Terrain height.
+			vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
 
 			// Texture coordinates.
-			texCoordArray[(x + z * width) * 2 + 0] = x;
-			texCoordArray[(x + z * width) * 2 + 1] = z;
+			texCoordArray[(x + z * width) * 2 + 0] = (float)x;
+			texCoordArray[(x + z * width) * 2 + 1] = (float)z;
 		}
 	}
 
@@ -181,7 +371,7 @@ Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a
 	// End of terrain generation.
 
 	// Create Model and upload to GPU.
-	Model* model = LoadDataToModel(
+	datamodel = LoadDataToModel(
 		vertexArray,
 		normalArray,
 		texCoordArray,
@@ -189,11 +379,9 @@ Model* DataHandler::GenerateTerrain(GLfloat tScale) // Generates a model given a
 		indexArray,
 		vertexCount,
 		triangleCount * 3);
-
-	return model;
 }
 
-glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
+glm::vec3 DataHandler::giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
 {
 	glm::vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
 	glm::vec3 normal = { 0, 1, 0 };
@@ -207,29 +395,29 @@ glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArr
 
 	if ((x > 1) && (z > 1) && (z < height - 2) && (x < width - 2))
 	{
-		glm::vec3 tempVec1 = { vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
-			vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-			vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+		glm::vec3 tempVec1={vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
+							vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
+							vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
-		glm::vec3 tempVec2 = { vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
-			vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-			vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+		glm::vec3 tempVec2={vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
+							vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
+							vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
-		glm::vec3 tempVec3 = { vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
-			vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-			vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
+		glm::vec3 tempVec3={vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
+							vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
+							vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
 
-		glm::vec3 tempVec4 = { vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
-			vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-			vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
+		glm::vec3 tempVec4={vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
+							vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
+							vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
 
-		glm::vec3 tempVec5 = { vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
-			vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-			vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+		glm::vec3 tempVec5={vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
+							vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
+							vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
-		glm::vec3 tempVec6 = { vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
-			vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-			vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+		glm::vec3 tempVec6={vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
+							vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
+							vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 
 
 		normal1 = glm::cross(tempVec1 - vertex, tempVec2 - vertex);
@@ -249,15 +437,15 @@ glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArr
 	return normal;
 }
 
-GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
+GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
 {
 	GLfloat yheight = 0;
 
-	int vertX1 = floor(x);
-	int vertZ1 = floor(z);
+	int vertX1 = (int)floor(x);
+	int vertZ1 = (int)floor(z);
 
-	int vertX2 = floor(x) + 1;
-	int vertZ2 = floor(z) + 1;
+	int vertX2 = (int)floor(x) + 1;
+	int vertZ2 = (int)floor(z) + 1;
 
 	int vertX3 = 0;
 	int vertZ3 = 0;
@@ -307,4 +495,5 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 	}
 	return yheight;
 }
+
 
