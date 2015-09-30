@@ -3,12 +3,12 @@
     <Sources>
        <Source Name="Hill"> 
 	 <Position x="1" y="2" z="3"/> 
-	 <Time t="1, 2, 5, 7, 11" />
+	 <TimeP t="1, 2, 5, 7, 11" />
 	 <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
        </Source>
        <Source Name="Valley"> 
 	 <Position x="4" y="5" z="6"/> 
-	 <Time t="1, 2, 5, 7, 11" />
+	 <TimeP t="1, 2, 5, 7, 11" />
 	 <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
        </Source>
     </Sources>

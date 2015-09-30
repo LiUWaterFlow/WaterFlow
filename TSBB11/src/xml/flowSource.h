@@ -1,8 +1,9 @@
 #ifndef FLOWSOURCE_H
 #define FLOWSOURCE_H
+#include <vector>
 
 class FlowSource {
-  std::vector<float> normal;
+  std::vector<std::vector<float>> normal;
   std::vector<int> normalTime;
   std::vector<int> pressureTime;
   std::vector<float> pressure;
@@ -13,7 +14,7 @@ class FlowSource {
 public:
   FlowSource() {currTime = 0;};
   void setPressure(std::vector<float> P, std::vector<int> t);
-  void setNormal(std::vector<float> N, std::vector<int> t);
+  void setNormal(std::vector< std::vector<float> > N, std::vector<int> t);
   void setPosition(int x, int y, int z);
   void setTotalWater(float tot);
   void setRadius(float r);
