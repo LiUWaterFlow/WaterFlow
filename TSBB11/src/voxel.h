@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 
 struct voxel{
   float a;
@@ -11,14 +12,16 @@ class Voxelgrid
 
 
 public:
-  Voxelgrid(int sizeX, int sizeY, int sizeZ);
+  Voxelgrid();
   ~Voxelgrid();
-  std::vector<voxel> *voxels;
-  voxel* getData(int x,int y,int z);
+  void setVoxel(int x,int y,int z,float a,float b);
+  voxel* getVoxel(int x,int y,int z);
 
 private:
 
-  voxel* V(int x,int y,int z);
+
+  std::vector<std::vector<std::vector<voxel*>*>*>* voxels;
+  //voxel* V(int x,int y,int z);
 
   unsigned int numx;
   unsigned int numy;

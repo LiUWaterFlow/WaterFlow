@@ -144,7 +144,8 @@ void init(void)
 	//Construct the voxelgrid of size x,y,z (for now 50,50,50 to not slow down
 	//the rest of the program
 
-	grid = new Voxelgrid(50,50,50);
+	grid = new Voxelgrid();
+	grid->setVoxel(500,500,500,1,1);
 
 
 	dataHandler = new DataHandler("resources/output.min.asc", 500.0f);
