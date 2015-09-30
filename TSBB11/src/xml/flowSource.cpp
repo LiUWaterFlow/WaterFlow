@@ -1,5 +1,5 @@
 #include <vector>
-#include "flowSource.hpp"
+#include "flowSource.h"
 
 
 void FlowSource::setPosition(int x, int y, int z){
@@ -8,15 +8,36 @@ void FlowSource::setPosition(int x, int y, int z){
   zpos=z;
 }
 
+void FlowSource::setNormal(std::vector<flowsource> N, std::vector<int> time){
+  normal = N;
+  normalTime = time;
+}
+
+void FlowSource::setPressure(std::vector<float> P, std::vector<int> time){
+  pressure = P;
+  pressureTime = time;
+}
+
+void FlowSource::update(){
+  currTime++;
+}
+
 float FlowSource::getPressure(){
-  // Implementation here
-  return 1.0;
+  int currItr = 0;
+  for(auto i = pressureTime.begin(); i !=pressureTime.end(); ++i){
+    if( *i < currTime) currItr++;
+    else break;
+  }
+  return pressure[currItr];
 }
 
 std::vector<float> FlowSource::getNormal(){  
-// Implementation here
-  std::vector<float> a;
-  return a;
+ int currItr = 0;
+  for(auto i = normalTime.begin(); i !=normalTime.end(); ++i){
+    if( *i < currTime) currItr++;
+    else break;
+  }
+  return normal[currItr];
 }
 
 std::vector<int> FlowSource::getPosition(){
