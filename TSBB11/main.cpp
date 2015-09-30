@@ -38,7 +38,7 @@
 int width = 600;
 int height = 600; // Defines instead?
 float scl = 6;
-#define DRAW_DISTANCE 3000.0
+#define DRAW_DISTANCE 10000.0
 
 #define DISPLAY_TIMER 0
 #define UPDATE_TIMER 1
