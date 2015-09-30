@@ -9,13 +9,15 @@ class FlowSource {
   int xpos, ypos, zpos;
   float totalWater;
   float radius;
+  int currTime;
 public:
-  FlowSource() { };
-  void setPreassure(std::vector<float> P, std::vector<int> t);
+  FlowSource() {currTime = 0;};
+  void setPressure(std::vector<float> P, std::vector<int> t);
   void setNormal(std::vector<float> N, std::vector<int> t);
   void setPosition(int x, int y, int z);
   void setTotalWater(float tot);
   void setRadius(float r);
+  void update();
   float getPressure();
   std::vector<float> getNormal();
   std::vector<int> getPosition();
