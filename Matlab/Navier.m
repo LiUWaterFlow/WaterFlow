@@ -2,7 +2,7 @@ function [ output_args ] = Navier()
 %NAVIER Summary of this function goes here
 %   Detailed explanation goes here
 
- N = 5;
+ N = 50;
  force_x = eye(N+2);  % 7x7 matrix
  force_y = eye(N+2,N+2); %7x7 matrix
  start_force_x = zeros(N+2,N+2); %7x7 matrix
@@ -10,13 +10,17 @@ function [ output_args ] = Navier()
  visc = 0.000099; %SI Units Pascal
  dt = 0.1;
  diff = 10;     %diffusion rate, constant ish
-
-
-%vel_step(N,u,v,u_input, v_input, visc, dt);
-%dense_step(N, u, u_input, dens, v, diffe, dt)
-%draw_dens(N, dens);
-add_source(N,force_x,force_y,dt);
-dense_step(N,force_x,start_force_x,dens,force_y,diff,dt)
+ 
+output_density = eye(N+2,N+2);
+dens_prev = eye(N+2, N+2);
+for i=1:20
+    [force_x, force_y] = vel_step(N, force_x,force_y, start_force_x, start_force_y, visc, dt);
+    output_density = dense_step(N, output_density, dens_prev, force_x, force_y, diff,dt);
+    start_force_x = force_x;
+    start_force_y = force_y;
+    dens_prev = output_density;
+end
+imshow(force_x)
 end
 % Adding the source s to the density or veolcity x. We will have 1 box as
 % the boundery so keep that in mind for the rest of this file. So the
@@ -45,7 +49,7 @@ function [output] = diffuse(N,bound_for_XorY,output,starting,diff_const,dt)
                output(i,j) = (starting(i,j) +a*(output(i-1,j) + output(i+1,j) + output(i,j-1) + output(i,j+1)))/(1+4*a);
             end
         end
-        set_bnd(N,bound_for_XorY,output);
+        output = set_bnd(N,bound_for_XorY,output);
     end
 end
 
@@ -86,47 +90,47 @@ function [output] = advect(N, b, output, starting, force_x, force_y, dt)
       end
    end
    
-   set_bnd(N, b, output);
+   output = set_bnd(N, b, output);
 end
 
 
 %this function adds the dense part into 1 convenient step. Here the source
 %denseties is contained in x0.
 function [output] = dense_step(N, output, source, force_x, force_y, diff, dt)
-    add_source(N, output, source, dt);
+    output = add_source(N, output, source, dt);
     %SWAP(output,source)
-    diffuse(N, 0, output, source, diff, dt); %not done here
+    output = diffuse(N, 0, output, source, diff, dt); %not done here
     %SWAP(output,source) so for the advect function use the normal X and X0
-    advect(N, 0, output, source, force_x, force_y, dt); %as it should be
+    output = advect(N, 0, output, source, force_x, force_y, dt); %as it should be
 end
 
-function [] = vel_step(N, force_x, force_y, start_force_x, start_force_y, visc, dt)
-    add_source(N, force_x, start_force_x, dt);
-    add_source(N, force_y, start_force_y, dt);
+function [force_x, force_y] = vel_step(N, force_x, force_y, start_force_x, start_force_y, visc, dt)
+    force_x = add_source(N, force_x, start_force_x, dt);
+    force_y = add_source(N, force_y, start_force_y, dt);
     
     %SWAP(density,force_density)
-    diffuse(N, 1, force_x, start_force_x, visc, dt); %have not swapped here =/
+    force_x = diffuse(N, 1, force_x, start_force_x, visc, dt); %have not swapped here =/
     %SWAP(force_velocity,velocity)
-    diffuse(N, 2, force_y, start_force_y, visc, dt); %have not swapped here =/
-    project(N, force_x, force_y, start_force_x, start_force_y); %still not swapped
+    force_y = diffuse(N, 2, force_y, start_force_y, visc, dt); %have not swapped here =/
+    [force_x, force_y] = project(N, force_x, force_y, start_force_x, start_force_y); %still not swapped
     %SWAP(force_density, density)
     %SWAP(force_velocity, velocity)
-    advect( N, 1, force_x, start_force_x, start_force_x, start_force_y, dt); %as it should be
-    advect(N, 2, force_y, start_force_y, start_force_x, start_force_y, dt); %as it should be
-    project(N, force_x, force_y, start_force_x, start_force_y);
+    force_x = advect( N, 1, force_x, start_force_x, start_force_x, start_force_y, dt); %as it should be
+    force_y = advect(N, 2, force_y, start_force_y, start_force_x, start_force_y, dt); %as it should be
+    [force_x, force_y] = project(N, force_x, force_y, start_force_x, start_force_y);
 end
 
-function [velocity_x, velocity_y] = project(N, velocity_x, velocity_y, preassure, div)
+function [force_x, force_y] = project(N, force_x, force_y, preassure, div)
     h = 1.0/N;
     
     for i = 2:N
         for j = 2:N
-           div(i,j) = -0.5*h*(velocity_x(i+1,j) -velocity_x(i-1,j) + velocity_y(i,j+1) - velocity_y(i,j-1));
+           div(i,j) = -0.5*h*(force_x(i+1,j) -force_x(i-1,j) + force_y(i,j+1) - force_y(i,j-1));
            preassure(i,j) = 0;
         end
     end
-    set_bnd(N,0,div);
-    set_bnd(N,0,preassure);
+    div = set_bnd(N,0,div);
+    preassure = set_bnd(N,0,preassure);
     
     for k = 1:20  %Jacobi Method solving the matrix
        for i = 2:N
@@ -134,20 +138,20 @@ function [velocity_x, velocity_y] = project(N, velocity_x, velocity_y, preassure
              preassure(i,j) = (div(i,j) + preassure(i-1,j) + preassure(i+1,j) +preassure(i,j-1) + preassure(i,j+1))/4; 
           end
        end
-       set_bnd(N,0,preassure);
+       preassure = set_bnd(N,0,preassure);
     end
     
     for i = 2:N
        for j = 2:N
-          velocity_x(i,j) = velocity_x(i,j) - 0.5*(preassure(i+1,j) - preassure(i-1,j))/h;  %dunno what this does, only add to the sides not up and down
-          velocity_y(i,j) = velocity_y(i,j) - 0.5*(preassure(i,j+1) - preassure(i,j-1))/h; % same as above
+          force_x(i,j) = force_x(i,j) - 0.5*(preassure(i+1,j) - preassure(i-1,j))/h;  %dunno what this does, only add to the sides not up and down
+          force_y(i,j) = force_y(i,j) - 0.5*(preassure(i,j+1) - preassure(i,j-1))/h; % same as above
        end
     end
-    set_bnd(N,1,velocity_x);
-    set_bnd(N,2,velocity_y);
+    force_x = set_bnd(N,1,force_x);
+    force_y = set_bnd(N,2,force_y);
 end
 
-function [] = set_bnd(N, bound_for_XorY, x)
+function [x] = set_bnd(N, bound_for_XorY, x)
 
     for i= 1:N
        if( bound_for_XorY == 1)
