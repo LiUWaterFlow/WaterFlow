@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Profile FormatVersion="1">
-    <Sources>
-       <Source Name="Hill"> 
-	 <Position x="1" y="2" z="3"/> 
-	 <TimeP t="1, 2, 5, 7, 11" />
-	 <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
-       </Source>
-       <Source Name="Valley"> 
-	 <Position x="4" y="5" z="6"/> 
-	 <TimeP t="1, 2, 5, 7, 11" />
-	 <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
-       </Source>
-    </Sources>
+  <Sources>
+    <Source Name="Hill"> 
+      <Position x="1" y="2" z="3"/> 
+      <TimeP t="1, 2, 5, 7, 11" />
+      <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
+      <TimeN t="3, 6"/>
+      <Normals>
+	<Normal x="6.1" y="7.2" z="9.3"/>
+	<Normal x="16" y="17.5" z="-19"/>
+      </Normals>
+      <TotWater tot="20" />
+      <Radius r="0.5"/>
+    </Source>
+    <Source Name="Valley"> 
+      <Position x="4" y="5" z="6"/> 
+      <TimeP t="1, 2, 5, 7, 11" />
+      <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
+    </Source>
+  </Sources>
 </Profile>

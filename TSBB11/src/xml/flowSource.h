@@ -13,6 +13,7 @@ class FlowSource {
   int currTime;
 public:
   FlowSource() {currTime = 0;};
+  ~FlowSource() = default;
   void setPressure(std::vector<float> P, std::vector<int> t);
   void setNormal(std::vector< std::vector<float> > N, std::vector<int> t);
   void setPosition(int x, int y, int z);
