@@ -325,8 +325,8 @@ void DataHandler::GenerateTerrain()
 	{
 		for (int j = 0; j < heightBlocks; j++)
 		{
-			int width = (twidth - i * blockSize > 0 ? blockSize +5 : twidth - (i - 1)*twidth);
-			int height = (theight - i * blockSize > 0 ? blockSize +5 : theight - (i - 1)*theight);
+			int width = (twidth - i * blockSize > 0 ? blockSize +1 : twidth - (i - 1)*twidth);
+			int height = (theight - i * blockSize > 0 ? blockSize +1 : theight - (i - 1)*theight);
 			int blockSizeW = (twidth - i * blockSize > 0 ? blockSize : twidth - (i - 1)*twidth);
 			int blockSizeH = (theight - i * blockSize > 0 ? blockSize : theight - (i - 1)*theight);
 
@@ -377,8 +377,8 @@ void DataHandler::GenerateTerrain()
 				for (z = 0; z < height; z++)
 				{
 					// Normal vectors.
-					glm::vec3 vertex = { GLfloat(x + width*i), getCoord(x + width*i, z + width*j), GLfloat(z + width*j) };
-					tempNormal = giveNormal(vertex,x,(int)getCoord(x + width*i, z + width*j), z , vertexArray, indexArray, width, height);
+					glm::vec3 vertex = { GLfloat(x + blockSizeW*i), getCoord(x + blockSizeW*i, z + blockSizeH*j), GLfloat(z + blockSizeH*j) };
+					tempNormal = giveNormal(vertex,x,(int)getCoord(x + blockSizeW*i, z + blockSizeH*j), z , vertexArray, indexArray, width, height);
 					normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
 					normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
 					normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
