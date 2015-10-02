@@ -24,7 +24,7 @@ class DataHandler
 {
 private:
 	mapdata* readdata;
-	Model* datamodel;
+	std::vector<Model*>* datamodel;
 	GLfloat terrainScale;
 
 	void readDEM(const char* inputfile);
@@ -35,7 +35,7 @@ private:
 	void performGPUNormConv();
 
 	void GenerateTerrain();
-	glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
+	glm::vec3 giveNormal(glm::vec3 vertex, int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
 	GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height);
 
 public:
@@ -51,10 +51,10 @@ public:
 	int getHeight();
 	int getElem();
 
-	Model *getModel();
+	std::vector<Model*>* getModel();
 };
 
-glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
+glm::vec3 giveNormal(glm::vec3 vertex,int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
 GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height);
 
 #endif // READDATA_H

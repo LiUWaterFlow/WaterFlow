@@ -34,6 +34,9 @@ DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
 	readdata = new mapdata();
 	terrainScale = tScale;
 
+	datamodel = new std::vector<Model*>;
+
+
 	cout << "Starting loading DEM data..." << endl;
 	readDEM(inputfile);
 	cout << "Finished loading DEM data..." << endl;
@@ -111,7 +114,7 @@ int DataHandler::getElem()
 	return readdata->nelem;
 }
 
-Model* DataHandler::getModel()
+std::vector<Model*>* DataHandler::getModel()
 {
 	return datamodel;
 }
@@ -313,77 +316,93 @@ void DataHandler::performGPUNormConv()
 
 void DataHandler::GenerateTerrain() 
 {
-	int width = getWidth();
-	int height = getHeight();
-	int vertexCount = width * height;
-	int triangleCount = (width - 1) * (height - 1) * 2;
-	int x, z;
-
-	GLfloat *vertexArray = (GLfloat *)malloc(sizeof(GLfloat)* 3 * vertexCount);
-	GLfloat *normalArray = (GLfloat *)malloc(sizeof(GLfloat)* 3 * vertexCount);
-	GLfloat *texCoordArray = (GLfloat *)malloc(sizeof(GLfloat)* 2 * vertexCount);
-	GLuint *indexArray = (GLuint *)malloc(sizeof(GLuint)* triangleCount * 3);
-
-	glm::vec3 tempNormal = { 0, 0, 0 };
-
-	for (x = 0; x < width; x++)
+	int twidth = getWidth();
+	int theight = getHeight();
+	int blockSize = 250;
+	int widthBlocks = ceil(twidth / blockSize);
+	int heightBlocks = ceil(theight / blockSize);
+	for (int i = 0; i < widthBlocks; i++)
 	{
-		for (z = 0; z < height; z++)
+		for (int j = 0; j < heightBlocks; j++)
 		{
-			// Vertex array.
-			vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
-			vertexArray[(x + z * width) * 3 + 1] = getCoord(x, z) * terrainScale; // Terrain height.
-			vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
+			int width = (twidth - i * blockSize > 0 ? blockSize +5 : twidth - (i - 1)*twidth);
+			int height = (theight - i * blockSize > 0 ? blockSize +5 : theight - (i - 1)*theight);
+			int blockSizeW = (twidth - i * blockSize > 0 ? blockSize : twidth - (i - 1)*twidth);
+			int blockSizeH = (theight - i * blockSize > 0 ? blockSize : theight - (i - 1)*theight);
 
-			// Texture coordinates.
-			texCoordArray[(x + z * width) * 2 + 0] = (float)x;
-			texCoordArray[(x + z * width) * 2 + 1] = (float)z;
+		
+			int vertexCount = (width) * height;
+			int triangleCount = (width - 1) * (height - 1) * 2;
+			int x, z;
+
+			GLfloat *vertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * vertexCount);
+			GLfloat *normalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * vertexCount);
+			GLfloat *texCoordArray = (GLfloat *)malloc(sizeof(GLfloat) * 2 * vertexCount);
+			GLuint *indexArray = (GLuint *)malloc(sizeof(GLuint)* triangleCount * 3);
+
+			glm::vec3 tempNormal = { 0, 0, 0 };
+
+			for (x = 0; x < width; x++)
+			{
+				for (z = 0; z < height; z++)
+				{
+					// Vertex array.
+					vertexArray[(x + z * width) * 3 + 0] = x / 1.0f + blockSizeW*i;
+					vertexArray[(x + z * width) * 3 + 1] = getCoord(x+blockSizeW*i, z+blockSizeH*j) * terrainScale; // Terrain height.
+					vertexArray[(x + z * width) * 3 + 2] = z / 1.0f + blockSizeH*j;
+
+					// Texture coordinates.
+					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
+					texCoordArray[(x + z * width) * 2 + 1] = (float)z;
+				}
+			}
+
+			for (x = 0; x < width - 1; x++)
+			{
+				for (z = 0; z < height - 1; z++)
+				{
+					// Triangle 1.
+					indexArray[(x + z * (width - 1)) * 6 + 0] = x + z * width;
+					indexArray[(x + z * (width - 1)) * 6 + 1] = x + (z + 1) * width;
+					indexArray[(x + z * (width - 1)) * 6 + 2] = x + 1 + z * width;
+					// Triangle 2.
+					indexArray[(x + z * (width - 1)) * 6 + 3] = x + 1 + z * width;
+					indexArray[(x + z * (width - 1)) * 6 + 4] = x + (z + 1) * width;
+					indexArray[(x + z * (width - 1)) * 6 + 5] = x + 1 + (z + 1) * width;
+				}
+			}
+
+			for (x = 0; x < width; x++)
+			{
+				for (z = 0; z < height; z++)
+				{
+					// Normal vectors.
+					glm::vec3 vertex = { GLfloat(x + width*i), getCoord(x + width*i, z + width*j), GLfloat(z + width*j) };
+					tempNormal = giveNormal(vertex,x,(int)getCoord(x + width*i, z + width*j), z , vertexArray, indexArray, width, height);
+					normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
+					normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
+					normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
+				}
+			}
+
+			// End of terrain generation.
+
+			// Create Model and upload to GPU.
+			datamodel->push_back(LoadDataToModel(
+				vertexArray,
+				normalArray,
+				texCoordArray,
+				NULL,
+				indexArray,
+				vertexCount,
+				triangleCount * 3));
 		}
 	}
-
-	for (x = 0; x < width - 1; x++)
-	{
-		for (z = 0; z < height - 1; z++)
-		{
-			// Triangle 1.
-			indexArray[(x + z * (width - 1)) * 6 + 0] = x + z * width;
-			indexArray[(x + z * (width - 1)) * 6 + 1] = x + (z + 1) * width;
-			indexArray[(x + z * (width - 1)) * 6 + 2] = x + 1 + z * width;
-			// Triangle 2.
-			indexArray[(x + z * (width - 1)) * 6 + 3] = x + 1 + z * width;
-			indexArray[(x + z * (width - 1)) * 6 + 4] = x + (z + 1) * width;
-			indexArray[(x + z * (width - 1)) * 6 + 5] = x + 1 + (z + 1) * width;
-		}
-	}
-
-	for (x = 0; x < width; x++)
-	{
-		for (z = 0; z < height; z++)
-		{
-			// Normal vectors.
-			tempNormal = giveNormal(x, (int)getCoord(x,z), z, vertexArray, indexArray, width, height);
-			normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
-			normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
-			normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
-		}
-	}
-
-	// End of terrain generation.
-
-	// Create Model and upload to GPU.
-	datamodel = LoadDataToModel(
-		vertexArray,
-		normalArray,
-		texCoordArray,
-		NULL,
-		indexArray,
-		vertexCount,
-		triangleCount * 3);
 }
 
-glm::vec3 DataHandler::giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
+glm::vec3 DataHandler::giveNormal(glm::vec3 vertex,int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
 {
-	glm::vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
+	
 	glm::vec3 normal = { 0, 1, 0 };
 
 	glm::vec3 normal1 = { 0, 0, 0 };

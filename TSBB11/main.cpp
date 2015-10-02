@@ -63,7 +63,7 @@ glm::mat4 projMat, viewMat;
 
 // Models:
 Model *m;
-Model *terrain;
+std::vector <Model*>* terrain;
 
 // Datahandler for terrain data
 DataHandler* dataHandler;
@@ -154,8 +154,10 @@ void display(void)
 	trans = glm::translate(terrainTrans);
 	total = trans;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
-	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
-
+	for (int i = 0; i < terrain->size(); i++)
+	{
+		DrawModel(terrain->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
+	}
 	// Teapot:
 	glm::vec3 teapotTrans = glm::vec3(200, 0, 200);
 	trans = glm::translate(teapotTrans);
