@@ -24,16 +24,16 @@ end
 %takes into concideration of the diffuse is large. They solve for the next
 %timestep using Gauss-Seidel method to solve the equation system. The
 %matrix is sparse so we can do this
-function [new_density] = diffuse(N,bound_for_XorY,new_density,starting_density,diff_const,dt)
-    a = dt*diff_const*N*N;
+function [output] = diffuse(N,bound_for_XorY,output,starting,diff_const,dt)
+    a = dt*diff_const*N*N; %Difusion rate
     
     for k = 1:20
-        for i = 2:N
+        for i = 2:N 
             for j = 2:N
-               new_density(i,j) = (starting_density(i,j) +a*(new_density(i-1,j) + new_density(i+1,j) + new_density(i,j-1) + new_density(i,j+1)))/(1+4*a);
+               output(i,j) = (starting(i,j) +a*(output(i-1,j) + output(i+1,j) + output(i,j-1) + output(i,j+1)))/(1+4*a);
             end
         end
-        set_bnd(N,bound_for_XorY,new_density);
+        set_bnd(N,bound_for_XorY,output);
     end
 end
 
@@ -41,96 +41,98 @@ end
 %try and find what particle in the PREVIOUS step that will end up in the
 %exact middle in the current step. That is why we will use 2 different
 %containers. So basically simple linear backtracing
-function [density] = advect(N, bound_for_XorY, density, velocity, dt)
-    dt0 = dt*N;
-    for i = 2:N
-        for j = 2:N
-           x = i -dt0*density(i,j);
-           y = j -dt0*velocity(i,j);
-           if (x < 0.5) %checks the boundry conditions, we cant be outside the area
-              x = 0.5; 
-           end
-           if (x > N+0.5)
-              x = N+0.5;
-           end
-           i0 = round(x); %this rounds up, be careful code in paper i0 = (int)x
-           i1 = i0+1;
-           
-           if(y < 0.5)
-              y = 0.5; 
-           end
-           if( y > N+0.5)
-            y = N+0.5;
-           end
-           j0 = round(y); %this rounds up, be careful code in paper j0 = (int)y
-           j1 = j0+1;
-           
-           s1 = x - i0;
-           s0 = 1 - s1;
-           t1 = y-j0;
-           t0 = 1-t1;
-           density(i,j) = s0*(t0*d0(i0,j0) +t1*d0(i0,j1)) + s1*(t0*d0(i1,j0) + t1*d0(i1,j1));
-        end
-    end
-    set_bnd(N,bound_for_XorY,density);
+function [density] = advect(N, b, d, d0, u, v, dt)
+   dt0 = dt*N;
+   for i = 2:N
+      for j = 2:N
+         x = i - dt0*u(i,j);
+         y = j - dt0*v(i,j);
+         
+         if(x < 0.5)
+            x = 0.5;
+         elseif (x > N+0.5)
+             x = N + 0.5;
+         end
+                        
+         if(y < 0.5)
+            y = 0.5; 
+         elseif (y > N + 0.5)
+             y = N + 0.5;
+         end
+         
+         i0 = round(x); % i0 = (int) x
+         i1 = i0 +1;
+         j0 = round(y); % j0 = (int) y
+         j1 = j0 + 1;
+         
+         s1 = x - i0;
+         s0 = 1 - s1;
+         t1 = y - j0;
+         t0 = 1 - t1;
+         
+         d(i,j) = s0*(  t0*d0(i0,j0) + t1*d0(i0,j1)  ) + s1(  t0*d0(i1,j0) + t1*d0(i1,j1)  );
+      end
+   end
+   
+   set_bnd(N, b, d);
 end
 
 
 %this function adds the dense part into 1 convenient step. Here the source
 %denseties is contained in x0.
-function [output_density] = dense_step(N, output_density, source_densities, density, velocity, diff, dt)
-    add_source(N, output_density, source_densities, dt);
-    %SWAP(x0,x) so for the difuse function swap the places of x and x0
-    diffuse(N, 0, output_density, source_densities, diff, dt); %not done here
-    %SWAP(x0,x) so for the advect function use the normal X and X0
-    advect(N, 0, output_density, source_densities, density, velocity, dt); %as it should be
+function [output] = dense_step(N, output, source, density, velocity, diff, dt)
+    add_source(N, output, source, dt);
+    %SWAP(output,source)
+    diffuse(N, 0, output, source, diff, dt); %not done here
+    %SWAP(output,source) so for the advect function use the normal X and X0
+    advect(N, 0, output, source, density, velocity, dt); %as it should be
 end
 
-function [] = vel_step(N, output_density, output_velocity, force_density, force_velocity, visc, dt)
-    add_source(N, output_density, force_density, dt);
-    add_source(N, output_velocity, force_velocity, dt);
+function [] = vel_step(N, density, velocity, force_density, force_velocity, visc, dt)
+    add_source(N, density, force_density, dt);
+    add_source(N, velocity, force_velocity, dt);
     
-    %SWAP(u0,u)
-    diffuse(N, 1, output_density, force_density, visc, dt); %have not swapped here =/
-    %SWAP(v0,v)
-    diffuse(N, 2, output_velocity, force_velocity, visc, dt); %have not swapped here =/
-    project(N, output_density, output_velocity, force_density, force_velocity); %still not swapped
-    %SWAP(u0, u)
-    %SWAP(v0, v)
-    advect( N, 1, output_density, force_density, force_density, force_velocity, dt); %as it should be
-    advect(N, 2, output_velocity, force_velocity, force_density, force_velocity, dt); %as it should be
-    project(N, output_density, output_velocity, force_density, force_velocity);
+    %SWAP(density,force_density)
+    diffuse(N, 1, density, force_density, visc, dt); %have not swapped here =/
+    %SWAP(force_velocity,velocity)
+    diffuse(N, 2, velocity, force_velocity, visc, dt); %have not swapped here =/
+    project(N, density, velocity, force_density, force_velocity); %still not swapped
+    %SWAP(force_density, density)
+    %SWAP(force_velocity, velocity)
+    advect( N, 1, density, force_density, force_density, force_velocity, dt); %as it should be
+    advect(N, 2, velocity, force_velocity, force_density, force_velocity, dt); %as it should be
+    project(N, density, velocity, force_density, force_velocity);
 end
 
-function [output_density, output_velocity] = project(N, output_density, output_velocity, project, div)
+function [density, velocity] = project(N, density, velocity, preassure, div)
     h = 1.0/N;
     
     for i = 1:N
         for j = 1:N
-           div(i,j) = -0.5*h*(output_density(i+1,j) -output_density(i-1,j) + output_velocity(i,j+1) - output_velocity(i,j-1));
-           project(i,j) = 0;
+           div(i,j) = -0.5*h*(density(i+1,j) -density(i-1,j) + velocity(i,j+1) - velocity(i,j-1));
+           preassure(i,j) = 0;
         end
     end
     set_bnd(N,0,div);
-    set_bnd(N,0,project);
+    set_bnd(N,0,preassure);
     
     for k = 1:20
        for i = 1:N
           for j = 1:N
-             project(i,j) = (div(i,j) + project(i-1,j) + project(i+1,j) +project(i,j-1) + project(i,j+1))/4; 
+             preassure(i,j) = (div(i,j) + preassure(i-1,j) + preassure(i+1,j) +preassure(i,j-1) + preassure(i,j+1))/4; 
           end
        end
-       set_bnd(N,0,project);
+       set_bnd(N,0,preassure);
     end
     
     for i = 1:N
        for j = 1:N
-          output_density(i,j) = output_density(i,j) - 0.5*(project(i+1,j) - project(i-1,j))/h;
-          output_velocity(i,j) = output_velocity(i,j) - 0.5*(project(i,j+1) - project(i,j-1))/h;
+          density(i,j) = density(i,j) - 0.5*(preassure(i+1,j) - preassure(i-1,j))/h;
+          velocity(i,j) = velocity(i,j) - 0.5*(preassure(i,j+1) - preassure(i,j-1))/h;
        end
     end
-    set_bnd(N,1,output_density);
-    set_bnd(N,2,output_velocity);
+    set_bnd(N,1,density);
+    set_bnd(N,2,velocity);
 end
 
 function [] = set_bnd(N, bound_for_XorY, x)
