@@ -28,7 +28,7 @@
 #include "gtx/string_cast.hpp"
 #include "SDL_util.h"
 #include "camera.h"
-#include "readData.h"
+//#include "readData.h"
 #include "voxel.h"
 
 #ifndef NULL
@@ -144,14 +144,15 @@ void init(void)
 	//Construct the voxelgrid of size x,y,z (for now 50,50,50 to not slow down
 	//the rest of the program
 
-	grid = new Voxelgrid();
-	grid->setVoxel(500,500,500,1,1);
+
 
 
 	dataHandler = new DataHandler("resources/output.min.asc", 500.0f);
+
 	terrain = dataHandler->datamodel;
 
-
+	grid = new Voxelgrid(dataHandler);
+	grid->setVoxel(500,500,500,true, 1, 1);
 
 
 	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");  // puts texture on teapot
@@ -187,6 +188,8 @@ void init(void)
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 }
+
+
 
 void display(void)
 {
@@ -657,6 +660,8 @@ int main(int argc, char *argv[])
 	if (timer_id == 0){
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
+
+
 	set_event_handler(&event_handler);
 	inf_loop();
 	return 0;
