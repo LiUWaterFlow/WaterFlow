@@ -32,7 +32,7 @@ after_success:
   - cd developmentDocs/
   -
   - # clone the whole repo again, but switch to gh_pages branch
-  - git clone https://github.com/pjuren/TinyTest .
+  - git clone https://github.com/LiUWaterFlow/WaterFlow.git .
   - git checkout gh-pages
   -
   - # go back up and build the documentation, pointing it towards
@@ -44,4 +44,4 @@ after_success:
   - cd developmentDocs
   - git add --all .
   - git commit -m "Auto-updating Doxygen developer documentation"
-  - git push https://${GH_TOKEN}@github.com/yourUsername/yourRepoName gh-pages
+  - git push https://${GH_TOKEN}@github.com/LiUWaterFlow/WaterFlow.git gh-pages
