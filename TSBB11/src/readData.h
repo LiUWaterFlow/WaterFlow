@@ -26,6 +26,7 @@ private:
 	mapdata* readdata;
 	Model* datamodel;
 	GLfloat terrainScale;
+	int sampleFactor;
 
 	void readDEM(const char* inputfile);
 	void scaleDataBefore();
@@ -34,12 +35,12 @@ private:
 
 	void performGPUNormConv();
 
-	void GenerateTerrain();
+	void GenerateTerrain(int sampleFactor);
 	glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
 	GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height);
 
 public:
-	DataHandler(const char* inputfile, GLfloat tScale = 500.0f);
+	DataHandler(const char* inputfile, int sampleFactor = 1, GLfloat tScale = 500.0f);
 	~DataHandler();
 
 	void performNormalizedConvolution();
@@ -50,6 +51,7 @@ public:
 	int getWidth();
 	int getHeight();
 	int getElem();
+	int getScale();
 
 	Model *getModel();
 };

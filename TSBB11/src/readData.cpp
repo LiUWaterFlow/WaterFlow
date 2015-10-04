@@ -29,10 +29,20 @@ FBOstruct *fbo1, *fbo2, *fbo3;
 GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
 int tW, tH;
 
-DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
+
+/*
+* Datahandler constructor takes 1 to 3 arguments. The first and mandatory argument is the inputfile.
+*	The second sampleFactor, determines the density of the sampling of said file for the model. This should always be 
+*	power of 2 (1,2,4...). Defaults to 1. Suggested to scale the model in size with the sampleFactor when rendering. 
+*	The third is the heightscaling of the model. Defaults to 500. Note that the final scale used will be tScale/sampleFactor. 
+*	so that only changing the sampleFactor should not change the overall height feel of the model. 
+*/
+
+DataHandler::DataHandler(const char* inputfile,int sampleFactor, GLfloat tScale)
 {
 	readdata = new mapdata();
 	terrainScale = tScale;
+	this->sampleFactor = sampleFactor;
 
 	cout << "Starting loading DEM data..." << endl;
 	readDEM(inputfile);
@@ -58,7 +68,7 @@ DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
 
 	cout << "Generating terrain from DEM data..." << endl;
-	GenerateTerrain();
+	GenerateTerrain(sampleFactor);
 }
 
 DataHandler::~DataHandler()
@@ -89,6 +99,11 @@ float DataHandler::getCoord(int col, int row)
 	}
 
 	return retdata;
+}
+
+int DataHandler::getScale()
+{
+	return sampleFactor;
 }
 
 float* DataHandler::getData()
@@ -224,7 +239,7 @@ void DataHandler::performNormalizedConvolution()
 	scaleDataAfter();
 
 	cout << "Generating new Model..." << endl;
-	GenerateTerrain();
+	GenerateTerrain(this->sampleFactor);
 	cout << "Done generating new model..." << endl;
 
 	// Reset initial GL inits
@@ -311,10 +326,12 @@ void DataHandler::performGPUNormConv()
 	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 }
 
-void DataHandler::GenerateTerrain() 
+void DataHandler::GenerateTerrain(int sampleFactor) 
 {
-	int width = getWidth();
-	int height = getHeight();
+	//Reduce width and height with samplefactor
+	int width = getWidth()/sampleFactor;
+	int height = getHeight()/sampleFactor;
+	
 	int vertexCount = width * height;
 	int triangleCount = (width - 1) * (height - 1) * 2;
 	int x, z;
@@ -332,7 +349,7 @@ void DataHandler::GenerateTerrain()
 		{
 			// Vertex array.
 			vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
-			vertexArray[(x + z * width) * 3 + 1] = getCoord(x, z) * terrainScale; // Terrain height.
+			vertexArray[(x + z * width) * 3 + 1] = getCoord(x*sampleFactor, z*sampleFactor) * terrainScale/sampleFactor; // Terrain height compensated with samplefactor
 			vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
 
 			// Texture coordinates.
@@ -361,7 +378,7 @@ void DataHandler::GenerateTerrain()
 		for (z = 0; z < height; z++)
 		{
 			// Normal vectors.
-			tempNormal = giveNormal(x, (int)getCoord(x,z), z, vertexArray, indexArray, width, height);
+			tempNormal = giveNormal(x, (int)getCoord(x*sampleFactor,z*sampleFactor), z, vertexArray, indexArray, width, height);
 			normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
 			normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
 			normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
