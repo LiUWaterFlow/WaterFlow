@@ -108,67 +108,77 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00009"></a>00009 <span class="preprocessor"></span><span class="preprocessor">    #include &lt;OpenGL/gl3.h&gt;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">    #include &lt;SDL2/SDL.h&gt;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#else</span>
-<a name="l00012"></a>00012 <span class="preprocessor"></span><span class="preprocessor">    #include &quot;glew.h&quot;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">    #include &quot;Windows/sdl2/SDL.h&quot;</span>
-<a name="l00014"></a>00014 <span class="preprocessor">#endif</span>
-<a name="l00015"></a>00015 <span class="preprocessor"></span>
-<a name="l00016"></a>00016 
-<a name="l00017"></a>00017 <span class="comment">/******************************************************************************</span>
-<a name="l00018"></a>00018 <span class="comment"> * Koder för egna event, såsom timers och liknande.</span>
-<a name="l00019"></a>00019 <span class="comment"> * Används för att indentifiera ett specifikt event.</span>
-<a name="l00020"></a>00020 <span class="comment"> *</span>
-<a name="l00021"></a>00021 <span class="comment"> *****************************************************************************/</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="comment">/******************************************************************************</span>
-<a name="l00024"></a>00024 <span class="comment"> * Sätt funktionen som anropas i inf_loop varje gång skärmen skall uppdateras</span>
-<a name="l00025"></a>00025 <span class="comment"> * Inparametrar::   void (*display_func)(void)  pekare till funktionen.</span>
-<a name="l00026"></a>00026 <span class="comment"> *          får INTE returnera något</span>
-<a name="l00027"></a>00027 <span class="comment"> * Returnerar:      void</span>
-<a name="l00028"></a>00028 <span class="comment"> *****************************************************************************/</span>
-<a name="l00029"></a>00029 <span class="keywordtype">void</span> set_sdl_display_func(<span class="keywordtype">void</span> (*display_func)(<span class="keywordtype">void</span>));
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031 <span class="comment">/******************************************************************************</span>
-<a name="l00032"></a>00032 <span class="comment"> * Sätt lämplig funktion för att hantera SD_event event</span>
-<a name="l00033"></a>00033 <span class="comment"> *****************************************************************************/</span>
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="keywordtype">void</span> set_event_handler(<span class="keywordtype">void</span> (*event_func)(SDL_Event event));
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037 <span class="comment">/******************************************************************************</span>
-<a name="l00038"></a>00038 <span class="comment"> * Initierar SDLs system så att allt bör kunna fungera</span>
-<a name="l00039"></a>00039 <span class="comment"> * Inparametrar:    const char* title       Titel till fönstret</span>
-<a name="l00040"></a>00040 <span class="comment"> *          int width           Bredd på fönstret</span>
-<a name="l00041"></a>00041 <span class="comment"> *          int height          Höjd på fönstret</span>
-<a name="l00042"></a>00042 <span class="comment"> * Returnerar:      -</span>
+<a name="l00012"></a>00012 <span class="preprocessor"></span><span class="preprocessor">    #ifdef  __linux__</span>
+<a name="l00013"></a>00013 <span class="preprocessor"></span><span class="preprocessor">        #define GL_GLEXT_PROTOTYPES</span>
+<a name="l00014"></a>00014 <span class="preprocessor"></span><span class="preprocessor">        #include &lt;GL/gl.h&gt;</span>
+<a name="l00015"></a>00015 <span class="preprocessor">        #include &lt;GL/glu.h&gt;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">        #include &lt;GL/glx.h&gt;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">        #include &lt;GL/glext.h&gt;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">        #include &lt;SDL2/SDL.h&gt;</span>
+<a name="l00019"></a>00019         
+<a name="l00020"></a>00020         
+<a name="l00021"></a>00021 <span class="preprocessor">    #else</span>
+<a name="l00022"></a>00022 <span class="preprocessor"></span><span class="preprocessor">        #include &quot;glew.h&quot;</span>
+<a name="l00023"></a>00023 <span class="preprocessor">        #include &quot;Windows/sdl2/SDL.h&quot;</span>
+<a name="l00024"></a>00024 <span class="preprocessor">    #endif</span>
+<a name="l00025"></a>00025 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span>
+<a name="l00027"></a>00027 <span class="comment">/******************************************************************************</span>
+<a name="l00028"></a>00028 <span class="comment"> * Koder för egna event, såsom timers och liknande.</span>
+<a name="l00029"></a>00029 <span class="comment"> * Används för att indentifiera ett specifikt event.</span>
+<a name="l00030"></a>00030 <span class="comment"> *</span>
+<a name="l00031"></a>00031 <span class="comment"> *****************************************************************************/</span>
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 <span class="comment">/******************************************************************************</span>
+<a name="l00034"></a>00034 <span class="comment"> * Sätt funktionen som anropas i inf_loop varje gång skärmen skall uppdateras</span>
+<a name="l00035"></a>00035 <span class="comment"> * Inparametrar::   void (*display_func)(void)  pekare till funktionen.</span>
+<a name="l00036"></a>00036 <span class="comment"> *          får INTE returnera något</span>
+<a name="l00037"></a>00037 <span class="comment"> * Returnerar:      void</span>
+<a name="l00038"></a>00038 <span class="comment"> *****************************************************************************/</span>
+<a name="l00039"></a>00039 <span class="keywordtype">void</span> set_sdl_display_func(<span class="keywordtype">void</span> (*display_func)(<span class="keywordtype">void</span>));
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 <span class="comment">/******************************************************************************</span>
+<a name="l00042"></a>00042 <span class="comment"> * Sätt lämplig funktion för att hantera SD_event event</span>
 <a name="l00043"></a>00043 <span class="comment"> *****************************************************************************/</span>
-<a name="l00044"></a>00044 <span class="keywordtype">void</span> init_SDL(<span class="keyword">const</span> <span class="keywordtype">char</span>* title, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="comment">/******************************************************************************</span>
-<a name="l00047"></a>00047 <span class="comment"> * oändlig loop som väntar på events och hanterar dessa. Uppdaterar skärmen.</span>
-<a name="l00048"></a>00048 <span class="comment"> * Inparametrar:    -</span>
-<a name="l00049"></a>00049 <span class="comment"> * Returnerar:      -</span>
-<a name="l00050"></a>00050 <span class="comment"> *****************************************************************************/</span>
-<a name="l00051"></a>00051 <span class="keywordtype">void</span> inf_loop();
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="keywordtype">void</span> get_window_size(<span class="keywordtype">int</span>* w, <span class="keywordtype">int</span>* h);
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 <span class="comment">/*****************************************************************************</span>
-<a name="l00056"></a>00056 <span class="comment"> * Byt buffer, ersätter glutSwapBuffers</span>
-<a name="l00057"></a>00057 <span class="comment"> * ***************************************************************************/</span>
-<a name="l00058"></a>00058 <span class="keywordtype">void</span> swap_buffers();
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="keywordtype">void</span> resize_window(SDL_Event event);
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 <span class="comment">//void handle_keypress(SDL_Event event);</span>
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064 <span class="keywordtype">void</span> exit_prog(<span class="keywordtype">int</span>);
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="comment">//void handle_userevent(SDL_Event event);</span>
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="preprocessor">#ifdef __cplusplus</span>
-<a name="l00069"></a>00069 <span class="preprocessor"></span>}
-<a name="l00070"></a>00070 <span class="preprocessor">#endif</span>
-<a name="l00071"></a>00071 <span class="preprocessor"></span>
-<a name="l00072"></a>00072 <span class="preprocessor">#endif //SDL_UTIL_H</span>
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045 <span class="keywordtype">void</span> set_event_handler(<span class="keywordtype">void</span> (*event_func)(SDL_Event event));
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047 <span class="comment">/******************************************************************************</span>
+<a name="l00048"></a>00048 <span class="comment"> * Initierar SDLs system så att allt bör kunna fungera</span>
+<a name="l00049"></a>00049 <span class="comment"> * Inparametrar:    const char* title       Titel till fönstret</span>
+<a name="l00050"></a>00050 <span class="comment"> *          int width           Bredd på fönstret</span>
+<a name="l00051"></a>00051 <span class="comment"> *          int height          Höjd på fönstret</span>
+<a name="l00052"></a>00052 <span class="comment"> * Returnerar:      -</span>
+<a name="l00053"></a>00053 <span class="comment"> *****************************************************************************/</span>
+<a name="l00054"></a>00054 <span class="keywordtype">void</span> init_SDL(<span class="keyword">const</span> <span class="keywordtype">char</span>* title, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 <span class="comment">/******************************************************************************</span>
+<a name="l00057"></a>00057 <span class="comment"> * oändlig loop som väntar på events och hanterar dessa. Uppdaterar skärmen.</span>
+<a name="l00058"></a>00058 <span class="comment"> * Inparametrar:    -</span>
+<a name="l00059"></a>00059 <span class="comment"> * Returnerar:      -</span>
+<a name="l00060"></a>00060 <span class="comment"> *****************************************************************************/</span>
+<a name="l00061"></a>00061 <span class="keywordtype">void</span> inf_loop();
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 <span class="keywordtype">void</span> get_window_size(<span class="keywordtype">int</span>* w, <span class="keywordtype">int</span>* h);
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065 <span class="comment">/*****************************************************************************</span>
+<a name="l00066"></a>00066 <span class="comment"> * Byt buffer, ersätter glutSwapBuffers</span>
+<a name="l00067"></a>00067 <span class="comment"> * ***************************************************************************/</span>
+<a name="l00068"></a>00068 <span class="keywordtype">void</span> swap_buffers();
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 <span class="keywordtype">void</span> resize_window(SDL_Event event);
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 <span class="comment">//void handle_keypress(SDL_Event event);</span>
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 <span class="keywordtype">void</span> exit_prog(<span class="keywordtype">int</span>);
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 <span class="comment">//void handle_userevent(SDL_Event event);</span>
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078 <span class="preprocessor">#ifdef __cplusplus</span>
+<a name="l00079"></a>00079 <span class="preprocessor"></span>}
+<a name="l00080"></a>00080 <span class="preprocessor">#endif</span>
+<a name="l00081"></a>00081 <span class="preprocessor"></span>
+<a name="l00082"></a>00082 <span class="preprocessor">#endif //SDL_UTIL_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -189,7 +199,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>SDL_util.h</b>      </li>
 
-    <li class="footer">Generated on Mon Oct 5 2015 16:26:42 for Waterflow by
+    <li class="footer">Generated on Mon Oct 5 2015 16:43:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

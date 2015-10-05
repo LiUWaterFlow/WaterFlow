@@ -17,6 +17,6 @@ var NAVTREEINDEX =
 "functions_func.html":[2,2,1],
 "functions_vars.html":[2,2,2],
 "files.html":[3,0],
-"read_data_8cpp.html":[3,0,3],
-"read_data_8h.html":[3,0,4]
+"read_data_8cpp.html":[3,0,10],
+"read_data_8h.html":[3,0,11]
 };

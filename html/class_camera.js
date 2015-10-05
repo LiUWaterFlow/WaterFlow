@@ -10,7 +10,11 @@ var class_camera =
     [ "translate", "class_camera.html#acbffe45b3533042437a72cc0909819c5", null ],
     [ "update", "class_camera.html#a42cda7239981a5618660d04bd5893556", null ],
     [ "upload", "class_camera.html#a33af359791654555344f23dabb819302", null ],
+    [ "look_at_pos", "class_camera.html#a86c70506ae2ea502fcf1ffdfbdee0087", null ],
     [ "matrix", "class_camera.html#aee86e6e3700c10d77dfc450ed8565946", null ],
+    [ "position", "class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5", null ],
     [ "program", "class_camera.html#a6855cf301b65c300407d0dc5b2397d78", null ],
-    [ "radius", "class_camera.html#a5c68977b51149b1733357431a5d00391", null ]
+    [ "radius", "class_camera.html#a5c68977b51149b1733357431a5d00391", null ],
+    [ "up", "class_camera.html#a3fe5f351380fb118ffc600591769f049", null ],
+    [ "x", "class_camera.html#af4142ba6c032bb34f4febeab8abae3ea", null ]
 ];
