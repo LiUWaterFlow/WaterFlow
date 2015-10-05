@@ -224,6 +224,16 @@ void DataHandler::performNormalizedConvolution()
 	scaleDataAfter();
 
 	cout << "Generating new Model..." << endl;
+	
+	//remove all data from previous model before generating a new one.
+	delete datamodel->vertexArray;
+	delete datamodel->normalArray;
+	delete datamodel->texCoordArray;
+	delete datamodel->colorArray; // Rarely used
+	delete datamodel->indexArray;
+	delete datamodel;
+	
+
 	GenerateTerrain();
 	cout << "Done generating new model..." << endl;
 
