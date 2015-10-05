@@ -43,6 +43,6 @@ script: make docs
 after_success:
   - # cd into the docs dir and commit and push the new docs.
   - cd ../docFiles
-  - git add --all .
-  - git commit -m "Auto-updating Doxygen developer documentation"
-  - git push https://${GH_TOKEN}@github.com/LiUWaterFlow/WaterFlow.git gh-pages
+  - # git add --all .
+  - # git commit -m "Auto-updating Doxygen developer documentation"
+  - # git push https://${GH_TOKEN}@github.com/LiUWaterFlow/WaterFlow.git gh-pages
