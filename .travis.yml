@@ -2,6 +2,7 @@
 branches:
   only:
     - doxygen
+	- master
 language: 
   - cpp
 compiler:
