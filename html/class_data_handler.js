@@ -16,7 +16,15 @@ var class_data_handler =
     [ "readDEM", "class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea", null ],
     [ "scaleDataAfter", "class_data_handler.html#a2c27269a72ae5429361231384fe04489", null ],
     [ "scaleDataBefore", "class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d", null ],
+    [ "combineshader", "class_data_handler.html#af82c24355927748f836e41b27bd1a635", null ],
+    [ "confidenceshader", "class_data_handler.html#a94c0583da9e0367f258b7b6359e34902", null ],
     [ "datamodel", "class_data_handler.html#ae571af48746b14e77c29e755801011b5", null ],
+    [ "fbo1", "class_data_handler.html#a38a1b197f0a21a0c6aef865bb69a1e18", null ],
+    [ "fbo2", "class_data_handler.html#ae3e5f46cb09db13f8ef1a2b5c3921490", null ],
+    [ "fbo3", "class_data_handler.html#a165430cb93bb4e564a976310b2c9d516", null ],
+    [ "filtershader", "class_data_handler.html#a51875d78b5e321f760caef586431e2d2", null ],
+    [ "plaintextureshader", "class_data_handler.html#a7e96418ccda72d6b2361280fea130b27", null ],
     [ "readdata", "class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb", null ],
+    [ "squareModel", "class_data_handler.html#a47df3b25b223addf0dd209f0e5044727", null ],
     [ "terrainScale", "class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce", null ]
 ];
