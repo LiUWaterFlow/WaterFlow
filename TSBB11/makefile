@@ -44,3 +44,6 @@ obj/%.o : src/%.cpp
 
 clean :
 	rm obj/*.o
+	
+docs:
+	doxygen resources/Doxyfile

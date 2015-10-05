@@ -1,3 +1,6 @@
+/// @file readData.cpp
+/// @brief Implementations of functions in readData.h
+
 #include "stdio.h"
 
 #include "readData.h"
@@ -11,53 +14,33 @@
 #include <string>
 
 
-
 using namespace std;
-
-GLfloat square[] = { -1, -1, 0,
--1, 1, 0,
-1, 1, 0,
-1, -1, 0 };
-GLfloat squareTexCoord[] = { 0, 0,
-0, 1,
-1, 1,
-1, 0 };
-GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
-
-Model* squareModel;
-FBOstruct *fbo1, *fbo2, *fbo3;
-GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
-int tW, tH;
 
 DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
 {
 	readdata = new mapdata();
 	terrainScale = tScale;
 
-	cout << "Starting loading DEM data..." << endl;
 	readDEM(inputfile);
-	cout << "Finished loading DEM data..." << endl;
-
-	cout << "Scaling DEM data..." << endl;
 	scaleDataBefore();
-
-	cout << "Compiling shaders..." << endl;
 
 	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
 	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
 	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
 	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
 
-	tW = getWidth();
-	tH = getHeight();
-
-	fbo1 = initFBO3(tW, tH, NULL);
-	fbo2 = initFBO3(tW, tH, NULL);
-	fbo3 = initFBO3(tW, tH, getData());
-	
+	// Create canvas to draw on
+	GLfloat square[] = { -1, -1, 0,
+		-1, 1, 0,
+		1, 1, 0,
+		1, -1, 0 };
+	GLfloat squareTexCoord[] = { 0, 0,
+		0, 1,
+		1, 1,
+		1, 0 };
+	GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
 
-	cout << "Generating terrain from DEM data..." << endl;
 	GenerateTerrain();
 }
 
@@ -72,12 +55,12 @@ float DataHandler::getCoord(int col, int row)
 	float retdata = 0;
 
 	if (readdata != NULL) {
-		
+
 		if(col < readdata->ncols && row < readdata->nrows)
 		{
 			index = col + row * readdata->ncols;
 		}
-		else 
+		else
 		{
 			cerr << "Input does not exist in data." << endl;
 			index = 0;
@@ -181,7 +164,7 @@ void DataHandler::scaleDataBefore()
 		// Set nodata to 0
 		if (getData()[i] < 0.05)
 			getData()[i] = 0.0f;
-	} 
+	}
 }
 
 // Data after normalized convolution should be between 0.1 and 1.0
@@ -197,38 +180,32 @@ void DataHandler::scaleDataAfter()
 
 void DataHandler::performNormalizedConvolution()
 {
+	// Initialize the FBO's
+	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
+	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
+	fbo3 = initFBO3(getWidth(), getHeight(), getData());
+
+	// Perform normalized convolution until no more NODATA
 	bool isNODATA = true;
-	float min;
 	while (isNODATA)
 	{
-		cout << "Starting five passes NC..." << endl;
 		for (int i = 0; i < 5; i++)
 			performGPUNormConv();
 
-		glReadPixels(0, 0, tW, tH, GL_RED, GL_FLOAT, getData());
+		glReadPixels(0, 0, getWidth(), getHeight(), GL_RED, GL_FLOAT, getData());
 
-		cout << "Checking Data for NODATA..." << endl;
 		isNODATA = false;
-		
-		min = 2.0f;
 		for (int i = 0; i < getElem() && !isNODATA; i++)
 		{
-			float data = getData()[i];
-			if (data < min)
-				min = data;
-			isNODATA = (data < 0.0001f);
+			isNODATA = (getData()[i] < 0.0001f);
 		}
 	}
-	
-	cout << "Scaling Data after NC..." << endl;
+
 	scaleDataAfter();
-
-	cout << "Generating new Model..." << endl;
 	GenerateTerrain();
-	cout << "Done generating new model..." << endl;
 
-	// Reset initial GL inits
-	useFBO(0L, fbo3, 0L);
+	// Reset to initial GL inits
+	useFBO(0L, 0L, 0L);
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -246,7 +223,7 @@ void DataHandler::performGPUNormConv()
 
 	// Activate shader program
 	glUseProgram(filtershader);
-	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)tW, (float)tH);
+	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getWidth(), (float)getHeight());
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -275,7 +252,7 @@ void DataHandler::performGPUNormConv()
 
 	// Activate shader program
 	glUseProgram(filtershader);
-	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)tW, (float)tH);
+	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getWidth(), (float)getHeight());
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -311,7 +288,7 @@ void DataHandler::performGPUNormConv()
 	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 }
 
-void DataHandler::GenerateTerrain() 
+void DataHandler::GenerateTerrain()
 {
 	int width = getWidth();
 	int height = getHeight();
@@ -495,5 +472,3 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 	}
 	return yheight;
 }
-
-
