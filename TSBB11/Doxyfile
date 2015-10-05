@@ -804,7 +804,6 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = ./lib \
-						 ./resources \
 						 ./src/shaders \
 						 ./src/common/Windows \
 						 ./src/common/mac \
