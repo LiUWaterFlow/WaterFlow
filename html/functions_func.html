@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -102,17 +103,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="contents">
 &#160;<ul>
-<li>Camera()
-: <a class="el" href="class_camera.html#acded68b89a4258a299097cd681e672fd">Camera</a>
-</li>
-<li>change_look_at_pos()
-: <a class="el" href="class_camera.html#a297f18afaf34645a8011ff660909f9a1">Camera</a>
-</li>
 <li>DataHandler()
 : <a class="el" href="class_data_handler.html#a57a8d9c6f6a3ebe16662c89354e0484d">DataHandler</a>
 </li>
-<li>forward()
-: <a class="el" href="class_camera.html#a79a967503bd1bedbaf430490b4e870a2">Camera</a>
+<li>GenerateTerrain()
+: <a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c">DataHandler</a>
 </li>
 <li>getCoord()
 : <a class="el" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608">DataHandler</a>
@@ -132,26 +127,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getWidth()
 : <a class="el" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22">DataHandler</a>
 </li>
+<li>giveHeight()
+: <a class="el" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7">DataHandler</a>
+</li>
+<li>giveNormal()
+: <a class="el" href="class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a">DataHandler</a>
+</li>
+<li>performGPUNormConv()
+: <a class="el" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f">DataHandler</a>
+</li>
 <li>performNormalizedConvolution()
 : <a class="el" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9">DataHandler</a>
 </li>
-<li>print_matrix()
-: <a class="el" href="class_camera.html#ae1b421e5b6a7e033e62e21e7899a9760">Camera</a>
+<li>readDEM()
+: <a class="el" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea">DataHandler</a>
 </li>
-<li>rotate()
-: <a class="el" href="class_camera.html#a0efdd1ea0536b3685a69550c01ffadce">Camera</a>
+<li>scaleDataAfter()
+: <a class="el" href="class_data_handler.html#a2c27269a72ae5429361231384fe04489">DataHandler</a>
 </li>
-<li>strafe()
-: <a class="el" href="class_camera.html#a6b6687be260b7a95cb74d5d9b76cfca0">Camera</a>
-</li>
-<li>translate()
-: <a class="el" href="class_camera.html#acbffe45b3533042437a72cc0909819c5">Camera</a>
-</li>
-<li>update()
-: <a class="el" href="class_camera.html#a42cda7239981a5618660d04bd5893556">Camera</a>
-</li>
-<li>upload()
-: <a class="el" href="class_camera.html#a33af359791654555344f23dabb819302">Camera</a>
+<li>scaleDataBefore()
+: <a class="el" href="class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d">DataHandler</a>
 </li>
 <li>~DataHandler()
 : <a class="el" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4">DataHandler</a>
@@ -163,7 +158,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -176,7 +171,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

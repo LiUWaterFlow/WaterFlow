@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -75,7 +76,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">main.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="main_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// The code below is based upon Ingemar Ragnemalm&#39;s code provided for the</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// The code below is based upon Ingemar Ragnemalm&#39;s code provided for the</span>
 <a name="l00002"></a>00002 <span class="comment">// course TSBK03 at Link�ping University. The link to the original shell is</span>
 <a name="l00003"></a>00003 <span class="comment">// http://www.ragnemalm.se/lightweight/psychteapot+MicroGlut-Windows-b1.zip</span>
 <a name="l00004"></a>00004 <span class="comment">// which according to the web site was updated 2015-08-17.</span>
@@ -114,9 +114,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00015"></a>00015 <span class="preprocessor">#endif</span>
 <a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#include &lt;cstdlib&gt;</span>
 <a name="l00017"></a>00017 <span class="preprocessor">#include &lt;iostream&gt;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_g_l__utilities_8h.html">GL_utilities.h</a>&quot;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="loadobj_8h.html">loadobj.h</a>&quot;</span>
-<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;<a class="code" href="_load_t_g_a_8h.html">LoadTGA.h</a>&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;GL_utilities.h&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;loadobj.h&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;LoadTGA.h&quot;</span>
 <a name="l00021"></a>00021 <span class="preprocessor">#include &quot;sdl2/SDL.h&quot;</span>
 <a name="l00022"></a>00022 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
 <a name="l00023"></a>00023 <span class="preprocessor">#include &quot;gtc/matrix_transform.hpp&quot;</span>
@@ -125,74 +125,74 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00026"></a>00026 <span class="preprocessor">#include &quot;gtx/transform2.hpp&quot;</span>
 <a name="l00027"></a>00027 <span class="preprocessor">#include &quot;ext.hpp&quot;</span>
 <a name="l00028"></a>00028 <span class="preprocessor">#include &quot;gtx/string_cast.hpp&quot;</span>
-<a name="l00029"></a>00029 <span class="preprocessor">#include &quot;<a class="code" href="_s_d_l__util_8h.html">SDL_util.h</a>&quot;</span>
-<a name="l00030"></a>00030 <span class="preprocessor">#include &quot;<a class="code" href="camera_8h.html">camera.h</a>&quot;</span>
-<a name="l00031"></a>00031 <span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html">readData.h</a>&quot;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#include &quot;SDL_util.h&quot;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#include &quot;camera.h&quot;</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html" title="Contains datatypes and functions to handle input terrain.">readData.h</a>&quot;</span>
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 <span class="preprocessor">#ifndef NULL</span>
-<a name="l00034"></a><a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">00034</a> <span class="preprocessor"></span><span class="preprocessor">#define NULL 0L</span>
+<a name="l00034"></a>00034 <span class="preprocessor"></span><span class="preprocessor">#define NULL 0L</span>
 <a name="l00035"></a>00035 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00036"></a>00036 <span class="preprocessor"></span>
 <a name="l00037"></a>00037 <span class="comment">// Sk�rmstorlek</span>
-<a name="l00038"></a><a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">00038</a> <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a> = 600;
-<a name="l00039"></a><a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">00039</a> <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a> = 600; <span class="comment">// Defines instead?</span>
-<a name="l00040"></a><a class="code" href="main_8cpp.html#adcd1e787935be9954487afa497c7c563">00040</a> <span class="keywordtype">float</span> <a class="code" href="main_8cpp.html#adcd1e787935be9954487afa497c7c563">scl</a> = 6;
-<a name="l00041"></a><a class="code" href="main_8cpp.html#a95f24195b5ef6f6a6ac70ecc08129fb9">00041</a> <span class="preprocessor">#define DRAW_DISTANCE 10000.0</span>
+<a name="l00038"></a>00038 <span class="keywordtype">int</span> width = 600;
+<a name="l00039"></a>00039 <span class="keywordtype">int</span> height = 600; <span class="comment">// Defines instead?</span>
+<a name="l00040"></a>00040 <span class="keywordtype">float</span> scl = 6;
+<a name="l00041"></a>00041 <span class="preprocessor">#define DRAW_DISTANCE 10000.0</span>
 <a name="l00042"></a>00042 <span class="preprocessor"></span>
-<a name="l00043"></a><a class="code" href="main_8cpp.html#a1317b1ddd7ff5f70ede2a9ee3f4481de">00043</a> <span class="preprocessor">#define DISPLAY_TIMER 0</span>
-<a name="l00044"></a><a class="code" href="main_8cpp.html#a238c53c07c05119952391d18f00bf3bb">00044</a> <span class="preprocessor"></span><span class="preprocessor">#define UPDATE_TIMER 1</span>
+<a name="l00043"></a>00043 <span class="preprocessor">#define DISPLAY_TIMER 0</span>
+<a name="l00044"></a>00044 <span class="preprocessor"></span><span class="preprocessor">#define UPDATE_TIMER 1</span>
 <a name="l00045"></a>00045 <span class="preprocessor"></span>
-<a name="l00046"></a><a class="code" href="main_8cpp.html#aac3553b3932cbfeeac4526ce7ca0336b">00046</a> <span class="preprocessor">#define SPEED 10.0f</span>
+<a name="l00046"></a>00046 <span class="preprocessor">#define SPEED 10.0f</span>
 <a name="l00047"></a>00047 <span class="preprocessor"></span>
-<a name="l00048"></a><a class="code" href="main_8cpp.html#a598a3330b3c21701223ee0ca14316eca">00048</a> <span class="preprocessor">#define PI 3.14159265358979323846f</span>
+<a name="l00048"></a>00048 <span class="preprocessor">#define PI 3.14159265358979323846f</span>
 <a name="l00049"></a>00049 <span class="preprocessor"></span>
 <a name="l00050"></a>00050 <span class="comment">// SDL functions</span>
-<a name="l00051"></a>00051 <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a52897291d546db049af70aa3b457c01f">handle_keypress</a>(SDL_Event event);
-<a name="l00052"></a>00052 <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#afb1ca752c2f8070ebd9c57e20bb4f87a">handle_mouse</a>(SDL_Event event);
+<a name="l00051"></a>00051 <span class="keywordtype">void</span> handle_keypress(SDL_Event event);
+<a name="l00052"></a>00052 <span class="keywordtype">void</span> handle_mouse(SDL_Event event);
 <a name="l00053"></a>00053 <span class="keyword">static</span> <span class="keywordtype">void</span> event_handler(SDL_Event event);
-<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#adf1515f68cf7b1b3a25f6dffb13a04fb">handle_userevent</a>(SDL_Event event);
-<a name="l00055"></a>00055 <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a5724d64b5c3a8c56e926b1ea1d18551c">check_keys</a>();
+<a name="l00054"></a>00054 <span class="keywordtype">void</span> handle_userevent(SDL_Event event);
+<a name="l00055"></a>00055 <span class="keywordtype">void</span> check_keys();
 <a name="l00056"></a>00056 <span class="comment">// -------------</span>
 <a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a9b98f160965b39fa4ed6952df4cd0ead">reshape</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, glm::mat4 &amp;<a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">projectionMatrix</a>);
+<a name="l00058"></a>00058 <span class="keywordtype">void</span> reshape(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, glm::mat4 &amp;projectionMatrix);
 <a name="l00059"></a>00059 <span class="comment">// -------------------------------------------------------------</span>
 <a name="l00060"></a>00060 
 <a name="l00061"></a>00061 <span class="comment">// Transformation matrices:</span>
-<a name="l00062"></a><a class="code" href="main_8cpp.html#a46c8f520ed1b17ea9de213e3f8a5ee0c">00062</a> glm::mat4 <a class="code" href="main_8cpp.html#a965ce17d376174f5b2292e41b99b0723">projMat</a>, <a class="code" href="main_8cpp.html#a46c8f520ed1b17ea9de213e3f8a5ee0c">viewMat</a>;
+<a name="l00062"></a>00062 glm::mat4 projMat, viewMat;
 <a name="l00063"></a>00063 
 <a name="l00064"></a>00064 <span class="comment">// Models:</span>
-<a name="l00065"></a><a class="code" href="main_8cpp.html#a294c40564f429c5e459798a778ea2adf">00065</a> <a class="code" href="struct_model.html">Model</a> *<a class="code" href="main_8cpp.html#a294c40564f429c5e459798a778ea2adf">m</a>;
-<a name="l00066"></a><a class="code" href="main_8cpp.html#ab279a1ca4c1fbddbb782174f638e67c6">00066</a> <a class="code" href="struct_model.html">Model</a> *<a class="code" href="main_8cpp.html#ab279a1ca4c1fbddbb782174f638e67c6">terrain</a>;
+<a name="l00065"></a>00065 <a class="code" href="struct_model.html">Model</a> *m;
+<a name="l00066"></a>00066 <a class="code" href="struct_model.html">Model</a> *terrain;
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068 <span class="comment">// Datahandler for terrain data</span>
-<a name="l00069"></a><a class="code" href="main_8cpp.html#a4360439460c933629d0cee89a8edef9b">00069</a> <a class="code" href="class_data_handler.html">DataHandler</a>* <a class="code" href="main_8cpp.html#a4360439460c933629d0cee89a8edef9b">dataHandler</a>;
+<a name="l00069"></a>00069 <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* dataHandler;
 <a name="l00070"></a>00070 
 <a name="l00071"></a>00071 <span class="comment">// Textures:</span>
-<a name="l00072"></a><a class="code" href="main_8cpp.html#aab6b4280147992189aaa2135a40a6956">00072</a> <a class="code" href="struct_texture_data.html">TextureData</a> <a class="code" href="main_8cpp.html#aab6b4280147992189aaa2135a40a6956">ttex</a>; <span class="comment">// Terrain heightmap.</span>
+<a name="l00072"></a>00072 <a class="code" href="struct_texture_data.html">TextureData</a> ttex; <span class="comment">// Terrain heightmap.</span>
 <a name="l00073"></a>00073 
 <a name="l00074"></a>00074 <span class="comment">// References to shader programs:</span>
-<a name="l00075"></a><a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">00075</a> GLuint <a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>;
+<a name="l00075"></a>00075 GLuint program;
 <a name="l00076"></a>00076 
 <a name="l00077"></a>00077 <span class="comment">// Camera variables:</span>
-<a name="l00078"></a><a class="code" href="main_8cpp.html#a3b23650c3f80b53cee3a2c471797c732">00078</a> <a class="code" href="class_camera.html">Camera</a> <a class="code" href="main_8cpp.html#a3b23650c3f80b53cee3a2c471797c732">cam</a>;
+<a name="l00078"></a>00078 <a class="code" href="class_camera.html">Camera</a> cam;
 <a name="l00079"></a>00079 <span class="comment">// Matrices.</span>
-<a name="l00080"></a><a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">00080</a> glm::mat4 <a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">projectionMatrix</a>;
-<a name="l00081"></a><a class="code" href="main_8cpp.html#a70036f65d3b1720aeb5ca880dad6d2bc">00081</a> glm::mat4 <a class="code" href="main_8cpp.html#a70036f65d3b1720aeb5ca880dad6d2bc">viewMatrix</a>;
-<a name="l00082"></a><a class="code" href="main_8cpp.html#a5611e97e096abdf61258bf5190e5e710">00082</a> glm::vec3 <a class="code" href="main_8cpp.html#a5611e97e096abdf61258bf5190e5e710">camPos</a> = { 0, 0, 0 };
+<a name="l00080"></a>00080 glm::mat4 projectionMatrix;
+<a name="l00081"></a>00081 glm::mat4 viewMatrix;
+<a name="l00082"></a>00082 glm::vec3 camPos = { 0, 0, 0 };
 <a name="l00083"></a>00083 
 <a name="l00084"></a>00084 <span class="comment">// Light information:</span>
-<a name="l00085"></a><a class="code" href="main_8cpp.html#ae855dc25b7939de3b96bed0cdcb7f573">00085</a> glm::vec3 <a class="code" href="main_8cpp.html#ae855dc25b7939de3b96bed0cdcb7f573">sunPos</a> = { 0.58f, 0.58f, 0.58f }; <span class="comment">// Since the sun is a directional source, this is the negative direction, not the position.</span>
-<a name="l00086"></a><a class="code" href="main_8cpp.html#a34d71e61341ce2002f55fce990d1e114">00086</a> <span class="keywordtype">bool</span> <a class="code" href="main_8cpp.html#a34d71e61341ce2002f55fce990d1e114">sunIsDirectional</a> = 1;
-<a name="l00087"></a><a class="code" href="main_8cpp.html#a142b7e0ad8985fc19b0a49487400f4ff">00087</a> <span class="keywordtype">float</span> <a class="code" href="main_8cpp.html#a142b7e0ad8985fc19b0a49487400f4ff">sunSpecularExponent</a> = 50.0;
-<a name="l00088"></a><a class="code" href="main_8cpp.html#a431a15d92e08d39e174cb5a3cfeddb5d">00088</a> glm::vec3 <a class="code" href="main_8cpp.html#a431a15d92e08d39e174cb5a3cfeddb5d">sunColor</a> = { 1.0f, 1.0f, 1.0f };
+<a name="l00085"></a>00085 glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; <span class="comment">// Since the sun is a directional source, this is the negative direction, not the position.</span>
+<a name="l00086"></a>00086 <span class="keywordtype">bool</span> sunIsDirectional = 1;
+<a name="l00087"></a>00087 <span class="keywordtype">float</span> sunSpecularExponent = 50.0;
+<a name="l00088"></a>00088 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 <a name="l00089"></a>00089 
-<a name="l00090"></a><a class="code" href="main_8cpp.html#a2858154e2009b0e6e616f313177762bc">00090</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a2858154e2009b0e6e616f313177762bc">init</a>(<span class="keywordtype">void</span>)
+<a name="l00090"></a>00090 <span class="keywordtype">void</span> init(<span class="keywordtype">void</span>)
 <a name="l00091"></a>00091 {
 <a name="l00092"></a>00092 <span class="preprocessor">#ifdef WIN32</span>
 <a name="l00093"></a>00093 <span class="preprocessor"></span>    glewInit();
 <a name="l00094"></a>00094 <span class="preprocessor">#endif</span>
 <a name="l00095"></a>00095 <span class="preprocessor"></span>    <span class="comment">//initKeymapManager();</span>
-<a name="l00096"></a>00096     <a class="code" href="_g_l__utilities_8c.html#ae903a80068b1a3b5a61a27bec9ec6557">dumpInfo</a>();
+<a name="l00096"></a>00096     dumpInfo();
 <a name="l00097"></a>00097 
 <a name="l00098"></a>00098     <span class="comment">// GL inits.</span>
 <a name="l00099"></a>00099     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
@@ -201,33 +201,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00102"></a>00102     glCullFace(GL_TRUE);
 <a name="l00103"></a>00103 
 <a name="l00104"></a>00104     <span class="comment">// Initial placement of camera.</span>
-<a name="l00105"></a>00105     cam = <a class="code" href="class_camera.html">Camera</a>(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, &amp;<a class="code" href="main_8cpp.html#a70036f65d3b1720aeb5ca880dad6d2bc">viewMatrix</a>);
+<a name="l00105"></a>00105     cam = <a class="code" href="class_camera.html">Camera</a>(program, &amp;viewMatrix);
 <a name="l00106"></a>00106 
 <a name="l00107"></a>00107     <span class="comment">// ---Upload geometry to the GPU---</span>
-<a name="l00108"></a>00108     m = <a class="code" href="loadobj_8c.html#a5c7a59764038cfac4a2596d2fef073b9">LoadModelPlus</a>(<span class="stringliteral">&quot;resources/teapot.obj&quot;</span>);
+<a name="l00108"></a>00108     m = LoadModelPlus(<span class="stringliteral">&quot;resources/teapot.obj&quot;</span>);
 <a name="l00109"></a>00109 
-<a name="l00110"></a>00110     dataHandler = <span class="keyword">new</span> <a class="code" href="class_data_handler.html">DataHandler</a>(<span class="stringliteral">&quot;resources/output.min.asc&quot;</span>);
-<a name="l00111"></a>00111     terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631">getModel</a>();
+<a name="l00110"></a>00110     dataHandler = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(<span class="stringliteral">&quot;resources/output.min.asc&quot;</span>);
+<a name="l00111"></a>00111     terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
 <a name="l00112"></a>00112     <span class="comment">//LoadTGATextureData(&quot;resources/fft-terrain.tga&quot;, &amp;ttex);</span>
 <a name="l00113"></a>00113 
 <a name="l00114"></a>00114     <span class="comment">// Load and compile shaders.</span>
-<a name="l00115"></a>00115     <a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a> = <a class="code" href="_g_l__utilities_8c.html#a91e6903d9687b4be6eb6b4685b96c58b">loadShaders</a>(<span class="stringliteral">&quot;src/shaders/main.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/main.frag&quot;</span>);
-<a name="l00116"></a>00116     glUseProgram(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>);
+<a name="l00115"></a>00115     program = loadShaders(<span class="stringliteral">&quot;src/shaders/main.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/main.frag&quot;</span>);
+<a name="l00116"></a>00116     glUseProgram(program);
 <a name="l00117"></a>00117 
 <a name="l00118"></a>00118     <span class="comment">// Initial one-time shader uploads.</span>
-<a name="l00119"></a>00119     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(<a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">projectionMatrix</a>));
-<a name="l00120"></a>00120     GLfloat sun_GLf[3] = { <a class="code" href="main_8cpp.html#ae855dc25b7939de3b96bed0cdcb7f573">sunPos</a>.x, <a class="code" href="main_8cpp.html#ae855dc25b7939de3b96bed0cdcb7f573">sunPos</a>.y, <a class="code" href="main_8cpp.html#ae855dc25b7939de3b96bed0cdcb7f573">sunPos</a>.z };
-<a name="l00121"></a>00121     glUniform3fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;lightSourcePos&quot;</span>), 1, sun_GLf);
-<a name="l00122"></a>00122     glUniform1i(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;isDirectional&quot;</span>), <a class="code" href="main_8cpp.html#a34d71e61341ce2002f55fce990d1e114">sunIsDirectional</a>);
-<a name="l00123"></a>00123     glUniform1fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;specularExponent&quot;</span>), 1, &amp;<a class="code" href="main_8cpp.html#a142b7e0ad8985fc19b0a49487400f4ff">sunSpecularExponent</a>);
-<a name="l00124"></a>00124     GLfloat sunColor_GLf[3] = { <a class="code" href="main_8cpp.html#a431a15d92e08d39e174cb5a3cfeddb5d">sunColor</a>.x, <a class="code" href="main_8cpp.html#a431a15d92e08d39e174cb5a3cfeddb5d">sunColor</a>.y, <a class="code" href="main_8cpp.html#a431a15d92e08d39e174cb5a3cfeddb5d">sunColor</a>.z };
-<a name="l00125"></a>00125     glUniform3fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;lightSourceColor&quot;</span>), 1, sunColor_GLf);
+<a name="l00119"></a>00119     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+<a name="l00120"></a>00120     GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
+<a name="l00121"></a>00121     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;lightSourcePos&quot;</span>), 1, sun_GLf);
+<a name="l00122"></a>00122     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;isDirectional&quot;</span>), sunIsDirectional);
+<a name="l00123"></a>00123     glUniform1fv(glGetUniformLocation(program, <span class="stringliteral">&quot;specularExponent&quot;</span>), 1, &amp;sunSpecularExponent);
+<a name="l00124"></a>00124     GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
+<a name="l00125"></a>00125     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;lightSourceColor&quot;</span>), 1, sunColor_GLf);
 <a name="l00126"></a>00126 }
 <a name="l00127"></a>00127 
-<a name="l00128"></a><a class="code" href="main_8cpp.html#a4ea013001a5fb47853d0fab8f8de35cd">00128</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a4ea013001a5fb47853d0fab8f8de35cd">display</a>(<span class="keywordtype">void</span>)
+<a name="l00128"></a>00128 <span class="keywordtype">void</span> display(<span class="keywordtype">void</span>)
 <a name="l00129"></a>00129 {
 <a name="l00130"></a>00130     glm::mat4 rot, trans, scale, total;
-<a name="l00131"></a>00131     glUseProgram(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>);
+<a name="l00131"></a>00131     glUseProgram(program);
 <a name="l00132"></a>00132 
 <a name="l00133"></a>00133     <span class="comment">// Time.</span>
 <a name="l00134"></a>00134     <span class="comment">//GLfloat t;</span>
@@ -238,9 +238,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00139"></a>00139 
 <a name="l00140"></a>00140 
 <a name="l00141"></a>00141     <span class="comment">// ---Model-independent shader data---</span>
-<a name="l00142"></a>00142     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(<a class="code" href="main_8cpp.html#a70036f65d3b1720aeb5ca880dad6d2bc">viewMatrix</a>));
-<a name="l00143"></a>00143     GLfloat camPos_GLf[3] = { <a class="code" href="main_8cpp.html#a5611e97e096abdf61258bf5190e5e710">camPos</a>.x, <a class="code" href="main_8cpp.html#a5611e97e096abdf61258bf5190e5e710">camPos</a>.y, <a class="code" href="main_8cpp.html#a5611e97e096abdf61258bf5190e5e710">camPos</a>.z };
-<a name="l00144"></a>00144     glUniform3fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;camPos&quot;</span>), 1, camPos_GLf);
+<a name="l00142"></a>00142     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+<a name="l00143"></a>00143     GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
+<a name="l00144"></a>00144     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, camPos_GLf);
 <a name="l00145"></a>00145     <span class="comment">//glUniform1fv(glGetUniformLocation(program, &quot;t&quot;), 1, &amp;t);</span>
 <a name="l00146"></a>00146 
 <a name="l00147"></a>00147 
@@ -252,28 +252,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00153"></a>00153     glm::vec3 terrainTrans = glm::vec3(100, -500, -1000);
 <a name="l00154"></a>00154     trans = glm::translate(terrainTrans);
 <a name="l00155"></a>00155     total = trans;
-<a name="l00156"></a>00156     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;MTWMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(total));
-<a name="l00157"></a>00157     <a class="code" href="loadobj_8c.html#adb0d28fa1c2ba6e3f53e202da4cce12e">DrawModel</a>(terrain, <a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;in_Position&quot;</span>, <span class="stringliteral">&quot;in_Normal&quot;</span>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00156"></a>00156     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;MTWMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(total));
+<a name="l00157"></a>00157     DrawModel(terrain, program, <span class="stringliteral">&quot;in_Position&quot;</span>, <span class="stringliteral">&quot;in_Normal&quot;</span>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00158"></a>00158 
 <a name="l00159"></a>00159     <span class="comment">// Teapot:</span>
 <a name="l00160"></a>00160     glm::vec3 teapotTrans = glm::vec3(200, 0, 200);
 <a name="l00161"></a>00161     trans = glm::translate(teapotTrans);
 <a name="l00162"></a>00162     scale = glm::scale(glm::vec3(0.5, 0.5, 0.5));
 <a name="l00163"></a>00163     total = trans * scale;
-<a name="l00164"></a>00164     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;MTWMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(total));
-<a name="l00165"></a>00165     <a class="code" href="loadobj_8c.html#adb0d28fa1c2ba6e3f53e202da4cce12e">DrawModel</a>(m, <a class="code" href="main_8cpp.html#a27d8510c93324412d38a888eddee2852">program</a>, <span class="stringliteral">&quot;in_Position&quot;</span>, <span class="stringliteral">&quot;in_Normal&quot;</span>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00164"></a>00164     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;MTWMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(total));
+<a name="l00165"></a>00165     DrawModel(m, program, <span class="stringliteral">&quot;in_Position&quot;</span>, <span class="stringliteral">&quot;in_Normal&quot;</span>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00166"></a>00166     <span class="comment">// --------------------------------------</span>
 <a name="l00167"></a>00167 
-<a name="l00168"></a>00168     <a class="code" href="_s_d_l__util_8c.html#a0d157d997329169f936545f9985e334b">swap_buffers</a>();
+<a name="l00168"></a>00168     swap_buffers();
 <a name="l00169"></a>00169 }
 <a name="l00170"></a>00170 
 <a name="l00171"></a>00171 <span class="comment">// Display timer. User made functions may NOT be called from here.</span>
-<a name="l00172"></a><a class="code" href="main_8cpp.html#a1952947fdffcda63f6e344244d067605">00172</a> Uint32 <a class="code" href="main_8cpp.html#a1952947fdffcda63f6e344244d067605">display_timer</a>(Uint32 interval, <span class="keywordtype">void</span>* param)
+<a name="l00172"></a>00172 Uint32 display_timer(Uint32 interval, <span class="keywordtype">void</span>* param)
 <a name="l00173"></a>00173 {
 <a name="l00174"></a>00174     SDL_Event event;
 <a name="l00175"></a>00175 
 <a name="l00176"></a>00176     <span class="keyword">event</span>.type = SDL_USEREVENT;
-<a name="l00177"></a>00177     <span class="keyword">event</span>.user.code = <a class="code" href="main_8cpp.html#a1317b1ddd7ff5f70ede2a9ee3f4481de">DISPLAY_TIMER</a>;
+<a name="l00177"></a>00177     <span class="keyword">event</span>.user.code = DISPLAY_TIMER;
 <a name="l00178"></a>00178     <span class="keyword">event</span>.user.data1 = 0;
 <a name="l00179"></a>00179     <span class="keyword">event</span>.user.data2 = 0;
 <a name="l00180"></a>00180 
@@ -281,12 +281,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00182"></a>00182     <span class="keywordflow">return</span> interval;
 <a name="l00183"></a>00183 }
 <a name="l00184"></a>00184 
-<a name="l00185"></a><a class="code" href="main_8cpp.html#a80439c9d0e53e7f41038978123c95e80">00185</a> Uint32 <a class="code" href="main_8cpp.html#a80439c9d0e53e7f41038978123c95e80">update_timer</a>(Uint32 interval, <span class="keywordtype">void</span>* param)
+<a name="l00185"></a>00185 Uint32 update_timer(Uint32 interval, <span class="keywordtype">void</span>* param)
 <a name="l00186"></a>00186 {
 <a name="l00187"></a>00187     SDL_Event event;
 <a name="l00188"></a>00188 
 <a name="l00189"></a>00189     <span class="keyword">event</span>.type = SDL_USEREVENT;
-<a name="l00190"></a>00190     <span class="keyword">event</span>.user.code = <a class="code" href="main_8cpp.html#a238c53c07c05119952391d18f00bf3bb">UPDATE_TIMER</a>;
+<a name="l00190"></a>00190     <span class="keyword">event</span>.user.code = UPDATE_TIMER;
 <a name="l00191"></a>00191     <span class="keyword">event</span>.user.data1 = (<span class="keywordtype">void</span>*)(intptr_t)interval;
 <a name="l00192"></a>00192     <span class="keyword">event</span>.user.data2 = 0;
 <a name="l00193"></a>00193 
@@ -299,25 +299,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00200"></a>00200 {
 <a name="l00201"></a>00201     <span class="keywordflow">switch</span> (event.type){
 <a name="l00202"></a>00202         <span class="keywordflow">case</span> SDL_USEREVENT:
-<a name="l00203"></a>00203             <a class="code" href="main_8cpp.html#adf1515f68cf7b1b3a25f6dffb13a04fb">handle_userevent</a>(event);
+<a name="l00203"></a>00203             handle_userevent(event);
 <a name="l00204"></a>00204             <span class="keywordflow">break</span>;
 <a name="l00205"></a>00205         <span class="keywordflow">case</span> SDL_QUIT:
 <a name="l00206"></a>00206             exit(0);
 <a name="l00207"></a>00207             <span class="keywordflow">break</span>;
 <a name="l00208"></a>00208         <span class="keywordflow">case</span> SDL_KEYDOWN:
-<a name="l00209"></a>00209             <a class="code" href="main_8cpp.html#a52897291d546db049af70aa3b457c01f">handle_keypress</a>(event);
+<a name="l00209"></a>00209             handle_keypress(event);
 <a name="l00210"></a>00210             <span class="keywordflow">break</span>;
 <a name="l00211"></a>00211         <span class="keywordflow">case</span> SDL_WINDOWEVENT:
 <a name="l00212"></a>00212             <span class="keywordflow">switch</span> (event.window.event){
 <a name="l00213"></a>00213             <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
-<a name="l00214"></a>00214                 <a class="code" href="_s_d_l__util_8c.html#a6833006e11172e03d34f3d4ca3e54fad">get_window_size</a>(&amp;<a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, &amp;<a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
-<a name="l00215"></a>00215                 <a class="code" href="_s_d_l__util_8c.html#aba70f8a5ebfd15fcd82d8febe409a9e0">resize_window</a>(event);
-<a name="l00216"></a>00216                 <a class="code" href="main_8cpp.html#a9b98f160965b39fa4ed6952df4cd0ead">reshape</a>(<a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">projectionMatrix</a>);
+<a name="l00214"></a>00214                 get_window_size(&amp;width, &amp;height);
+<a name="l00215"></a>00215                 resize_window(event);
+<a name="l00216"></a>00216                 reshape(width, height, projectionMatrix);
 <a name="l00217"></a>00217                 <span class="keywordflow">break</span>;
 <a name="l00218"></a>00218             }
 <a name="l00219"></a>00219             <span class="keywordflow">break</span>;
 <a name="l00220"></a>00220         <span class="keywordflow">case</span> SDL_MOUSEMOTION:
-<a name="l00221"></a>00221             <a class="code" href="main_8cpp.html#afb1ca752c2f8070ebd9c57e20bb4f87a">handle_mouse</a>(event);
+<a name="l00221"></a>00221             handle_mouse(event);
 <a name="l00222"></a>00222             <span class="keywordflow">break</span>;
 <a name="l00223"></a>00223         <span class="keywordflow">default</span>:
 <a name="l00224"></a>00224             <span class="keywordflow">break</span>;
@@ -325,14 +325,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00226"></a>00226 }
 <a name="l00227"></a>00227 
 <a name="l00228"></a>00228 <span class="comment">// Handle user defined events.</span>
-<a name="l00229"></a><a class="code" href="main_8cpp.html#adf1515f68cf7b1b3a25f6dffb13a04fb">00229</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#adf1515f68cf7b1b3a25f6dffb13a04fb">handle_userevent</a>(SDL_Event event)
+<a name="l00229"></a>00229 <span class="keywordtype">void</span> handle_userevent(SDL_Event event)
 <a name="l00230"></a>00230 {
 <a name="l00231"></a>00231     <span class="keywordflow">switch</span> (event.user.code){
-<a name="l00232"></a>00232     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)<a class="code" href="main_8cpp.html#a1317b1ddd7ff5f70ede2a9ee3f4481de">DISPLAY_TIMER</a>:
-<a name="l00233"></a>00233         <a class="code" href="main_8cpp.html#a4ea013001a5fb47853d0fab8f8de35cd">display</a>();
+<a name="l00232"></a>00232     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)DISPLAY_TIMER:
+<a name="l00233"></a>00233         display();
 <a name="l00234"></a>00234         <span class="keywordflow">break</span>;
-<a name="l00235"></a>00235     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)<a class="code" href="main_8cpp.html#a238c53c07c05119952391d18f00bf3bb">UPDATE_TIMER</a>:
-<a name="l00236"></a>00236         <a class="code" href="main_8cpp.html#a5724d64b5c3a8c56e926b1ea1d18551c">check_keys</a>();
+<a name="l00235"></a>00235     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)UPDATE_TIMER:
+<a name="l00236"></a>00236         check_keys();
 <a name="l00237"></a>00237         <span class="keywordflow">break</span>;
 <a name="l00238"></a>00238     <span class="keywordflow">default</span>:
 <a name="l00239"></a>00239         <span class="keywordflow">break</span>;
@@ -340,7 +340,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00241"></a>00241 }
 <a name="l00242"></a>00242 
 <a name="l00243"></a>00243 <span class="comment">// Handle keys</span>
-<a name="l00244"></a><a class="code" href="main_8cpp.html#a52897291d546db049af70aa3b457c01f">00244</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a52897291d546db049af70aa3b457c01f">handle_keypress</a>(SDL_Event event)
+<a name="l00244"></a>00244 <span class="keywordtype">void</span> handle_keypress(SDL_Event event)
 <a name="l00245"></a>00245 {
 <a name="l00246"></a>00246     <span class="keywordflow">switch</span> (event.key.keysym.sym){
 <a name="l00247"></a>00247         <span class="keywordflow">case</span> SDLK_ESCAPE:
@@ -354,63 +354,63 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00255"></a>00255             SDL_SetRelativeMouseMode(SDL_TRUE);
 <a name="l00256"></a>00256             <span class="keywordflow">break</span>;
 <a name="l00257"></a>00257         <span class="keywordflow">case</span> SDLK_l:
-<a name="l00258"></a>00258             dataHandler-&gt;<a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9">performNormalizedConvolution</a>();
-<a name="l00259"></a>00259             terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631">getModel</a>();
+<a name="l00258"></a>00258             dataHandler-&gt;<a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution</a>();
+<a name="l00259"></a>00259             terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
 <a name="l00260"></a>00260             <span class="keywordflow">break</span>;
 <a name="l00261"></a>00261         <span class="keywordflow">default</span>:
 <a name="l00262"></a>00262             <span class="keywordflow">break</span>;
 <a name="l00263"></a>00263     }
 <a name="l00264"></a>00264 }
 <a name="l00265"></a>00265 
-<a name="l00266"></a><a class="code" href="main_8cpp.html#afb1ca752c2f8070ebd9c57e20bb4f87a">00266</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#afb1ca752c2f8070ebd9c57e20bb4f87a">handle_mouse</a>(SDL_Event event)
+<a name="l00266"></a>00266 <span class="keywordtype">void</span> handle_mouse(SDL_Event event)
 <a name="l00267"></a>00267 {
-<a name="l00268"></a>00268     <a class="code" href="_s_d_l__util_8c.html#a6833006e11172e03d34f3d4ca3e54fad">get_window_size</a>(&amp;<a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, &amp;<a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
-<a name="l00269"></a>00269     cam.<a class="code" href="class_camera.html#a297f18afaf34645a8011ff660909f9a1">change_look_at_pos</a>(event.motion.xrel, event.motion.y, <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
+<a name="l00268"></a>00268     get_window_size(&amp;width, &amp;height);
+<a name="l00269"></a>00269     cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
 <a name="l00270"></a>00270 }
 <a name="l00271"></a>00271 
-<a name="l00272"></a><a class="code" href="main_8cpp.html#a5724d64b5c3a8c56e926b1ea1d18551c">00272</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a5724d64b5c3a8c56e926b1ea1d18551c">check_keys</a>()
+<a name="l00272"></a>00272 <span class="keywordtype">void</span> check_keys()
 <a name="l00273"></a>00273 {
-<a name="l00274"></a>00274     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00274"></a>00274     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
 <a name="l00275"></a>00275     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
-<a name="l00276"></a>00276         cam.<a class="code" href="class_camera.html#a79a967503bd1bedbaf430490b4e870a2">forward</a>(0.05f*<a class="code" href="main_8cpp.html#adcd1e787935be9954487afa497c7c563">scl</a>*<a class="code" href="main_8cpp.html#aac3553b3932cbfeeac4526ce7ca0336b">SPEED</a>);
+<a name="l00276"></a>00276         cam.forward(0.05f*scl*SPEED);
 <a name="l00277"></a>00277     }
 <a name="l00278"></a>00278     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
-<a name="l00279"></a>00279         cam.<a class="code" href="class_camera.html#a79a967503bd1bedbaf430490b4e870a2">forward</a>(-0.05f*<a class="code" href="main_8cpp.html#adcd1e787935be9954487afa497c7c563">scl</a>*<a class="code" href="main_8cpp.html#aac3553b3932cbfeeac4526ce7ca0336b">SPEED</a>);
+<a name="l00279"></a>00279         cam.forward(-0.05f*scl*SPEED);
 <a name="l00280"></a>00280     }
 <a name="l00281"></a>00281     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
-<a name="l00282"></a>00282         cam.<a class="code" href="class_camera.html#a6b6687be260b7a95cb74d5d9b76cfca0">strafe</a>(0.05f*<a class="code" href="main_8cpp.html#adcd1e787935be9954487afa497c7c563">scl</a>*<a class="code" href="main_8cpp.html#aac3553b3932cbfeeac4526ce7ca0336b">SPEED</a>);
+<a name="l00282"></a>00282         cam.strafe(0.05f*scl*SPEED);
 <a name="l00283"></a>00283     }
 <a name="l00284"></a>00284     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
-<a name="l00285"></a>00285         cam.<a class="code" href="class_camera.html#a6b6687be260b7a95cb74d5d9b76cfca0">strafe</a>(-0.05f*<a class="code" href="main_8cpp.html#adcd1e787935be9954487afa497c7c563">scl</a>*<a class="code" href="main_8cpp.html#aac3553b3932cbfeeac4526ce7ca0336b">SPEED</a>);
+<a name="l00285"></a>00285         cam.strafe(-0.05f*scl*SPEED);
 <a name="l00286"></a>00286     }
 <a name="l00287"></a>00287 }
 <a name="l00288"></a>00288 
 <a name="l00289"></a>00289 
 <a name="l00290"></a>00290 <span class="comment">// -----------------Ingemars hj�lpfunktioner-----------------</span>
-<a name="l00291"></a><a class="code" href="main_8cpp.html#a9b98f160965b39fa4ed6952df4cd0ead">00291</a> <span class="keywordtype">void</span> <a class="code" href="main_8cpp.html#a9b98f160965b39fa4ed6952df4cd0ead">reshape</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, glm::mat4 &amp;<a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">projectionMatrix</a>)
+<a name="l00291"></a>00291 <span class="keywordtype">void</span> reshape(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, glm::mat4 &amp;projectionMatrix)
 <a name="l00292"></a>00292 {
 <a name="l00293"></a>00293     glViewport(0, 0, w, h);
 <a name="l00294"></a>00294     <span class="keywordtype">float</span> ratio = (GLfloat)w / (GLfloat)h;
-<a name="l00295"></a>00295     projectionMatrix = glm::perspective(<a class="code" href="main_8cpp.html#a598a3330b3c21701223ee0ca14316eca">PI</a> / 2, ratio, 1.0f, 1000.0f);
+<a name="l00295"></a>00295     projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
 <a name="l00296"></a>00296 }
 <a name="l00297"></a>00297 <span class="comment">// ----------------------------------------------------------</span>
 <a name="l00298"></a>00298 
-<a name="l00299"></a><a class="code" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">00299</a> <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])
+<a name="l00299"></a>00299 <span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])
 <a name="l00300"></a>00300 {
-<a name="l00301"></a>00301     <a class="code" href="_s_d_l__util_8c.html#a4a31a841b0929b627d6eadcd535691ef">init_SDL</a>((<span class="keyword">const</span> <span class="keywordtype">char</span>*) <span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
+<a name="l00301"></a>00301     init_SDL((<span class="keyword">const</span> <span class="keywordtype">char</span>*) <span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, width, height);
 <a name="l00302"></a>00302 
-<a name="l00303"></a>00303     <a class="code" href="main_8cpp.html#a9b98f160965b39fa4ed6952df4cd0ead">reshape</a>(<a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <a class="code" href="main_8cpp.html#ac19df984a9eda9f206402fb835af2a48">projectionMatrix</a>);
+<a name="l00303"></a>00303     reshape(width, height, projectionMatrix);
 <a name="l00304"></a>00304     glEnableClientState(GL_VERTEX_ARRAY);
-<a name="l00305"></a>00305     <a class="code" href="main_8cpp.html#a2858154e2009b0e6e616f313177762bc">init</a>();
+<a name="l00305"></a>00305     init();
 <a name="l00306"></a>00306 
 <a name="l00307"></a>00307     SDL_TimerID timer_id;
-<a name="l00308"></a>00308     timer_id = SDL_AddTimer(30, &amp;<a class="code" href="main_8cpp.html#a1952947fdffcda63f6e344244d067605">display_timer</a>, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
-<a name="l00309"></a>00309     timer_id = SDL_AddTimer(10, &amp;<a class="code" href="main_8cpp.html#a80439c9d0e53e7f41038978123c95e80">update_timer</a>, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00308"></a>00308     timer_id = SDL_AddTimer(30, &amp;display_timer, NULL);
+<a name="l00309"></a>00309     timer_id = SDL_AddTimer(10, &amp;update_timer, NULL);
 <a name="l00310"></a>00310     <span class="keywordflow">if</span> (timer_id == 0){
 <a name="l00311"></a>00311         std::cerr &lt;&lt; <span class="stringliteral">&quot;Error setting timer function: &quot;</span> &lt;&lt; SDL_GetError() &lt;&lt; std::endl;
 <a name="l00312"></a>00312     }
-<a name="l00313"></a>00313     <a class="code" href="_s_d_l__util_8c.html#a5344744d1494545a934d3476c4d62c96">set_event_handler</a>(&amp;event_handler);
-<a name="l00314"></a>00314     <a class="code" href="_s_d_l__util_8c.html#aed6abca1001d4ab0dea5364b16ff563d">inf_loop</a>();
+<a name="l00313"></a>00313     set_event_handler(&amp;event_handler);
+<a name="l00314"></a>00314     inf_loop();
 <a name="l00315"></a>00315     <span class="keywordflow">return</span> 0;
 <a name="l00316"></a>00316 }
 </pre></div></div><!-- contents -->
@@ -420,7 +420,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -431,9 +431,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="main_8cpp.html">main.cpp</a>      </li>
+      <li class="navelem"><b>main.cpp</b>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

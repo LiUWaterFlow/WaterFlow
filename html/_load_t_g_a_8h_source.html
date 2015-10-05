@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -75,7 +76,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/common/LoadTGA.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_load_t_g_a_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __TGA_LOADER__</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef __TGA_LOADER__</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define __TGA_LOADER__</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifdef __cplusplus</span>
@@ -132,37 +132,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a>00033 <span class="preprocessor"></span>
 <a name="l00034"></a><a class="code" href="struct_texture_data.html">00034</a> <span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="struct_texture_data.html">TextureData</a>      <span class="comment">// Create A Structure for .tga loading.</span>
 <a name="l00035"></a>00035 {
-<a name="l00036"></a><a class="code" href="struct_texture_data.html#a153e5b987b545abc3f4fbbd52f3917c4">00036</a>     GLubyte *<a class="code" href="struct_texture_data.html#a153e5b987b545abc3f4fbbd52f3917c4">imageData</a>;         <span class="comment">// Image Data (Up To 32 Bits)</span>
-<a name="l00037"></a><a class="code" href="struct_texture_data.html#a9debf4ea4f475e3c514ed3a5fadc0c2f">00037</a>     GLuint  <a class="code" href="struct_texture_data.html#a9debf4ea4f475e3c514ed3a5fadc0c2f">bpp</a>;                <span class="comment">// Image Color Depth In Bits Per Pixel.</span>
-<a name="l00038"></a><a class="code" href="struct_texture_data.html#aba80177caa74a50a8dfae522f0c73863">00038</a>     GLuint  <a class="code" href="struct_texture_data.html#aba80177caa74a50a8dfae522f0c73863">width</a>;              <span class="comment">// Image Width</span>
-<a name="l00039"></a><a class="code" href="struct_texture_data.html#a1d5310e7feb4f66e05be2ffff8ec49a3">00039</a>     GLuint  <a class="code" href="struct_texture_data.html#a1d5310e7feb4f66e05be2ffff8ec49a3">height</a>;             <span class="comment">// Image Height</span>
-<a name="l00040"></a><a class="code" href="struct_texture_data.html#aa685351c28e87e654befc7e6f43d56b2">00040</a>     GLuint  <a class="code" href="struct_texture_data.html#aa685351c28e87e654befc7e6f43d56b2">w</a>;              <span class="comment">// Image Width &quot;raw&quot;</span>
-<a name="l00041"></a><a class="code" href="struct_texture_data.html#a0c7e2d102b59468f2e29ac597ab69107">00041</a>     GLuint  <a class="code" href="struct_texture_data.html#a0c7e2d102b59468f2e29ac597ab69107">h</a>;              <span class="comment">// Image Height &quot;raw&quot;</span>
-<a name="l00042"></a><a class="code" href="struct_texture_data.html#a3e76aec69059513ec86c6228e2badefd">00042</a>     GLuint  <a class="code" href="struct_texture_data.html#a3e76aec69059513ec86c6228e2badefd">texID</a>;              <span class="comment">// Texture ID Used To Select A Texture</span>
-<a name="l00043"></a><a class="code" href="struct_texture_data.html#abb52aaf966e57247ee8db376dd2871dc">00043</a>     GLfloat <a class="code" href="struct_texture_data.html#abb52aaf966e57247ee8db376dd2871dc">texWidth</a>, <a class="code" href="struct_texture_data.html#a46e048f50a851990d8c2f24f62a3d9fe">texHeight</a>;
-<a name="l00044"></a>00044 } <a class="code" href="_load_t_g_a_8h.html#a940447a44fe0b810a790cc4b0520c953">TextureData</a>, *<a class="code" href="_load_t_g_a_8h.html#a6c62e0417b9436db377c10360691ba52">TextureDataPtr</a>;                 <span class="comment">// Structure Name</span>
+<a name="l00036"></a>00036     GLubyte *imageData;         <span class="comment">// Image Data (Up To 32 Bits)</span>
+<a name="l00037"></a>00037     GLuint  bpp;                <span class="comment">// Image Color Depth In Bits Per Pixel.</span>
+<a name="l00038"></a>00038     GLuint  width;              <span class="comment">// Image Width</span>
+<a name="l00039"></a>00039     GLuint  height;             <span class="comment">// Image Height</span>
+<a name="l00040"></a>00040     GLuint  w;              <span class="comment">// Image Width &quot;raw&quot;</span>
+<a name="l00041"></a>00041     GLuint  h;              <span class="comment">// Image Height &quot;raw&quot;</span>
+<a name="l00042"></a>00042     GLuint  texID;              <span class="comment">// Texture ID Used To Select A Texture</span>
+<a name="l00043"></a>00043     GLfloat texWidth, texHeight;
+<a name="l00044"></a>00044 } <a class="code" href="struct_texture_data.html">TextureData</a>, *<a class="code" href="struct_texture_data.html">TextureDataPtr</a>;                 <span class="comment">// Structure Name</span>
 <a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keywordtype">bool</span> <a class="code" href="_load_t_g_a_8c.html#a02c6c633ea743aa836460b754c7bbe6c">LoadTGATexture</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <a class="code" href="struct_texture_data.html">TextureData</a> *texture);
-<a name="l00047"></a>00047 <span class="keywordtype">void</span> <a class="code" href="_load_t_g_a_8c.html#aa5e26a15bfd8ccef9346cd6aed30057a">LoadTGATextureSimple</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, GLuint *tex);
-<a name="l00048"></a>00048 <span class="keywordtype">void</span> <a class="code" href="_load_t_g_a_8c.html#a6365e8a98c976ca9314fa634549dd57a">LoadTGASetMipmapping</a>(<span class="keywordtype">bool</span> active);
-<a name="l00049"></a>00049 <span class="keywordtype">bool</span> <a class="code" href="_load_t_g_a_8c.html#a62881f2d63d9ee475749c353b53ddd03">LoadTGATextureData</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <a class="code" href="struct_texture_data.html">TextureData</a> *texture);
+<a name="l00046"></a>00046 <span class="keywordtype">bool</span> LoadTGATexture(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <a class="code" href="struct_texture_data.html">TextureData</a> *texture);
+<a name="l00047"></a>00047 <span class="keywordtype">void</span> LoadTGATextureSimple(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, GLuint *tex);
+<a name="l00048"></a>00048 <span class="keywordtype">void</span> LoadTGASetMipmapping(<span class="keywordtype">bool</span> active);
+<a name="l00049"></a>00049 <span class="keywordtype">bool</span> LoadTGATextureData(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <a class="code" href="struct_texture_data.html">TextureData</a> *texture);
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051 <span class="comment">// Constants for SaveTGA</span>
-<a name="l00052"></a><a class="code" href="_load_t_g_a_8h.html#ad18046843017fc7205f6c358e8f4fd71">00052</a> <span class="preprocessor">#define TGA_ERROR_FILE_OPEN             -5</span>
-<a name="l00053"></a><a class="code" href="_load_t_g_a_8h.html#a5de4eb90e3b416bcef9878a6c045e872">00053</a> <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_READING_FILE          -4</span>
-<a name="l00054"></a><a class="code" href="_load_t_g_a_8h.html#a8e385b10ce512157a86819fc0a2d06d6">00054</a> <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_INDEXED_COLOR         -3</span>
-<a name="l00055"></a><a class="code" href="_load_t_g_a_8h.html#aa6b5a32efa97c4cd74e174ac682bb95d">00055</a> <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_MEMORY                -2</span>
-<a name="l00056"></a><a class="code" href="_load_t_g_a_8h.html#af6a3c2897c42d37bb90a18d80be49a17">00056</a> <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_COMPRESSED_FILE       -1</span>
-<a name="l00057"></a><a class="code" href="_load_t_g_a_8h.html#a8760090c8657a5e6dbe273bbc904e02a">00057</a> <span class="preprocessor"></span><span class="preprocessor">#define TGA_OK                           0</span>
+<a name="l00052"></a>00052 <span class="preprocessor">#define TGA_ERROR_FILE_OPEN             -5</span>
+<a name="l00053"></a>00053 <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_READING_FILE          -4</span>
+<a name="l00054"></a>00054 <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_INDEXED_COLOR         -3</span>
+<a name="l00055"></a>00055 <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_MEMORY                -2</span>
+<a name="l00056"></a>00056 <span class="preprocessor"></span><span class="preprocessor">#define TGA_ERROR_COMPRESSED_FILE       -1</span>
+<a name="l00057"></a>00057 <span class="preprocessor"></span><span class="preprocessor">#define TGA_OK                           0</span>
 <a name="l00058"></a>00058 <span class="preprocessor"></span>
 <a name="l00059"></a>00059 <span class="comment">// Save functions</span>
-<a name="l00060"></a>00060 <span class="keywordtype">int</span> <a class="code" href="_load_t_g_a_8c.html#a97120ca67bc220252c5ad33a056a17b5">SaveDataToTGA</a>(<span class="keywordtype">char</span>          *filename, 
-<a name="l00061"></a>00061              <span class="keywordtype">short</span> <span class="keywordtype">int</span>      <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, 
-<a name="l00062"></a>00062              <span class="keywordtype">short</span> <span class="keywordtype">int</span>      <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, 
+<a name="l00060"></a>00060 <span class="keywordtype">int</span> SaveDataToTGA(<span class="keywordtype">char</span>          *filename, 
+<a name="l00061"></a>00061              <span class="keywordtype">short</span> <span class="keywordtype">int</span>      width, 
+<a name="l00062"></a>00062              <span class="keywordtype">short</span> <span class="keywordtype">int</span>      height, 
 <a name="l00063"></a>00063              <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>  pixelDepth,
 <a name="l00064"></a>00064              <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>  *imageData);
-<a name="l00065"></a>00065 <span class="keywordtype">void</span> <a class="code" href="_load_t_g_a_8c.html#aa7968a4c8ece74b6c797f7edcdf07dec">SaveTGA</a>(<a class="code" href="struct_texture_data.html">TextureData</a> *tex, <span class="keywordtype">char</span> *filename);
-<a name="l00066"></a>00066 <span class="keywordtype">void</span> <a class="code" href="_load_t_g_a_8c.html#a02502c7cfc163fab2c05113aa2a9d2ed">SaveFramebufferToTGA</a>(<span class="keywordtype">char</span> *filename, GLint x, GLint y, GLint w, GLint h);
+<a name="l00065"></a>00065 <span class="keywordtype">void</span> SaveTGA(<a class="code" href="struct_texture_data.html">TextureData</a> *tex, <span class="keywordtype">char</span> *filename);
+<a name="l00066"></a>00066 <span class="keywordtype">void</span> SaveFramebufferToTGA(<span class="keywordtype">char</span> *filename, GLint x, GLint y, GLint w, GLint h);
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068 <span class="preprocessor">#ifdef __cplusplus</span>
 <a name="l00069"></a>00069 <span class="preprocessor"></span>}
@@ -177,7 +177,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -188,9 +188,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="_load_t_g_a_8h.html">LoadTGA.h</a>      </li>
+      <li class="navelem"><b>LoadTGA.h</b>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

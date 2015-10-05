@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -75,7 +76,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/common/GL_utilities.c</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_g_l__utilities_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// GL utilities, bare essentials</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// GL utilities, bare essentials</span>
 <a name="l00002"></a>00002 <span class="comment">// By Ingemar Ragnemalm</span>
 <a name="l00003"></a>00003 
 <a name="l00004"></a>00004 <span class="comment">// August 2012:</span>
@@ -111,26 +111,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00012"></a>00012 <span class="comment">// 131014: Added tesselation shader support</span>
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="comment">//#define GL3_PROTOTYPES</span>
-<a name="l00015"></a><a class="code" href="_g_l__utilities_8c.html#a411c46599e926f8cdf49c63957255359">00015</a> <span class="preprocessor">#define _CRT_SECURE_NO_DEPRECATE</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#define _CRT_SECURE_NO_DEPRECATE</span>
 <a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#include &lt;stdlib.h&gt;</span>
 <a name="l00017"></a>00017 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
 <a name="l00018"></a>00018 <span class="preprocessor">#include &lt;stddef.h&gt;</span>
 <a name="l00019"></a>00019 <span class="preprocessor">#include &lt;string.h&gt;</span>
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;<a class="code" href="_g_l__utilities_8h.html">GL_utilities.h</a>&quot;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;GL_utilities.h&quot;</span>
 <a name="l00022"></a>00022 
 <a name="l00023"></a>00023 <span class="comment">// Shader loader</span>
 <a name="l00024"></a>00024 
-<a name="l00025"></a><a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">00025</a> <span class="keywordtype">char</span>* <a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">readFile</a>(<span class="keywordtype">char</span> *file)
+<a name="l00025"></a>00025 <span class="keywordtype">char</span>* readFile(<span class="keywordtype">char</span> *file)
 <a name="l00026"></a>00026 {
 <a name="l00027"></a>00027     FILE *fptr;
 <a name="l00028"></a>00028     <span class="keywordtype">long</span> length;
 <a name="l00029"></a>00029     <span class="keywordtype">char</span> *buf;
-<a name="l00030"></a>00030     <span class="keywordflow">if</span> (file == <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
-<a name="l00031"></a>00031         <span class="keywordflow">return</span> <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;
+<a name="l00030"></a>00030     <span class="keywordflow">if</span> (file == NULL)
+<a name="l00031"></a>00031         <span class="keywordflow">return</span> NULL;
 <a name="l00032"></a>00032     fptr = fopen(file, <span class="stringliteral">&quot;rb&quot;</span>); <span class="comment">/* Open file for reading */</span>
 <a name="l00033"></a>00033     <span class="keywordflow">if</span> (!fptr) <span class="comment">/* Return NULL on failure */</span>
-<a name="l00034"></a>00034         <span class="keywordflow">return</span> <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;
+<a name="l00034"></a>00034         <span class="keywordflow">return</span> NULL;
 <a name="l00035"></a>00035     fseek(fptr, 0, SEEK_END); <span class="comment">/* Seek to the end of the file */</span>
 <a name="l00036"></a>00036     length = ftell(fptr); <span class="comment">/* Find out how many bytes into the file we are */</span>
 <a name="l00037"></a>00037     buf = (<span class="keywordtype">char</span>*)malloc(length+1); <span class="comment">/* Allocate a buffer for the entire length of the file and a null terminator */</span>
@@ -143,7 +143,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00044"></a>00044 }
 <a name="l00045"></a>00045 
 <a name="l00046"></a>00046 <span class="comment">// Infolog: Show result of shader compilation</span>
-<a name="l00047"></a><a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">00047</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">printShaderInfoLog</a>(GLuint obj, <span class="keyword">const</span> <span class="keywordtype">char</span> *fn)
+<a name="l00047"></a>00047 <span class="keywordtype">void</span> printShaderInfoLog(GLuint obj, <span class="keyword">const</span> <span class="keywordtype">char</span> *fn)
 <a name="l00048"></a>00048 {
 <a name="l00049"></a>00049     GLint infologLength = 0;
 <a name="l00050"></a>00050     GLint charsWritten  = 0;
@@ -161,7 +161,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00062"></a>00062     }
 <a name="l00063"></a>00063 }
 <a name="l00064"></a>00064 
-<a name="l00065"></a><a class="code" href="_g_l__utilities_8c.html#a3ac63475b9d9b71068dfabffc7837e84">00065</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a3ac63475b9d9b71068dfabffc7837e84">printProgramInfoLog</a>(GLuint obj, <span class="keyword">const</span> <span class="keywordtype">char</span> *vfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *ffn,
+<a name="l00065"></a>00065 <span class="keywordtype">void</span> printProgramInfoLog(GLuint obj, <span class="keyword">const</span> <span class="keywordtype">char</span> *vfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *ffn,
 <a name="l00066"></a>00066                     <span class="keyword">const</span> <span class="keywordtype">char</span> *gfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *tcfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *tefn)
 <a name="l00067"></a>00067 {
 <a name="l00068"></a>00068     GLint infologLength = 0;
@@ -172,10 +172,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00073"></a>00073 
 <a name="l00074"></a>00074     <span class="keywordflow">if</span> (infologLength &gt; 2)
 <a name="l00075"></a>00075     {
-<a name="l00076"></a>00076         <span class="keywordflow">if</span> (gfn == <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00076"></a>00076         <span class="keywordflow">if</span> (gfn == NULL)
 <a name="l00077"></a>00077             fprintf(stderr, <span class="stringliteral">&quot;[From %s+%s:]\n&quot;</span>, vfn, ffn);
 <a name="l00078"></a>00078         <span class="keywordflow">else</span>
-<a name="l00079"></a>00079         <span class="keywordflow">if</span> (tcfn == <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a> || tefn == <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00079"></a>00079         <span class="keywordflow">if</span> (tcfn == NULL || tefn == NULL)
 <a name="l00080"></a>00080             fprintf(stderr, <span class="stringliteral">&quot;[From %s+%s+%s:]\n&quot;</span>, vfn, ffn, gfn);
 <a name="l00081"></a>00081         <span class="keywordflow">else</span>
 <a name="l00082"></a>00082             fprintf(stderr, <span class="stringliteral">&quot;[From %s+%s+%s+%s+%s:]\n&quot;</span>, vfn, ffn, gfn, tcfn, tefn);
@@ -187,119 +187,119 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00088"></a>00088 }
 <a name="l00089"></a>00089 
 <a name="l00090"></a>00090 <span class="comment">// Compile a shader, return reference to it</span>
-<a name="l00091"></a><a class="code" href="_g_l__utilities_8c.html#a93569ea1995cbb0f4978b59489d1ddb3">00091</a> GLuint <a class="code" href="_g_l__utilities_8c.html#a93569ea1995cbb0f4978b59489d1ddb3">compileShaders</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vs, <span class="keyword">const</span> <span class="keywordtype">char</span> *fs, <span class="keyword">const</span> <span class="keywordtype">char</span> *gs, <span class="keyword">const</span> <span class="keywordtype">char</span> *tcs, <span class="keyword">const</span> <span class="keywordtype">char</span> *tes,
+<a name="l00091"></a>00091 GLuint compileShaders(<span class="keyword">const</span> <span class="keywordtype">char</span> *vs, <span class="keyword">const</span> <span class="keywordtype">char</span> *fs, <span class="keyword">const</span> <span class="keywordtype">char</span> *gs, <span class="keyword">const</span> <span class="keywordtype">char</span> *tcs, <span class="keyword">const</span> <span class="keywordtype">char</span> *tes,
 <a name="l00092"></a>00092                                 <span class="keyword">const</span> <span class="keywordtype">char</span> *vfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *ffn, <span class="keyword">const</span> <span class="keywordtype">char</span> *gfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *tcfn, <span class="keyword">const</span> <span class="keywordtype">char</span> *tefn)
 <a name="l00093"></a>00093 {
 <a name="l00094"></a>00094     GLuint v,f,g,tc,te,p;
 <a name="l00095"></a>00095 
 <a name="l00096"></a>00096     v = glCreateShader(GL_VERTEX_SHADER);
 <a name="l00097"></a>00097     f = glCreateShader(GL_FRAGMENT_SHADER);
-<a name="l00098"></a>00098     glShaderSource(v, 1, &amp;vs, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
-<a name="l00099"></a>00099     glShaderSource(f, 1, &amp;fs, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00098"></a>00098     glShaderSource(v, 1, &amp;vs, NULL);
+<a name="l00099"></a>00099     glShaderSource(f, 1, &amp;fs, NULL);
 <a name="l00100"></a>00100     glCompileShader(v);
 <a name="l00101"></a>00101     glCompileShader(f);
-<a name="l00102"></a>00102     <span class="keywordflow">if</span> (gs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00102"></a>00102     <span class="keywordflow">if</span> (gs != NULL)
 <a name="l00103"></a>00103     {
 <a name="l00104"></a>00104         g = glCreateShader(GL_GEOMETRY_SHADER);
-<a name="l00105"></a>00105         glShaderSource(g, 1, &amp;gs, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00105"></a>00105         glShaderSource(g, 1, &amp;gs, NULL);
 <a name="l00106"></a>00106         glCompileShader(g);
 <a name="l00107"></a>00107     }
 <a name="l00108"></a>00108 <span class="preprocessor">#ifdef GL_TESS_CONTROL_SHADER</span>
-<a name="l00109"></a>00109 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (tcs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00109"></a>00109 <span class="preprocessor"></span>    <span class="keywordflow">if</span> (tcs != NULL)
 <a name="l00110"></a>00110     {
 <a name="l00111"></a>00111         tc = glCreateShader(GL_TESS_CONTROL_SHADER);
-<a name="l00112"></a>00112         glShaderSource(tc, 1, &amp;tcs, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00112"></a>00112         glShaderSource(tc, 1, &amp;tcs, NULL);
 <a name="l00113"></a>00113         glCompileShader(tc);
 <a name="l00114"></a>00114     }
-<a name="l00115"></a>00115     <span class="keywordflow">if</span> (tes != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00115"></a>00115     <span class="keywordflow">if</span> (tes != NULL)
 <a name="l00116"></a>00116     {
 <a name="l00117"></a>00117         te = glCreateShader(GL_TESS_EVALUATION_SHADER);
-<a name="l00118"></a>00118         glShaderSource(te, 1, &amp;tes, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00118"></a>00118         glShaderSource(te, 1, &amp;tes, NULL);
 <a name="l00119"></a>00119         glCompileShader(te);
 <a name="l00120"></a>00120     }
 <a name="l00121"></a>00121 <span class="preprocessor">#endif</span>
 <a name="l00122"></a>00122 <span class="preprocessor"></span>    p = glCreateProgram();
 <a name="l00123"></a>00123     glAttachShader(p,v);
 <a name="l00124"></a>00124     glAttachShader(p,f);
-<a name="l00125"></a>00125     <span class="keywordflow">if</span> (gs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00125"></a>00125     <span class="keywordflow">if</span> (gs != NULL)
 <a name="l00126"></a>00126         glAttachShader(p,g);
-<a name="l00127"></a>00127     <span class="keywordflow">if</span> (tcs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00127"></a>00127     <span class="keywordflow">if</span> (tcs != NULL)
 <a name="l00128"></a>00128         glAttachShader(p,tc);
-<a name="l00129"></a>00129     <span class="keywordflow">if</span> (tes != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00129"></a>00129     <span class="keywordflow">if</span> (tes != NULL)
 <a name="l00130"></a>00130         glAttachShader(p,te);
 <a name="l00131"></a>00131     glLinkProgram(p);
 <a name="l00132"></a>00132     glUseProgram(p);
 <a name="l00133"></a>00133 
-<a name="l00134"></a>00134     <a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">printShaderInfoLog</a>(v, vfn);
-<a name="l00135"></a>00135     <a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">printShaderInfoLog</a>(f, ffn);
-<a name="l00136"></a>00136     <span class="keywordflow">if</span> (gs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) <a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">printShaderInfoLog</a>(g, gfn);
-<a name="l00137"></a>00137     <span class="keywordflow">if</span> (tcs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)    <a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">printShaderInfoLog</a>(tc, tcfn);
-<a name="l00138"></a>00138     <span class="keywordflow">if</span> (tes != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)    <a class="code" href="_g_l__utilities_8c.html#a58646e819141efe1958bf7d1d935947a">printShaderInfoLog</a>(te, tefn);
+<a name="l00134"></a>00134     printShaderInfoLog(v, vfn);
+<a name="l00135"></a>00135     printShaderInfoLog(f, ffn);
+<a name="l00136"></a>00136     <span class="keywordflow">if</span> (gs != NULL) printShaderInfoLog(g, gfn);
+<a name="l00137"></a>00137     <span class="keywordflow">if</span> (tcs != NULL)    printShaderInfoLog(tc, tcfn);
+<a name="l00138"></a>00138     <span class="keywordflow">if</span> (tes != NULL)    printShaderInfoLog(te, tefn);
 <a name="l00139"></a>00139 
-<a name="l00140"></a>00140     <a class="code" href="_g_l__utilities_8c.html#a3ac63475b9d9b71068dfabffc7837e84">printProgramInfoLog</a>(p, vfn, ffn, gfn, tcfn, tefn);
+<a name="l00140"></a>00140     printProgramInfoLog(p, vfn, ffn, gfn, tcfn, tefn);
 <a name="l00141"></a>00141 
 <a name="l00142"></a>00142     <span class="keywordflow">return</span> p;
 <a name="l00143"></a>00143 }
 <a name="l00144"></a>00144 
-<a name="l00145"></a><a class="code" href="_g_l__utilities_8h.html#a91e6903d9687b4be6eb6b4685b96c58b">00145</a> GLuint <a class="code" href="_g_l__utilities_8c.html#a91e6903d9687b4be6eb6b4685b96c58b">loadShaders</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName)
+<a name="l00145"></a>00145 GLuint loadShaders(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName)
 <a name="l00146"></a>00146 {
-<a name="l00147"></a>00147     <span class="keywordflow">return</span> <a class="code" href="_g_l__utilities_8c.html#a02ed7a39f5b3f621a9b8aefcd423fd7a">loadShadersGT</a>(vertFileName, fragFileName, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00147"></a>00147     <span class="keywordflow">return</span> loadShadersGT(vertFileName, fragFileName, NULL, NULL, NULL);
 <a name="l00148"></a>00148 }
 <a name="l00149"></a>00149 
-<a name="l00150"></a><a class="code" href="_g_l__utilities_8h.html#a045b3259f4ed4c20f0e3f2ea508c603e">00150</a> GLuint <a class="code" href="_g_l__utilities_8c.html#a045b3259f4ed4c20f0e3f2ea508c603e">loadShadersG</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName)
+<a name="l00150"></a>00150 GLuint loadShadersG(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName)
 <a name="l00151"></a>00151 <span class="comment">// With geometry shader support</span>
 <a name="l00152"></a>00152 {
-<a name="l00153"></a>00153     <span class="keywordflow">return</span> <a class="code" href="_g_l__utilities_8c.html#a02ed7a39f5b3f621a9b8aefcd423fd7a">loadShadersGT</a>(vertFileName, fragFileName, geomFileName, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00153"></a>00153     <span class="keywordflow">return</span> loadShadersGT(vertFileName, fragFileName, geomFileName, NULL, NULL);
 <a name="l00154"></a>00154 }
 <a name="l00155"></a>00155 
-<a name="l00156"></a><a class="code" href="_g_l__utilities_8h.html#a02ed7a39f5b3f621a9b8aefcd423fd7a">00156</a> GLuint <a class="code" href="_g_l__utilities_8c.html#a02ed7a39f5b3f621a9b8aefcd423fd7a">loadShadersGT</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName,
+<a name="l00156"></a>00156 GLuint loadShadersGT(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName,
 <a name="l00157"></a>00157                         <span class="keyword">const</span> <span class="keywordtype">char</span> *tcFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *teFileName)
 <a name="l00158"></a>00158 <span class="comment">// With tesselation shader support</span>
 <a name="l00159"></a>00159 {
 <a name="l00160"></a>00160     <span class="keywordtype">char</span> *vs, *fs, *gs, *tcs, *tes;
 <a name="l00161"></a>00161     GLuint p = 0;
 <a name="l00162"></a>00162 
-<a name="l00163"></a>00163     vs = <a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">readFile</a>((<span class="keywordtype">char</span> *)vertFileName);
-<a name="l00164"></a>00164     fs = <a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">readFile</a>((<span class="keywordtype">char</span> *)fragFileName);
-<a name="l00165"></a>00165     gs = <a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">readFile</a>((<span class="keywordtype">char</span> *)geomFileName);
-<a name="l00166"></a>00166     tcs = <a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">readFile</a>((<span class="keywordtype">char</span> *)tcFileName);
-<a name="l00167"></a>00167     tes = <a class="code" href="_g_l__utilities_8c.html#ae5d326f184bed35c7b292db3d298fbf9">readFile</a>((<span class="keywordtype">char</span> *)teFileName);
-<a name="l00168"></a>00168     <span class="keywordflow">if</span> (vs==<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00163"></a>00163     vs = readFile((<span class="keywordtype">char</span> *)vertFileName);
+<a name="l00164"></a>00164     fs = readFile((<span class="keywordtype">char</span> *)fragFileName);
+<a name="l00165"></a>00165     gs = readFile((<span class="keywordtype">char</span> *)geomFileName);
+<a name="l00166"></a>00166     tcs = readFile((<span class="keywordtype">char</span> *)tcFileName);
+<a name="l00167"></a>00167     tes = readFile((<span class="keywordtype">char</span> *)teFileName);
+<a name="l00168"></a>00168     <span class="keywordflow">if</span> (vs==NULL)
 <a name="l00169"></a>00169         fprintf(stderr, <span class="stringliteral">&quot;Failed to read %s from disk.\n&quot;</span>, vertFileName);
-<a name="l00170"></a>00170     <span class="keywordflow">if</span> (fs==<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)
+<a name="l00170"></a>00170     <span class="keywordflow">if</span> (fs==NULL)
 <a name="l00171"></a>00171         fprintf(stderr, <span class="stringliteral">&quot;Failed to read %s from disk.\n&quot;</span>, fragFileName);
-<a name="l00172"></a>00172     <span class="keywordflow">if</span> ((gs==<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) &amp;&amp; (geomFileName != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>))
+<a name="l00172"></a>00172     <span class="keywordflow">if</span> ((gs==NULL) &amp;&amp; (geomFileName != NULL))
 <a name="l00173"></a>00173         fprintf(stderr, <span class="stringliteral">&quot;Failed to read %s from disk.\n&quot;</span>, geomFileName);
-<a name="l00174"></a>00174     <span class="keywordflow">if</span> ((tcs==<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) &amp;&amp; (tcFileName != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>))
+<a name="l00174"></a>00174     <span class="keywordflow">if</span> ((tcs==NULL) &amp;&amp; (tcFileName != NULL))
 <a name="l00175"></a>00175         fprintf(stderr, <span class="stringliteral">&quot;Failed to read %s from disk.\n&quot;</span>, tcFileName);
-<a name="l00176"></a>00176     <span class="keywordflow">if</span> ((tes==<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) &amp;&amp; (teFileName != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>))
+<a name="l00176"></a>00176     <span class="keywordflow">if</span> ((tes==NULL) &amp;&amp; (teFileName != NULL))
 <a name="l00177"></a>00177         fprintf(stderr, <span class="stringliteral">&quot;Failed to read %s from disk.\n&quot;</span>, teFileName);
-<a name="l00178"></a>00178     <span class="keywordflow">if</span> ((vs!=<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>)&amp;&amp;(fs!=<a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>))
-<a name="l00179"></a>00179         p = <a class="code" href="_g_l__utilities_8c.html#a93569ea1995cbb0f4978b59489d1ddb3">compileShaders</a>(vs, fs, gs, tcs, tes, vertFileName, fragFileName, geomFileName, tcFileName, teFileName);
-<a name="l00180"></a>00180     <span class="keywordflow">if</span> (vs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) free(vs);
-<a name="l00181"></a>00181     <span class="keywordflow">if</span> (fs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) free(fs);
-<a name="l00182"></a>00182     <span class="keywordflow">if</span> (gs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) free(gs);
-<a name="l00183"></a>00183     <span class="keywordflow">if</span> (tcs != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) free(tcs);
-<a name="l00184"></a>00184     <span class="keywordflow">if</span> (tes != <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) free(tes);
+<a name="l00178"></a>00178     <span class="keywordflow">if</span> ((vs!=NULL)&amp;&amp;(fs!=NULL))
+<a name="l00179"></a>00179         p = compileShaders(vs, fs, gs, tcs, tes, vertFileName, fragFileName, geomFileName, tcFileName, teFileName);
+<a name="l00180"></a>00180     <span class="keywordflow">if</span> (vs != NULL) free(vs);
+<a name="l00181"></a>00181     <span class="keywordflow">if</span> (fs != NULL) free(fs);
+<a name="l00182"></a>00182     <span class="keywordflow">if</span> (gs != NULL) free(gs);
+<a name="l00183"></a>00183     <span class="keywordflow">if</span> (tcs != NULL) free(tcs);
+<a name="l00184"></a>00184     <span class="keywordflow">if</span> (tes != NULL) free(tes);
 <a name="l00185"></a>00185     <span class="keywordflow">return</span> p;
 <a name="l00186"></a>00186 }
 <a name="l00187"></a>00187 
 <a name="l00188"></a>00188 <span class="comment">// End of Shader loader</span>
 <a name="l00189"></a>00189 
-<a name="l00190"></a><a class="code" href="_g_l__utilities_8h.html#ae903a80068b1a3b5a61a27bec9ec6557">00190</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#ae903a80068b1a3b5a61a27bec9ec6557">dumpInfo</a>(<span class="keywordtype">void</span>)
+<a name="l00190"></a>00190 <span class="keywordtype">void</span> dumpInfo(<span class="keywordtype">void</span>)
 <a name="l00191"></a>00191 {
 <a name="l00192"></a>00192    printf (<span class="stringliteral">&quot;Vendor: %s\n&quot;</span>, glGetString (GL_VENDOR));
 <a name="l00193"></a>00193    printf (<span class="stringliteral">&quot;Renderer: %s\n&quot;</span>, glGetString (GL_RENDERER));
 <a name="l00194"></a>00194    printf (<span class="stringliteral">&quot;Version: %s\n&quot;</span>, glGetString (GL_VERSION));
 <a name="l00195"></a>00195    printf (<span class="stringliteral">&quot;GLSL: %s\n&quot;</span>, glGetString (GL_SHADING_LANGUAGE_VERSION));
-<a name="l00196"></a>00196    <a class="code" href="_g_l__utilities_8c.html#a3b24c3382e6ecd269e8d72f46190b7ca">printError</a> (<span class="stringliteral">&quot;dumpInfo&quot;</span>);
+<a name="l00196"></a>00196    printError (<span class="stringliteral">&quot;dumpInfo&quot;</span>);
 <a name="l00197"></a>00197 }
 <a name="l00198"></a>00198 
 <a name="l00199"></a>00199 <span class="keyword">static</span> GLenum lastError = 0;
 <a name="l00200"></a>00200 <span class="keyword">static</span> <span class="keywordtype">char</span> lastErrorFunction[1024] = <span class="stringliteral">&quot;&quot;</span>;
 <a name="l00201"></a>00201 
 <a name="l00202"></a>00202 <span class="comment">/* report GL errors, if any, to stderr */</span>
-<a name="l00203"></a><a class="code" href="_g_l__utilities_8h.html#a3b24c3382e6ecd269e8d72f46190b7ca">00203</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a3b24c3382e6ecd269e8d72f46190b7ca">printError</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *functionName)
+<a name="l00203"></a>00203 <span class="keywordtype">void</span> printError(<span class="keyword">const</span> <span class="keywordtype">char</span> *functionName)
 <a name="l00204"></a>00204 {
 <a name="l00205"></a>00205    GLenum error;
 <a name="l00206"></a>00206    <span class="keywordflow">while</span> (( error = glGetError() ) != GL_NO_ERROR)
@@ -319,21 +319,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00220"></a>00220 <span class="comment">// elsewhere or they will conflict.</span>
 <a name="l00221"></a>00221 <span class="comment">// (This functionality is built-in in MicroGlut, as &quot;glutKeyIsDown&quot; where this conflict should not exist.)</span>
 <a name="l00222"></a>00222 
-<a name="l00223"></a><a class="code" href="_g_l__utilities_8c.html#ac6e89b9acd8c3b2506a3be3dca3c34de">00223</a> <span class="keywordtype">char</span> <a class="code" href="_g_l__utilities_8c.html#ac6e89b9acd8c3b2506a3be3dca3c34de">keymap</a>[256];
+<a name="l00223"></a>00223 <span class="keywordtype">char</span> keymap[256];
 <a name="l00224"></a>00224 
-<a name="l00225"></a><a class="code" href="_g_l__utilities_8h.html#a8d09d991086be73e17a53f1ecc7dfad5">00225</a> <span class="keywordtype">char</span> <a class="code" href="_g_l__utilities_8c.html#a8d09d991086be73e17a53f1ecc7dfad5">keyIsDown</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> c)
+<a name="l00225"></a>00225 <span class="keywordtype">char</span> keyIsDown(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> c)
 <a name="l00226"></a>00226 {
-<a name="l00227"></a>00227     <span class="keywordflow">return</span> <a class="code" href="_g_l__utilities_8c.html#ac6e89b9acd8c3b2506a3be3dca3c34de">keymap</a>[(<span class="keywordtype">unsigned</span> int)c];
+<a name="l00227"></a>00227     <span class="keywordflow">return</span> keymap[(<span class="keywordtype">unsigned</span> int)c];
 <a name="l00228"></a>00228 }
 <a name="l00229"></a>00229 
-<a name="l00230"></a><a class="code" href="_g_l__utilities_8c.html#a78f6ec96acbb8156cd856466cf3848e5">00230</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a78f6ec96acbb8156cd856466cf3848e5">keyUp</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> key, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y)
+<a name="l00230"></a>00230 <span class="keywordtype">void</span> keyUp(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> key, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y)
 <a name="l00231"></a>00231 {
-<a name="l00232"></a>00232     <a class="code" href="_g_l__utilities_8c.html#ac6e89b9acd8c3b2506a3be3dca3c34de">keymap</a>[(<span class="keywordtype">unsigned</span> int)key] = 0;
+<a name="l00232"></a>00232     keymap[(<span class="keywordtype">unsigned</span> int)key] = 0;
 <a name="l00233"></a>00233 }
 <a name="l00234"></a>00234 
-<a name="l00235"></a><a class="code" href="_g_l__utilities_8c.html#a63249f2a54cb9b3fff257daf7c7930f8">00235</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a63249f2a54cb9b3fff257daf7c7930f8">keyDown</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> key, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y)
+<a name="l00235"></a>00235 <span class="keywordtype">void</span> keyDown(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> key, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y)
 <a name="l00236"></a>00236 {
-<a name="l00237"></a>00237     <a class="code" href="_g_l__utilities_8c.html#ac6e89b9acd8c3b2506a3be3dca3c34de">keymap</a>[(<span class="keywordtype">unsigned</span> int)key] = 1;
+<a name="l00237"></a>00237     keymap[(<span class="keywordtype">unsigned</span> int)key] = 1;
 <a name="l00238"></a>00238 }
 <a name="l00239"></a>00239 
 <a name="l00240"></a>00240 <span class="comment">/* void initKeymapManager() */</span>
@@ -349,7 +349,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00250"></a>00250 <span class="comment">// FBO</span>
 <a name="l00251"></a>00251 
 <a name="l00252"></a>00252 <span class="comment">//----------------------------------FBO functions-----------------------------------</span>
-<a name="l00253"></a><a class="code" href="_g_l__utilities_8c.html#a25163a9cdf0f81a5bd04104020b5e44b">00253</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a25163a9cdf0f81a5bd04104020b5e44b">CHECK_FRAMEBUFFER_STATUS</a>()
+<a name="l00253"></a>00253 <span class="keywordtype">void</span> CHECK_FRAMEBUFFER_STATUS()
 <a name="l00254"></a>00254 {
 <a name="l00255"></a>00255     GLenum status;
 <a name="l00256"></a>00256     status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -359,19 +359,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00260"></a>00260 
 <a name="l00261"></a>00261 <span class="comment">// create FBO</span>
 <a name="l00262"></a>00262 <span class="comment">// FP buffer, suitable for HDR</span>
-<a name="l00263"></a><a class="code" href="_g_l__utilities_8h.html#a82a13a740b2bdb63c4c8e81c50c30ea4">00263</a> <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *<a class="code" href="_g_l__utilities_8c.html#a82a13a740b2bdb63c4c8e81c50c30ea4">initFBO</a>(<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <span class="keywordtype">int</span> int_method)
+<a name="l00263"></a>00263 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *initFBO(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">int</span> int_method)
 <a name="l00264"></a>00264 {
 <a name="l00265"></a>00265     <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *fbo = (<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>*)malloc(<span class="keyword">sizeof</span>(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>));
 <a name="l00266"></a>00266 
-<a name="l00267"></a>00267     fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a> = <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>;
-<a name="l00268"></a>00268     fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a> = <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>;
+<a name="l00267"></a>00267     fbo-&gt;width = width;
+<a name="l00268"></a>00268     fbo-&gt;height = height;
 <a name="l00269"></a>00269 
 <a name="l00270"></a>00270     <span class="comment">// create objects</span>
-<a name="l00271"></a>00271     glGenFramebuffers(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>); <span class="comment">// frame buffer id</span>
-<a name="l00272"></a>00272     glBindFramebuffer(GL_FRAMEBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
-<a name="l00273"></a>00273     glGenTextures(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
-<a name="l00274"></a>00274     fprintf(stderr, <span class="stringliteral">&quot;%i \n&quot;</span>,fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
-<a name="l00275"></a>00275     glBindTexture(GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
+<a name="l00271"></a>00271     glGenFramebuffers(1, &amp;fbo-&gt;fb); <span class="comment">// frame buffer id</span>
+<a name="l00272"></a>00272     glBindFramebuffer(GL_FRAMEBUFFER, fbo-&gt;fb);
+<a name="l00273"></a>00273     glGenTextures(1, &amp;fbo-&gt;texid);
+<a name="l00274"></a>00274     fprintf(stderr, <span class="stringliteral">&quot;%i \n&quot;</span>,fbo-&gt;texid);
+<a name="l00275"></a>00275     glBindTexture(GL_TEXTURE_2D, fbo-&gt;texid);
 <a name="l00276"></a>00276     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 <a name="l00277"></a>00277     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 <a name="l00278"></a>00278     <span class="keywordflow">if</span> (int_method == 0)
@@ -384,38 +384,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00285"></a>00285         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 <a name="l00286"></a>00286         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 <a name="l00287"></a>00287     }
-<a name="l00288"></a>00288     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
-<a name="l00289"></a>00289     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>, 0);
+<a name="l00288"></a>00288     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+<a name="l00289"></a>00289     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo-&gt;texid, 0);
 <a name="l00290"></a>00290 
 <a name="l00291"></a>00291     <span class="comment">// Renderbuffer</span>
 <a name="l00292"></a>00292     <span class="comment">// initialize depth renderbuffer</span>
-<a name="l00293"></a>00293     glGenRenderbuffers(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00294"></a>00294     glBindRenderbuffer(GL_RENDERBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00295"></a>00295     glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a>, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a> );
-<a name="l00296"></a>00296     glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a> );
-<a name="l00297"></a>00297     <a class="code" href="_g_l__utilities_8c.html#a25163a9cdf0f81a5bd04104020b5e44b">CHECK_FRAMEBUFFER_STATUS</a>();
+<a name="l00293"></a>00293     glGenRenderbuffers(1, &amp;fbo-&gt;rb);
+<a name="l00294"></a>00294     glBindRenderbuffer(GL_RENDERBUFFER, fbo-&gt;rb);
+<a name="l00295"></a>00295     glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, fbo-&gt;width, fbo-&gt;height );
+<a name="l00296"></a>00296     glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo-&gt;rb );
+<a name="l00297"></a>00297     CHECK_FRAMEBUFFER_STATUS();
 <a name="l00298"></a>00298 
-<a name="l00299"></a>00299     fprintf(stderr, <span class="stringliteral">&quot;Framebuffer object %d\n&quot;</span>, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
+<a name="l00299"></a>00299     fprintf(stderr, <span class="stringliteral">&quot;Framebuffer object %d\n&quot;</span>, fbo-&gt;fb);
 <a name="l00300"></a>00300     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 <a name="l00301"></a>00301     <span class="keywordflow">return</span> fbo;
 <a name="l00302"></a>00302 }
 <a name="l00303"></a>00303 
 <a name="l00304"></a>00304 <span class="comment">// create FBO, optionally with depth</span>
 <a name="l00305"></a>00305 <span class="comment">// Integer buffer, not suitable for HDR!</span>
-<a name="l00306"></a><a class="code" href="_g_l__utilities_8h.html#a807a48c4581e3ccf208dda20a8a6ffd1">00306</a> <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *<a class="code" href="_g_l__utilities_8c.html#a807a48c4581e3ccf208dda20a8a6ffd1">initFBO2</a>(<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <span class="keywordtype">int</span> int_method, <span class="keywordtype">int</span> create_depthimage)
+<a name="l00306"></a>00306 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *initFBO2(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">int</span> int_method, <span class="keywordtype">int</span> create_depthimage)
 <a name="l00307"></a>00307 {
 <a name="l00308"></a>00308     <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *fbo = (<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>*)malloc(<span class="keyword">sizeof</span>(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>));
 <a name="l00309"></a>00309 
-<a name="l00310"></a>00310     fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a> = <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>;
-<a name="l00311"></a>00311     fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a> = <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>;
+<a name="l00310"></a>00310     fbo-&gt;width = width;
+<a name="l00311"></a>00311     fbo-&gt;height = height;
 <a name="l00312"></a>00312 
 <a name="l00313"></a>00313     <span class="comment">// create objects</span>
-<a name="l00314"></a>00314     glGenRenderbuffers(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00315"></a>00315     glGenFramebuffers(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>); <span class="comment">// frame buffer id</span>
-<a name="l00316"></a>00316     glBindFramebuffer(GL_FRAMEBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
-<a name="l00317"></a>00317     glGenTextures(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
-<a name="l00318"></a>00318     fprintf(stderr, <span class="stringliteral">&quot;%i \n&quot;</span>,fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
-<a name="l00319"></a>00319     glBindTexture(GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
+<a name="l00314"></a>00314     glGenRenderbuffers(1, &amp;fbo-&gt;rb);
+<a name="l00315"></a>00315     glGenFramebuffers(1, &amp;fbo-&gt;fb); <span class="comment">// frame buffer id</span>
+<a name="l00316"></a>00316     glBindFramebuffer(GL_FRAMEBUFFER, fbo-&gt;fb);
+<a name="l00317"></a>00317     glGenTextures(1, &amp;fbo-&gt;texid);
+<a name="l00318"></a>00318     fprintf(stderr, <span class="stringliteral">&quot;%i \n&quot;</span>,fbo-&gt;texid);
+<a name="l00319"></a>00319     glBindTexture(GL_TEXTURE_2D, fbo-&gt;texid);
 <a name="l00320"></a>00320     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 <a name="l00321"></a>00321     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 <a name="l00322"></a>00322     <span class="keywordflow">if</span> (int_method == 0)
@@ -428,46 +428,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00329"></a>00329         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 <a name="l00330"></a>00330         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 <a name="l00331"></a>00331     }
-<a name="l00332"></a>00332     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);
+<a name="l00332"></a>00332     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 <a name="l00333"></a>00333 
-<a name="l00334"></a>00334     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>, 0);
+<a name="l00334"></a>00334     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo-&gt;texid, 0);
 <a name="l00335"></a>00335     <span class="keywordflow">if</span> (create_depthimage!=0)
 <a name="l00336"></a>00336     {
-<a name="l00337"></a>00337       glGenTextures(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a39df1b7b9ce6f4617df0acc027260251">depth</a>);
-<a name="l00338"></a>00338       glBindTexture(GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a39df1b7b9ce6f4617df0acc027260251">depth</a>);
+<a name="l00337"></a>00337       glGenTextures(1, &amp;fbo-&gt;depth);
+<a name="l00338"></a>00338       glBindTexture(GL_TEXTURE_2D, fbo-&gt;depth);
 <a name="l00339"></a>00339       glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0L);
 <a name="l00340"></a>00340       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 <a name="l00341"></a>00341       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 <a name="l00342"></a>00342       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 <a name="l00343"></a>00343       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 <a name="l00344"></a>00344       glBindTexture(GL_TEXTURE_2D, 0);
-<a name="l00345"></a>00345       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a39df1b7b9ce6f4617df0acc027260251">depth</a>, 0);
-<a name="l00346"></a>00346       fprintf(stderr, <span class="stringliteral">&quot;depthtexture: %i\n&quot;</span>,fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a39df1b7b9ce6f4617df0acc027260251">depth</a>);
+<a name="l00345"></a>00345       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fbo-&gt;depth, 0);
+<a name="l00346"></a>00346       fprintf(stderr, <span class="stringliteral">&quot;depthtexture: %i\n&quot;</span>,fbo-&gt;depth);
 <a name="l00347"></a>00347     }
 <a name="l00348"></a>00348 
 <a name="l00349"></a>00349     <span class="comment">// Renderbuffer</span>
 <a name="l00350"></a>00350     <span class="comment">// initialize depth renderbuffer</span>
-<a name="l00351"></a>00351     glBindRenderbuffer(GL_RENDERBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00352"></a>00352     <a class="code" href="_g_l__utilities_8c.html#a25163a9cdf0f81a5bd04104020b5e44b">CHECK_FRAMEBUFFER_STATUS</a>();
+<a name="l00351"></a>00351     glBindRenderbuffer(GL_RENDERBUFFER, fbo-&gt;rb);
+<a name="l00352"></a>00352     CHECK_FRAMEBUFFER_STATUS();
 <a name="l00353"></a>00353 
-<a name="l00354"></a>00354     fprintf(stderr, <span class="stringliteral">&quot;Framebuffer object %d\n&quot;</span>, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
+<a name="l00354"></a>00354     fprintf(stderr, <span class="stringliteral">&quot;Framebuffer object %d\n&quot;</span>, fbo-&gt;fb);
 <a name="l00355"></a>00355     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 <a name="l00356"></a>00356     <span class="keywordflow">return</span> fbo;
 <a name="l00357"></a>00357 }
 <a name="l00358"></a>00358 
-<a name="l00359"></a><a class="code" href="_g_l__utilities_8h.html#a9e370beeafb7b0eb16a05875f53820ac">00359</a> <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *<a class="code" href="_g_l__utilities_8c.html#a9e370beeafb7b0eb16a05875f53820ac">initFBO3</a>(<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <span class="keywordtype">void</span>* data)
+<a name="l00359"></a>00359 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *initFBO3(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">void</span>* data)
 <a name="l00360"></a>00360 {
 <a name="l00361"></a>00361     <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *fbo = (<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>*)malloc(<span class="keyword">sizeof</span>(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>));
 <a name="l00362"></a>00362 
-<a name="l00363"></a>00363     fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a> = <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>;
-<a name="l00364"></a>00364     fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a> = <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>;
+<a name="l00363"></a>00363     fbo-&gt;width = width;
+<a name="l00364"></a>00364     fbo-&gt;height = height;
 <a name="l00365"></a>00365 
 <a name="l00366"></a>00366     <span class="comment">// create objects</span>
-<a name="l00367"></a>00367     glGenFramebuffers(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>); <span class="comment">// frame buffer id</span>
-<a name="l00368"></a>00368     glBindFramebuffer(GL_FRAMEBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
-<a name="l00369"></a>00369     glGenTextures(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
-<a name="l00370"></a>00370     fprintf(stderr, <span class="stringliteral">&quot;%i \n&quot;</span>, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
-<a name="l00371"></a>00371     glBindTexture(GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
+<a name="l00367"></a>00367     glGenFramebuffers(1, &amp;fbo-&gt;fb); <span class="comment">// frame buffer id</span>
+<a name="l00368"></a>00368     glBindFramebuffer(GL_FRAMEBUFFER, fbo-&gt;fb);
+<a name="l00369"></a>00369     glGenTextures(1, &amp;fbo-&gt;texid);
+<a name="l00370"></a>00370     fprintf(stderr, <span class="stringliteral">&quot;%i \n&quot;</span>, fbo-&gt;texid);
+<a name="l00371"></a>00371     glBindTexture(GL_TEXTURE_2D, fbo-&gt;texid);
 <a name="l00372"></a>00372     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 <a name="l00373"></a>00373     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 <a name="l00374"></a>00374 
@@ -475,17 +475,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00376"></a>00376     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 <a name="l00377"></a>00377 
 <a name="l00378"></a>00378     glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, data);
-<a name="l00379"></a>00379     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>, 0);
+<a name="l00379"></a>00379     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo-&gt;texid, 0);
 <a name="l00380"></a>00380 
 <a name="l00381"></a>00381     <span class="comment">// Renderbuffer</span>
 <a name="l00382"></a>00382     <span class="comment">// initialize depth renderbuffer</span>
-<a name="l00383"></a>00383     glGenRenderbuffers(1, &amp;fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00384"></a>00384     glBindRenderbuffer(GL_RENDERBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00385"></a>00385     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a>, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a>);
-<a name="l00386"></a>00386     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>);
-<a name="l00387"></a>00387     <a class="code" href="_g_l__utilities_8c.html#a25163a9cdf0f81a5bd04104020b5e44b">CHECK_FRAMEBUFFER_STATUS</a>();
+<a name="l00383"></a>00383     glGenRenderbuffers(1, &amp;fbo-&gt;rb);
+<a name="l00384"></a>00384     glBindRenderbuffer(GL_RENDERBUFFER, fbo-&gt;rb);
+<a name="l00385"></a>00385     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, fbo-&gt;width, fbo-&gt;height);
+<a name="l00386"></a>00386     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo-&gt;rb);
+<a name="l00387"></a>00387     CHECK_FRAMEBUFFER_STATUS();
 <a name="l00388"></a>00388 
-<a name="l00389"></a>00389     fprintf(stderr, <span class="stringliteral">&quot;Framebuffer object %d\n&quot;</span>, fbo-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
+<a name="l00389"></a>00389     fprintf(stderr, <span class="stringliteral">&quot;Framebuffer object %d\n&quot;</span>, fbo-&gt;fb);
 <a name="l00390"></a>00390     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 <a name="l00391"></a>00391     <span class="keywordflow">return</span> fbo;
 <a name="l00392"></a>00392 }
@@ -494,14 +494,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00395"></a>00395 <span class="keyword">static</span> <span class="keywordtype">int</span> lasth = 0;
 <a name="l00396"></a>00396 
 <a name="l00397"></a>00397 <span class="comment">// Obsolete</span>
-<a name="l00398"></a><a class="code" href="_g_l__utilities_8h.html#a8e0fd3fdafa040e7c72e94f7c6bce639">00398</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a8e0fd3fdafa040e7c72e94f7c6bce639">updateScreenSizeForFBOHandler</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h)
+<a name="l00398"></a>00398 <span class="keywordtype">void</span> updateScreenSizeForFBOHandler(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h)
 <a name="l00399"></a>00399 {
 <a name="l00400"></a>00400     lastw = w;
 <a name="l00401"></a>00401     lasth = h;
 <a name="l00402"></a>00402 }
 <a name="l00403"></a>00403 
 <a name="l00404"></a>00404 <span class="comment">// choose input (textures) and output (FBO)</span>
-<a name="l00405"></a><a class="code" href="_g_l__utilities_8h.html#a89aaee7ba62f942901c314de4a89ebcc">00405</a> <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a89aaee7ba62f942901c314de4a89ebcc">useFBO</a>(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *out, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in1, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in2)
+<a name="l00405"></a>00405 <span class="keywordtype">void</span> useFBO(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *out, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in1, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in2)
 <a name="l00406"></a>00406 {
 <a name="l00407"></a>00407     GLint curfbo;
 <a name="l00408"></a>00408 
@@ -524,25 +524,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00425"></a>00425     }
 <a name="l00426"></a>00426 
 <a name="l00427"></a>00427     <span class="keywordflow">if</span> (out != 0L)
-<a name="l00428"></a>00428         glViewport(0, 0, out-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a>, out-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a>);
+<a name="l00428"></a>00428         glViewport(0, 0, out-&gt;width, out-&gt;height);
 <a name="l00429"></a>00429     <span class="keywordflow">else</span>
 <a name="l00430"></a>00430         glViewport(0, 0, lastw, lasth);
 <a name="l00431"></a>00431 
 <a name="l00432"></a>00432     <span class="keywordflow">if</span> (out != 0L)
 <a name="l00433"></a>00433     {
-<a name="l00434"></a>00434         glBindFramebuffer(GL_FRAMEBUFFER, out-&gt;<a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>);
-<a name="l00435"></a>00435         glViewport(0, 0, out-&gt;<a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a>, out-&gt;<a class="code" href="struct_f_b_ostruct.html#a2f7569591c710a3f51774066d06a18f9">height</a>);
+<a name="l00434"></a>00434         glBindFramebuffer(GL_FRAMEBUFFER, out-&gt;fb);
+<a name="l00435"></a>00435         glViewport(0, 0, out-&gt;width, out-&gt;height);
 <a name="l00436"></a>00436     }
 <a name="l00437"></a>00437     <span class="keywordflow">else</span>
 <a name="l00438"></a>00438         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 <a name="l00439"></a>00439     glActiveTexture(GL_TEXTURE1);
 <a name="l00440"></a>00440     <span class="keywordflow">if</span> (in2 != 0L)
-<a name="l00441"></a>00441         glBindTexture(GL_TEXTURE_2D, in2-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
+<a name="l00441"></a>00441         glBindTexture(GL_TEXTURE_2D, in2-&gt;texid);
 <a name="l00442"></a>00442     <span class="keywordflow">else</span>
 <a name="l00443"></a>00443         glBindTexture(GL_TEXTURE_2D, 0);
 <a name="l00444"></a>00444     glActiveTexture(GL_TEXTURE0);
 <a name="l00445"></a>00445     <span class="keywordflow">if</span> (in1 != 0L)
-<a name="l00446"></a>00446         glBindTexture(GL_TEXTURE_2D, in1-&gt;<a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>);
+<a name="l00446"></a>00446         glBindTexture(GL_TEXTURE_2D, in1-&gt;texid);
 <a name="l00447"></a>00447     <span class="keywordflow">else</span>
 <a name="l00448"></a>00448         glBindTexture(GL_TEXTURE_2D, 0);
 <a name="l00449"></a>00449 }
@@ -553,7 +553,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -564,9 +564,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="_g_l__utilities_8c.html">GL_utilities.c</a>      </li>
+      <li class="navelem"><b>GL_utilities.c</b>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

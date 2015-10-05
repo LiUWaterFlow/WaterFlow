@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -75,7 +76,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -97,66 +97,74 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/readData.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="read_data_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef READDATA_H</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define READDATA_H</span>
-<a name="l00003"></a>00003 <span class="preprocessor"></span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;<a class="code" href="loadobj_8h.html">loadobj.h</a>&quot;</span>
-<a name="l00006"></a>00006 
-<a name="l00007"></a>00007 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00008"></a>00008 
-<a name="l00009"></a><a class="code" href="structmapdata.html">00009</a> <span class="keyword">struct </span><a class="code" href="structmapdata.html">mapdata</a> {
-<a name="l00010"></a><a class="code" href="structmapdata.html#a2eb5258cc2abd7eef37c66b55c27282b">00010</a>     <span class="keywordtype">int</span> <a class="code" href="structmapdata.html#a2eb5258cc2abd7eef37c66b55c27282b">ncols</a>;
-<a name="l00011"></a><a class="code" href="structmapdata.html#a6531c18d8db11cbcdba40e47049796b2">00011</a>     <span class="keywordtype">int</span> <a class="code" href="structmapdata.html#a6531c18d8db11cbcdba40e47049796b2">nrows</a>;
-<a name="l00012"></a><a class="code" href="structmapdata.html#ae5e3bb6abb30cb7e5f8b779c4aaf6d4e">00012</a>     <span class="keywordtype">int</span> <a class="code" href="structmapdata.html#ae5e3bb6abb30cb7e5f8b779c4aaf6d4e">nelem</a>;
-<a name="l00013"></a><a class="code" href="structmapdata.html#aadca3c0f2a330bac60adddb927ede233">00013</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#aadca3c0f2a330bac60adddb927ede233">xllcorner</a>;
-<a name="l00014"></a><a class="code" href="structmapdata.html#a24fc6e2414df131b9e6a5c779edd5eff">00014</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#a24fc6e2414df131b9e6a5c779edd5eff">yllcorner</a>;
-<a name="l00015"></a><a class="code" href="structmapdata.html#ab3e025201e714562d699bd8cfedfdafe">00015</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#ab3e025201e714562d699bd8cfedfdafe">cellsize</a>;
-<a name="l00016"></a><a class="code" href="structmapdata.html#a42fe5533f576cf34e95eadcda9c10c89">00016</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#a42fe5533f576cf34e95eadcda9c10c89">NODATA_value</a>;
-<a name="l00017"></a><a class="code" href="structmapdata.html#a4a48eeea0d8fe4854e90b4d89620e5ca">00017</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#a4a48eeea0d8fe4854e90b4d89620e5ca">max_value</a>;
-<a name="l00018"></a><a class="code" href="structmapdata.html#ab07571d1544cdd053da62c4f9c444793">00018</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#ab07571d1544cdd053da62c4f9c444793">min_value</a>;
-<a name="l00019"></a><a class="code" href="structmapdata.html#a49b47176e25692a214895d405b9a20a1">00019</a>     std::vector&lt;float&gt; <a class="code" href="structmapdata.html#a49b47176e25692a214895d405b9a20a1">data</a>; 
-<a name="l00020"></a>00020 };
-<a name="l00021"></a>00021 
-<a name="l00022"></a>00022 
-<a name="l00023"></a><a class="code" href="class_data_handler.html">00023</a> <span class="keyword">class </span><a class="code" href="class_data_handler.html">DataHandler</a> 
-<a name="l00024"></a>00024 {
-<a name="l00025"></a>00025 <span class="keyword">private</span>:
-<a name="l00026"></a>00026     <a class="code" href="structmapdata.html">mapdata</a>* readdata;
-<a name="l00027"></a>00027     <a class="code" href="struct_model.html">Model</a>* datamodel;
-<a name="l00028"></a>00028     GLfloat terrainScale;
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030     <span class="keywordtype">void</span> readDEM(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile);
-<a name="l00031"></a>00031     <span class="keywordtype">void</span> scaleDataBefore();
-<a name="l00032"></a>00032     <span class="keywordtype">void</span> scaleDataAfter();
-<a name="l00033"></a>00033     
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035     <span class="keywordtype">void</span> performGPUNormConv();
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037     <span class="keywordtype">void</span> GenerateTerrain();
-<a name="l00038"></a>00038     glm::vec3 giveNormal(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z, GLfloat *vertexArray, GLuint *indexArray, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
-<a name="l00039"></a>00039     GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041 <span class="keyword">public</span>:
-<a name="l00042"></a>00042     <a class="code" href="class_data_handler.html#a57a8d9c6f6a3ebe16662c89354e0484d">DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile, GLfloat tScale = 500.0f);
-<a name="l00043"></a>00043     <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4">~DataHandler</a>();
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9">performNormalizedConvolution</a>();
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047     <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608">getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row);
-<a name="l00048"></a>00048     <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b">getData</a>();
-<a name="l00049"></a>00049     
-<a name="l00050"></a>00050     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22">getWidth</a>();
-<a name="l00051"></a>00051     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806">getHeight</a>();
-<a name="l00052"></a>00052     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7">getElem</a>();
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054     <a class="code" href="struct_model.html">Model</a> *<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631">getModel</a>();
-<a name="l00055"></a>00055 };
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057 glm::vec3 <a class="code" href="read_data_8h.html#aa01f604a010d02d79e172edcc9dc4269">giveNormal</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z, GLfloat *vertexArray, GLuint *indexArray, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
-<a name="l00058"></a>00058 GLfloat <a class="code" href="read_data_8h.html#a4c7fdbb619169bf4f148cd21af174230">giveHeight</a>(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>);
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="preprocessor">#endif // READDATA_H</span>
+<a href="read_data_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 <span class="preprocessor">#ifndef READDATA_H</span>
+<a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define READDATA_H</span>
+<a name="l00006"></a>00006 <span class="preprocessor"></span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;loadobj.h&quot;</span>
+<a name="l00009"></a>00009 
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00011"></a>00011 
+<a name="l00018"></a><a class="code" href="structmapdata.html">00018</a> <span class="keyword">struct </span><a class="code" href="structmapdata.html" title="Contains information about the loaded terrain.">mapdata</a> {
+<a name="l00019"></a><a class="code" href="structmapdata.html#a2eb5258cc2abd7eef37c66b55c27282b">00019</a>     <span class="keywordtype">int</span> <a class="code" href="structmapdata.html#a2eb5258cc2abd7eef37c66b55c27282b" title="Width of the terrain data.">ncols</a>;                  
+<a name="l00020"></a><a class="code" href="structmapdata.html#a6531c18d8db11cbcdba40e47049796b2">00020</a>     <span class="keywordtype">int</span> <a class="code" href="structmapdata.html#a6531c18d8db11cbcdba40e47049796b2" title="Height of the terrain data.">nrows</a>;                  
+<a name="l00021"></a><a class="code" href="structmapdata.html#ae5e3bb6abb30cb7e5f8b779c4aaf6d4e">00021</a>     <span class="keywordtype">int</span> <a class="code" href="structmapdata.html#ae5e3bb6abb30cb7e5f8b779c4aaf6d4e" title="Total number of terrain data.">nelem</a>;                  
+<a name="l00022"></a><a class="code" href="structmapdata.html#aadca3c0f2a330bac60adddb927ede233">00022</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#aadca3c0f2a330bac60adddb927ede233" title="Dont know what this is.">xllcorner</a>;        
+<a name="l00023"></a><a class="code" href="structmapdata.html#a24fc6e2414df131b9e6a5c779edd5eff">00023</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#a24fc6e2414df131b9e6a5c779edd5eff" title="Dont know what this is.">yllcorner</a>;        
+<a name="l00024"></a><a class="code" href="structmapdata.html#ab3e025201e714562d699bd8cfedfdafe">00024</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#ab3e025201e714562d699bd8cfedfdafe" title="Scaling for each cell, currently unused.">cellsize</a>;         
+<a name="l00025"></a><a class="code" href="structmapdata.html#a42fe5533f576cf34e95eadcda9c10c89">00025</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#a42fe5533f576cf34e95eadcda9c10c89" title="Value of input with no data, used to filter.">NODATA_value</a>; 
+<a name="l00026"></a><a class="code" href="structmapdata.html#a4a48eeea0d8fe4854e90b4d89620e5ca">00026</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#a4a48eeea0d8fe4854e90b4d89620e5ca" title="Maximum input, used to scale.">max_value</a>;        
+<a name="l00027"></a><a class="code" href="structmapdata.html#ab07571d1544cdd053da62c4f9c444793">00027</a>     <span class="keywordtype">float</span> <a class="code" href="structmapdata.html#ab07571d1544cdd053da62c4f9c444793" title="Minimum input, used to scale.">min_value</a>;        
+<a name="l00028"></a><a class="code" href="structmapdata.html#a49b47176e25692a214895d405b9a20a1">00028</a>     std::vector&lt;float&gt; <a class="code" href="structmapdata.html#a49b47176e25692a214895d405b9a20a1" title="The terrain data is stored in a std::vector.">data</a>; 
+<a name="l00029"></a>00029 };
+<a name="l00030"></a>00030 
+<a name="l00037"></a><a class="code" href="class_data_handler.html">00037</a> <span class="keyword">class </span><a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>
+<a name="l00038"></a>00038 {
+<a name="l00039"></a>00039 <span class="keyword">private</span>:
+<a name="l00040"></a><a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb">00040</a>     <a class="code" href="structmapdata.html" title="Contains information about the loaded terrain.">mapdata</a>* <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>;      
+<a name="l00041"></a><a class="code" href="class_data_handler.html#ae571af48746b14e77c29e755801011b5">00041</a>     <a class="code" href="struct_model.html">Model</a>* <a class="code" href="class_data_handler.html#ae571af48746b14e77c29e755801011b5" title="model for the terrain data.">datamodel</a>;       
+<a name="l00042"></a><a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce">00042</a>     GLfloat <a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce" title="Height scale for the terrain.">terrainScale</a>; 
+<a name="l00043"></a>00043 
+<a name="l00049"></a>00049     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea" title="Reads the input data to the private mapdata struct.">readDEM</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile);
+<a name="l00050"></a>00050 
+<a name="l00059"></a>00059     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d" title="Scales data while NODATA is present.">scaleDataBefore</a>();
+<a name="l00060"></a>00060 
+<a name="l00069"></a>00069     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a2c27269a72ae5429361231384fe04489" title="Scales data when NODATA has been removed.">scaleDataAfter</a>();
+<a name="l00070"></a>00070 
+<a name="l00081"></a>00081     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f" title="Makes a single pass of normalized convolution on the mapdata.">performGPUNormConv</a>();
+<a name="l00082"></a>00082 
+<a name="l00092"></a>00092     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">GenerateTerrain</a>();
+<a name="l00093"></a>00093 
+<a name="l00107"></a>00107     glm::vec3 <a class="code" href="class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a" title="Gives a normal for a certain position in the terrain.">giveNormal</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z, GLfloat *vertexArray, GLuint *indexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 <span class="keyword">public</span>:
+<a name="l00111"></a>00111 
+<a name="l00124"></a>00124     <a class="code" href="class_data_handler.html#a57a8d9c6f6a3ebe16662c89354e0484d" title="Reads DEM data, scales it and generates a model.">DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile, GLfloat tScale = 500.0f);
+<a name="l00125"></a>00125 
+<a name="l00127"></a>00127     <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">~DataHandler</a>();
+<a name="l00128"></a>00128 
+<a name="l00140"></a>00140     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution</a>();
+<a name="l00141"></a>00141 
+<a name="l00149"></a>00149     <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row);
+<a name="l00150"></a>00150 
+<a name="l00155"></a>00155     <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b" title="Get a pointer to the mapdata data.">getData</a>();
+<a name="l00156"></a>00156 
+<a name="l00168"></a>00168     GLfloat <a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
+<a name="l00169"></a>00169 
+<a name="l00172"></a>00172     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">getWidth</a>();
+<a name="l00173"></a>00173 
+<a name="l00176"></a>00176     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">getHeight</a>();
+<a name="l00177"></a>00177 
+<a name="l00180"></a>00180     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">getElem</a>();
+<a name="l00181"></a>00181 
+<a name="l00186"></a>00186     <a class="code" href="struct_model.html">Model</a> *<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
+<a name="l00187"></a>00187 };
+<a name="l00188"></a>00188 
+<a name="l00189"></a>00189 <span class="preprocessor">#endif // READDATA_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -164,7 +172,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -177,7 +185,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="read_data_8h.html">readData.h</a>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

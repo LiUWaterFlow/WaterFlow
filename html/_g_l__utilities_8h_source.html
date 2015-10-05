@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -75,7 +76,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/common/GL_utilities.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_g_l__utilities_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef _GL_UTILITIES_</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef _GL_UTILITIES_</span>
 <a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define _GL_UTILITIES_</span>
 <a name="l00003"></a>00003 <span class="preprocessor"></span>
 <a name="l00004"></a>00004 <span class="preprocessor">#ifdef __cplusplus</span>
@@ -111,33 +111,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00012"></a>00012 <span class="preprocessor"></span><span class="preprocessor">    #include &quot;glew.h&quot;</span>
 <a name="l00013"></a>00013 <span class="preprocessor">#endif</span>
 <a name="l00014"></a>00014 <span class="preprocessor"></span>
-<a name="l00015"></a>00015 <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a3b24c3382e6ecd269e8d72f46190b7ca">printError</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *functionName);
-<a name="l00016"></a>00016 GLuint <a class="code" href="_g_l__utilities_8c.html#a91e6903d9687b4be6eb6b4685b96c58b">loadShaders</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName);
-<a name="l00017"></a>00017 GLuint <a class="code" href="_g_l__utilities_8c.html#a045b3259f4ed4c20f0e3f2ea508c603e">loadShadersG</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName);
-<a name="l00018"></a>00018 GLuint <a class="code" href="_g_l__utilities_8c.html#a02ed7a39f5b3f621a9b8aefcd423fd7a">loadShadersGT</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName,
+<a name="l00015"></a>00015 <span class="keywordtype">void</span> printError(<span class="keyword">const</span> <span class="keywordtype">char</span> *functionName);
+<a name="l00016"></a>00016 GLuint loadShaders(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName);
+<a name="l00017"></a>00017 GLuint loadShadersG(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName);
+<a name="l00018"></a>00018 GLuint loadShadersGT(<span class="keyword">const</span> <span class="keywordtype">char</span> *vertFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *fragFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *geomFileName,
 <a name="l00019"></a>00019                         <span class="keyword">const</span> <span class="keywordtype">char</span> *tcFileName, <span class="keyword">const</span> <span class="keywordtype">char</span> *teFileName);
-<a name="l00020"></a>00020 <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#ae903a80068b1a3b5a61a27bec9ec6557">dumpInfo</a>(<span class="keywordtype">void</span>);
+<a name="l00020"></a>00020 <span class="keywordtype">void</span> dumpInfo(<span class="keywordtype">void</span>);
 <a name="l00021"></a>00021 
-<a name="l00022"></a>00022 <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8h.html#a396314663a1433949cfbf9ae44c4c20a">initKeymapManager</a>();
-<a name="l00023"></a>00023 <span class="keywordtype">char</span> <a class="code" href="_g_l__utilities_8c.html#a8d09d991086be73e17a53f1ecc7dfad5">keyIsDown</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> c);
+<a name="l00022"></a>00022 <span class="keywordtype">void</span> initKeymapManager();
+<a name="l00023"></a>00023 <span class="keywordtype">char</span> keyIsDown(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> c);
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 <span class="comment">// FBO support</span>
 <a name="l00026"></a>00026 
 <a name="l00027"></a>00027 <span class="comment">//------------a structure for FBO information-------------------------------------</span>
 <a name="l00028"></a><a class="code" href="struct_f_b_ostruct.html">00028</a> <span class="keyword">typedef</span> <span class="keyword">struct</span>
 <a name="l00029"></a>00029 {
-<a name="l00030"></a><a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">00030</a>     GLuint <a class="code" href="struct_f_b_ostruct.html#aae346676d5d961b73acaf3afe95e5f6f">texid</a>;
-<a name="l00031"></a><a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">00031</a>     GLuint <a class="code" href="struct_f_b_ostruct.html#a87f0db0bc3000a9291800ef47412b1ee">fb</a>;
-<a name="l00032"></a><a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">00032</a>     GLuint <a class="code" href="struct_f_b_ostruct.html#ab04702ca1af9e0e778e6d5701f960c11">rb</a>;
-<a name="l00033"></a><a class="code" href="struct_f_b_ostruct.html#a39df1b7b9ce6f4617df0acc027260251">00033</a>     GLuint <a class="code" href="struct_f_b_ostruct.html#a39df1b7b9ce6f4617df0acc027260251">depth</a>;
-<a name="l00034"></a><a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">00034</a>     <span class="keywordtype">int</span> <a class="code" href="struct_f_b_ostruct.html#a37372d1cd8e2f752efa61386ec159f8c">width</a>, <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>;
+<a name="l00030"></a>00030     GLuint texid;
+<a name="l00031"></a>00031     GLuint fb;
+<a name="l00032"></a>00032     GLuint rb;
+<a name="l00033"></a>00033     GLuint depth;
+<a name="l00034"></a>00034     <span class="keywordtype">int</span> width, height;
 <a name="l00035"></a>00035 } <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a>;
 <a name="l00036"></a>00036 
-<a name="l00037"></a>00037 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *<a class="code" href="_g_l__utilities_8c.html#a82a13a740b2bdb63c4c8e81c50c30ea4">initFBO</a>(<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <span class="keywordtype">int</span> int_method);
-<a name="l00038"></a>00038 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *<a class="code" href="_g_l__utilities_8c.html#a807a48c4581e3ccf208dda20a8a6ffd1">initFBO2</a>(<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <span class="keywordtype">int</span> int_method, <span class="keywordtype">int</span> create_depthimage);
-<a name="l00039"></a>00039 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *<a class="code" href="_g_l__utilities_8c.html#a9e370beeafb7b0eb16a05875f53820ac">initFBO3</a>(<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>, <span class="keywordtype">void</span>* data);
-<a name="l00040"></a>00040 <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a89aaee7ba62f942901c314de4a89ebcc">useFBO</a>(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *out, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in1, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in2);
-<a name="l00041"></a>00041 <span class="keywordtype">void</span> <a class="code" href="_g_l__utilities_8c.html#a8e0fd3fdafa040e7c72e94f7c6bce639">updateScreenSizeForFBOHandler</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h); <span class="comment">// Temporary workaround to inform useFBO of screen size changes</span>
+<a name="l00037"></a>00037 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *initFBO(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">int</span> int_method);
+<a name="l00038"></a>00038 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *initFBO2(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">int</span> int_method, <span class="keywordtype">int</span> create_depthimage);
+<a name="l00039"></a>00039 <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *initFBO3(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">void</span>* data);
+<a name="l00040"></a>00040 <span class="keywordtype">void</span> useFBO(<a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *out, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in1, <a class="code" href="struct_f_b_ostruct.html">FBOstruct</a> *in2);
+<a name="l00041"></a>00041 <span class="keywordtype">void</span> updateScreenSizeForFBOHandler(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h); <span class="comment">// Temporary workaround to inform useFBO of screen size changes</span>
 <a name="l00042"></a>00042 
 <a name="l00043"></a>00043 <span class="preprocessor">#ifdef __cplusplus</span>
 <a name="l00044"></a>00044 <span class="preprocessor"></span>}
@@ -151,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -162,9 +162,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="_g_l__utilities_8h.html">GL_utilities.h</a>      </li>
+      <li class="navelem"><b>GL_utilities.h</b>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

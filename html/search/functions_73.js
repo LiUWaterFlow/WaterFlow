@@ -1,11 +1,5 @@
 var searchData=
 [
-  ['savedatatotga',['SaveDataToTGA',['../_load_t_g_a_8c.html#a97120ca67bc220252c5ad33a056a17b5',1,'SaveDataToTGA(char *filename, short int width, short int height, unsigned char pixelDepth, unsigned char *imageData):&#160;LoadTGA.c'],['../_load_t_g_a_8h.html#a97120ca67bc220252c5ad33a056a17b5',1,'SaveDataToTGA(char *filename, short int width, short int height, unsigned char pixelDepth, unsigned char *imageData):&#160;LoadTGA.c']]],
-  ['saveframebuffertotga',['SaveFramebufferToTGA',['../_load_t_g_a_8c.html#a02502c7cfc163fab2c05113aa2a9d2ed',1,'SaveFramebufferToTGA(char *filename, GLint x, GLint y, GLint w, GLint h):&#160;LoadTGA.c'],['../_load_t_g_a_8h.html#a02502c7cfc163fab2c05113aa2a9d2ed',1,'SaveFramebufferToTGA(char *filename, GLint x, GLint y, GLint w, GLint h):&#160;LoadTGA.c']]],
-  ['savetga',['SaveTGA',['../_load_t_g_a_8c.html#aa7968a4c8ece74b6c797f7edcdf07dec',1,'SaveTGA(TextureData *tex, char *filename):&#160;LoadTGA.c'],['../_load_t_g_a_8h.html#aa7968a4c8ece74b6c797f7edcdf07dec',1,'SaveTGA(TextureData *tex, char *filename):&#160;LoadTGA.c']]],
-  ['scalemodel',['ScaleModel',['../loadobj_8c.html#a2adb012de5808a168517b92d4c4702af',1,'ScaleModel(Model *m, float sx, float sy, float sz):&#160;loadobj.c'],['../loadobj_8h.html#a2adb012de5808a168517b92d4c4702af',1,'ScaleModel(Model *m, float sx, float sy, float sz):&#160;loadobj.c']]],
-  ['set_5fevent_5fhandler',['set_event_handler',['../_s_d_l__util_8c.html#a5344744d1494545a934d3476c4d62c96',1,'set_event_handler(void(*event_func)(SDL_Event event)):&#160;SDL_util.c'],['../_s_d_l__util_8h.html#a5344744d1494545a934d3476c4d62c96',1,'set_event_handler(void(*event_func)(SDL_Event event)):&#160;SDL_util.c']]],
-  ['set_5fsdl_5fdisplay_5ffunc',['set_sdl_display_func',['../_s_d_l__util_8c.html#a548ae7ffafb1ac93d7b23b1384552f19',1,'set_sdl_display_func(void(*display_func)(void)):&#160;SDL_util.c'],['../_s_d_l__util_8h.html#a548ae7ffafb1ac93d7b23b1384552f19',1,'set_sdl_display_func(void(*display_func)(void)):&#160;SDL_util.c']]],
-  ['strafe',['strafe',['../class_camera.html#a6b6687be260b7a95cb74d5d9b76cfca0',1,'Camera']]],
-  ['swap_5fbuffers',['swap_buffers',['../_s_d_l__util_8c.html#a0d157d997329169f936545f9985e334b',1,'swap_buffers():&#160;SDL_util.c'],['../_s_d_l__util_8h.html#a0d157d997329169f936545f9985e334b',1,'swap_buffers():&#160;SDL_util.c']]]
+  ['scaledataafter',['scaleDataAfter',['../class_data_handler.html#a2c27269a72ae5429361231384fe04489',1,'DataHandler']]],
+  ['scaledatabefore',['scaleDataBefore',['../class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d',1,'DataHandler']]]
 ];

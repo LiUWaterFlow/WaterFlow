@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -75,7 +76,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -97,56 +97,56 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/common/SDL_util.c</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_s_d_l__util_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Written by Gustav Svensk, acquired from</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Written by Gustav Svensk, acquired from</span>
 <a name="l00002"></a>00002 <span class="comment">// https://github.com/DrDante/TSBK03Project/</span>
 <a name="l00003"></a>00003 <span class="comment">// with permission, 2015-09-24.</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;<a class="code" href="_s_d_l__util_8h.html">SDL_util.h</a>&quot;</span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;SDL_util.h&quot;</span>
 <a name="l00005"></a>00005 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
 <a name="l00006"></a>00006 
-<a name="l00007"></a><a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">00007</a> SDL_Window* <a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a> ;
-<a name="l00008"></a><a class="code" href="_s_d_l__util_8c.html#a56160be05cdeedb1c5dde8ed68dcf76a">00008</a> SDL_GLContext <a class="code" href="_s_d_l__util_8c.html#a56160be05cdeedb1c5dde8ed68dcf76a">glcontext</a>;
-<a name="l00009"></a><a class="code" href="_s_d_l__util_8c.html#a00731ab471a2b38632427d0d80a82278">00009</a> <span class="keywordtype">int</span> <a class="code" href="_s_d_l__util_8c.html#a00731ab471a2b38632427d0d80a82278">bpp</a>;
+<a name="l00007"></a>00007 SDL_Window* screen ;
+<a name="l00008"></a>00008 SDL_GLContext glcontext;
+<a name="l00009"></a>00009 <span class="keywordtype">int</span> bpp;
 <a name="l00010"></a>00010 
-<a name="l00011"></a><a class="code" href="_s_d_l__util_8c.html#a25314a8556357cb5fa126d1034e787e8">00011</a> void (*<a class="code" href="_s_d_l__util_8c.html#a25314a8556357cb5fa126d1034e787e8">ptdisplay</a>)(void);
-<a name="l00012"></a><a class="code" href="_s_d_l__util_8c.html#a7494bdd656a7b15621585dd6d9b94d18">00012</a> void (*<a class="code" href="_s_d_l__util_8c.html#a7494bdd656a7b15621585dd6d9b94d18">handle_event</a>)(SDL_Event event);
+<a name="l00011"></a>00011 void (*ptdisplay)(void);
+<a name="l00012"></a>00012 void (*handle_event)(SDL_Event event);
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 
-<a name="l00015"></a><a class="code" href="_s_d_l__util_8h.html#a548ae7ffafb1ac93d7b23b1384552f19">00015</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#a548ae7ffafb1ac93d7b23b1384552f19">set_sdl_display_func</a>(<span class="keywordtype">void</span> (*display_func)(<span class="keywordtype">void</span>))
+<a name="l00015"></a>00015 <span class="keywordtype">void</span> set_sdl_display_func(<span class="keywordtype">void</span> (*display_func)(<span class="keywordtype">void</span>))
 <a name="l00016"></a>00016 {
-<a name="l00017"></a>00017     <a class="code" href="_s_d_l__util_8c.html#a25314a8556357cb5fa126d1034e787e8">ptdisplay</a> = display_func;
-<a name="l00018"></a>00018     <span class="keywordflow">if</span>(<a class="code" href="_s_d_l__util_8c.html#a25314a8556357cb5fa126d1034e787e8">ptdisplay</a> == <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>){
+<a name="l00017"></a>00017     ptdisplay = display_func;
+<a name="l00018"></a>00018     <span class="keywordflow">if</span>(ptdisplay == NULL){
 <a name="l00019"></a>00019         fprintf(stderr, <span class="stringliteral">&quot;Error setting display function\n&quot;</span>);
 <a name="l00020"></a>00020     }
 <a name="l00021"></a>00021 }
 <a name="l00022"></a>00022 
-<a name="l00023"></a><a class="code" href="_s_d_l__util_8h.html#a5344744d1494545a934d3476c4d62c96">00023</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#a5344744d1494545a934d3476c4d62c96">set_event_handler</a>(<span class="keywordtype">void</span> (*event_func)(SDL_Event event))
+<a name="l00023"></a>00023 <span class="keywordtype">void</span> set_event_handler(<span class="keywordtype">void</span> (*event_func)(SDL_Event event))
 <a name="l00024"></a>00024 {
-<a name="l00025"></a>00025     <a class="code" href="_s_d_l__util_8c.html#a7494bdd656a7b15621585dd6d9b94d18">handle_event</a> = event_func;
+<a name="l00025"></a>00025     handle_event = event_func;
 <a name="l00026"></a>00026 }
 <a name="l00027"></a>00027 
-<a name="l00028"></a><a class="code" href="_s_d_l__util_8h.html#ac5f8e7cdbd0aeebbb8aaae5db99a39d5">00028</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#a7bab3822170744e38887e7eb4a88df28">exit_prog</a>(<span class="keywordtype">int</span> value)
+<a name="l00028"></a>00028 <span class="keywordtype">void</span> exit_prog(<span class="keywordtype">int</span> value)
 <a name="l00029"></a>00029 {
-<a name="l00030"></a>00030     SDL_GL_DeleteContext(<a class="code" href="_s_d_l__util_8c.html#a56160be05cdeedb1c5dde8ed68dcf76a">glcontext</a>);
+<a name="l00030"></a>00030     SDL_GL_DeleteContext(glcontext);
 <a name="l00031"></a>00031     SDL_Quit();
 <a name="l00032"></a>00032     exit(value);
 <a name="l00033"></a>00033 }
 <a name="l00034"></a>00034 
-<a name="l00035"></a><a class="code" href="_s_d_l__util_8c.html#ae0d19ee98f0c57a8d161afa2c2d60599">00035</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#ae0d19ee98f0c57a8d161afa2c2d60599">terminate_prog</a>( <span class="keywordtype">void</span> )
+<a name="l00035"></a>00035 <span class="keywordtype">void</span> terminate_prog( <span class="keywordtype">void</span> )
 <a name="l00036"></a>00036 {
-<a name="l00037"></a>00037     <a class="code" href="_s_d_l__util_8c.html#a7bab3822170744e38887e7eb4a88df28">exit_prog</a>(0);
+<a name="l00037"></a>00037     exit_prog(0);
 <a name="l00038"></a>00038 }
 <a name="l00039"></a>00039 
-<a name="l00040"></a><a class="code" href="_s_d_l__util_8h.html#aba70f8a5ebfd15fcd82d8febe409a9e0">00040</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#aba70f8a5ebfd15fcd82d8febe409a9e0">resize_window</a>(SDL_Event event)
+<a name="l00040"></a>00040 <span class="keywordtype">void</span> resize_window(SDL_Event event)
 <a name="l00041"></a>00041 {
-<a name="l00042"></a>00042     SDL_SetWindowSize(<a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a>, event.window.data1, event.window.data2);
+<a name="l00042"></a>00042     SDL_SetWindowSize(screen, event.window.data1, event.window.data2);
 <a name="l00043"></a>00043 
-<a name="l00044"></a>00044     <span class="keywordflow">if</span>(<a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a> == <a class="code" href="main_8cpp.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>){
+<a name="l00044"></a>00044     <span class="keywordflow">if</span>(screen == NULL){
 <a name="l00045"></a>00045         fprintf(stderr, <span class="stringliteral">&quot;Error resizing window: %s&quot;</span>, SDL_GetError());
-<a name="l00046"></a>00046         <a class="code" href="_s_d_l__util_8c.html#a7bab3822170744e38887e7eb4a88df28">exit_prog</a>(1);
+<a name="l00046"></a>00046         exit_prog(1);
 <a name="l00047"></a>00047     }
 <a name="l00048"></a>00048 }
 <a name="l00049"></a>00049 
-<a name="l00050"></a><a class="code" href="_s_d_l__util_8h.html#aed6abca1001d4ab0dea5364b16ff563d">00050</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#aed6abca1001d4ab0dea5364b16ff563d">inf_loop</a>()
+<a name="l00050"></a>00050 <span class="keywordtype">void</span> inf_loop()
 <a name="l00051"></a>00051 {
 <a name="l00052"></a>00052     SDL_Event event;
 <a name="l00053"></a>00053 
@@ -157,22 +157,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00058"></a>00058     }
 <a name="l00059"></a>00059 }
 <a name="l00060"></a>00060 
-<a name="l00061"></a><a class="code" href="_s_d_l__util_8h.html#a0d157d997329169f936545f9985e334b">00061</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#a0d157d997329169f936545f9985e334b">swap_buffers</a>()
+<a name="l00061"></a>00061 <span class="keywordtype">void</span> swap_buffers()
 <a name="l00062"></a>00062 {
-<a name="l00063"></a>00063     SDL_GL_SwapWindow(<a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a>);
+<a name="l00063"></a>00063     SDL_GL_SwapWindow(screen);
 <a name="l00064"></a>00064 }
 <a name="l00065"></a>00065 
-<a name="l00066"></a><a class="code" href="_s_d_l__util_8h.html#a6833006e11172e03d34f3d4ca3e54fad">00066</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#a6833006e11172e03d34f3d4ca3e54fad">get_window_size</a>(<span class="keywordtype">int</span> *w, <span class="keywordtype">int</span>*h)
+<a name="l00066"></a>00066 <span class="keywordtype">void</span> get_window_size(<span class="keywordtype">int</span> *w, <span class="keywordtype">int</span>*h)
 <a name="l00067"></a>00067 {
-<a name="l00068"></a>00068     SDL_GetWindowSize(<a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a>, w, h);
+<a name="l00068"></a>00068     SDL_GetWindowSize(screen, w, h);
 <a name="l00069"></a>00069 }
 <a name="l00070"></a>00070 
-<a name="l00071"></a><a class="code" href="_s_d_l__util_8h.html#a4a31a841b0929b627d6eadcd535691ef">00071</a> <span class="keywordtype">void</span> <a class="code" href="_s_d_l__util_8c.html#a4a31a841b0929b627d6eadcd535691ef">init_SDL</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* title, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#a2474a5474cbff19523a51eb1de01cda4">width</a>, <span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ad12fc34ce789bce6c8a05d8a17138534">height</a>)
+<a name="l00071"></a>00071 <span class="keywordtype">void</span> init_SDL(<span class="keyword">const</span> <span class="keywordtype">char</span>* title, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height)
 <a name="l00072"></a>00072 {
 <a name="l00073"></a>00073     <span class="keywordtype">int</span> flags = 0;
 <a name="l00074"></a>00074     <span class="keywordflow">if</span>(SDL_Init(SDL_INIT_VIDEO) != 0){
 <a name="l00075"></a>00075         fprintf(stderr, <span class="stringliteral">&quot;Failed to initialise SDL: %s&quot;</span>, SDL_GetError());
-<a name="l00076"></a>00076         <a class="code" href="_s_d_l__util_8c.html#a7bab3822170744e38887e7eb4a88df28">exit_prog</a>(1);
+<a name="l00076"></a>00076         exit_prog(1);
 <a name="l00077"></a>00077     }
 <a name="l00078"></a>00078 
 <a name="l00079"></a>00079     fprintf(stderr, <span class="stringliteral">&quot;Current error status:   %s \n&quot;</span>, SDL_GetError());
@@ -198,17 +198,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00099"></a>00099     fprintf(stderr, <span class="stringliteral">&quot;Current Version Error 1 :   %s \n&quot;</span>, SDL_GetError());
 <a name="l00100"></a>00100 
 <a name="l00101"></a>00101     flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-<a name="l00102"></a>00102     <a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a> = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+<a name="l00102"></a>00102     screen = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 <a name="l00103"></a>00103 
 <a name="l00104"></a>00104     fprintf(stderr, <span class="stringliteral">&quot;Current Version Error 2 :   %s \n&quot;</span>, SDL_GetError());
 <a name="l00105"></a>00105 
-<a name="l00106"></a>00106     <a class="code" href="_s_d_l__util_8c.html#a56160be05cdeedb1c5dde8ed68dcf76a">glcontext</a> = SDL_GL_CreateContext(<a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a>);
+<a name="l00106"></a>00106     glcontext = SDL_GL_CreateContext(screen);
 <a name="l00107"></a>00107 
 <a name="l00108"></a>00108     fprintf(stderr, <span class="stringliteral">&quot;Current Version Error 3:   %s \n&quot;</span>, SDL_GetError());
 <a name="l00109"></a>00109 
-<a name="l00110"></a>00110     <span class="keywordflow">if</span>(<a class="code" href="_s_d_l__util_8c.html#ae04e09e4e3831bfc1632c509ae37dcec">screen</a> == 0){
+<a name="l00110"></a>00110     <span class="keywordflow">if</span>(screen == 0){
 <a name="l00111"></a>00111         fprintf(stderr, <span class="stringliteral">&quot;Failed to set Video Mode: %s&quot;</span>, SDL_GetError());
-<a name="l00112"></a>00112         <a class="code" href="_s_d_l__util_8c.html#a7bab3822170744e38887e7eb4a88df28">exit_prog</a>(1);
+<a name="l00112"></a>00112         exit_prog(1);
 <a name="l00113"></a>00113     }
 <a name="l00114"></a>00114 
 <a name="l00115"></a>00115     fprintf(stderr, <span class="stringliteral">&quot;Current error status:   %s \n&quot;</span>, SDL_GetError());
@@ -224,7 +224,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00125"></a>00125     glLoadIdentity();
 <a name="l00126"></a>00126 <span class="preprocessor">#endif</span>
 <a name="l00127"></a>00127 <span class="preprocessor"></span>
-<a name="l00128"></a>00128     atexit(<a class="code" href="_s_d_l__util_8c.html#ae0d19ee98f0c57a8d161afa2c2d60599">terminate_prog</a>);
+<a name="l00128"></a>00128     atexit(terminate_prog);
 <a name="l00129"></a>00129 }
 </pre></div></div><!-- contents -->
 </div>
@@ -233,7 +233,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -244,9 +244,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><a class="el" href="_s_d_l__util_8c.html">SDL_util.c</a>      </li>
+      <li class="navelem"><b>SDL_util.c</b>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Oct 5 2015 12:56:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
