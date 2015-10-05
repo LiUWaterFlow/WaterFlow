@@ -47,8 +47,6 @@ with the values ax, bx.
 
 void Voxelgrid::setVoxel(int x,int y,int z, bool filledx, float ax,float bx){
 
-
-
   //if x is not in table. Create y and z tables, resize x, and
   //point to children (y,z);
   if(voxels->size() < x+1){
@@ -102,6 +100,7 @@ void Voxelgrid::setVoxel(int x,int y,int z, bool filledx, float ax,float bx){
   temp->a = ax;
   temp->b = bx;
   voxels->at(x)->at(y)->at(z) = temp;
+
 }
 
 /* -----------------------------------------------------------------
@@ -110,87 +109,98 @@ If no voxel is present it returns a nullptr.
 */
 
 voxel* Voxelgrid::getVoxel(int x,int y,int z){
+  //std::cout << "In getVoxel, size of vector voxels is: " << voxels->size() << std::endl;
+
+  //std::cout << "Voxels at x is empty" << std::endl;
 
   //ensure table existance and table size, if either fails return nullptr.
-  if(voxels->at(x) == nullptr && voxels->size() < x+1){
+  if(voxels->size() < x+1 || voxels->at(x) == nullptr){
+    //std::cout << "In first if in get_Voxel" << std::endl;
     return nullptr;
   }
   //ensure table existance and table size, if either fails return nullptr.
-  else if(voxels->at(x)->at(y) == nullptr && voxels->at(x)->size() < y+1){
+  else if(voxels->at(x)->size() < y+1 || voxels->at(x)->at(y) == nullptr){
+    //std::cout << "In second if in get_Voxel" << std::endl;
     return nullptr;
   }
   //ensure table existance and table size, if either fails return nullptr.
-  else if(voxels->at(x)->at(y)->at(z) == nullptr && voxels->at(x)->at(y)->size() < z+1){
+  else if(voxels->at(x)->at(y)->size() < z+1 || voxels->at(x)->at(y)->at(z) == nullptr){
     return nullptr;
   }
 
   //Existance is ensured, return pointer at location x,y,z
+  //std::cout << "Just before returning voxel in get_Voxel" << std::endl;
   return voxels->at(x)->at(y)->at(z);
 }
 
-/* LayerFloodFill is called from FloodFill and it creates a vector that stores the 2D coords of the filled voxels and then initiates the recursive
-LayerFloodFill_Rec function.
+
+/* FloodFill function creates a vector queue. Tests if the first voxel coordinates are above land, if so its coordinates are added to the queue
+vector and the struct for the voxel is creatd using setVoxel. While there are still coordinates in the queue, the neighboring voxels'
+coordinates relative to the current coordinates (last position in queue) are added to the queue and a corresponding struct is created with setVoxel.
+As each element in the queue is processed the voxels beneath the current voxel are filled.
 */
 
-std::vector<std::array<int, 2>>* Voxelgrid::LayerFloodFill(int init_x, int init_z, int height){
+void Voxelgrid::FloodFill(int init_x, int height, int init_z){
 
-  if (height > datahandler->getCoord(init_x, init_z)) {
-    std::vector<std::array<int, 2>>* filled_coords = new std::vector<std::array<int, 2>>;
-    LayerFloodFill_Rec(init_x, height, init_z, filled_coords);
-    return filled_coords;
-  }
-  else{
-    return nullptr;
-  }
-}
+  std::vector<std::vector<int>> queue;
 
-/*LayerFloodFill_Rec fills the inital voxel if it's not already filled and then calls itself on the adjacent four voxels.
+  if (datahandler->getCoord(init_x, init_z) < height) {
+    queue.push_back({init_x, init_z});
+    setVoxel(init_x, height, init_z, true, 0, 0);
+  }
+
+  int temp_x, temp_z;
+  int height_test;
+  int terrain_height;
+
+/* While queue is not empty, keep processing queue from back to front.
 */
+  while(queue.size() > 0){
 
-void Voxelgrid::LayerFloodFill_Rec(int x, int z, int height, std::vector<std::array<int, 2>>* filled_coords){
+    temp_x  = queue.back().at(0);
+    temp_z = queue.back().at(1);
 
-  if (!(getVoxel(x, height, z)->filled)) {
+    queue.pop_back();
 
-    setVoxel(x, height, z, true, 0, 0);
+    /* Fill voxels beneath current voxel
+    */
+    height_test = height;
+    terrain_height = datahandler->getCoord(temp_x, temp_z);
 
-    filled_coords->push_back({x,z});
+    while(height_test > terrain_height && height_test >= 0){
 
-    LayerFloodFill_Rec((x+1), height, z, filled_coords);
-    LayerFloodFill_Rec((x-1), height, z, filled_coords);
-    LayerFloodFill_Rec(x, height, (z+1), filled_coords);
-    LayerFloodFill_Rec(x, height, (z-1), filled_coords);
+      setVoxel(temp_x, height_test, temp_z, true, 0, 0);
+      height_test--;
     }
 
-  return;
-}
-
-/* FloodFill function initiates the filled_coords vector which is assigned values by later called LayerFloodFill and LayerFloodFill_Rec
-functions. When the LayerFloodFill is finished the function iterates over all the filled coordinates in the floodfilled layer and fills
-voxels beneath down to the height of the terrain.
+/* Checking voxels adjacent to current voxel and adding their coordinates to the queue if they are inside the terrain,
+above land and have not yet been added to the queue. Before coordina are added the struct is created. Struct existance
+(!= nullptr) thus equivalent to voxel added to cue as used in if-statement.
 */
 
-void Voxelgrid::FloodFill(int init_x, int init_z, int height){
-
-/* 2D flood fill layer "height"
-*/
-  std::vector<std::array<int, 2>>* filled_coords;
-
-  filled_coords = LayerFloodFill(init_x, init_z,  height);
-
-/* Fill downwards
-*/
-  if (filled_coords != nullptr) {
-
-    for (size_t i = 0; i < filled_coords->size(); i++) {
-
-      int height_check = height - 1;
-      int tmp_x = filled_coords->at(i).at(1);
-      int tmp_z = filled_coords->at(i).at(2);
-      while (height_check > datahandler->getCoord(tmp_x, tmp_z)){
-
-        setVoxel(tmp_x, height_check, tmp_z, true, 0, 0);
-        height_check--;
-      }
+    if(temp_x + 1 < datahandler->getWidth() &&
+        datahandler->getCoord(temp_x + 1, temp_z) < height &&
+          getVoxel(temp_x + 1, height, temp_z) == nullptr){
+      setVoxel(temp_x + 1, height, temp_z, true, 0, 0);
+      queue.push_back({temp_x + 1, temp_z});
+    }
+    if(temp_x - 1 >= 0 &&
+        datahandler->getCoord(temp_x - 1, temp_z) < height &&
+          getVoxel(temp_x - 1, height, temp_z) == nullptr){
+      setVoxel(temp_x - 1, height, temp_z, true, 0, 0);
+      queue.push_back({temp_x - 1, temp_z});
+    }
+    if(temp_z < datahandler->getWidth() &&
+        datahandler->getCoord(temp_x, temp_z + 1) < height &&
+          getVoxel(temp_x, height, temp_z + 1) == nullptr){
+      setVoxel(temp_x, height, temp_z + 1, true, 0, 0);
+      queue.push_back({temp_x, temp_z + 1});
+    }
+    if(temp_z <= 0 &&
+        datahandler->getCoord(temp_x, temp_z - 1) < height &&
+          getVoxel(temp_x, height, temp_z - 1) == nullptr){
+      setVoxel(temp_x, height, temp_z - 1, true, 0, 0);
+      queue.push_back({temp_x, temp_z - 1});
     }
   }
 }

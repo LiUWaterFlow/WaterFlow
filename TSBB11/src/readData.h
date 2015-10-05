@@ -13,17 +13,17 @@ struct mapdata {
 	float NODATA_value;
 	float max_value;
 	float min_value;
-	std::vector<float> data; 
+	std::vector<float> data;
 };
 
 
-class DataHandler 
+class DataHandler
 {
 	mapdata* readdata;
-	
+
 	void readDEM(const char* inputfile);
 	void scaleData();
-	
+
 
 public:
 	Model* GenerateTerrain(GLfloat tScale);
@@ -33,11 +33,11 @@ public:
 	~DataHandler();
 	float getCoord(int col, int row);
 	float* getData();
-	
+
 	int getWidth();
 	int getHeight();
 	int getElem();
-	
+
 };
 
 glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);

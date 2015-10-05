@@ -17,12 +17,12 @@ float DataHandler::getCoord(int col, int row)
 	float retdata = 0;
 
 	if (readdata != NULL) {
-		
+
 		if(col < readdata->ncols && row < readdata->nrows)
 		{
 			index = col + row * readdata->ncols;
 		}
-		else 
+		else
 		{
 			cerr << "Input does not exist in data." << endl;
 			index = 0;
@@ -58,10 +58,10 @@ void DataHandler::readDEM(const char* inputfile)
 {
 	ifstream infile;
 	infile.open(inputfile, ios::in);
-	
+
 	string intext;
 	float incoord;
-	
+
 	if (infile.is_open())
 	{
 		infile >> intext >> readdata->ncols;
@@ -70,16 +70,16 @@ void DataHandler::readDEM(const char* inputfile)
 		infile >> intext >> readdata->yllcorner;
 		infile >> intext >> readdata->cellsize;
 		infile >> intext >> readdata->NODATA_value;
-	
+
 		readdata->max_value = readdata->NODATA_value;
 		readdata->min_value = 20000000;
-	
+
 		readdata->nelem = readdata->ncols * readdata->nrows;
-		
+
 		for (int i = 0; i < readdata->nelem; i++)
 		{
 			infile >> incoord;
-			
+
 			if(incoord > readdata->max_value)
 			{
 				readdata->max_value = incoord;
@@ -88,10 +88,10 @@ void DataHandler::readDEM(const char* inputfile)
 			{
 				readdata->min_value = incoord;
 			}
-			
+
 			readdata->data.push_back(incoord);
 		}
-		
+
     	infile.close();
 	}
 	else {
@@ -105,7 +105,7 @@ void DataHandler::scaleData()
 	{
 		float diff = readdata->max_value - readdata->min_value;
 		*i = ((*i - readdata->min_value) / diff) * 0.9f + 0.1f;
-	} 
+	}
 }
 
 DataHandler::DataHandler(const char* inputfile, GLfloat tScale){
@@ -307,4 +307,3 @@ GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int he
 	}
 	return yheight;
 }
-

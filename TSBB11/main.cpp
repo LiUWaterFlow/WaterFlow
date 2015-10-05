@@ -152,7 +152,11 @@ void init(void)
 	terrain = dataHandler->datamodel;
 
 	grid = new Voxelgrid(dataHandler);
-	grid->setVoxel(500,500,500,true, 1, 1);
+	//grid->setVoxel(500,500,500,true, 1, 1);
+
+	grid->setVoxel(500,500,500, false, 0, 0);
+
+	grid->FloodFill(500, 10, 500);
 
 
 	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");  // puts texture on teapot
