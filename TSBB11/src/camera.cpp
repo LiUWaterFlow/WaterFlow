@@ -7,6 +7,11 @@
 
 Camera::Camera(int program, glm::mat4 *matrix)
 {
+
+    position = glm::vec3( 23.5 * 6, 2.5 * 6, 28 * 6 );
+    x = 0; 
+    look_at_pos = glm::vec3( 23.5 * 6, 2.5 * 6, 28 * 5 );
+    up = glm::vec3(0,1,0);
     this->matrix = matrix;
     this->program = program;
     *matrix = glm::lookAt(position, look_at_pos, up);

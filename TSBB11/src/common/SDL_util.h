@@ -9,10 +9,20 @@ extern "C" {
 	#include <OpenGL/gl3.h>
 	#include <SDL2/SDL.h>
 #else
-	#include "glew.h"
-	#include "Windows/sdl2/SDL.h"
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		#include <SDL2/SDL.h>
+		
+		
+	#else
+		#include "glew.h"
+		#include "Windows/sdl2/SDL.h"
+	#endif
 #endif
-
 
 /******************************************************************************
  * Koder för egna event, såsom timers och liknande.
