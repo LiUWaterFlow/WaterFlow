@@ -15,9 +15,9 @@ members:
   - name: 'Eric Rundcrantz'
     email: ericrundcrantz@gmail.com
 
-
+baseurl: /WaterFlow
 email: conrad.wahlen@gmail.com
-url: https://liuwaterflow.github.io/WaterFlow/
+url: https://liuwaterflow.github.io/WaterFlow
 git_url: https://github.com/LiUWaterFlow/WaterFlow
 description: "Project site for a water visiualization program, created by students at Linköping University."
 
