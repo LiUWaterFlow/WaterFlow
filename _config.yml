@@ -1,0 +1,39 @@
+# Site settings
+title: WaterFlow
+
+members:
+  - name: 'Conrad Wahlen'
+    email: conrad.wahlen@gmail.com
+  - name: 'Jens Edhammer'
+    email: tobyndax@gmail.com
+  - name: 'Andreas Boden'
+    email: andbo235@student.liu.se
+  - name: 'Jakob Ruhl'
+    email: jakto476@student.liu.se
+  - name: 'Michal Godymirski'
+    email: godymirski@gmail.com
+  - name: 'Eric Rundcrantz'
+    email: ericrundcrantz@gmail.com
+
+
+email: conrad.wahlen@gmail.com
+url: https://liuwaterflow.github.io/WaterFlow/
+git_url: https://github.com/LiUWaterFlow/WaterFlow
+description: "Project site for a water visiualization program, created by students at Linköping University."
+
+# Color settings (hex-codes without the leading hash-tag)
+color:
+  primary-dark: '#000000'
+  links: '#219ab3'
+
+# Footer settings
+footer: LiUWaterFlow
+
+# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
+social:
+  - title: github
+    url: https://github.com/LiUWaterFlow/WaterFlow
+
+# Build settings
+markdown: kramdown
+permalink: pretty

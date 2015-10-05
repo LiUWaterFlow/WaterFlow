@@ -1,0 +1,23 @@
+    <!-- Contact Section -->
+    <section id="contact" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>Contact</h2>
+                <p>All members of the project are listed here, why not send them a message?</p>
+					<p>
+					{% for member in site.members %}
+						<a href="mailto:{{ member.email }}">{{ member.name }}</a><br>
+					{% endfor %}
+					</p>
+				<!--
+                <ul class="list-inline banner-social-buttons">
+                    {% for network in site.social %}
+                    <li>
+                        <a href="{{ network.url }}" class="btn btn-default btn-lg"><i class="fa fa-{{ network.title }} fa-fw"></i> <span class="network-name">{{ network.title }}</span></a>
+                    </li>
+                    {% endfor %}
+                </ul>
+				-->
+            </div>
+        </div>
+    </section>
