@@ -1,11 +1,8 @@
-#include "pugixml.h"
-#include "flowSource.h"
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
+#include "xmlParsing.h"
 
+// This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.
 
+// Converts a string with CSV to a vector with floats.
 std::vector<float> fStrToVector(std::string str){
   std::vector<float> valueVector;
   std::stringstream ss(str);
@@ -20,6 +17,7 @@ std::vector<float> fStrToVector(std::string str){
   return valueVector;
 }
 
+//Converts a string with CSV to a vector with ints.
 std::vector<int> iStrToVector(std::string str){
   std::vector<int> valueVector;
   std::stringstream ss(str);
@@ -34,6 +32,7 @@ std::vector<int> iStrToVector(std::string str){
   return valueVector;
 }
 
+// This function parses the pressure values from the XML file by takeing the Pressure node, the PressureTime node and a pointer to a FlowSource object as input and adding the contents to the provided Object.
 void parsePressure(FlowSource* obj, pugi::xml_node pres, pugi::xml_node time){
   std::string timestr = time.attribute("t").value();
   std::string pstr = pres.attribute("p").value();
@@ -42,6 +41,7 @@ void parsePressure(FlowSource* obj, pugi::xml_node pres, pugi::xml_node time){
   obj->setPressure(pvec, timevec); 
 }
 
+// This function parses the Position node and adds it to by pointer provided FlowSource Object.
 void parsePosition(FlowSource* obj, pugi::xml_node node){
   int x, y, z;
   x = node.attribute("x").as_int();
@@ -50,6 +50,7 @@ void parsePosition(FlowSource* obj, pugi::xml_node node){
   obj->setPosition(x,y,z);
 }
 
+// This function parses the xyz direction of A Normal node and the time of a NormalTime node, then adds the result to an FlowSource Object given by pointer.
 void parseNormal(FlowSource* obj, pugi::xml_node norm, pugi::xml_node time){
   std::string timestr = time.attribute("t").value();
   std::vector<float> ndir;
@@ -66,6 +67,7 @@ void parseNormal(FlowSource* obj, pugi::xml_node norm, pugi::xml_node time){
   obj->setNormal(nvec, timevec); 
 }
 
+
 void parseTotalWater(FlowSource* obj, pugi::xml_node node){
   float tot; 
   tot = node.attribute("tot").as_float();
@@ -78,6 +80,7 @@ void parseRadius(FlowSource* obj, pugi::xml_node node){
   obj->setRadius(r);
 }
 
+// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates. TODO: Implement a function that delets all the objects. 
 std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   pugi::xml_document doc;
   std::vector<FlowSource*> srces;
@@ -98,41 +101,5 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile) {
 }
 
 
-int main()
-{
-  float tw, r;
-  std::vector<int> pos1, pos2;
-  std::vector<float> ndirec;
-  std::vector<FlowSource*> sfv = loadFlows("xgconsole.xml");
-  FlowSource first = *sfv[0];
-  for(int i = 0; i < 12; i++){
-    std::cout << "Pressure: " << first.getPressure() << std::endl;
-    ndirec = first.getNormal();
-    std::cout << "Normal given by xyz: ";
-    for (auto j = ndirec.begin(); j != ndirec.end(); ++j){
-      std::cout << *j << ' ';
-    }
-    std::cout << std::endl;
-    first.update();
-  }
-
-  pos1 = sfv[0]->getPosition();
-  pos2 = sfv[1]->getPosition();
-  tw = sfv[0]->getWaterLeft();
-  r = sfv[0]->getRadius();
-  std::cout << "Postion given by xyz: ";
-  for (auto i = pos1.begin(); i != pos1.end(); ++i){
-    std::cout << *i << ' ';
-  }
-  std::cout << std::endl;
-  std::cout << "Postion given by xyz: ";
-  for (auto i = pos2.begin(); i != pos2.end(); ++i){
-    std::cout << *i << ' ';
-  }
-  std::cout << std::endl;
-  std::cout << "TotWater: " << tw << std::endl;
-  std::cout << "Radius: " << r << std::endl;
-  return 1;
-}
 
 // vim:et
