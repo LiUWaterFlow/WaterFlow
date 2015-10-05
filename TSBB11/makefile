@@ -31,4 +31,4 @@ clean :
 	rm obj/*.o
 	
 docs:
-	doxygen Doxyfile
+	doxygen resources/Doxyfile

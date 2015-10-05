@@ -1,7 +1,6 @@
 # whitelist
 branches:
   only:
-    - doxygen
     - master
 language: 
   - cpp
