@@ -1,3 +1,6 @@
+/// @file readData.cpp
+/// @brief Implementations of functions in readData.h
+
 #include "stdio.h"
 
 #include "readData.h"
@@ -9,7 +12,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
 
 
 using namespace std;
@@ -54,7 +56,7 @@ DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
 	fbo1 = initFBO3(tW, tH, NULL);
 	fbo2 = initFBO3(tW, tH, NULL);
 	fbo3 = initFBO3(tW, tH, getData());
-	
+
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
 
 	cout << "Generating terrain from DEM data..." << endl;
@@ -72,12 +74,12 @@ float DataHandler::getCoord(int col, int row)
 	float retdata = 0;
 
 	if (readdata != NULL) {
-		
+
 		if(col < readdata->ncols && row < readdata->nrows)
 		{
 			index = col + row * readdata->ncols;
 		}
-		else 
+		else
 		{
 			cerr << "Input does not exist in data." << endl;
 			index = 0;
@@ -181,7 +183,7 @@ void DataHandler::scaleDataBefore()
 		// Set nodata to 0
 		if (getData()[i] < 0.05)
 			getData()[i] = 0.0f;
-	} 
+	}
 }
 
 // Data after normalized convolution should be between 0.1 and 1.0
@@ -209,7 +211,7 @@ void DataHandler::performNormalizedConvolution()
 
 		cout << "Checking Data for NODATA..." << endl;
 		isNODATA = false;
-		
+
 		min = 2.0f;
 		for (int i = 0; i < getElem() && !isNODATA; i++)
 		{
@@ -219,7 +221,7 @@ void DataHandler::performNormalizedConvolution()
 			isNODATA = (data < 0.0001f);
 		}
 	}
-	
+
 	cout << "Scaling Data after NC..." << endl;
 	scaleDataAfter();
 
@@ -311,7 +313,7 @@ void DataHandler::performGPUNormConv()
 	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 }
 
-void DataHandler::GenerateTerrain() 
+void DataHandler::GenerateTerrain()
 {
 	int width = getWidth();
 	int height = getHeight();
@@ -495,5 +497,3 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 	}
 	return yheight;
 }
-
-
