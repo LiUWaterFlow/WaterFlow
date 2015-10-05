@@ -6,6 +6,7 @@
 
 #include "glm.hpp"
 #include "loadobj.h"
+#include "GL_utilities.h"
 
 #include <vector>
 
@@ -37,9 +38,23 @@ struct mapdata {
 class DataHandler
 {
 private:
-	mapdata* readdata; 		///< mapdata struct for the loaded terrain data.
-	Model* datamodel; 		///< model for the terrain data.
-	GLfloat terrainScale; ///< Height scale for the terrain.
+
+	// Variables for GPU processing
+	GLuint plaintextureshader;	///< shader program to simple switch FBO
+	GLuint filtershader;		///< shader program to perform LP filtering
+	GLuint confidenceshader;	///< shader program to calculate confidence image
+	GLuint combineshader;		///< shader program for combining into result
+	FBOstruct *fbo1;			///< FBO for use during normalized convolution
+	FBOstruct *fbo2;			///< FBO for use during normalized convolution
+	FBOstruct *fbo3;			///< FBO for use during normalized convolution, data is loaded to this FBO
+	Model* squareModel;			///< Canvas for GPU filtering
+
+	// Data containers
+	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
+	Model* datamodel; 			///< model for the terrain data.
+
+	// Just scaling
+	GLfloat terrainScale;		///< Height scale for the terrain.
 
 	/// @brief Reads the input data to the private mapdata struct.
 	///
@@ -120,7 +135,6 @@ public:
 	/// @see readDEM()
 	/// @see scaleDataBefore()
 	/// @see GenerateTerrain()
-	/// @todo move the FBO constructs to the class and or performNormalizedConvolution
 	DataHandler(const char* inputfile, GLfloat tScale = 500.0f);
 
 	/// @brief Handle the internal pointers.
@@ -136,7 +150,6 @@ public:
 	/// @see performGPUNormConv()
 	/// @see scaleDataAfter()
 	/// @see GenerateTerrain()
-	/// @todo Should probably also move the FBO stuff here
 	void performNormalizedConvolution();
 
 	/// @brief Returns a datapoint from the mapdata.
