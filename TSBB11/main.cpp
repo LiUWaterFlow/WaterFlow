@@ -10,15 +10,29 @@
 // * Use glUniform1fv instead of glUniform1f, since glUniform1f has a bug under Linux.
 
 #ifdef __APPLE__
-#include <OpenGL/gl3.h>
-// Uses framework Cocoa.
+	#include <OpenGL/gl3.h>
+	#include <SDL2/SDL.h>
+#else
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		#include <SDL2/SDL.h>
+		
+		
+	#else
+		#include "glew.h"
+		#include "Windows/sdl2/SDL.h"
+	#endif
 #endif
+
 #include <cstdlib>
 #include <iostream>
 #include "GL_utilities.h"
 #include "loadobj.h"
 #include "LoadTGA.h"
-#include "sdl2/SDL.h"
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"

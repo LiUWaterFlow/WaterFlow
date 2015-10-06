@@ -9,7 +9,16 @@ extern "C" {
 	#include <OpenGL/gl3.h>
 	#include <GLUT/glut.h>
 #else
-	#include "glew.h"
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		
+	#else
+		#include "glew.h"
+	#endif
 #endif
 
 void printError(const char *functionName);
