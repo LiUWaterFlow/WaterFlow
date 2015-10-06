@@ -1,6 +1,6 @@
 var class_data_handler =
 [
-    [ "DataHandler", "class_data_handler.html#a57a8d9c6f6a3ebe16662c89354e0484d", null ],
+    [ "DataHandler", "class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874", null ],
     [ "~DataHandler", "class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4", null ],
     [ "GenerateTerrain", "class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c", null ],
     [ "getCoord", "class_data_handler.html#a439774a91fe8218fe6fffe5882102608", null ],
@@ -8,6 +8,7 @@ var class_data_handler =
     [ "getElem", "class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7", null ],
     [ "getHeight", "class_data_handler.html#a679c89a82574d4d3257535b752e38806", null ],
     [ "getModel", "class_data_handler.html#a8f8805d93b3687459dfa0236d278c631", null ],
+    [ "getScale", "class_data_handler.html#a27e25d068278ba0f44a803bdb361a8bc", null ],
     [ "getWidth", "class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22", null ],
     [ "giveHeight", "class_data_handler.html#af763075e733975a64199e70589e3d6e7", null ],
     [ "giveNormal", "class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a", null ],
@@ -25,6 +26,7 @@ var class_data_handler =
     [ "filtershader", "class_data_handler.html#a51875d78b5e321f760caef586431e2d2", null ],
     [ "plaintextureshader", "class_data_handler.html#a7e96418ccda72d6b2361280fea130b27", null ],
     [ "readdata", "class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb", null ],
+    [ "sampleFactor", "class_data_handler.html#ad13bf156e22a6c65985e779cd40f3411", null ],
     [ "squareModel", "class_data_handler.html#a47df3b25b223addf0dd209f0e5044727", null ],
     [ "terrainScale", "class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce", null ]
 ];
