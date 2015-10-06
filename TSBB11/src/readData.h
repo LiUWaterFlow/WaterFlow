@@ -135,7 +135,8 @@ public:
 	/// terrain.
 	/// @param inputfile path to DEM data.
 	/// @param sampleFactor Downsampling factor for the terrain. Must be a power of 2. [1,2,4...]
-	/// default value is 1. (No downsampling).
+	/// default value is 1. (No downsampling). Note that the terrainScale will be used as 
+	/// tScale/sampleFactor. So a downsampling should not change the overall proportions of the model
 	/// @param tScale sets terrainScale, default value is 500.0f
 	/// @see readDEM()
 	/// @see scaleDataBefore()
@@ -196,7 +197,7 @@ public:
 	/// @brief Getter for the number of datapoints.
 	/// @return columns * rows.
 	int getElem();
-	int getScale();
+	int getSampleFactor();
 
 	/// @brief Pointer to the terrain model
 	///

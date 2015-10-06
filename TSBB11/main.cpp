@@ -166,8 +166,7 @@ void display(void)
 	// Terrain:
 	glm::vec3 terrainTrans = glm::vec3(100, -500, -1000);
 	trans = glm::translate(terrainTrans);
-	//scale = glm::scale(glm::vec3(dataHandler->getScale(), dataHandler->getScale(), dataHandler->getScale()));
-	total = trans;//*scale;
+	total = trans;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 

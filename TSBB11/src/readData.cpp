@@ -17,14 +17,6 @@
 using namespace std;
 
 
-/*
-* Datahandler constructor takes 1 to 3 arguments. The first and mandatory argument is the inputfile.
-*	The second sampleFactor, determines the density of the sampling of said file for the model. This should always be 
-*	power of 2 (1,2,4...). Defaults to 1. Suggested to scale the model in size with the sampleFactor when rendering. 
-*	The third is the heightscaling of the model. Defaults to 500. Note that the final scale used will be tScale/sampleFactor. 
-*	so that only changing the sampleFactor should not change the overall height feel of the model. 
-*/
-
 DataHandler::DataHandler(const char* inputfile,int sampleFactor, GLfloat tScale)
 {
 	readdata = new mapdata();
@@ -84,7 +76,7 @@ float DataHandler::getCoord(int col, int row)
 	return retdata;
 }
 
-int DataHandler::getScale()
+int DataHandler::getSampleFactor()
 {
 	return sampleFactor;
 }
