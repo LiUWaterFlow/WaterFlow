@@ -38,7 +38,7 @@ struct mapdata {
 class DataHandler
 {
 private:
-	int sampleFactor;
+	
 
 	// Variables for GPU processing
 	GLuint plaintextureshader;	///< shader program to simple switch FBO
@@ -56,6 +56,7 @@ private:
 
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain.
+	int sampleFactor;			///< Sample factor used for constructing model.
 
 	/// @brief Reads the input data to the private mapdata struct.
 	///
