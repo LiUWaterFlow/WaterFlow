@@ -116,488 +116,480 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00017"></a>00017 <span class="keyword">using namespace </span>std;
 <a name="l00018"></a>00018 
 <a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <span class="comment">/*</span>
-<a name="l00021"></a>00021 <span class="comment">* Datahandler constructor takes 1 to 3 arguments. The first and mandatory argument is the inputfile.</span>
-<a name="l00022"></a>00022 <span class="comment">*   The second sampleFactor, determines the density of the sampling of said file for the model. This should always be </span>
-<a name="l00023"></a>00023 <span class="comment">*   power of 2 (1,2,4...). Defaults to 1. Suggested to scale the model in size with the sampleFactor when rendering. </span>
-<a name="l00024"></a>00024 <span class="comment">*   The third is the heightscaling of the model. Defaults to 500. Note that the final scale used will be tScale/sampleFactor. </span>
-<a name="l00025"></a>00025 <span class="comment">*   so that only changing the sampleFactor should not change the overall height feel of the model. </span>
-<a name="l00026"></a>00026 <span class="comment">*/</span>
-<a name="l00027"></a>00027 
-<a name="l00028"></a><a class="code" href="class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874">00028</a> <a class="code" href="class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874" title="Reads DEM data, scales it and generates a model.">DataHandler::DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile,<span class="keywordtype">int</span> sampleFactor, GLfloat tScale)
-<a name="l00029"></a>00029 {
-<a name="l00030"></a>00030     readdata = <span class="keyword">new</span> <a class="code" href="structmapdata.html" title="Contains information about the loaded terrain.">mapdata</a>();
-<a name="l00031"></a>00031     terrainScale = tScale;
-<a name="l00032"></a>00032     this-&gt;sampleFactor = sampleFactor;
+<a name="l00020"></a><a class="code" href="class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874">00020</a> <a class="code" href="class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874" title="Reads DEM data, scales it and generates a model.">DataHandler::DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile,<span class="keywordtype">int</span> sampleFactor, GLfloat tScale)
+<a name="l00021"></a>00021 {
+<a name="l00022"></a>00022     readdata = <span class="keyword">new</span> <a class="code" href="structmapdata.html" title="Contains information about the loaded terrain.">mapdata</a>();
+<a name="l00023"></a>00023     terrainScale = tScale;
+<a name="l00024"></a>00024     this-&gt;sampleFactor = sampleFactor;
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026     readDEM(inputfile);
+<a name="l00027"></a>00027     scaleDataBefore();
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029     plaintextureshader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/plaintextureshader.frag&quot;</span>);
+<a name="l00030"></a>00030     filtershader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/filtershader.frag&quot;</span>);
+<a name="l00031"></a>00031     confidenceshader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/confidenceshader.frag&quot;</span>);
+<a name="l00032"></a>00032     combineshader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/combineshader.frag&quot;</span>);
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034     readDEM(inputfile);
-<a name="l00035"></a>00035     scaleDataBefore();
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037     plaintextureshader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/plaintextureshader.frag&quot;</span>);
-<a name="l00038"></a>00038     filtershader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/filtershader.frag&quot;</span>);
-<a name="l00039"></a>00039     confidenceshader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/confidenceshader.frag&quot;</span>);
-<a name="l00040"></a>00040     combineshader = loadShaders(<span class="stringliteral">&quot;src/shaders/plaintextureshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/combineshader.frag&quot;</span>);
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042     <span class="comment">// Create canvas to draw on</span>
-<a name="l00043"></a>00043     GLfloat square[] = { -1, -1, 0,
-<a name="l00044"></a>00044         -1, 1, 0,
-<a name="l00045"></a>00045         1, 1, 0,
-<a name="l00046"></a>00046         1, -1, 0 };
-<a name="l00047"></a>00047     GLfloat squareTexCoord[] = { 0, 0,
-<a name="l00048"></a>00048         0, 1,
-<a name="l00049"></a>00049         1, 1,
-<a name="l00050"></a>00050         1, 0 };
-<a name="l00051"></a>00051     GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
-<a name="l00052"></a>00052     squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
+<a name="l00034"></a>00034     <span class="comment">// Create canvas to draw on</span>
+<a name="l00035"></a>00035     GLfloat square[] = { -1, -1, 0,
+<a name="l00036"></a>00036         -1, 1, 0,
+<a name="l00037"></a>00037         1, 1, 0,
+<a name="l00038"></a>00038         1, -1, 0 };
+<a name="l00039"></a>00039     GLfloat squareTexCoord[] = { 0, 0,
+<a name="l00040"></a>00040         0, 1,
+<a name="l00041"></a>00041         1, 1,
+<a name="l00042"></a>00042         1, 0 };
+<a name="l00043"></a>00043     GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
+<a name="l00044"></a>00044     squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046     GenerateTerrain();
+<a name="l00047"></a>00047 }
+<a name="l00048"></a>00048 
+<a name="l00049"></a><a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4">00049</a> <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">DataHandler::~DataHandler</a>()
+<a name="l00050"></a>00050 {
+<a name="l00051"></a>00051     <span class="keyword">delete</span> readdata;
+<a name="l00052"></a>00052 }
 <a name="l00053"></a>00053 
-<a name="l00054"></a>00054     GenerateTerrain();
-<a name="l00055"></a>00055 }
-<a name="l00056"></a>00056 
-<a name="l00057"></a><a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4">00057</a> <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">DataHandler::~DataHandler</a>()
-<a name="l00058"></a>00058 {
-<a name="l00059"></a>00059     <span class="keyword">delete</span> readdata;
-<a name="l00060"></a>00060 }
-<a name="l00061"></a>00061 
-<a name="l00062"></a><a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608">00062</a> <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">DataHandler::getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row)
-<a name="l00063"></a>00063 {
-<a name="l00064"></a>00064     <span class="keywordtype">int</span> index;
-<a name="l00065"></a>00065     <span class="keywordtype">float</span> retdata = 0;
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067     <span class="keywordflow">if</span> (readdata != NULL) {
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069         <span class="keywordflow">if</span>(col &lt; readdata-&gt;ncols &amp;&amp; row &lt; readdata-&gt;nrows)
-<a name="l00070"></a>00070         {
-<a name="l00071"></a>00071             index = col + row * readdata-&gt;ncols;
-<a name="l00072"></a>00072         }
-<a name="l00073"></a>00073         <span class="keywordflow">else</span>
-<a name="l00074"></a>00074         {
-<a name="l00075"></a>00075             cerr &lt;&lt; <span class="stringliteral">&quot;Input does not exist in data.&quot;</span> &lt;&lt; endl;
-<a name="l00076"></a>00076             index = 0;
-<a name="l00077"></a>00077         }
-<a name="l00078"></a>00078         retdata = readdata-&gt;data[index];
-<a name="l00079"></a>00079     }
-<a name="l00080"></a>00080     <span class="keywordflow">else</span> {
-<a name="l00081"></a>00081         cerr &lt;&lt; <span class="stringliteral">&quot;No mapdata exists.&quot;</span> &lt;&lt; endl;
-<a name="l00082"></a>00082     }
+<a name="l00054"></a><a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608">00054</a> <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">DataHandler::getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row)
+<a name="l00055"></a>00055 {
+<a name="l00056"></a>00056     <span class="keywordtype">int</span> index;
+<a name="l00057"></a>00057     <span class="keywordtype">float</span> retdata = 0;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     <span class="keywordflow">if</span> (readdata != NULL) {
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061         <span class="keywordflow">if</span>(col &lt; readdata-&gt;ncols &amp;&amp; row &lt; readdata-&gt;nrows)
+<a name="l00062"></a>00062         {
+<a name="l00063"></a>00063             index = col + row * readdata-&gt;ncols;
+<a name="l00064"></a>00064         }
+<a name="l00065"></a>00065         <span class="keywordflow">else</span>
+<a name="l00066"></a>00066         {
+<a name="l00067"></a>00067             cerr &lt;&lt; <span class="stringliteral">&quot;Input does not exist in data.&quot;</span> &lt;&lt; endl;
+<a name="l00068"></a>00068             index = 0;
+<a name="l00069"></a>00069         }
+<a name="l00070"></a>00070         retdata = readdata-&gt;data[index];
+<a name="l00071"></a>00071     }
+<a name="l00072"></a>00072     <span class="keywordflow">else</span> {
+<a name="l00073"></a>00073         cerr &lt;&lt; <span class="stringliteral">&quot;No mapdata exists.&quot;</span> &lt;&lt; endl;
+<a name="l00074"></a>00074     }
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076     <span class="keywordflow">return</span> retdata;
+<a name="l00077"></a>00077 }
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 <span class="keywordtype">int</span> DataHandler::getSampleFactor()
+<a name="l00080"></a>00080 {
+<a name="l00081"></a>00081     <span class="keywordflow">return</span> sampleFactor;
+<a name="l00082"></a>00082 }
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084     <span class="keywordflow">return</span> retdata;
-<a name="l00085"></a>00085 }
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087 <span class="keywordtype">int</span> DataHandler::getScale()
-<a name="l00088"></a>00088 {
-<a name="l00089"></a>00089     <span class="keywordflow">return</span> sampleFactor;
-<a name="l00090"></a>00090 }
-<a name="l00091"></a>00091 
-<a name="l00092"></a><a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b">00092</a> <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b" title="Get a pointer to the mapdata data.">DataHandler::getData</a>()
-<a name="l00093"></a>00093 {
-<a name="l00094"></a>00094     <span class="keywordflow">return</span> &amp;readdata-&gt;data[0];
-<a name="l00095"></a>00095 }
-<a name="l00096"></a>00096 
-<a name="l00097"></a><a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22">00097</a> <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">DataHandler::getWidth</a>()
-<a name="l00098"></a>00098 {
-<a name="l00099"></a>00099     <span class="keywordflow">return</span> readdata-&gt;ncols;
-<a name="l00100"></a>00100 }
-<a name="l00101"></a>00101 
-<a name="l00102"></a><a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806">00102</a> <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">DataHandler::getHeight</a>()
-<a name="l00103"></a>00103 {
-<a name="l00104"></a>00104     <span class="keywordflow">return</span> readdata-&gt;nrows;
-<a name="l00105"></a>00105 }
-<a name="l00106"></a>00106 
-<a name="l00107"></a><a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7">00107</a> <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">DataHandler::getElem</a>()
-<a name="l00108"></a>00108 {
-<a name="l00109"></a>00109     <span class="keywordflow">return</span> readdata-&gt;nelem;
-<a name="l00110"></a>00110 }
-<a name="l00111"></a>00111 
-<a name="l00112"></a><a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631">00112</a> <a class="code" href="struct_model.html">Model</a>* <a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">DataHandler::getModel</a>()
-<a name="l00113"></a>00113 {
-<a name="l00114"></a>00114     <span class="keywordflow">return</span> datamodel;
-<a name="l00115"></a>00115 }
-<a name="l00116"></a>00116 
-<a name="l00117"></a><a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea">00117</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea" title="Reads the input data to the private mapdata struct.">DataHandler::readDEM</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile)
-<a name="l00118"></a>00118 {
-<a name="l00119"></a>00119     FILE* file = fopen(inputfile, <span class="stringliteral">&quot;r&quot;</span>);
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121     <span class="keywordtype">char</span> intext [80];
-<a name="l00122"></a>00122     <span class="keywordtype">float</span> incoord = 0;
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124     <span class="keywordflow">if</span> (file != NULL)
-<a name="l00125"></a>00125     {
-<a name="l00126"></a>00126         fscanf(file, <span class="stringliteral">&quot;%s %i&quot;</span>, &amp;intext, &amp;readdata-&gt;ncols);
-<a name="l00127"></a>00127         fscanf(file, <span class="stringliteral">&quot;%s %i&quot;</span>, &amp;intext, &amp;readdata-&gt;nrows);
-<a name="l00128"></a>00128         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;xllcorner);
-<a name="l00129"></a>00129         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;yllcorner);
-<a name="l00130"></a>00130         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;cellsize);
-<a name="l00131"></a>00131         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;NODATA_value);
-<a name="l00132"></a>00132 
-<a name="l00133"></a>00133         readdata-&gt;max_value = readdata-&gt;NODATA_value;
-<a name="l00134"></a>00134         readdata-&gt;min_value = 20000000;
+<a name="l00084"></a><a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b">00084</a> <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b" title="Get a pointer to the mapdata data.">DataHandler::getData</a>()
+<a name="l00085"></a>00085 {
+<a name="l00086"></a>00086     <span class="keywordflow">return</span> &amp;readdata-&gt;data[0];
+<a name="l00087"></a>00087 }
+<a name="l00088"></a>00088 
+<a name="l00089"></a><a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22">00089</a> <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">DataHandler::getWidth</a>()
+<a name="l00090"></a>00090 {
+<a name="l00091"></a>00091     <span class="keywordflow">return</span> readdata-&gt;ncols;
+<a name="l00092"></a>00092 }
+<a name="l00093"></a>00093 
+<a name="l00094"></a><a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806">00094</a> <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">DataHandler::getHeight</a>()
+<a name="l00095"></a>00095 {
+<a name="l00096"></a>00096     <span class="keywordflow">return</span> readdata-&gt;nrows;
+<a name="l00097"></a>00097 }
+<a name="l00098"></a>00098 
+<a name="l00099"></a><a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7">00099</a> <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">DataHandler::getElem</a>()
+<a name="l00100"></a>00100 {
+<a name="l00101"></a>00101     <span class="keywordflow">return</span> readdata-&gt;nelem;
+<a name="l00102"></a>00102 }
+<a name="l00103"></a>00103 
+<a name="l00104"></a><a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631">00104</a> <a class="code" href="struct_model.html">Model</a>* <a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">DataHandler::getModel</a>()
+<a name="l00105"></a>00105 {
+<a name="l00106"></a>00106     <span class="keywordflow">return</span> datamodel;
+<a name="l00107"></a>00107 }
+<a name="l00108"></a>00108 
+<a name="l00109"></a><a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea">00109</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea" title="Reads the input data to the private mapdata struct.">DataHandler::readDEM</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile)
+<a name="l00110"></a>00110 {
+<a name="l00111"></a>00111     FILE* file = fopen(inputfile, <span class="stringliteral">&quot;r&quot;</span>);
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113     <span class="keywordtype">char</span> intext [80];
+<a name="l00114"></a>00114     <span class="keywordtype">float</span> incoord = 0;
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116     <span class="keywordflow">if</span> (file != NULL)
+<a name="l00117"></a>00117     {
+<a name="l00118"></a>00118         fscanf(file, <span class="stringliteral">&quot;%s %i&quot;</span>, &amp;intext, &amp;readdata-&gt;ncols);
+<a name="l00119"></a>00119         fscanf(file, <span class="stringliteral">&quot;%s %i&quot;</span>, &amp;intext, &amp;readdata-&gt;nrows);
+<a name="l00120"></a>00120         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;xllcorner);
+<a name="l00121"></a>00121         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;yllcorner);
+<a name="l00122"></a>00122         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;cellsize);
+<a name="l00123"></a>00123         fscanf(file, <span class="stringliteral">&quot;%s %f&quot;</span>, &amp;intext, &amp;readdata-&gt;NODATA_value);
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125         readdata-&gt;max_value = readdata-&gt;NODATA_value;
+<a name="l00126"></a>00126         readdata-&gt;min_value = 20000000;
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128         readdata-&gt;nelem = readdata-&gt;ncols * readdata-&gt;nrows;
+<a name="l00129"></a>00129         readdata-&gt;data.resize(getElem());
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131         <span class="keywordtype">int</span> nRead = 0;
+<a name="l00132"></a>00132         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem(); i++)
+<a name="l00133"></a>00133         {
+<a name="l00134"></a>00134             nRead = fscanf(file, <span class="stringliteral">&quot;%f&quot;</span>, &amp;incoord);
 <a name="l00135"></a>00135 
-<a name="l00136"></a>00136         readdata-&gt;nelem = readdata-&gt;ncols * readdata-&gt;nrows;
-<a name="l00137"></a>00137         readdata-&gt;data.resize(getElem());
-<a name="l00138"></a>00138 
-<a name="l00139"></a>00139         <span class="keywordtype">int</span> nRead = 0;
-<a name="l00140"></a>00140         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem(); i++)
-<a name="l00141"></a>00141         {
-<a name="l00142"></a>00142             nRead = fscanf(file, <span class="stringliteral">&quot;%f&quot;</span>, &amp;incoord);
-<a name="l00143"></a>00143 
-<a name="l00144"></a>00144             <span class="keywordflow">if</span> (nRead != 1)
-<a name="l00145"></a>00145             {
-<a name="l00146"></a>00146                 cerr &lt;&lt; <span class="stringliteral">&quot;Less values than it should be!&quot;</span> &lt;&lt; endl;
-<a name="l00147"></a>00147                 <span class="keywordflow">break</span>;
-<a name="l00148"></a>00148             }
-<a name="l00149"></a>00149 
-<a name="l00150"></a>00150             <span class="keywordflow">if</span> (incoord &gt; readdata-&gt;max_value)
-<a name="l00151"></a>00151             {
-<a name="l00152"></a>00152                 readdata-&gt;max_value = incoord;
-<a name="l00153"></a>00153             }
-<a name="l00154"></a>00154             <span class="keywordflow">if</span> (incoord &gt; readdata-&gt;NODATA_value + 1.0f &amp;&amp; incoord &lt; readdata-&gt;min_value)
-<a name="l00155"></a>00155             {
-<a name="l00156"></a>00156                 readdata-&gt;min_value = incoord;
-<a name="l00157"></a>00157             }
-<a name="l00158"></a>00158 
-<a name="l00159"></a>00159             readdata-&gt;data[i] = incoord;
-<a name="l00160"></a>00160         }
-<a name="l00161"></a>00161 
-<a name="l00162"></a>00162         fclose(file);
-<a name="l00163"></a>00163     }
-<a name="l00164"></a>00164     <span class="keywordflow">else</span> {
-<a name="l00165"></a>00165         cerr &lt;&lt; <span class="stringliteral">&quot;Could not open file: &quot;</span> &lt;&lt; inputfile &lt;&lt; endl;
-<a name="l00166"></a>00166     }
-<a name="l00167"></a>00167 }
-<a name="l00168"></a>00168 
-<a name="l00169"></a>00169 <span class="comment">// Will scale the data so that data before normalized convolution is between 0.0 and 1.0</span>
-<a name="l00170"></a><a class="code" href="class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d">00170</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d" title="Scales data while NODATA is present.">DataHandler::scaleDataBefore</a>()
-<a name="l00171"></a>00171 {
-<a name="l00172"></a>00172     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem(); i++)
-<a name="l00173"></a>00173     {
-<a name="l00174"></a>00174         <span class="keywordtype">float</span> diff = readdata-&gt;max_value - readdata-&gt;min_value;
-<a name="l00175"></a>00175 
-<a name="l00176"></a>00176         <span class="comment">// Scale real data between 0.1 and 1.0</span>
-<a name="l00177"></a>00177         getData()[i] = ((getData()[i] - readdata-&gt;min_value) / diff) * 0.9f + 0.1f;
-<a name="l00178"></a>00178 
-<a name="l00179"></a>00179         <span class="comment">// Set nodata to 0</span>
-<a name="l00180"></a>00180         <span class="keywordflow">if</span> (getData()[i] &lt; 0.05)
-<a name="l00181"></a>00181             getData()[i] = 0.0f;
-<a name="l00182"></a>00182     }
-<a name="l00183"></a>00183 }
-<a name="l00184"></a>00184 
-<a name="l00185"></a>00185 <span class="comment">// Data after normalized convolution should be between 0.1 and 1.0</span>
-<a name="l00186"></a><a class="code" href="class_data_handler.html#a2c27269a72ae5429361231384fe04489">00186</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a2c27269a72ae5429361231384fe04489" title="Scales data when NODATA has been removed.">DataHandler::scaleDataAfter</a>()
-<a name="l00187"></a>00187 {
-<a name="l00188"></a>00188     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem(); i++)
-<a name="l00189"></a>00189     {
-<a name="l00190"></a>00190         <span class="comment">// Scale real data between 0.0 and 1.0</span>
-<a name="l00191"></a>00191         getData()[i] = (getData()[i] - 0.1f) / 0.9f;
-<a name="l00192"></a>00192     }
-<a name="l00193"></a>00193 }
+<a name="l00136"></a>00136             <span class="keywordflow">if</span> (nRead != 1)
+<a name="l00137"></a>00137             {
+<a name="l00138"></a>00138                 cerr &lt;&lt; <span class="stringliteral">&quot;Less values than it should be!&quot;</span> &lt;&lt; endl;
+<a name="l00139"></a>00139                 <span class="keywordflow">break</span>;
+<a name="l00140"></a>00140             }
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142             <span class="keywordflow">if</span> (incoord &gt; readdata-&gt;max_value)
+<a name="l00143"></a>00143             {
+<a name="l00144"></a>00144                 readdata-&gt;max_value = incoord;
+<a name="l00145"></a>00145             }
+<a name="l00146"></a>00146             <span class="keywordflow">if</span> (incoord &gt; readdata-&gt;NODATA_value + 1.0f &amp;&amp; incoord &lt; readdata-&gt;min_value)
+<a name="l00147"></a>00147             {
+<a name="l00148"></a>00148                 readdata-&gt;min_value = incoord;
+<a name="l00149"></a>00149             }
+<a name="l00150"></a>00150 
+<a name="l00151"></a>00151             readdata-&gt;data[i] = incoord;
+<a name="l00152"></a>00152         }
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154         fclose(file);
+<a name="l00155"></a>00155     }
+<a name="l00156"></a>00156     <span class="keywordflow">else</span> {
+<a name="l00157"></a>00157         cerr &lt;&lt; <span class="stringliteral">&quot;Could not open file: &quot;</span> &lt;&lt; inputfile &lt;&lt; endl;
+<a name="l00158"></a>00158     }
+<a name="l00159"></a>00159 }
+<a name="l00160"></a>00160 
+<a name="l00161"></a>00161 <span class="comment">// Will scale the data so that data before normalized convolution is between 0.0 and 1.0</span>
+<a name="l00162"></a><a class="code" href="class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d">00162</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a1e3625f30cbc603e7dc65216cc7a513d" title="Scales data while NODATA is present.">DataHandler::scaleDataBefore</a>()
+<a name="l00163"></a>00163 {
+<a name="l00164"></a>00164     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem(); i++)
+<a name="l00165"></a>00165     {
+<a name="l00166"></a>00166         <span class="keywordtype">float</span> diff = readdata-&gt;max_value - readdata-&gt;min_value;
+<a name="l00167"></a>00167 
+<a name="l00168"></a>00168         <span class="comment">// Scale real data between 0.1 and 1.0</span>
+<a name="l00169"></a>00169         getData()[i] = ((getData()[i] - readdata-&gt;min_value) / diff) * 0.9f + 0.1f;
+<a name="l00170"></a>00170 
+<a name="l00171"></a>00171         <span class="comment">// Set nodata to 0</span>
+<a name="l00172"></a>00172         <span class="keywordflow">if</span> (getData()[i] &lt; 0.05)
+<a name="l00173"></a>00173             getData()[i] = 0.0f;
+<a name="l00174"></a>00174     }
+<a name="l00175"></a>00175 }
+<a name="l00176"></a>00176 
+<a name="l00177"></a>00177 <span class="comment">// Data after normalized convolution should be between 0.1 and 1.0</span>
+<a name="l00178"></a><a class="code" href="class_data_handler.html#a2c27269a72ae5429361231384fe04489">00178</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a2c27269a72ae5429361231384fe04489" title="Scales data when NODATA has been removed.">DataHandler::scaleDataAfter</a>()
+<a name="l00179"></a>00179 {
+<a name="l00180"></a>00180     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem(); i++)
+<a name="l00181"></a>00181     {
+<a name="l00182"></a>00182         <span class="comment">// Scale real data between 0.0 and 1.0</span>
+<a name="l00183"></a>00183         getData()[i] = (getData()[i] - 0.1f) / 0.9f;
+<a name="l00184"></a>00184     }
+<a name="l00185"></a>00185 }
+<a name="l00186"></a>00186 
+<a name="l00187"></a>00187 
+<a name="l00188"></a><a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9">00188</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">DataHandler::performNormalizedConvolution</a>()
+<a name="l00189"></a>00189 {
+<a name="l00190"></a>00190     <span class="comment">// Initialize the FBO&#39;s</span>
+<a name="l00191"></a>00191     fbo1 = initFBO3(getWidth(), getHeight(), NULL);
+<a name="l00192"></a>00192     fbo2 = initFBO3(getWidth(), getHeight(), NULL);
+<a name="l00193"></a>00193     fbo3 = initFBO3(getWidth(), getHeight(), getData());
 <a name="l00194"></a>00194 
-<a name="l00195"></a>00195 
-<a name="l00196"></a><a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9">00196</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">DataHandler::performNormalizedConvolution</a>()
-<a name="l00197"></a>00197 {
-<a name="l00198"></a>00198     <span class="comment">// Initialize the FBO&#39;s</span>
-<a name="l00199"></a>00199     fbo1 = initFBO3(getWidth(), getHeight(), NULL);
-<a name="l00200"></a>00200     fbo2 = initFBO3(getWidth(), getHeight(), NULL);
-<a name="l00201"></a>00201     fbo3 = initFBO3(getWidth(), getHeight(), getData());
-<a name="l00202"></a>00202 
-<a name="l00203"></a>00203     <span class="comment">// Perform normalized convolution until no more NODATA</span>
-<a name="l00204"></a>00204     <span class="keywordtype">bool</span> isNODATA = <span class="keyword">true</span>;
-<a name="l00205"></a>00205     <span class="keywordflow">while</span> (isNODATA)
-<a name="l00206"></a>00206     {
-<a name="l00207"></a>00207         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 5; i++)
-<a name="l00208"></a>00208             performGPUNormConv();
-<a name="l00209"></a>00209 
-<a name="l00210"></a>00210         glReadPixels(0, 0, getWidth(), getHeight(), GL_RED, GL_FLOAT, getData());
-<a name="l00211"></a>00211 
-<a name="l00212"></a>00212         isNODATA = <span class="keyword">false</span>;
-<a name="l00213"></a>00213         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem() &amp;&amp; !isNODATA; i++)
-<a name="l00214"></a>00214         {
-<a name="l00215"></a>00215             isNODATA = (getData()[i] &lt; 0.0001f);
-<a name="l00216"></a>00216         }
-<a name="l00217"></a>00217     }
-<a name="l00218"></a>00218 
-<a name="l00219"></a>00219     scaleDataAfter();
+<a name="l00195"></a>00195     <span class="comment">// Perform normalized convolution until no more NODATA</span>
+<a name="l00196"></a>00196     <span class="keywordtype">bool</span> isNODATA = <span class="keyword">true</span>;
+<a name="l00197"></a>00197     <span class="keywordflow">while</span> (isNODATA)
+<a name="l00198"></a>00198     {
+<a name="l00199"></a>00199         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 5; i++)
+<a name="l00200"></a>00200             performGPUNormConv();
+<a name="l00201"></a>00201 
+<a name="l00202"></a>00202         glReadPixels(0, 0, getWidth(), getHeight(), GL_RED, GL_FLOAT, getData());
+<a name="l00203"></a>00203 
+<a name="l00204"></a>00204         isNODATA = <span class="keyword">false</span>;
+<a name="l00205"></a>00205         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; getElem() &amp;&amp; !isNODATA; i++)
+<a name="l00206"></a>00206         {
+<a name="l00207"></a>00207             isNODATA = (getData()[i] &lt; 0.0001f);
+<a name="l00208"></a>00208         }
+<a name="l00209"></a>00209     }
+<a name="l00210"></a>00210 
+<a name="l00211"></a>00211     scaleDataAfter();
+<a name="l00212"></a>00212     
+<a name="l00213"></a>00213     <span class="comment">//remove all data from previous model before generating a new one.</span>
+<a name="l00214"></a>00214     <span class="keyword">delete</span> datamodel-&gt;vertexArray;
+<a name="l00215"></a>00215     <span class="keyword">delete</span> datamodel-&gt;normalArray;
+<a name="l00216"></a>00216     <span class="keyword">delete</span> datamodel-&gt;texCoordArray;
+<a name="l00217"></a>00217     <span class="keyword">delete</span> datamodel-&gt;colorArray; <span class="comment">// Rarely used</span>
+<a name="l00218"></a>00218     <span class="keyword">delete</span> datamodel-&gt;indexArray;
+<a name="l00219"></a>00219     <span class="keyword">delete</span> datamodel;
 <a name="l00220"></a>00220     
-<a name="l00221"></a>00221     <span class="comment">//remove all data from previous model before generating a new one.</span>
-<a name="l00222"></a>00222     <span class="keyword">delete</span> datamodel-&gt;vertexArray;
-<a name="l00223"></a>00223     <span class="keyword">delete</span> datamodel-&gt;normalArray;
-<a name="l00224"></a>00224     <span class="keyword">delete</span> datamodel-&gt;texCoordArray;
-<a name="l00225"></a>00225     <span class="keyword">delete</span> datamodel-&gt;colorArray; <span class="comment">// Rarely used</span>
-<a name="l00226"></a>00226     <span class="keyword">delete</span> datamodel-&gt;indexArray;
-<a name="l00227"></a>00227     <span class="keyword">delete</span> datamodel;
-<a name="l00228"></a>00228     
-<a name="l00229"></a>00229 
-<a name="l00230"></a>00230     GenerateTerrain();
+<a name="l00221"></a>00221 
+<a name="l00222"></a>00222     GenerateTerrain();
+<a name="l00223"></a>00223 
+<a name="l00224"></a>00224     <span class="comment">// Reset to initial GL inits</span>
+<a name="l00225"></a>00225     useFBO(0L, 0L, 0L);
+<a name="l00226"></a>00226     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+<a name="l00227"></a>00227     glEnable(GL_DEPTH_TEST);
+<a name="l00228"></a>00228     glEnable(GL_CULL_FACE);
+<a name="l00229"></a>00229     glCullFace(GL_TRUE);
+<a name="l00230"></a>00230 }
 <a name="l00231"></a>00231 
-<a name="l00232"></a>00232     <span class="comment">// Reset to initial GL inits</span>
-<a name="l00233"></a>00233     useFBO(0L, 0L, 0L);
-<a name="l00234"></a>00234     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-<a name="l00235"></a>00235     glEnable(GL_DEPTH_TEST);
-<a name="l00236"></a>00236     glEnable(GL_CULL_FACE);
-<a name="l00237"></a>00237     glCullFace(GL_TRUE);
-<a name="l00238"></a>00238 }
-<a name="l00239"></a>00239 
-<a name="l00240"></a><a class="code" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f">00240</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f" title="Makes a single pass of normalized convolution on the mapdata.">DataHandler::performGPUNormConv</a>()
-<a name="l00241"></a>00241 {
-<a name="l00242"></a>00242     <span class="comment">// Filter original</span>
-<a name="l00243"></a>00243     useFBO(fbo1, fbo3, 0L);
+<a name="l00232"></a><a class="code" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f">00232</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f" title="Makes a single pass of normalized convolution on the mapdata.">DataHandler::performGPUNormConv</a>()
+<a name="l00233"></a>00233 {
+<a name="l00234"></a>00234     <span class="comment">// Filter original</span>
+<a name="l00235"></a>00235     useFBO(fbo1, fbo3, 0L);
+<a name="l00236"></a>00236 
+<a name="l00237"></a>00237     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
+<a name="l00238"></a>00238     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+<a name="l00239"></a>00239     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00240"></a>00240 
+<a name="l00241"></a>00241     <span class="comment">// Activate shader program</span>
+<a name="l00242"></a>00242     glUseProgram(filtershader);
+<a name="l00243"></a>00243     glUniform2f(glGetUniformLocation(filtershader, <span class="stringliteral">&quot;in_size&quot;</span>), (<span class="keywordtype">float</span>)getWidth(), (<span class="keywordtype">float</span>)getHeight());
 <a name="l00244"></a>00244 
-<a name="l00245"></a>00245     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
-<a name="l00246"></a>00246     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-<a name="l00247"></a>00247     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00245"></a>00245     glDisable(GL_CULL_FACE);
+<a name="l00246"></a>00246     glDisable(GL_DEPTH_TEST);
+<a name="l00247"></a>00247     DrawModel(squareModel, filtershader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00248"></a>00248 
-<a name="l00249"></a>00249     <span class="comment">// Activate shader program</span>
-<a name="l00250"></a>00250     glUseProgram(filtershader);
-<a name="l00251"></a>00251     glUniform2f(glGetUniformLocation(filtershader, <span class="stringliteral">&quot;in_size&quot;</span>), (<span class="keywordtype">float</span>)getWidth(), (<span class="keywordtype">float</span>)getHeight());
-<a name="l00252"></a>00252 
-<a name="l00253"></a>00253     glDisable(GL_CULL_FACE);
-<a name="l00254"></a>00254     glDisable(GL_DEPTH_TEST);
-<a name="l00255"></a>00255     DrawModel(squareModel, filtershader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00256"></a>00256 
-<a name="l00257"></a>00257     <span class="comment">// Create confidence</span>
-<a name="l00258"></a>00258     useFBO(fbo2, fbo3, 0L);
-<a name="l00259"></a>00259 
-<a name="l00260"></a>00260     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
-<a name="l00261"></a>00261     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-<a name="l00262"></a>00262     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-<a name="l00263"></a>00263 
-<a name="l00264"></a>00264     <span class="comment">// Activate shader program</span>
-<a name="l00265"></a>00265     glUseProgram(confidenceshader);
-<a name="l00266"></a>00266 
-<a name="l00267"></a>00267     glDisable(GL_CULL_FACE);
-<a name="l00268"></a>00268     glDisable(GL_DEPTH_TEST);
-<a name="l00269"></a>00269     DrawModel(squareModel, confidenceshader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00270"></a>00270 
-<a name="l00271"></a>00271     <span class="comment">// Filter confidence</span>
-<a name="l00272"></a>00272     useFBO(fbo3, fbo2, 0L);
+<a name="l00249"></a>00249     <span class="comment">// Create confidence</span>
+<a name="l00250"></a>00250     useFBO(fbo2, fbo3, 0L);
+<a name="l00251"></a>00251 
+<a name="l00252"></a>00252     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
+<a name="l00253"></a>00253     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+<a name="l00254"></a>00254     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00255"></a>00255 
+<a name="l00256"></a>00256     <span class="comment">// Activate shader program</span>
+<a name="l00257"></a>00257     glUseProgram(confidenceshader);
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259     glDisable(GL_CULL_FACE);
+<a name="l00260"></a>00260     glDisable(GL_DEPTH_TEST);
+<a name="l00261"></a>00261     DrawModel(squareModel, confidenceshader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00262"></a>00262 
+<a name="l00263"></a>00263     <span class="comment">// Filter confidence</span>
+<a name="l00264"></a>00264     useFBO(fbo3, fbo2, 0L);
+<a name="l00265"></a>00265 
+<a name="l00266"></a>00266     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
+<a name="l00267"></a>00267     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+<a name="l00268"></a>00268     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00269"></a>00269 
+<a name="l00270"></a>00270     <span class="comment">// Activate shader program</span>
+<a name="l00271"></a>00271     glUseProgram(filtershader);
+<a name="l00272"></a>00272     glUniform2f(glGetUniformLocation(filtershader, <span class="stringliteral">&quot;in_size&quot;</span>), (<span class="keywordtype">float</span>)getWidth(), (<span class="keywordtype">float</span>)getHeight());
 <a name="l00273"></a>00273 
-<a name="l00274"></a>00274     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
-<a name="l00275"></a>00275     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-<a name="l00276"></a>00276     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00274"></a>00274     glDisable(GL_CULL_FACE);
+<a name="l00275"></a>00275     glDisable(GL_DEPTH_TEST);
+<a name="l00276"></a>00276     DrawModel(squareModel, filtershader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00277"></a>00277 
-<a name="l00278"></a>00278     <span class="comment">// Activate shader program</span>
-<a name="l00279"></a>00279     glUseProgram(filtershader);
-<a name="l00280"></a>00280     glUniform2f(glGetUniformLocation(filtershader, <span class="stringliteral">&quot;in_size&quot;</span>), (<span class="keywordtype">float</span>)getWidth(), (<span class="keywordtype">float</span>)getHeight());
-<a name="l00281"></a>00281 
-<a name="l00282"></a>00282     glDisable(GL_CULL_FACE);
-<a name="l00283"></a>00283     glDisable(GL_DEPTH_TEST);
-<a name="l00284"></a>00284     DrawModel(squareModel, filtershader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00285"></a>00285 
-<a name="l00286"></a>00286     <span class="comment">// Combine</span>
-<a name="l00287"></a>00287     useFBO(fbo2, fbo1, fbo3);
-<a name="l00288"></a>00288 
-<a name="l00289"></a>00289     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
-<a name="l00290"></a>00290     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-<a name="l00291"></a>00291     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00278"></a>00278     <span class="comment">// Combine</span>
+<a name="l00279"></a>00279     useFBO(fbo2, fbo1, fbo3);
+<a name="l00280"></a>00280 
+<a name="l00281"></a>00281     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
+<a name="l00282"></a>00282     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+<a name="l00283"></a>00283     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00284"></a>00284 
+<a name="l00285"></a>00285     <span class="comment">// Activate shader program</span>
+<a name="l00286"></a>00286     glUseProgram(combineshader);
+<a name="l00287"></a>00287     glUniform1i(glGetUniformLocation(combineshader, <span class="stringliteral">&quot;dataTex&quot;</span>), 0);
+<a name="l00288"></a>00288     glUniform1i(glGetUniformLocation(combineshader, <span class="stringliteral">&quot;confTex&quot;</span>), 1);
+<a name="l00289"></a>00289     glDisable(GL_CULL_FACE);
+<a name="l00290"></a>00290     glDisable(GL_DEPTH_TEST);
+<a name="l00291"></a>00291     DrawModel(squareModel, combineshader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00292"></a>00292 
-<a name="l00293"></a>00293     <span class="comment">// Activate shader program</span>
-<a name="l00294"></a>00294     glUseProgram(combineshader);
-<a name="l00295"></a>00295     glUniform1i(glGetUniformLocation(combineshader, <span class="stringliteral">&quot;dataTex&quot;</span>), 0);
-<a name="l00296"></a>00296     glUniform1i(glGetUniformLocation(combineshader, <span class="stringliteral">&quot;confTex&quot;</span>), 1);
-<a name="l00297"></a>00297     glDisable(GL_CULL_FACE);
-<a name="l00298"></a>00298     glDisable(GL_DEPTH_TEST);
-<a name="l00299"></a>00299     DrawModel(squareModel, combineshader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00300"></a>00300 
-<a name="l00301"></a>00301     <span class="comment">// Swap FBOs</span>
-<a name="l00302"></a>00302     useFBO(fbo3, fbo2, 0L);
-<a name="l00303"></a>00303 
-<a name="l00304"></a>00304     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
-<a name="l00305"></a>00305     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-<a name="l00306"></a>00306     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00293"></a>00293     <span class="comment">// Swap FBOs</span>
+<a name="l00294"></a>00294     useFBO(fbo3, fbo2, 0L);
+<a name="l00295"></a>00295 
+<a name="l00296"></a>00296     <span class="comment">// Clear framebuffer &amp; zbuffer</span>
+<a name="l00297"></a>00297     glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+<a name="l00298"></a>00298     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00299"></a>00299 
+<a name="l00300"></a>00300     <span class="comment">// Activate shader program</span>
+<a name="l00301"></a>00301     glUseProgram(plaintextureshader);
+<a name="l00302"></a>00302 
+<a name="l00303"></a>00303     glDisable(GL_CULL_FACE);
+<a name="l00304"></a>00304     glDisable(GL_DEPTH_TEST);
+<a name="l00305"></a>00305     DrawModel(squareModel, plaintextureshader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00306"></a>00306 }
 <a name="l00307"></a>00307 
-<a name="l00308"></a>00308     <span class="comment">// Activate shader program</span>
-<a name="l00309"></a>00309     glUseProgram(plaintextureshader);
-<a name="l00310"></a>00310 
-<a name="l00311"></a>00311     glDisable(GL_CULL_FACE);
-<a name="l00312"></a>00312     glDisable(GL_DEPTH_TEST);
-<a name="l00313"></a>00313     DrawModel(squareModel, plaintextureshader, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00314"></a>00314 }
-<a name="l00315"></a>00315 
-<a name="l00316"></a><a class="code" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c">00316</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">DataHandler::GenerateTerrain</a>() 
-<a name="l00317"></a>00317 {
-<a name="l00318"></a>00318     <span class="comment">//Reduce width and height with samplefactor</span>
-<a name="l00319"></a>00319     <span class="keywordtype">int</span> width = floor(getWidth()/sampleFactor);
-<a name="l00320"></a>00320     <span class="keywordtype">int</span> height = floor(getHeight()/sampleFactor);
-<a name="l00321"></a>00321     
-<a name="l00322"></a>00322     <span class="keywordtype">int</span> vertexCount = width * height;
-<a name="l00323"></a>00323     <span class="keywordtype">int</span> triangleCount = (width - 1) * (height - 1) * 2;
-<a name="l00324"></a>00324     <span class="keywordtype">int</span> x, z;
-<a name="l00325"></a>00325 
-<a name="l00326"></a>00326     GLfloat *vertexArray = (GLfloat *)malloc(<span class="keyword">sizeof</span>(GLfloat)* 3 * vertexCount);
-<a name="l00327"></a>00327     GLfloat *normalArray = (GLfloat *)malloc(<span class="keyword">sizeof</span>(GLfloat)* 3 * vertexCount);
-<a name="l00328"></a>00328     GLfloat *texCoordArray = (GLfloat *)malloc(<span class="keyword">sizeof</span>(GLfloat)* 2 * vertexCount);
-<a name="l00329"></a>00329     GLuint *indexArray = (GLuint *)malloc(<span class="keyword">sizeof</span>(GLuint)* triangleCount * 3);
-<a name="l00330"></a>00330 
-<a name="l00331"></a>00331     glm::vec3 tempNormal = { 0, 0, 0 };
-<a name="l00332"></a>00332 
-<a name="l00333"></a>00333     <span class="keywordflow">for</span> (x = 0; x &lt; width; x++)
-<a name="l00334"></a>00334     {
-<a name="l00335"></a>00335         <span class="keywordflow">for</span> (z = 0; z &lt; height; z++)
-<a name="l00336"></a>00336         {
-<a name="l00337"></a>00337             <span class="comment">// Vertex array.</span>
-<a name="l00338"></a>00338             vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
-<a name="l00339"></a>00339             vertexArray[(x + z * width) * 3 + 1] = getCoord(x*sampleFactor, z*sampleFactor) * terrainScale/sampleFactor; <span class="comment">// Terrain height compensated with samplefactor</span>
-<a name="l00340"></a>00340             vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
-<a name="l00341"></a>00341 
-<a name="l00342"></a>00342             <span class="comment">// Texture coordinates.</span>
-<a name="l00343"></a>00343             texCoordArray[(x + z * width) * 2 + 0] = (<span class="keywordtype">float</span>)x;
-<a name="l00344"></a>00344             texCoordArray[(x + z * width) * 2 + 1] = (<span class="keywordtype">float</span>)z;
-<a name="l00345"></a>00345         }
-<a name="l00346"></a>00346     }
-<a name="l00347"></a>00347 
-<a name="l00348"></a>00348     <span class="keywordflow">for</span> (x = 0; x &lt; width - 1; x++)
-<a name="l00349"></a>00349     {
-<a name="l00350"></a>00350         <span class="keywordflow">for</span> (z = 0; z &lt; height - 1; z++)
-<a name="l00351"></a>00351         {
-<a name="l00352"></a>00352             <span class="comment">// Triangle 1.</span>
-<a name="l00353"></a>00353             indexArray[(x + z * (width - 1)) * 6 + 0] = x + z * width;
-<a name="l00354"></a>00354             indexArray[(x + z * (width - 1)) * 6 + 1] = x + (z + 1) * width;
-<a name="l00355"></a>00355             indexArray[(x + z * (width - 1)) * 6 + 2] = x + 1 + z * width;
-<a name="l00356"></a>00356             <span class="comment">// Triangle 2.</span>
-<a name="l00357"></a>00357             indexArray[(x + z * (width - 1)) * 6 + 3] = x + 1 + z * width;
-<a name="l00358"></a>00358             indexArray[(x + z * (width - 1)) * 6 + 4] = x + (z + 1) * width;
-<a name="l00359"></a>00359             indexArray[(x + z * (width - 1)) * 6 + 5] = x + 1 + (z + 1) * width;
-<a name="l00360"></a>00360         }
-<a name="l00361"></a>00361     }
-<a name="l00362"></a>00362 
-<a name="l00363"></a>00363     <span class="keywordflow">for</span> (x = 0; x &lt; width; x++)
-<a name="l00364"></a>00364     {
-<a name="l00365"></a>00365         <span class="keywordflow">for</span> (z = 0; z &lt; height; z++)
-<a name="l00366"></a>00366         {
-<a name="l00367"></a>00367             <span class="comment">// Normal vectors.</span>
-<a name="l00368"></a>00368             tempNormal = giveNormal(x, (<span class="keywordtype">int</span>)getCoord(x*sampleFactor,z*sampleFactor), z, vertexArray, indexArray, width, height);
-<a name="l00369"></a>00369             normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
-<a name="l00370"></a>00370             normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
-<a name="l00371"></a>00371             normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
-<a name="l00372"></a>00372         }
-<a name="l00373"></a>00373     }
-<a name="l00374"></a>00374 
-<a name="l00375"></a>00375     <span class="comment">// End of terrain generation.</span>
-<a name="l00376"></a>00376 
-<a name="l00377"></a>00377     <span class="comment">// Create Model and upload to GPU.</span>
-<a name="l00378"></a>00378     datamodel = LoadDataToModel(
-<a name="l00379"></a>00379         vertexArray,
-<a name="l00380"></a>00380         normalArray,
-<a name="l00381"></a>00381         texCoordArray,
-<a name="l00382"></a>00382         NULL,
-<a name="l00383"></a>00383         indexArray,
-<a name="l00384"></a>00384         vertexCount,
-<a name="l00385"></a>00385         triangleCount * 3);
-<a name="l00386"></a>00386 }
-<a name="l00387"></a>00387 
-<a name="l00388"></a><a class="code" href="class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a">00388</a> glm::vec3 <a class="code" href="class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a" title="Gives a normal for a certain position in the terrain.">DataHandler::giveNormal</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z, GLfloat *vertexArray, GLuint *indexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height) <span class="comment">// Returns the normal of a vertex.</span>
-<a name="l00389"></a>00389 {
-<a name="l00390"></a>00390     glm::vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
-<a name="l00391"></a>00391     glm::vec3 normal = { 0, 1, 0 };
-<a name="l00392"></a>00392 
-<a name="l00393"></a>00393     glm::vec3 normal1 = { 0, 0, 0 };
-<a name="l00394"></a>00394     glm::vec3 normal2 = { 0, 0, 0 };
-<a name="l00395"></a>00395     glm::vec3 normal3 = { 0, 0, 0 };
-<a name="l00396"></a>00396     glm::vec3 normal4 = { 0, 0, 0 };
-<a name="l00397"></a>00397     glm::vec3 normal5 = { 0, 0, 0 };
-<a name="l00398"></a>00398     glm::vec3 normal6 = { 0, 0, 0 };
-<a name="l00399"></a>00399 
-<a name="l00400"></a>00400     <span class="keywordflow">if</span> ((x &gt; 1) &amp;&amp; (z &gt; 1) &amp;&amp; (z &lt; height - 2) &amp;&amp; (x &lt; width - 2))
-<a name="l00401"></a>00401     {
-<a name="l00402"></a>00402         glm::vec3 tempVec1={vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
-<a name="l00403"></a>00403                             vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-<a name="l00404"></a>00404                             vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+<a name="l00308"></a><a class="code" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c">00308</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">DataHandler::GenerateTerrain</a>() 
+<a name="l00309"></a>00309 {
+<a name="l00310"></a>00310     <span class="comment">//Reduce width and height with samplefactor</span>
+<a name="l00311"></a>00311     <span class="keywordtype">int</span> width = floor(getWidth()/sampleFactor);
+<a name="l00312"></a>00312     <span class="keywordtype">int</span> height = floor(getHeight()/sampleFactor);
+<a name="l00313"></a>00313     
+<a name="l00314"></a>00314     <span class="keywordtype">int</span> vertexCount = width * height;
+<a name="l00315"></a>00315     <span class="keywordtype">int</span> triangleCount = (width - 1) * (height - 1) * 2;
+<a name="l00316"></a>00316     <span class="keywordtype">int</span> x, z;
+<a name="l00317"></a>00317 
+<a name="l00318"></a>00318     GLfloat *vertexArray = (GLfloat *)malloc(<span class="keyword">sizeof</span>(GLfloat)* 3 * vertexCount);
+<a name="l00319"></a>00319     GLfloat *normalArray = (GLfloat *)malloc(<span class="keyword">sizeof</span>(GLfloat)* 3 * vertexCount);
+<a name="l00320"></a>00320     GLfloat *texCoordArray = (GLfloat *)malloc(<span class="keyword">sizeof</span>(GLfloat)* 2 * vertexCount);
+<a name="l00321"></a>00321     GLuint *indexArray = (GLuint *)malloc(<span class="keyword">sizeof</span>(GLuint)* triangleCount * 3);
+<a name="l00322"></a>00322 
+<a name="l00323"></a>00323     glm::vec3 tempNormal = { 0, 0, 0 };
+<a name="l00324"></a>00324 
+<a name="l00325"></a>00325     <span class="keywordflow">for</span> (x = 0; x &lt; width; x++)
+<a name="l00326"></a>00326     {
+<a name="l00327"></a>00327         <span class="keywordflow">for</span> (z = 0; z &lt; height; z++)
+<a name="l00328"></a>00328         {
+<a name="l00329"></a>00329             <span class="comment">// Vertex array.</span>
+<a name="l00330"></a>00330             vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
+<a name="l00331"></a>00331             vertexArray[(x + z * width) * 3 + 1] = getCoord(x*sampleFactor, z*sampleFactor) * terrainScale/sampleFactor; <span class="comment">// Terrain height compensated with samplefactor</span>
+<a name="l00332"></a>00332             vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
+<a name="l00333"></a>00333 
+<a name="l00334"></a>00334             <span class="comment">// Texture coordinates.</span>
+<a name="l00335"></a>00335             texCoordArray[(x + z * width) * 2 + 0] = (<span class="keywordtype">float</span>)x;
+<a name="l00336"></a>00336             texCoordArray[(x + z * width) * 2 + 1] = (<span class="keywordtype">float</span>)z;
+<a name="l00337"></a>00337         }
+<a name="l00338"></a>00338     }
+<a name="l00339"></a>00339 
+<a name="l00340"></a>00340     <span class="keywordflow">for</span> (x = 0; x &lt; width - 1; x++)
+<a name="l00341"></a>00341     {
+<a name="l00342"></a>00342         <span class="keywordflow">for</span> (z = 0; z &lt; height - 1; z++)
+<a name="l00343"></a>00343         {
+<a name="l00344"></a>00344             <span class="comment">// Triangle 1.</span>
+<a name="l00345"></a>00345             indexArray[(x + z * (width - 1)) * 6 + 0] = x + z * width;
+<a name="l00346"></a>00346             indexArray[(x + z * (width - 1)) * 6 + 1] = x + (z + 1) * width;
+<a name="l00347"></a>00347             indexArray[(x + z * (width - 1)) * 6 + 2] = x + 1 + z * width;
+<a name="l00348"></a>00348             <span class="comment">// Triangle 2.</span>
+<a name="l00349"></a>00349             indexArray[(x + z * (width - 1)) * 6 + 3] = x + 1 + z * width;
+<a name="l00350"></a>00350             indexArray[(x + z * (width - 1)) * 6 + 4] = x + (z + 1) * width;
+<a name="l00351"></a>00351             indexArray[(x + z * (width - 1)) * 6 + 5] = x + 1 + (z + 1) * width;
+<a name="l00352"></a>00352         }
+<a name="l00353"></a>00353     }
+<a name="l00354"></a>00354 
+<a name="l00355"></a>00355     <span class="keywordflow">for</span> (x = 0; x &lt; width; x++)
+<a name="l00356"></a>00356     {
+<a name="l00357"></a>00357         <span class="keywordflow">for</span> (z = 0; z &lt; height; z++)
+<a name="l00358"></a>00358         {
+<a name="l00359"></a>00359             <span class="comment">// Normal vectors.</span>
+<a name="l00360"></a>00360             tempNormal = giveNormal(x, (<span class="keywordtype">int</span>)getCoord(x*sampleFactor,z*sampleFactor), z, vertexArray, indexArray, width, height);
+<a name="l00361"></a>00361             normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
+<a name="l00362"></a>00362             normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
+<a name="l00363"></a>00363             normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
+<a name="l00364"></a>00364         }
+<a name="l00365"></a>00365     }
+<a name="l00366"></a>00366 
+<a name="l00367"></a>00367     <span class="comment">// End of terrain generation.</span>
+<a name="l00368"></a>00368 
+<a name="l00369"></a>00369     <span class="comment">// Create Model and upload to GPU.</span>
+<a name="l00370"></a>00370     datamodel = LoadDataToModel(
+<a name="l00371"></a>00371         vertexArray,
+<a name="l00372"></a>00372         normalArray,
+<a name="l00373"></a>00373         texCoordArray,
+<a name="l00374"></a>00374         NULL,
+<a name="l00375"></a>00375         indexArray,
+<a name="l00376"></a>00376         vertexCount,
+<a name="l00377"></a>00377         triangleCount * 3);
+<a name="l00378"></a>00378 }
+<a name="l00379"></a>00379 
+<a name="l00380"></a><a class="code" href="class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a">00380</a> glm::vec3 <a class="code" href="class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a" title="Gives a normal for a certain position in the terrain.">DataHandler::giveNormal</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z, GLfloat *vertexArray, GLuint *indexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height) <span class="comment">// Returns the normal of a vertex.</span>
+<a name="l00381"></a>00381 {
+<a name="l00382"></a>00382     glm::vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
+<a name="l00383"></a>00383     glm::vec3 normal = { 0, 1, 0 };
+<a name="l00384"></a>00384 
+<a name="l00385"></a>00385     glm::vec3 normal1 = { 0, 0, 0 };
+<a name="l00386"></a>00386     glm::vec3 normal2 = { 0, 0, 0 };
+<a name="l00387"></a>00387     glm::vec3 normal3 = { 0, 0, 0 };
+<a name="l00388"></a>00388     glm::vec3 normal4 = { 0, 0, 0 };
+<a name="l00389"></a>00389     glm::vec3 normal5 = { 0, 0, 0 };
+<a name="l00390"></a>00390     glm::vec3 normal6 = { 0, 0, 0 };
+<a name="l00391"></a>00391 
+<a name="l00392"></a>00392     <span class="keywordflow">if</span> ((x &gt; 1) &amp;&amp; (z &gt; 1) &amp;&amp; (z &lt; height - 2) &amp;&amp; (x &lt; width - 2))
+<a name="l00393"></a>00393     {
+<a name="l00394"></a>00394         glm::vec3 tempVec1={vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
+<a name="l00395"></a>00395                             vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
+<a name="l00396"></a>00396                             vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+<a name="l00397"></a>00397 
+<a name="l00398"></a>00398         glm::vec3 tempVec2={vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
+<a name="l00399"></a>00399                             vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
+<a name="l00400"></a>00400                             vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+<a name="l00401"></a>00401 
+<a name="l00402"></a>00402         glm::vec3 tempVec3={vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
+<a name="l00403"></a>00403                             vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
+<a name="l00404"></a>00404                             vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
 <a name="l00405"></a>00405 
-<a name="l00406"></a>00406         glm::vec3 tempVec2={vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
-<a name="l00407"></a>00407                             vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-<a name="l00408"></a>00408                             vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
+<a name="l00406"></a>00406         glm::vec3 tempVec4={vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
+<a name="l00407"></a>00407                             vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
+<a name="l00408"></a>00408                             vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
 <a name="l00409"></a>00409 
-<a name="l00410"></a>00410         glm::vec3 tempVec3={vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
-<a name="l00411"></a>00411                             vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-<a name="l00412"></a>00412                             vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
+<a name="l00410"></a>00410         glm::vec3 tempVec5={vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
+<a name="l00411"></a>00411                             vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
+<a name="l00412"></a>00412                             vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 <a name="l00413"></a>00413 
-<a name="l00414"></a>00414         glm::vec3 tempVec4={vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
-<a name="l00415"></a>00415                             vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-<a name="l00416"></a>00416                             vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
+<a name="l00414"></a>00414         glm::vec3 tempVec6={vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
+<a name="l00415"></a>00415                             vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
+<a name="l00416"></a>00416                             vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
 <a name="l00417"></a>00417 
-<a name="l00418"></a>00418         glm::vec3 tempVec5={vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
-<a name="l00419"></a>00419                             vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-<a name="l00420"></a>00420                             vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-<a name="l00421"></a>00421 
-<a name="l00422"></a>00422         glm::vec3 tempVec6={vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
-<a name="l00423"></a>00423                             vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-<a name="l00424"></a>00424                             vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-<a name="l00425"></a>00425 
-<a name="l00426"></a>00426 
-<a name="l00427"></a>00427         normal1 = glm::cross(tempVec1 - vertex, tempVec2 - vertex);
-<a name="l00428"></a>00428         normal2 = glm::cross(tempVec3 - vertex, tempVec1 - vertex);
-<a name="l00429"></a>00429         glm::vec3 weighted1 = normalize(normalize(normal1) + normalize(normal2));
-<a name="l00430"></a>00430         normal3 = glm::cross(tempVec2 - vertex, tempVec4 - vertex);
-<a name="l00431"></a>00431         glm::vec3 weighted2 = normalize(normal3);
-<a name="l00432"></a>00432         normal4 = glm::cross(tempVec4 - vertex, tempVec5 - vertex);
-<a name="l00433"></a>00433         normal5 = glm::cross(tempVec5 - vertex, tempVec6 - vertex);
-<a name="l00434"></a>00434         glm::vec3 weighted3 = normalize(normalize(normal4) + normalize(normal5));
-<a name="l00435"></a>00435         normal6 = glm::cross(tempVec6 - vertex, tempVec3 - vertex);
-<a name="l00436"></a>00436         glm::vec3 weighted4 = normalize(normal6);
-<a name="l00437"></a>00437 
-<a name="l00438"></a>00438         normal = normalize(weighted1 + weighted2 + weighted3 + weighted4);
+<a name="l00418"></a>00418 
+<a name="l00419"></a>00419         normal1 = glm::cross(tempVec1 - vertex, tempVec2 - vertex);
+<a name="l00420"></a>00420         normal2 = glm::cross(tempVec3 - vertex, tempVec1 - vertex);
+<a name="l00421"></a>00421         glm::vec3 weighted1 = normalize(normalize(normal1) + normalize(normal2));
+<a name="l00422"></a>00422         normal3 = glm::cross(tempVec2 - vertex, tempVec4 - vertex);
+<a name="l00423"></a>00423         glm::vec3 weighted2 = normalize(normal3);
+<a name="l00424"></a>00424         normal4 = glm::cross(tempVec4 - vertex, tempVec5 - vertex);
+<a name="l00425"></a>00425         normal5 = glm::cross(tempVec5 - vertex, tempVec6 - vertex);
+<a name="l00426"></a>00426         glm::vec3 weighted3 = normalize(normalize(normal4) + normalize(normal5));
+<a name="l00427"></a>00427         normal6 = glm::cross(tempVec6 - vertex, tempVec3 - vertex);
+<a name="l00428"></a>00428         glm::vec3 weighted4 = normalize(normal6);
+<a name="l00429"></a>00429 
+<a name="l00430"></a>00430         normal = normalize(weighted1 + weighted2 + weighted3 + weighted4);
+<a name="l00431"></a>00431 
+<a name="l00432"></a>00432     }
+<a name="l00433"></a>00433     <span class="keywordflow">return</span> normal;
+<a name="l00434"></a>00434 }
+<a name="l00435"></a>00435 
+<a name="l00436"></a><a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7">00436</a> GLfloat <a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7" title="Gives a height for a certain position in the terrain.">DataHandler::giveHeight</a>(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height) <span class="comment">// Returns the height of a height map.</span>
+<a name="l00437"></a>00437 {
+<a name="l00438"></a>00438     GLfloat yheight = 0;
 <a name="l00439"></a>00439 
-<a name="l00440"></a>00440     }
-<a name="l00441"></a>00441     <span class="keywordflow">return</span> normal;
-<a name="l00442"></a>00442 }
-<a name="l00443"></a>00443 
-<a name="l00444"></a><a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7">00444</a> GLfloat <a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7" title="Gives a height for a certain position in the terrain.">DataHandler::giveHeight</a>(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height) <span class="comment">// Returns the height of a height map.</span>
-<a name="l00445"></a>00445 {
-<a name="l00446"></a>00446     GLfloat yheight = 0;
-<a name="l00447"></a>00447 
-<a name="l00448"></a>00448     <span class="keywordtype">int</span> vertX1 = (int)floor(x);
-<a name="l00449"></a>00449     <span class="keywordtype">int</span> vertZ1 = (int)floor(z);
-<a name="l00450"></a>00450 
-<a name="l00451"></a>00451     <span class="keywordtype">int</span> vertX2 = (int)floor(x) + 1;
-<a name="l00452"></a>00452     <span class="keywordtype">int</span> vertZ2 = (int)floor(z) + 1;
-<a name="l00453"></a>00453 
-<a name="l00454"></a>00454     <span class="keywordtype">int</span> vertX3 = 0;
-<a name="l00455"></a>00455     <span class="keywordtype">int</span> vertZ3 = 0;
-<a name="l00456"></a>00456 
-<a name="l00457"></a>00457     <span class="keywordflow">if</span> ((vertX1 &gt; 1) &amp;&amp; (vertZ1 &gt; 1) &amp;&amp; (vertX2 &lt; height - 2) &amp;&amp; (vertZ2 &lt; width - 2))
-<a name="l00458"></a>00458     {
-<a name="l00459"></a>00459 
-<a name="l00460"></a>00460         GLfloat dist1 = vertX1 - x;
-<a name="l00461"></a>00461         GLfloat dist2 = vertZ1 - z;
-<a name="l00462"></a>00462 
-<a name="l00463"></a>00463         <span class="keywordflow">if</span> (dist1 &gt; dist2)
-<a name="l00464"></a>00464         {
-<a name="l00465"></a>00465             vertX3 = vertX1;
-<a name="l00466"></a>00466             vertZ3 = vertZ1 + 1;
-<a name="l00467"></a>00467         }
-<a name="l00468"></a>00468         <span class="keywordflow">else</span>
-<a name="l00469"></a>00469         {
-<a name="l00470"></a>00470             vertX3 = vertX1 + 1;
-<a name="l00471"></a>00471             vertZ3 = vertZ1;
-<a name="l00472"></a>00472         }
-<a name="l00473"></a>00473         GLfloat vertY1 = vertexArray[(vertX1 + vertZ1 * width) * 3 + 1];
+<a name="l00440"></a>00440     <span class="keywordtype">int</span> vertX1 = (int)floor(x);
+<a name="l00441"></a>00441     <span class="keywordtype">int</span> vertZ1 = (int)floor(z);
+<a name="l00442"></a>00442 
+<a name="l00443"></a>00443     <span class="keywordtype">int</span> vertX2 = (int)floor(x) + 1;
+<a name="l00444"></a>00444     <span class="keywordtype">int</span> vertZ2 = (int)floor(z) + 1;
+<a name="l00445"></a>00445 
+<a name="l00446"></a>00446     <span class="keywordtype">int</span> vertX3 = 0;
+<a name="l00447"></a>00447     <span class="keywordtype">int</span> vertZ3 = 0;
+<a name="l00448"></a>00448 
+<a name="l00449"></a>00449     <span class="keywordflow">if</span> ((vertX1 &gt; 1) &amp;&amp; (vertZ1 &gt; 1) &amp;&amp; (vertX2 &lt; height - 2) &amp;&amp; (vertZ2 &lt; width - 2))
+<a name="l00450"></a>00450     {
+<a name="l00451"></a>00451 
+<a name="l00452"></a>00452         GLfloat dist1 = vertX1 - x;
+<a name="l00453"></a>00453         GLfloat dist2 = vertZ1 - z;
+<a name="l00454"></a>00454 
+<a name="l00455"></a>00455         <span class="keywordflow">if</span> (dist1 &gt; dist2)
+<a name="l00456"></a>00456         {
+<a name="l00457"></a>00457             vertX3 = vertX1;
+<a name="l00458"></a>00458             vertZ3 = vertZ1 + 1;
+<a name="l00459"></a>00459         }
+<a name="l00460"></a>00460         <span class="keywordflow">else</span>
+<a name="l00461"></a>00461         {
+<a name="l00462"></a>00462             vertX3 = vertX1 + 1;
+<a name="l00463"></a>00463             vertZ3 = vertZ1;
+<a name="l00464"></a>00464         }
+<a name="l00465"></a>00465         GLfloat vertY1 = vertexArray[(vertX1 + vertZ1 * width) * 3 + 1];
+<a name="l00466"></a>00466 
+<a name="l00467"></a>00467         GLfloat vertY2 = vertexArray[(vertX2 + vertZ2 * width) * 3 + 1];
+<a name="l00468"></a>00468 
+<a name="l00469"></a>00469         GLfloat vertY3 = vertexArray[(vertX3 + vertZ3 * width) * 3 + 1];
+<a name="l00470"></a>00470 
+<a name="l00471"></a>00471         glm::vec3 p1 = { vertexArray[(vertX1 + vertZ1 * width) * 3 + 0], vertY1, vertexArray[(vertX1 + vertZ1 * width) * 3 + 2] };
+<a name="l00472"></a>00472         glm::vec3 p2 = { vertexArray[(vertX2 + vertZ2 * width) * 3 + 0], vertY2, vertexArray[(vertX2 + vertZ2 * width) * 3 + 2] };
+<a name="l00473"></a>00473         glm::vec3 p3 = { vertexArray[(vertX3 + vertZ3 * width) * 3 + 0], vertY3, vertexArray[(vertX3 + vertZ3 * width) * 3 + 2] };
 <a name="l00474"></a>00474 
-<a name="l00475"></a>00475         GLfloat vertY2 = vertexArray[(vertX2 + vertZ2 * width) * 3 + 1];
+<a name="l00475"></a>00475         glm::vec3 planeNormal = { 0, 0, 0 };
 <a name="l00476"></a>00476 
-<a name="l00477"></a>00477         GLfloat vertY3 = vertexArray[(vertX3 + vertZ3 * width) * 3 + 1];
-<a name="l00478"></a>00478 
-<a name="l00479"></a>00479         glm::vec3 p1 = { vertexArray[(vertX1 + vertZ1 * width) * 3 + 0], vertY1, vertexArray[(vertX1 + vertZ1 * width) * 3 + 2] };
-<a name="l00480"></a>00480         glm::vec3 p2 = { vertexArray[(vertX2 + vertZ2 * width) * 3 + 0], vertY2, vertexArray[(vertX2 + vertZ2 * width) * 3 + 2] };
-<a name="l00481"></a>00481         glm::vec3 p3 = { vertexArray[(vertX3 + vertZ3 * width) * 3 + 0], vertY3, vertexArray[(vertX3 + vertZ3 * width) * 3 + 2] };
-<a name="l00482"></a>00482 
-<a name="l00483"></a>00483         glm::vec3 planeNormal = { 0, 0, 0 };
-<a name="l00484"></a>00484 
-<a name="l00485"></a>00485         <span class="comment">// This if/else might not be making any difference whatsoever.</span>
-<a name="l00486"></a>00486         <span class="keywordflow">if</span> (dist1 &gt; dist2)
-<a name="l00487"></a>00487         {
-<a name="l00488"></a>00488             planeNormal = normalize(glm::cross(p2 - p1, p3 - p1));
-<a name="l00489"></a>00489         }
-<a name="l00490"></a>00490         <span class="keywordflow">else</span>
-<a name="l00491"></a>00491         {
-<a name="l00492"></a>00492             planeNormal = normalize(glm::cross(p3 - p1, p2 - p1));
-<a name="l00493"></a>00493         }
-<a name="l00494"></a>00494 
-<a name="l00495"></a>00495         GLfloat D;
-<a name="l00496"></a>00496         D = glm::dot(planeNormal, p1);
-<a name="l00497"></a>00497 
-<a name="l00498"></a>00498         yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
-<a name="l00499"></a>00499     }
-<a name="l00500"></a>00500     <span class="keywordflow">return</span> yheight;
-<a name="l00501"></a>00501 }
+<a name="l00477"></a>00477         <span class="comment">// This if/else might not be making any difference whatsoever.</span>
+<a name="l00478"></a>00478         <span class="keywordflow">if</span> (dist1 &gt; dist2)
+<a name="l00479"></a>00479         {
+<a name="l00480"></a>00480             planeNormal = normalize(glm::cross(p2 - p1, p3 - p1));
+<a name="l00481"></a>00481         }
+<a name="l00482"></a>00482         <span class="keywordflow">else</span>
+<a name="l00483"></a>00483         {
+<a name="l00484"></a>00484             planeNormal = normalize(glm::cross(p3 - p1, p2 - p1));
+<a name="l00485"></a>00485         }
+<a name="l00486"></a>00486 
+<a name="l00487"></a>00487         GLfloat D;
+<a name="l00488"></a>00488         D = glm::dot(planeNormal, p1);
+<a name="l00489"></a>00489 
+<a name="l00490"></a>00490         yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
+<a name="l00491"></a>00491     }
+<a name="l00492"></a>00492     <span class="keywordflow">return</span> yheight;
+<a name="l00493"></a>00493 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -618,7 +610,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="read_data_8cpp.html">readData.cpp</a>      </li>
 
-    <li class="footer">Generated on Tue Oct 6 2015 15:04:54 for Waterflow by
+    <li class="footer">Generated on Tue Oct 6 2015 15:17:54 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

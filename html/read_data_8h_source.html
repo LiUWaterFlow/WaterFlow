@@ -161,29 +161,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00127"></a>00127 <span class="keyword">public</span>:
 <a name="l00128"></a>00128     
 <a name="l00129"></a>00129 
-<a name="l00143"></a>00143     <a class="code" href="class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874" title="Reads DEM data, scales it and generates a model.">DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile, <span class="keywordtype">int</span> sampleFactor = 1, GLfloat tScale = 500.0f);
-<a name="l00144"></a>00144 
-<a name="l00146"></a>00146     <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">~DataHandler</a>();
-<a name="l00147"></a>00147 
-<a name="l00158"></a>00158     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution</a>();
-<a name="l00159"></a>00159 
-<a name="l00167"></a>00167     <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row);
-<a name="l00168"></a>00168 
-<a name="l00173"></a>00173     <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b" title="Get a pointer to the mapdata data.">getData</a>();
-<a name="l00174"></a>00174 
-<a name="l00186"></a>00186     GLfloat <a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
-<a name="l00187"></a>00187 
-<a name="l00190"></a>00190     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">getWidth</a>();
-<a name="l00191"></a>00191 
-<a name="l00194"></a>00194     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">getHeight</a>();
-<a name="l00195"></a>00195 
-<a name="l00198"></a>00198     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">getElem</a>();
-<a name="l00199"></a>00199     <span class="keywordtype">int</span> getScale();
-<a name="l00200"></a>00200 
-<a name="l00205"></a>00205     <a class="code" href="struct_model.html">Model</a> *<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
-<a name="l00206"></a>00206 };
-<a name="l00207"></a>00207 
-<a name="l00208"></a>00208 <span class="preprocessor">#endif // READDATA_H</span>
+<a name="l00144"></a>00144     <a class="code" href="class_data_handler.html#a317067aea28b3ab5d2761639e4a2a874" title="Reads DEM data, scales it and generates a model.">DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile, <span class="keywordtype">int</span> sampleFactor = 1, GLfloat tScale = 500.0f);
+<a name="l00145"></a>00145 
+<a name="l00147"></a>00147     <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">~DataHandler</a>();
+<a name="l00148"></a>00148 
+<a name="l00159"></a>00159     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution</a>();
+<a name="l00160"></a>00160 
+<a name="l00168"></a>00168     <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row);
+<a name="l00169"></a>00169 
+<a name="l00174"></a>00174     <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b" title="Get a pointer to the mapdata data.">getData</a>();
+<a name="l00175"></a>00175 
+<a name="l00187"></a>00187     GLfloat <a class="code" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(GLfloat x, GLfloat z, GLfloat *vertexArray, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);
+<a name="l00188"></a>00188 
+<a name="l00191"></a>00191     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">getWidth</a>();
+<a name="l00192"></a>00192 
+<a name="l00195"></a>00195     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">getHeight</a>();
+<a name="l00196"></a>00196 
+<a name="l00199"></a>00199     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">getElem</a>();
+<a name="l00200"></a>00200     <span class="keywordtype">int</span> getSampleFactor();
+<a name="l00201"></a>00201 
+<a name="l00206"></a>00206     <a class="code" href="struct_model.html">Model</a> *<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
+<a name="l00207"></a>00207 };
+<a name="l00208"></a>00208 
+<a name="l00209"></a>00209 <span class="preprocessor">#endif // READDATA_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -204,7 +204,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="read_data_8h.html">readData.h</a>      </li>
 
-    <li class="footer">Generated on Tue Oct 6 2015 15:04:54 for Waterflow by
+    <li class="footer">Generated on Tue Oct 6 2015 15:17:54 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

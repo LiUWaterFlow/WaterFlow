@@ -8,7 +8,7 @@ var class_data_handler =
     [ "getElem", "class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7", null ],
     [ "getHeight", "class_data_handler.html#a679c89a82574d4d3257535b752e38806", null ],
     [ "getModel", "class_data_handler.html#a8f8805d93b3687459dfa0236d278c631", null ],
-    [ "getScale", "class_data_handler.html#a27e25d068278ba0f44a803bdb361a8bc", null ],
+    [ "getSampleFactor", "class_data_handler.html#a20f0ef4392a50220418a9c4024dcf129", null ],
     [ "getWidth", "class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22", null ],
     [ "giveHeight", "class_data_handler.html#af763075e733975a64199e70589e3d6e7", null ],
     [ "giveNormal", "class_data_handler.html#a5df7cbf53be737088db7f4f67b5d5f5a", null ],
