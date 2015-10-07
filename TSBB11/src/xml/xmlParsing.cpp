@@ -100,6 +100,10 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   return srces;
 }
 
-
+void deleteAllFlows(std::vector<FlowSource*> srces){
+  for(auto it = srces.begin(); it != srces.end(); ++it){
+    delete *it;
+  }
+}
 
 // vim:et

@@ -34,5 +34,7 @@ int main()
   std::cout << std::endl;
   std::cout << "TotWater: " << tw << std::endl;
   std::cout << "Radius: " << r << std::endl;
+  deleteAllFlows(sfv);
+  std::cout << "Delete succesfull" << std::endl;
   return 1;
 }

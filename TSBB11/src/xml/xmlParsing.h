@@ -23,4 +23,6 @@ void parseRadius(FlowSource* obj, pugi::xml_node node);
 
 std::vector<FlowSource*> loadFlows(const char* xmlFile);
 
+void deleteAllFlows(std::vector<FlowSource*> srces);
+
 #endif
