@@ -343,6 +343,31 @@ void DataHandler::performGPUNormConv()
 
 void DataHandler::GenerateTerrain()
 {
+	//Create the whole model for normal calculation.
+	int preCalcWidth, preCalcHeight, preCalcVertexC;
+	preCalcWidth = (int)floor(getWidth() / sampleFactor);
+	preCalcHeight = (int)floor(getHeight() / sampleFactor);
+	preCalcVertexC = preCalcWidth*preCalcHeight;
+
+	GLfloat *preCalcVertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
+	GLfloat *preCalcNormalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
+
+	for (size_t x = 0; x < preCalcWidth; x++)
+	{
+		for (size_t z = 0; z < preCalcHeight; z++)
+		{	
+
+			preCalcVertexArray[(x + z * preCalcWidth) * 3 + 0] = (float)(x) / (float)preCalcWidth;
+			preCalcVertexArray[(x + z * preCalcWidth) * 3 + 1] = getCoord((x)*sampleFactor, (z)*sampleFactor);
+			preCalcVertexArray[(x + z * preCalcWidth) * 3 + 2] = (float)(z) / (float)preCalcHeight;
+		}
+	}
+
+	calculateNormalsGPU(preCalcVertexArray, preCalcNormalArray, preCalcWidth, preCalcHeight);
+
+	// Release the vertex memory (or should we reuse it and read from it). 
+	delete preCalcVertexArray;
+
 	int twidth = (int)floor(getWidth() / sampleFactor);
 	int theight = (int)floor(getHeight() / sampleFactor);
 	int blockSize = 250;
@@ -379,6 +404,12 @@ void DataHandler::GenerateTerrain()
 					// Texture coordinates.
 					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
 					texCoordArray[(x + z * width) * 2 + 1] = (float)z;
+					
+					//Insert normals from the precalculated normals.
+					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSizeW*i) + (z + blockSizeH*j)* preCalcWidth) * 3 + 0];
+					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSizeW*i) + (z + blockSizeH*j)* preCalcWidth) * 3 + 1];
+					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSizeW*i) + (z + blockSizeH*j) *preCalcWidth) * 3 + 2];
+
 				}
 			}
 
@@ -398,11 +429,7 @@ void DataHandler::GenerateTerrain()
 			}
 
 
-			calculateNormalsGPU(vertexArray, normalArray, width, height);
-
 			
-
-			// End of terrain generation.
 
 			// Create Model and upload to GPU.
 			datamodel->push_back(LoadDataToModel(	vertexArray,
@@ -421,6 +448,8 @@ void DataHandler::GenerateTerrain()
 
 		}
 	}
+	//Delete the preCalculated normals.
+	delete preCalcNormalArray;
 }
 
 GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
