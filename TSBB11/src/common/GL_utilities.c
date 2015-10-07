@@ -436,7 +436,7 @@ void releaseFBO(FBOstruct *fbo)
 static int lastw = 0;
 static int lasth = 0;
 
-// Obsolete
+// Obsolete (apparently not)
 void updateScreenSizeForFBOHandler(int w, int h)
 {
 	lastw = w;

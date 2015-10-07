@@ -20,8 +20,8 @@
 		#include <GL/glx.h>
 		#include <GL/glext.h>
 		#include <SDL2/SDL.h>
-		
-		
+
+
 	#else
 		#include "glew.h"
 		#include "Windows/sdl2/SDL.h"
@@ -114,8 +114,9 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 4);
+	dataHandler = new DataHandler("resources/output.min.asc", 2);
 	terrain = dataHandler->getModel();
+
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
@@ -139,12 +140,6 @@ void display(void)
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Time.
-	//GLfloat t;
-	//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
-	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t);
-
-
 	// ---Camera shader data---
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
@@ -153,11 +148,17 @@ void display(void)
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	scale = glm::scale(glm::vec3(dataHandler->getWidth(), 
-								 dataHandler->getTerrainScale(), 
+	scale = glm::scale(glm::vec3(dataHandler->getWidth(),
+								 dataHandler->getTerrainScale(),
 								 dataHandler->getHeight()));
 	total = scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
+
+	// precalculate the inverse since it is a very large model.
+	glm::mat3 inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(total)));
+	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
+
+
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
 

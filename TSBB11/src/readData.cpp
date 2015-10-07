@@ -197,6 +197,15 @@ void DataHandler::performNormalizedConvolution()
 	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
 	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
 
+	//extract screen size
+	GLint viewport[4] = {0,0,0,0};
+	GLint w, h;
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	w = viewport[2] - viewport[0];
+	h = viewport[3] - viewport[1];
+
+
+
 	// Initialize the FBO's
 	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
 	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
@@ -237,6 +246,10 @@ void DataHandler::performNormalizedConvolution()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
+	// Reset render area
+	glViewport(0, 0, w, h);
+
+
 }
 
 void DataHandler::performGPUNormConv()
@@ -315,7 +328,7 @@ void DataHandler::performGPUNormConv()
 	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 }
 
-void DataHandler::GenerateTerrain() 
+void DataHandler::GenerateTerrain()
 {
 	//remove all data from previous model before generating a new one.
 	if (datamodel != NULL)
@@ -331,7 +344,7 @@ void DataHandler::GenerateTerrain()
 	//Reduce width and height with samplefactor
 	int width = (int)floor(getWidth()/sampleFactor);
 	int height = (int)floor(getHeight()/sampleFactor);
-	
+
 	int vertexCount = width * height;
 	int triangleCount = (width - 1) * (height - 1) * 2;
 	int x, z;
@@ -374,7 +387,7 @@ void DataHandler::GenerateTerrain()
 	}
 
 	calculateNormalsGPU(vertexArray, normalArray, width, height);
-	
+
 	// End of terrain generation.
 
 	// Create Model and upload to GPU.
@@ -451,6 +464,13 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 {
 	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
+	//extract screen size
+	GLint viewport[4] = {0,0,0,0};
+	GLint w, h;
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	w = viewport[2] - viewport[0];
+	h = viewport[3] - viewport[1];
+
 	// Initialize the FBO's
 	fbo4 = initFBO4(width, height, vertexArray);
 	fbo5 = initFBO4(width, height, NULL);
@@ -480,9 +500,15 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	glDeleteProgram(normalshader);
 
 	// Reset to initial GL inits
+
 	useFBO(0L, 0L, 0L);
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
+
+	// Reset render area
+	glViewport(0, 0, w, h);
+
+
 }
