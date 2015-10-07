@@ -121,7 +121,7 @@ void init(void)
 	// ---Upload geometry to the GPU---
 	m = LoadModelPlus("resources/teapot.obj");
 
-	dataHandler = new DataHandler("resources/output.min.asc",2);
+	dataHandler = new DataHandler("resources/output.min.asc",4);
 	terrain = dataHandler->getModel();
 	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 
@@ -166,7 +166,8 @@ void display(void)
 	// Terrain:
 	glm::vec3 terrainTrans = glm::vec3(100, -500, -1000);
 	trans = glm::translate(terrainTrans);
-	total = trans;
+	scale = glm::scale(glm::vec3(dataHandler->getSampleFactor(), dataHandler->getSampleFactor(), dataHandler->getSampleFactor()));
+	total = trans*scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 
