@@ -26,11 +26,6 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor)
 	readDEM(inputfile);
 	scaleDataBefore();
 
-	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
-	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
-	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
-	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
-	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
 	// Create canvas to draw on
 	GLfloat square[] = { -1, -1, 0,
@@ -197,6 +192,11 @@ void DataHandler::scaleDataAfter()
 
 void DataHandler::performNormalizedConvolution()
 {
+	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
+	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
+	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
+	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+
 	// Initialize the FBO's
 	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
 	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
@@ -219,17 +219,17 @@ void DataHandler::performNormalizedConvolution()
 	}
 
 	scaleDataAfter();
-	
-	//remove all data from previous model before generating a new one.
-	if (datamodel != NULL)
-	{
-		delete datamodel->vertexArray;
-		delete datamodel->normalArray;
-		delete datamodel->texCoordArray;
-		delete datamodel->colorArray; // Rarely used
-		delete datamodel->indexArray;
-		delete datamodel;
-	}
+
+	releaseFBO(fbo1);
+	delete fbo1;
+	releaseFBO(fbo2);
+	delete fbo2;
+	releaseFBO(fbo3);
+	delete fbo3;
+	glDeleteProgram(plaintextureshader);
+	glDeleteProgram(filtershader);
+	glDeleteProgram(confidenceshader);
+	glDeleteProgram(combineshader);
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
@@ -317,9 +317,20 @@ void DataHandler::performGPUNormConv()
 
 void DataHandler::GenerateTerrain() 
 {
+	//remove all data from previous model before generating a new one.
+	if (datamodel != NULL)
+	{
+		delete datamodel->vertexArray;
+		delete datamodel->normalArray;
+		delete datamodel->texCoordArray;
+		delete datamodel->colorArray; // Rarely used
+		delete datamodel->indexArray;
+		delete datamodel;
+	}
+
 	//Reduce width and height with samplefactor
-	int width = floor(getWidth()/sampleFactor);
-	int height = floor(getHeight()/sampleFactor);
+	int width = (int)floor(getWidth()/sampleFactor);
+	int height = (int)floor(getHeight()/sampleFactor);
 	
 	int vertexCount = width * height;
 	int triangleCount = (width - 1) * (height - 1) * 2;
@@ -438,6 +449,8 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 
 void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray)
 {
+	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
+
 	// Initialize the FBO's
 	fbo4 = initFBO4(getWidth() / sampleFactor, getHeight() / sampleFactor, vertexArray);
 	fbo5 = initFBO4(getWidth() / sampleFactor, getHeight() / sampleFactor, NULL);
@@ -459,6 +472,12 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
 
 	glReadPixels(0, 0, getWidth() / sampleFactor, getHeight() / sampleFactor, GL_RGB, GL_FLOAT, normalArray);
+
+	releaseFBO(fbo4);
+	delete fbo4;
+	releaseFBO(fbo5);
+	delete fbo5;
+	glDeleteProgram(normalshader);
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);

@@ -133,9 +133,17 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 
 	printShaderInfoLog(v, vfn);
 	printShaderInfoLog(f, ffn);
-	if (gs != NULL)	printShaderInfoLog(g, gfn);
+	if (gs != NULL)		printShaderInfoLog(g, gfn);
 	if (tcs != NULL)	printShaderInfoLog(tc, tcfn);
 	if (tes != NULL)	printShaderInfoLog(te, tefn);
+
+	// We can remove the shaders since the data is now linked to the program
+	glDeleteShader(v);
+	glDeleteShader(f);
+	if (gs != NULL)		glDeleteShader(g);
+	if (tcs != NULL)	glDeleteShader(tc);
+	if (tes != NULL)	glDeleteShader(te);
+
 
 	printProgramInfoLog(p, vfn, ffn, gfn, tcfn, tefn);
 
@@ -412,6 +420,17 @@ FBOstruct *initFBO4(int width, int height, void* data)
 	fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return fbo;
+}
+
+void releaseFBO(FBOstruct *fbo)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
+	glDeleteTextures(1, &fbo->texid);
+	glDeleteFramebuffers(1, &fbo->fb);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 static int lastw = 0;
