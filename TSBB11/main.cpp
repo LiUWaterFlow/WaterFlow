@@ -10,7 +10,7 @@
 // * Use glUniform1fv instead of glUniform1f, since glUniform1f has a bug under Linux.
 
 #ifdef __APPLE__
-#include <OpenGL/gl3.h>
+	#include <OpenGL/gl3.h>
 	#include <SDL2/SDL.h>
 #else
 	#ifdef  __linux__
@@ -20,8 +20,8 @@
 		#include <GL/glx.h>
 		#include <GL/glext.h>
 		#include <SDL2/SDL.h>
-		
-		
+
+
 	#else
 		#include "glew.h"
 		#include "Windows/sdl2/SDL.h"
@@ -48,7 +48,7 @@
 #define NULL 0L
 #endif
 
-// Sk�rmstorlek
+// Screensize
 int width = 600;
 int height = 600; // Defines instead?
 float scl = 6;
@@ -80,9 +80,6 @@ std::vector <Model*>* terrain;
 
 // Datahandler for terrain data
 DataHandler* dataHandler;
-
-// Textures:
-TextureData ttex; // Terrain heightmap.
 
 // References to shader programs:
 GLuint program;
@@ -117,8 +114,9 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 4);
+	dataHandler = new DataHandler("resources/output.min.asc", 2);
 	terrain = dataHandler->getModel();
+
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
@@ -142,12 +140,6 @@ void display(void)
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Time.
-	//GLfloat t;
-	//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
-	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t);
-
-
 	// ---Camera shader data---
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
@@ -156,11 +148,17 @@ void display(void)
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	scale = glm::scale(glm::vec3(dataHandler->getWidth(), 
-								 dataHandler->getTerrainScale(), 
+	scale = glm::scale(glm::vec3(dataHandler->getWidth(),
+								 dataHandler->getTerrainScale(),
 								 dataHandler->getHeight()));
 	total = scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
+
+	// precalculate the inverse since it is a very large model.
+	glm::mat3 inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(total)));
+	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
+
+
 	for (GLuint i = 0; i < terrain->size(); i++)
 	{
 		DrawModel(terrain->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
@@ -255,10 +253,6 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
-			break;
-		case SDLK_l:
-			dataHandler->performNormalizedConvolution();
-			terrain = dataHandler->getModel();
 			break;
 		default:
 			break;

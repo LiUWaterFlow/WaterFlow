@@ -12,11 +12,11 @@ uniform mat4 MTWMatrix;
 uniform mat4 WTVMatrix;
 uniform mat4 VTPMatrix;
 
-mat3 normalMatrix = mat3(MTWMatrix);
+uniform mat3 iNormalMatrixTrans;
 
 void main(void)
 {
-	out_Normal = transpose(inverse(normalMatrix)) * in_Normal;
+	out_Normal = iNormalMatrixTrans*in_Normal;
 	out_TexCoord = in_TexCoord;
 	out_ObjPos = vec3(MTWMatrix * vec4(in_Position, 1));
 

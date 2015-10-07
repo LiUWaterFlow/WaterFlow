@@ -28,11 +28,6 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor)
 	readDEM(inputfile);
 	scaleDataBefore();
 
-	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
-	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
-	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
-	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
-	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
 	// Create canvas to draw on
 	GLfloat square[] = { -1, -1, 0,
@@ -62,14 +57,14 @@ float DataHandler::getCoord(int col, int row)
 	float retdata = 0;
 
 	if (readdata != NULL) {
-		
+
 		if(col < readdata->ncols && row < readdata->nrows)
 		{
 			index = col + row * readdata->ncols;
 		}
-		else 
+		else
 		{
-			cerr << "Input does not exist in data." << endl;
+			cerr << "Input does not exist in data. Col: " << col <<" Row: " << row << endl;
 			index = 0;
 		}
 		retdata = readdata->data[index];
@@ -181,7 +176,7 @@ void DataHandler::scaleDataBefore()
 		// Set nodata to 0
 		if (getData()[i] < 0.05)
 			getData()[i] = 0.0f;
-	} 
+	}
 }
 
 // Data after normalized convolution should be between 0.1 and 1.0
@@ -197,6 +192,20 @@ void DataHandler::scaleDataAfter()
 
 void DataHandler::performNormalizedConvolution()
 {
+	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
+	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
+	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
+	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+
+	//extract screen size
+	GLint viewport[4] = {0,0,0,0};
+	GLint w, h;
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	w = viewport[2] - viewport[0];
+	h = viewport[3] - viewport[1];
+
+
+
 	// Initialize the FBO's
 	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
 	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
@@ -217,7 +226,7 @@ void DataHandler::performNormalizedConvolution()
 			isNODATA = (getData()[i] < 0.0001f);
 		}
 	}
-	
+
 	scaleDataAfter();
 
 	//remove all data from previous model before generating a new one.
@@ -233,12 +242,27 @@ void DataHandler::performNormalizedConvolution()
 	}
 	*/
 
+	releaseFBO(fbo1);
+	delete fbo1;
+	releaseFBO(fbo2);
+	delete fbo2;
+	releaseFBO(fbo3);
+	delete fbo3;
+	glDeleteProgram(plaintextureshader);
+	glDeleteProgram(filtershader);
+	glDeleteProgram(confidenceshader);
+	glDeleteProgram(combineshader);
+
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
+	// Reset render area
+	glViewport(0, 0, w, h);
+
+
 }
 
 void DataHandler::performGPUNormConv()
@@ -317,23 +341,23 @@ void DataHandler::performGPUNormConv()
 	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
 }
 
-void DataHandler::GenerateTerrain() 
+void DataHandler::GenerateTerrain()
 {
 	int twidth = (int)floor(getWidth() / sampleFactor);
 	int theight = (int)floor(getHeight() / sampleFactor);
 	int blockSize = 250;
-	int widthBlocks = (int)ceil(twidth / blockSize);
-	int heightBlocks = (int)ceil(theight / blockSize);
+	int widthBlocks = (int)ceil(GLfloat(twidth) / GLfloat(blockSize));
+	int heightBlocks = (int)ceil(GLfloat(theight) / GLfloat(blockSize));
 	for (int i = 0; i < widthBlocks; i++)
 	{
 		for (int j = 0; j < heightBlocks; j++)
 		{
-			int width = (twidth - i * blockSize > 0 ? blockSize + 1 : twidth - (i - 1)*twidth); // Is this really correct? Shouldn't the last term be blockSize?
-			int height = (theight - i * blockSize > 0 ? blockSize + 1 : theight - (i - 1)*theight);
-			int blockSizeW = (twidth - i * blockSize > 0 ? blockSize : twidth - (i - 1)*twidth);
-			int blockSizeH = (theight - i * blockSize > 0 ? blockSize : theight - (i - 1)*theight);
+			int width =(twidth -(i+1)*blockSize > 0 ? blockSize + 1 : twidth - i*blockSize);
+			int height =(theight -(j+1)*blockSize > 0 ? blockSize + 1 : theight - j*blockSize);
+			int blockSizeW =(twidth -(i+1)*blockSize > 0 ? blockSize : twidth - i*blockSize);
+			int blockSizeH =(theight -(j+1)*blockSize > 0 ? blockSize : theight - j*blockSize);
 
-		
+
 			int vertexCount = width * height;
 			int triangleCount = (width - 1) * (height - 1) * 2;
 			int x, z;
@@ -372,7 +396,8 @@ void DataHandler::GenerateTerrain()
 					indexArray[(x + z * (width - 1)) * 6 + 5] = x + 1 + (z + 1) * width;
 				}
 			}
-
+			std::cout << "width: " << width << std::endl;
+			std::cout << "heigth: " << height << std::endl;
 			calculateNormalsGPU(vertexArray, normalArray, width, height);
 
 			// End of terrain generation.
@@ -450,6 +475,15 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 
 void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
 {
+	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
+
+	//extract screen size
+	GLint viewport[4] = {0,0,0,0};
+	GLint w, h;
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	w = viewport[2] - viewport[0];
+	h = viewport[3] - viewport[1];
+
 	// Initialize the FBO's
 	fbo4 = initFBO4(width, height, vertexArray);
 	fbo5 = initFBO4(width, height, NULL);
@@ -472,10 +506,22 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
 
+	releaseFBO(fbo4);
+	delete fbo4;
+	releaseFBO(fbo5);
+	delete fbo5;
+	glDeleteProgram(normalshader);
+
 	// Reset to initial GL inits
+
 	useFBO(0L, 0L, 0L);
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
+
+	// Reset render area
+	glViewport(0, 0, w, h);
+
+
 }
