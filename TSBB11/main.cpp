@@ -81,9 +81,6 @@ Model *terrain;
 // Datahandler for terrain data
 DataHandler* dataHandler;
 
-// Textures:
-TextureData ttex; // Terrain heightmap.
-
 // References to shader programs:
 GLuint program;
 
@@ -117,7 +114,7 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 1);
+	dataHandler = new DataHandler("resources/output.min.asc", 4);
 	terrain = dataHandler->getModel();
 
 	// Load and compile shaders.
@@ -252,10 +249,6 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
-			break;
-		case SDLK_l:
-			dataHandler->performNormalizedConvolution();
-			terrain = dataHandler->getModel();
 			break;
 		default:
 			break;

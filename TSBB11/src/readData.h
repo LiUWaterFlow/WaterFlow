@@ -116,7 +116,7 @@ private:
 	/// @param normalArray this is the normalArray for the model that should be used.
 	/// @see GenerateTerrain()
 	/// @todo The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter.
-	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray);
+	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height);
 
 public:
 	

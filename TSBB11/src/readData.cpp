@@ -373,7 +373,7 @@ void DataHandler::GenerateTerrain()
 		}
 	}
 
-	calculateNormalsGPU(vertexArray, normalArray);
+	calculateNormalsGPU(vertexArray, normalArray, width, height);
 	
 	// End of terrain generation.
 
@@ -447,13 +447,13 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 	return yheight;
 }
 
-void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray)
+void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
 {
 	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
 	// Initialize the FBO's
-	fbo4 = initFBO4(getWidth() / sampleFactor, getHeight() / sampleFactor, vertexArray);
-	fbo5 = initFBO4(getWidth() / sampleFactor, getHeight() / sampleFactor, NULL);
+	fbo4 = initFBO4(width, height, vertexArray);
+	fbo5 = initFBO4(width, height, NULL);
 
 	// Filter original
 	useFBO(fbo5, fbo4, 0L);
@@ -464,14 +464,14 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 	// Activate shader program
 	glUseProgram(normalshader);
-	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)getWidth() / sampleFactor, (float)getHeight() / sampleFactor);
+	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)width, (float)height);
 	glUniform1f(glGetUniformLocation(normalshader, "in_sample"), (float)sampleFactor);
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
 
-	glReadPixels(0, 0, getWidth() / sampleFactor, getHeight() / sampleFactor, GL_RGB, GL_FLOAT, normalArray);
+	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
 
 	releaseFBO(fbo4);
 	delete fbo4;
