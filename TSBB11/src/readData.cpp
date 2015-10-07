@@ -19,6 +19,7 @@ using namespace std;
 
 DataHandler::DataHandler(const char* inputfile,int sampleFactor, GLfloat tScale)
 {
+	datamodel = NULL;
 	readdata = new mapdata();
 	terrainScale = tScale;
 	this->sampleFactor = sampleFactor;
@@ -30,6 +31,7 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor, GLfloat tScale)
 	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
 	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
 	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
 	// Create canvas to draw on
 	GLfloat square[] = { -1, -1, 0,
@@ -42,6 +44,8 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor, GLfloat tScale)
 		1, 0 };
 	GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
+
+	performNormalizedConvolution();
 
 	GenerateTerrain();
 }
@@ -211,15 +215,15 @@ void DataHandler::performNormalizedConvolution()
 	scaleDataAfter();
 	
 	//remove all data from previous model before generating a new one.
-	delete datamodel->vertexArray;
-	delete datamodel->normalArray;
-	delete datamodel->texCoordArray;
-	delete datamodel->colorArray; // Rarely used
-	delete datamodel->indexArray;
-	delete datamodel;
-	
-
-	GenerateTerrain();
+	if (datamodel != NULL)
+	{
+		delete datamodel->vertexArray;
+		delete datamodel->normalArray;
+		delete datamodel->texCoordArray;
+		delete datamodel->colorArray; // Rarely used
+		delete datamodel->indexArray;
+		delete datamodel;
+	}
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
@@ -352,6 +356,9 @@ void DataHandler::GenerateTerrain()
 		}
 	}
 
+	calculateNormalsGPU(normalArray);
+	
+	/*
 	for (x = 0; x < width; x++)
 	{
 		for (z = 0; z < height; z++)
@@ -363,6 +370,7 @@ void DataHandler::GenerateTerrain()
 			normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
 		}
 	}
+	*/
 
 	// End of terrain generation.
 
@@ -490,4 +498,34 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
 	}
 	return yheight;
+}
+
+void DataHandler::calculateNormalsGPU(GLfloat *normalArray)
+{
+	// Initialize the FBO's
+	fbo4 = initFBO4(getWidth(), getHeight(), NULL);
+
+	// Filter original
+	useFBO(fbo4, fbo3, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(normalshader);
+	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)getWidth(), (float)getHeight());
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
+
+	glReadPixels(0, 0, getWidth(), getHeight(), GL_RGB, GL_FLOAT, normalArray);
+
+	// Reset to initial GL inits
+	useFBO(0L, 0L, 0L);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_TRUE);
 }

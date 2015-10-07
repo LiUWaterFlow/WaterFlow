@@ -45,9 +45,11 @@ private:
 	GLuint filtershader;		///< shader program to perform LP filtering
 	GLuint confidenceshader;	///< shader program to calculate confidence image
 	GLuint combineshader;		///< shader program for combining into result
+	GLuint normalshader;		///< shader program for calculating normals
 	FBOstruct *fbo1;			///< FBO for use during normalized convolution
 	FBOstruct *fbo2;			///< FBO for use during normalized convolution
 	FBOstruct *fbo3;			///< FBO for use during normalized convolution, data is loaded to this FBO
+	FBOstruct *fbo4;			///< FBO for use during normal calculation
 	Model* squareModel;			///< Canvas for GPU filtering
 
 	// Data containers
@@ -124,6 +126,8 @@ private:
 	/// @see giveHeight()
 	glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
 
+
+	void calculateNormalsGPU(GLfloat *normalArray);
 
 public:
 	

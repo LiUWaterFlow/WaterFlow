@@ -123,6 +123,7 @@
     <None Include="src\shaders\filtershader.frag" />
     <None Include="src\shaders\main.frag" />
     <None Include="src\shaders\main.vert" />
+    <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
   </ItemGroup>

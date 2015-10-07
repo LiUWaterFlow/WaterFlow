@@ -121,7 +121,7 @@ void init(void)
 	// ---Upload geometry to the GPU---
 	m = LoadModelPlus("resources/teapot.obj");
 
-	dataHandler = new DataHandler("resources/output.min.asc",4);
+	dataHandler = new DataHandler("resources/output.min.asc",1);
 	terrain = dataHandler->getModel();
 	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 
