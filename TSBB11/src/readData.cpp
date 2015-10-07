@@ -352,8 +352,8 @@ void DataHandler::GenerateTerrain()
 	{
 		for (int j = 0; j < heightBlocks; j++)
 		{
-			int width =(twidth -(i+1)*blockSize > 0 ? blockSize + 1 : twidth - i*blockSize);
-			int height =(theight -(j+1)*blockSize > 0 ? blockSize + 1 : theight - j*blockSize);
+			int width =(twidth -(i+1)*blockSize > 0 ? blockSize+2 : twidth - i*blockSize);
+			int height =(theight -(j+1)*blockSize > 0 ? blockSize+2 : theight - j*blockSize);
 			int blockSizeW =(twidth -(i+1)*blockSize > 0 ? blockSize : twidth - i*blockSize);
 			int blockSizeH =(theight -(j+1)*blockSize > 0 ? blockSize : theight - j*blockSize);
 
@@ -396,9 +396,11 @@ void DataHandler::GenerateTerrain()
 					indexArray[(x + z * (width - 1)) * 6 + 5] = x + 1 + (z + 1) * width;
 				}
 			}
-			std::cout << "width: " << width << std::endl;
-			std::cout << "heigth: " << height << std::endl;
+
+
 			calculateNormalsGPU(vertexArray, normalArray, width, height);
+
+			
 
 			// End of terrain generation.
 
@@ -410,6 +412,13 @@ void DataHandler::GenerateTerrain()
 													indexArray,
 													vertexCount,
 													triangleCount * 3));
+
+			//Should be 
+			delete indexArray;
+			delete normalArray;
+			delete texCoordArray;
+			delete vertexArray;
+
 		}
 	}
 }
