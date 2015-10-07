@@ -76,7 +76,6 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix);
 glm::mat4 projMat, viewMat;
 
 // Models:
-Model *m;
 Model *terrain;
 
 // Datahandler for terrain data
@@ -93,7 +92,6 @@ Camera cam;
 // Matrices.
 glm::mat4 projectionMatrix;
 glm::mat4 viewMatrix;
-glm::vec3 camPos = { 0, 0, 0 };
 
 // Light information:
 glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
@@ -118,12 +116,9 @@ void init(void)
 	// Initial placement of camera.
 	cam = Camera(program, &viewMatrix);
 
-	// ---Upload geometry to the GPU---
-	m = LoadModelPlus("resources/teapot.obj");
-
-	dataHandler = new DataHandler("resources/output.min.asc",1);
+	// Load terrain data
+	dataHandler = new DataHandler("resources/output.min.asc", 1);
 	terrain = dataHandler->getModel();
-	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
@@ -144,40 +139,29 @@ void display(void)
 	glm::mat4 rot, trans, scale, total;
 	glUseProgram(program);
 
-	// Time.
-	//GLfloat t;
-	//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
-
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	// ---Model-independent shader data---
-	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-	GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
-	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
+	// Time.
+	//GLfloat t;
+	//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
 	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t);
 
 
-	// ---Model-independent shader data---
+	// ---Camera shader data---
+	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
+	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
 
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	glm::vec3 terrainTrans = glm::vec3(100, -500, -1000);
-	trans = glm::translate(terrainTrans);
-	scale = glm::scale(glm::vec3(dataHandler->getSampleFactor(), dataHandler->getSampleFactor(), dataHandler->getSampleFactor()));
-	total = trans*scale;
+	scale = glm::scale(glm::vec3(dataHandler->getWidth(), 
+								 dataHandler->getTerrainScale(), 
+								 dataHandler->getHeight()));
+	total = scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
-
-	// Teapot:
-	glm::vec3 teapotTrans = glm::vec3(200, 0, 200);
-	trans = glm::translate(teapotTrans);
-	scale = glm::scale(glm::vec3(0.5, 0.5, 0.5));
-	total = trans * scale;
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
-	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
 
 	swap_buffers();

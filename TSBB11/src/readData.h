@@ -20,13 +20,13 @@ struct mapdata {
 	int	ncols; 					///< Width of the terrain data.
 	int nrows; 					///< Height of the terrain data.
 	int nelem; 					///< Total number of terrain data.
-	float xllcorner; 		///< Dont know what this is.
-	float yllcorner; 		///< Dont know what this is.
-	float cellsize; 		///< Scaling for each cell, currently unused.
-	float NODATA_value; ///< Value of input with no data, used to filter.
-	float max_value; 		///< Maximum input, used to scale.
-	float min_value;		///< Minimum input, used to scale.
-	std::vector<float> data; ///< The terrain data is stored in a std::vector.
+	float xllcorner; 			///< Dont know what this is.
+	float yllcorner; 			///< Dont know what this is.
+	float cellsize; 			///< Scaling for each cell, currently unused.
+	float NODATA_value;			///< Value of input with no data, used to filter.
+	float max_value; 			///< Maximum input, used to scale.
+	float min_value;			///< Minimum input, used to scale.
+	std::vector<float> data;	///< The terrain data is stored in a std::vector.
 };
 
 /// @class DataHandler
@@ -38,8 +38,6 @@ struct mapdata {
 class DataHandler
 {
 private:
-	
-
 	// Variables for GPU processing
 	GLuint plaintextureshader;	///< shader program to simple switch FBO
 	GLuint filtershader;		///< shader program to perform LP filtering
@@ -49,7 +47,8 @@ private:
 	FBOstruct *fbo1;			///< FBO for use during normalized convolution
 	FBOstruct *fbo2;			///< FBO for use during normalized convolution
 	FBOstruct *fbo3;			///< FBO for use during normalized convolution, data is loaded to this FBO
-	FBOstruct *fbo4;			///< FBO for use during normal calculation
+	FBOstruct *fbo4;			///< FBO for use during normal calculation, data is loaded to this FBO
+	FBOstruct *fbo5;			///< FBO for use during normal calculation
 	Model* squareModel;			///< Canvas for GPU filtering
 
 	// Data containers
@@ -57,7 +56,7 @@ private:
 	Model* datamodel; 			///< model for the terrain data.
 
 	// Just scaling
-	GLfloat terrainScale;		///< Height scale for the terrain.
+	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
 	int sampleFactor;			///< Sample factor used for constructing model.
 
 	/// @brief Reads the input data to the private mapdata struct.
@@ -111,23 +110,13 @@ private:
 	/// @see giveHeight()
 	void GenerateTerrain();
 
-	/// @brief Gives a normal for a certain position in the terrain
+	/// @brief Calculates the normals for the whole terrain on the GPU.
 	///
-	/// Used by GenerateTerrain() to calculate normals for each vertex.
-	/// Written by Ingemar Ragnemalm but slightly modfied
-	/// @param x input width position
-	/// @param y input height position
-	/// @param z input depth position
-	/// @param vertexArray input data
-	/// @param indexArray input data
-	/// @param width size of the input data
-	/// @param height size of the input data
+	/// The normals are calculated using a 3x3 sobel filter in x and z direction and then normalized. This is used in GenerateTerrain() to speed up the normal calculations.
+	/// @param normalArray this is the normalArray for the model that should be used.
 	/// @see GenerateTerrain()
-	/// @see giveHeight()
-	glm::vec3 giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height);
-
-
-	void calculateNormalsGPU(GLfloat *normalArray);
+	/// @todo The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter.
+	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray);
 
 public:
 	
@@ -146,7 +135,7 @@ public:
 	/// @see readDEM()
 	/// @see scaleDataBefore()
 	/// @see GenerateTerrain()
-	DataHandler(const char* inputfile, int sampleFactor = 1, GLfloat tScale = 500.0f);
+	DataHandler(const char* inputfile, int sampleFactor = 1);
 
 	/// @brief Handle the internal pointers.
 	~DataHandler();
@@ -202,7 +191,14 @@ public:
 	/// @brief Getter for the number of datapoints.
 	/// @return columns * rows.
 	int getElem();
+
+	/// @brief Get the sampling rate of data for constructing the model.
+	/// @return int value of the sample rate.
 	int getSampleFactor();
+
+	/// @brief Get the terrain scale.
+	/// @return Return a float of the diff between max and min sample in the data.
+	GLfloat getTerrainScale();
 
 	/// @brief Pointer to the terrain model
 	///
