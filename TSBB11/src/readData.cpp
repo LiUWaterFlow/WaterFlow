@@ -413,7 +413,7 @@ void DataHandler::GenerateTerrain()
 													vertexCount,
 													triangleCount * 3));
 
-			//Should be 
+			//Should be safe to delete since own space is created in the model.
 			delete indexArray;
 			delete normalArray;
 			delete texCoordArray;
