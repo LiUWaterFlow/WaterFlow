@@ -1,3 +1,6 @@
+/// @file readData.cpp
+/// @brief Implementations of functions in readData.h
+
 #include "stdio.h"
 
 #include "readData.h"
@@ -11,56 +14,40 @@
 #include <string>
 
 
-
 using namespace std;
 
-GLfloat square[] = { -1, -1, 0,
--1, 1, 0,
-1, 1, 0,
-1, -1, 0 };
-GLfloat squareTexCoord[] = { 0, 0,
-0, 1,
-1, 1,
-1, 0 };
-GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
 
-Model* squareModel;
-FBOstruct *fbo1, *fbo2, *fbo3;
-GLuint plaintextureshader = 0, filtershader = 0, confidenceshader = 0, combineshader = 0;
-int tW, tH;
-
-DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
+DataHandler::DataHandler(const char* inputfile,int sampleFactor)
 {
+	datamodel = NULL;
 	readdata = new mapdata();
-	terrainScale = tScale;
+	this->sampleFactor = sampleFactor;
 
 	datamodel = new std::vector<Model*>;
 
-
-	cout << "Starting loading DEM data..." << endl;
 	readDEM(inputfile);
-	cout << "Finished loading DEM data..." << endl;
-
-	cout << "Scaling DEM data..." << endl;
 	scaleDataBefore();
-
-	cout << "Compiling shaders..." << endl;
 
 	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
 	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
 	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
 	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
-	tW = getWidth();
-	tH = getHeight();
-
-	fbo1 = initFBO3(tW, tH, NULL);
-	fbo2 = initFBO3(tW, tH, NULL);
-	fbo3 = initFBO3(tW, tH, getData());
-	
+	// Create canvas to draw on
+	GLfloat square[] = { -1, -1, 0,
+		-1, 1, 0,
+		1, 1, 0,
+		1, -1, 0 };
+	GLfloat squareTexCoord[] = { 0, 0,
+		0, 1,
+		1, 1,
+		1, 0 };
+	GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
 
-	cout << "Generating terrain from DEM data..." << endl;
+	performNormalizedConvolution();
+
 	GenerateTerrain();
 }
 
@@ -94,6 +81,11 @@ float DataHandler::getCoord(int col, int row)
 	return retdata;
 }
 
+int DataHandler::getSampleFactor()
+{
+	return sampleFactor;
+}
+
 float* DataHandler::getData()
 {
 	return &readdata->data[0];
@@ -113,7 +105,10 @@ int DataHandler::getElem()
 {
 	return readdata->nelem;
 }
-
+GLfloat DataHandler::getTerrainScale()
+{
+	return terrainScale;
+}
 std::vector<Model*>* DataHandler::getModel()
 {
 	return datamodel;
@@ -164,6 +159,8 @@ void DataHandler::readDEM(const char* inputfile)
 			readdata->data[i] = incoord;
 		}
 
+		terrainScale = readdata->max_value - readdata->min_value;
+
 		fclose(file);
 	}
 	else {
@@ -200,38 +197,44 @@ void DataHandler::scaleDataAfter()
 
 void DataHandler::performNormalizedConvolution()
 {
+	// Initialize the FBO's
+	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
+	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
+	fbo3 = initFBO3(getWidth(), getHeight(), getData());
+
+	// Perform normalized convolution until no more NODATA
 	bool isNODATA = true;
-	float min;
 	while (isNODATA)
 	{
-		cout << "Starting five passes NC..." << endl;
 		for (int i = 0; i < 5; i++)
 			performGPUNormConv();
 
-		glReadPixels(0, 0, tW, tH, GL_RED, GL_FLOAT, getData());
+		glReadPixels(0, 0, getWidth(), getHeight(), GL_RED, GL_FLOAT, getData());
 
-		cout << "Checking Data for NODATA..." << endl;
 		isNODATA = false;
-		
-		min = 2.0f;
 		for (int i = 0; i < getElem() && !isNODATA; i++)
 		{
-			float data = getData()[i];
-			if (data < min)
-				min = data;
-			isNODATA = (data < 0.0001f);
+			isNODATA = (getData()[i] < 0.0001f);
 		}
 	}
 	
-	cout << "Scaling Data after NC..." << endl;
 	scaleDataAfter();
 
-	cout << "Generating new Model..." << endl;
-	GenerateTerrain();
-	cout << "Done generating new model..." << endl;
+	//remove all data from previous model before generating a new one.
+	/*
+	if (datamodel != NULL)
+	{
+		delete datamodel->vertexArray;
+		delete datamodel->normalArray;
+		delete datamodel->texCoordArray;
+		delete datamodel->colorArray; // Rarely used
+		delete datamodel->indexArray;
+		delete datamodel;
+	}
+	*/
 
-	// Reset initial GL inits
-	useFBO(0L, fbo3, 0L);
+	// Reset to initial GL inits
+	useFBO(0L, 0L, 0L);
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -249,7 +252,7 @@ void DataHandler::performGPUNormConv()
 
 	// Activate shader program
 	glUseProgram(filtershader);
-	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)tW, (float)tH);
+	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getWidth(), (float)getHeight());
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -278,7 +281,7 @@ void DataHandler::performGPUNormConv()
 
 	// Activate shader program
 	glUseProgram(filtershader);
-	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)tW, (float)tH);
+	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getWidth(), (float)getHeight());
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -316,22 +319,22 @@ void DataHandler::performGPUNormConv()
 
 void DataHandler::GenerateTerrain() 
 {
-	int twidth = getWidth();
-	int theight = getHeight();
+	int twidth = (int)floor(getWidth() / sampleFactor);
+	int theight = (int)floor(getHeight() / sampleFactor);
 	int blockSize = 250;
-	int widthBlocks = ceil(twidth / blockSize);
-	int heightBlocks = ceil(theight / blockSize);
+	int widthBlocks = (int)ceil(twidth / blockSize);
+	int heightBlocks = (int)ceil(theight / blockSize);
 	for (int i = 0; i < widthBlocks; i++)
 	{
 		for (int j = 0; j < heightBlocks; j++)
 		{
-			int width = (twidth - i * blockSize > 0 ? blockSize +1 : twidth - (i - 1)*twidth);
-			int height = (theight - i * blockSize > 0 ? blockSize +1 : theight - (i - 1)*theight);
+			int width = (twidth - i * blockSize > 0 ? blockSize + 1 : twidth - (i - 1)*twidth); // Is this really correct? Shouldn't the last term be blockSize?
+			int height = (theight - i * blockSize > 0 ? blockSize + 1 : theight - (i - 1)*theight);
 			int blockSizeW = (twidth - i * blockSize > 0 ? blockSize : twidth - (i - 1)*twidth);
 			int blockSizeH = (theight - i * blockSize > 0 ? blockSize : theight - (i - 1)*theight);
 
 		
-			int vertexCount = (width) * height;
+			int vertexCount = width * height;
 			int triangleCount = (width - 1) * (height - 1) * 2;
 			int x, z;
 
@@ -340,16 +343,14 @@ void DataHandler::GenerateTerrain()
 			GLfloat *texCoordArray = (GLfloat *)malloc(sizeof(GLfloat) * 2 * vertexCount);
 			GLuint *indexArray = (GLuint *)malloc(sizeof(GLuint)* triangleCount * 3);
 
-			glm::vec3 tempNormal = { 0, 0, 0 };
-
 			for (x = 0; x < width; x++)
 			{
 				for (z = 0; z < height; z++)
 				{
 					// Vertex array.
-					vertexArray[(x + z * width) * 3 + 0] = x / 1.0f + blockSizeW*i;
-					vertexArray[(x + z * width) * 3 + 1] = getCoord(x+blockSizeW*i, z+blockSizeH*j) * terrainScale; // Terrain height.
-					vertexArray[(x + z * width) * 3 + 2] = z / 1.0f + blockSizeH*j;
+					vertexArray[(x + z * width) * 3 + 0] = (float)(x + blockSizeW*i) / (float)twidth;
+					vertexArray[(x + z * width) * 3 + 1] = getCoord((x + blockSizeW*i)*sampleFactor, (z + blockSizeH*j)*sampleFactor);
+					vertexArray[(x + z * width) * 3 + 2] = (float)(z / 1.0f + blockSizeH*j) / (float)theight;
 
 					// Texture coordinates.
 					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
@@ -372,88 +373,20 @@ void DataHandler::GenerateTerrain()
 				}
 			}
 
-			for (x = 0; x < width; x++)
-			{
-				for (z = 0; z < height; z++)
-				{
-					// Normal vectors.
-					glm::vec3 vertex = { GLfloat(x + blockSizeW*i), getCoord(x + blockSizeW*i, z + blockSizeH*j), GLfloat(z + blockSizeH*j) };
-					tempNormal = giveNormal(vertex,x,(int)getCoord(x + blockSizeW*i, z + blockSizeH*j), z , vertexArray, indexArray, width, height);
-					normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
-					normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
-					normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
-				}
-			}
+			calculateNormalsGPU(vertexArray, normalArray, width, height);
 
 			// End of terrain generation.
 
 			// Create Model and upload to GPU.
-			datamodel->push_back(LoadDataToModel(
-				vertexArray,
-				normalArray,
-				texCoordArray,
-				NULL,
-				indexArray,
-				vertexCount,
-				triangleCount * 3));
+			datamodel->push_back(LoadDataToModel(	vertexArray,
+													normalArray,
+													texCoordArray,
+													NULL,
+													indexArray,
+													vertexCount,
+													triangleCount * 3));
 		}
 	}
-}
-
-glm::vec3 DataHandler::giveNormal(glm::vec3 vertex,int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
-{
-	
-	glm::vec3 normal = { 0, 1, 0 };
-
-	glm::vec3 normal1 = { 0, 0, 0 };
-	glm::vec3 normal2 = { 0, 0, 0 };
-	glm::vec3 normal3 = { 0, 0, 0 };
-	glm::vec3 normal4 = { 0, 0, 0 };
-	glm::vec3 normal5 = { 0, 0, 0 };
-	glm::vec3 normal6 = { 0, 0, 0 };
-
-	if ((x > 1) && (z > 1) && (z < height - 2) && (x < width - 2))
-	{
-		glm::vec3 tempVec1={vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec2={vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec3={vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec4={vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec5={vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec6={vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-
-		normal1 = glm::cross(tempVec1 - vertex, tempVec2 - vertex);
-		normal2 = glm::cross(tempVec3 - vertex, tempVec1 - vertex);
-		glm::vec3 weighted1 = normalize(normalize(normal1) + normalize(normal2));
-		normal3 = glm::cross(tempVec2 - vertex, tempVec4 - vertex);
-		glm::vec3 weighted2 = normalize(normal3);
-		normal4 = glm::cross(tempVec4 - vertex, tempVec5 - vertex);
-		normal5 = glm::cross(tempVec5 - vertex, tempVec6 - vertex);
-		glm::vec3 weighted3 = normalize(normalize(normal4) + normalize(normal5));
-		normal6 = glm::cross(tempVec6 - vertex, tempVec3 - vertex);
-		glm::vec3 weighted4 = normalize(normal6);
-
-		normal = normalize(weighted1 + weighted2 + weighted3 + weighted4);
-
-	}
-	return normal;
 }
 
 GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
@@ -515,4 +448,34 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 	return yheight;
 }
 
+void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
+{
+	// Initialize the FBO's
+	fbo4 = initFBO4(width, height, vertexArray);
+	fbo5 = initFBO4(width, height, NULL);
 
+	// Filter original
+	useFBO(fbo5, fbo4, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(normalshader);
+	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)width, (float)height);
+	glUniform1f(glGetUniformLocation(normalshader, "in_sample"), (float)sampleFactor);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
+
+	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
+
+	// Reset to initial GL inits
+	useFBO(0L, 0L, 0L);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_TRUE);
+}
