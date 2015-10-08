@@ -1,8 +1,6 @@
 #include "voxel.h"
 
 
-
-
 /* -----------------------------------------------------------------
 Voxelgrid - Create the initial vector strutcture.
 */
