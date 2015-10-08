@@ -57,7 +57,7 @@ float scl = 6;
 #define DISPLAY_TIMER 0
 #define UPDATE_TIMER 1
 
-#define SPEED 10.0f
+#define SPEED 30.0f
 
 #define PI 3.14159265358979323846f
 
@@ -300,10 +300,10 @@ int main(int argc, char *argv[])
 	glEnableClientState(GL_VERTEX_ARRAY);
 	init();
 
-	SDL_TimerID timer_id;
-	timer_id = SDL_AddTimer(30, &display_timer, NULL);
-	timer_id = SDL_AddTimer(10, &update_timer, NULL);
-	if (timer_id == 0){
+	SDL_TimerID timer_id1,timer_id2;
+	timer_id1 = SDL_AddTimer(30, &display_timer, NULL);
+	timer_id2 = SDL_AddTimer(30, &update_timer, NULL);
+	if (timer_id1 == 0 || timer_id2 == 0){
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
 	set_event_handler(&event_handler);
