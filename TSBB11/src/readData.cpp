@@ -379,9 +379,6 @@ void DataHandler::GenerateTerrain()
 		{
 			int width =(twidth -(i+1)*blockSize > 0 ? blockSize+2 : twidth - i*blockSize);
 			int height =(theight -(j+1)*blockSize > 0 ? blockSize+2 : theight - j*blockSize);
-			int blockSizeW =(twidth -(i+1)*blockSize > 0 ? blockSize : twidth - i*blockSize);
-			int blockSizeH =(theight -(j+1)*blockSize > 0 ? blockSize : theight - j*blockSize);
-
 
 			int vertexCount = width * height;
 			int triangleCount = (width - 1) * (height - 1) * 2;
@@ -397,18 +394,18 @@ void DataHandler::GenerateTerrain()
 				for (z = 0; z < height; z++)
 				{
 					// Vertex array.
-					vertexArray[(x + z * width) * 3 + 0] = (float)(x + blockSizeW*i) / (float)twidth;
-					vertexArray[(x + z * width) * 3 + 1] = getCoord((x + blockSizeW*i)*sampleFactor, (z + blockSizeH*j)*sampleFactor);
-					vertexArray[(x + z * width) * 3 + 2] = (float)(z / 1.0f + blockSizeH*j) / (float)theight;
+					vertexArray[(x + z * width) * 3 + 0] = (float)(x + blockSize*i) / (float)twidth;
+					vertexArray[(x + z * width) * 3 + 1] = getCoord((x + blockSize*i)*sampleFactor, (z + blockSize*j)*sampleFactor);
+					vertexArray[(x + z * width) * 3 + 2] = (float)(z / 1.0f + blockSize*j) / (float)theight;
 
 					// Texture coordinates.
 					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
 					texCoordArray[(x + z * width) * 2 + 1] = (float)z;
 					
 					//Insert normals from the precalculated normals.
-					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSizeW*i) + (z + blockSizeH*j)* preCalcWidth) * 3 + 0];
-					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSizeW*i) + (z + blockSizeH*j)* preCalcWidth) * 3 + 1];
-					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSizeW*i) + (z + blockSizeH*j) *preCalcWidth) * 3 + 2];
+					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
+					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 1];
+					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j) *preCalcWidth) * 3 + 2];
 
 				}
 			}
