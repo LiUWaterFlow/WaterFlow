@@ -16,18 +16,16 @@
 
 using namespace std;
 
-DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
+
+DataHandler::DataHandler(const char* inputfile,int sampleFactor)
 {
+	datamodel = NULL;
 	readdata = new mapdata();
-	terrainScale = tScale;
+	this->sampleFactor = sampleFactor;
 
 	readDEM(inputfile);
 	scaleDataBefore();
 
-	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
-	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
-	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
-	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
 
 	// Create canvas to draw on
 	GLfloat square[] = { -1, -1, 0,
@@ -40,6 +38,8 @@ DataHandler::DataHandler(const char* inputfile, GLfloat tScale)
 		1, 0 };
 	GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
 	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
+
+	performNormalizedConvolution();
 
 	GenerateTerrain();
 }
@@ -74,6 +74,11 @@ float DataHandler::getCoord(int col, int row)
 	return retdata;
 }
 
+int DataHandler::getSampleFactor()
+{
+	return sampleFactor;
+}
+
 float* DataHandler::getData()
 {
 	return &readdata->data[0];
@@ -92,6 +97,11 @@ int DataHandler::getHeight()
 int DataHandler::getElem()
 {
 	return readdata->nelem;
+}
+
+GLfloat DataHandler::getTerrainScale()
+{
+	return terrainScale;
 }
 
 Model* DataHandler::getModel()
@@ -144,6 +154,8 @@ void DataHandler::readDEM(const char* inputfile)
 			readdata->data[i] = incoord;
 		}
 
+		terrainScale = readdata->max_value - readdata->min_value;
+
 		fclose(file);
 	}
 	else {
@@ -180,6 +192,20 @@ void DataHandler::scaleDataAfter()
 
 void DataHandler::performNormalizedConvolution()
 {
+	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
+	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
+	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
+	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+
+	//extract screen size
+	GLint viewport[4] = {0,0,0,0};
+	GLint w, h;
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	w = viewport[2] - viewport[0];
+	h = viewport[3] - viewport[1];
+
+
+
 	// Initialize the FBO's
 	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
 	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
@@ -202,17 +228,17 @@ void DataHandler::performNormalizedConvolution()
 	}
 
 	scaleDataAfter();
-	
-	//remove all data from previous model before generating a new one.
-	delete datamodel->vertexArray;
-	delete datamodel->normalArray;
-	delete datamodel->texCoordArray;
-	delete datamodel->colorArray; // Rarely used
-	delete datamodel->indexArray;
-	delete datamodel;
-	
 
-	GenerateTerrain();
+	releaseFBO(fbo1);
+	delete fbo1;
+	releaseFBO(fbo2);
+	delete fbo2;
+	releaseFBO(fbo3);
+	delete fbo3;
+	glDeleteProgram(plaintextureshader);
+	glDeleteProgram(filtershader);
+	glDeleteProgram(confidenceshader);
+	glDeleteProgram(combineshader);
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
@@ -220,6 +246,10 @@ void DataHandler::performNormalizedConvolution()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
+	// Reset render area
+	glViewport(0, 0, w, h);
+
+
 }
 
 void DataHandler::performGPUNormConv()
@@ -300,8 +330,21 @@ void DataHandler::performGPUNormConv()
 
 void DataHandler::GenerateTerrain()
 {
-	int width = getWidth();
-	int height = getHeight();
+	//remove all data from previous model before generating a new one.
+	if (datamodel != NULL)
+	{
+		delete datamodel->vertexArray;
+		delete datamodel->normalArray;
+		delete datamodel->texCoordArray;
+		delete datamodel->colorArray; // Rarely used
+		delete datamodel->indexArray;
+		delete datamodel;
+	}
+
+	//Reduce width and height with samplefactor
+	int width = (int)floor(getWidth()/sampleFactor);
+	int height = (int)floor(getHeight()/sampleFactor);
+
 	int vertexCount = width * height;
 	int triangleCount = (width - 1) * (height - 1) * 2;
 	int x, z;
@@ -318,9 +361,9 @@ void DataHandler::GenerateTerrain()
 		for (z = 0; z < height; z++)
 		{
 			// Vertex array.
-			vertexArray[(x + z * width) * 3 + 0] = x / 1.0f;
-			vertexArray[(x + z * width) * 3 + 1] = getCoord(x, z) * terrainScale; // Terrain height.
-			vertexArray[(x + z * width) * 3 + 2] = z / 1.0f;
+			vertexArray[(x + z * width) * 3 + 0] = (float)x / (float)width;
+			vertexArray[(x + z * width) * 3 + 1] = getCoord(x*sampleFactor, z*sampleFactor);
+			vertexArray[(x + z * width) * 3 + 2] = (float)z / (float)height;
 
 			// Texture coordinates.
 			texCoordArray[(x + z * width) * 2 + 0] = (float)x;
@@ -343,17 +386,7 @@ void DataHandler::GenerateTerrain()
 		}
 	}
 
-	for (x = 0; x < width; x++)
-	{
-		for (z = 0; z < height; z++)
-		{
-			// Normal vectors.
-			tempNormal = giveNormal(x, (int)getCoord(x,z), z, vertexArray, indexArray, width, height);
-			normalArray[(x + z * width) * 3 + 0] = -tempNormal.x;
-			normalArray[(x + z * width) * 3 + 1] = -tempNormal.y;
-			normalArray[(x + z * width) * 3 + 2] = -tempNormal.z;
-		}
-	}
+	calculateNormalsGPU(vertexArray, normalArray, width, height);
 
 	// End of terrain generation.
 
@@ -366,62 +399,6 @@ void DataHandler::GenerateTerrain()
 		indexArray,
 		vertexCount,
 		triangleCount * 3);
-}
-
-glm::vec3 DataHandler::giveNormal(int x, int y, int z, GLfloat *vertexArray, GLuint *indexArray, int width, int height) // Returns the normal of a vertex.
-{
-	glm::vec3 vertex = { GLfloat(x), GLfloat(y), GLfloat(z) };
-	glm::vec3 normal = { 0, 1, 0 };
-
-	glm::vec3 normal1 = { 0, 0, 0 };
-	glm::vec3 normal2 = { 0, 0, 0 };
-	glm::vec3 normal3 = { 0, 0, 0 };
-	glm::vec3 normal4 = { 0, 0, 0 };
-	glm::vec3 normal5 = { 0, 0, 0 };
-	glm::vec3 normal6 = { 0, 0, 0 };
-
-	if ((x > 1) && (z > 1) && (z < height - 2) && (x < width - 2))
-	{
-		glm::vec3 tempVec1={vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x - 1) + (z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec2={vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x)+(z - 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec3={vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x - 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec4={vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x + 1) + (z)* (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec5={vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x + 1) + (z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-		glm::vec3 tempVec6={vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3],
-							vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 1],
-							vertexArray[indexArray[((x)+(z + 1) * (width - 1)) * 6 + 0] * 3 + 2] };
-
-
-		normal1 = glm::cross(tempVec1 - vertex, tempVec2 - vertex);
-		normal2 = glm::cross(tempVec3 - vertex, tempVec1 - vertex);
-		glm::vec3 weighted1 = normalize(normalize(normal1) + normalize(normal2));
-		normal3 = glm::cross(tempVec2 - vertex, tempVec4 - vertex);
-		glm::vec3 weighted2 = normalize(normal3);
-		normal4 = glm::cross(tempVec4 - vertex, tempVec5 - vertex);
-		normal5 = glm::cross(tempVec5 - vertex, tempVec6 - vertex);
-		glm::vec3 weighted3 = normalize(normalize(normal4) + normalize(normal5));
-		normal6 = glm::cross(tempVec6 - vertex, tempVec3 - vertex);
-		glm::vec3 weighted4 = normalize(normal6);
-
-		normal = normalize(weighted1 + weighted2 + weighted3 + weighted4);
-
-	}
-	return normal;
 }
 
 GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
@@ -481,4 +458,57 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
 	}
 	return yheight;
+}
+
+void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
+{
+	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
+
+	//extract screen size
+	GLint viewport[4] = {0,0,0,0};
+	GLint w, h;
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	w = viewport[2] - viewport[0];
+	h = viewport[3] - viewport[1];
+
+	// Initialize the FBO's
+	fbo4 = initFBO4(width, height, vertexArray);
+	fbo5 = initFBO4(width, height, NULL);
+
+	// Filter original
+	useFBO(fbo5, fbo4, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(normalshader);
+	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)width, (float)height);
+	glUniform1f(glGetUniformLocation(normalshader, "in_sample"), (float)sampleFactor);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
+
+	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
+
+	releaseFBO(fbo4);
+	delete fbo4;
+	releaseFBO(fbo5);
+	delete fbo5;
+	glDeleteProgram(normalshader);
+
+	// Reset to initial GL inits
+
+	useFBO(0L, 0L, 0L);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_TRUE);
+
+	// Reset render area
+	glViewport(0, 0, w, h);
+
+
 }

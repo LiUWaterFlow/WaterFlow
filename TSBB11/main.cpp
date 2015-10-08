@@ -20,8 +20,8 @@
 		#include <GL/glx.h>
 		#include <GL/glext.h>
 		#include <SDL2/SDL.h>
-		
-		
+
+
 	#else
 		#include "glew.h"
 		#include "Windows/sdl2/SDL.h"
@@ -76,14 +76,10 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix);
 glm::mat4 projMat, viewMat;
 
 // Models:
-Model *m;
 Model *terrain;
 
 // Datahandler for terrain data
 DataHandler* dataHandler;
-
-// Textures:
-TextureData ttex; // Terrain heightmap.
 
 // References to shader programs:
 GLuint program;
@@ -93,7 +89,6 @@ Camera cam;
 // Matrices.
 glm::mat4 projectionMatrix;
 glm::mat4 viewMatrix;
-glm::vec3 camPos = { 0, 0, 0 };
 
 // Light information:
 glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
@@ -118,12 +113,10 @@ void init(void)
 	// Initial placement of camera.
 	cam = Camera(program, &viewMatrix);
 
-	// ---Upload geometry to the GPU---
-	m = LoadModelPlus("resources/teapot.obj");
-
-	dataHandler = new DataHandler("resources/output.min.asc");
+	// Load terrain data
+	dataHandler = new DataHandler("resources/output.min.asc", 2);
 	terrain = dataHandler->getModel();
-	//LoadTGATextureData("resources/fft-terrain.tga", &ttex);
+
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
@@ -144,39 +137,29 @@ void display(void)
 	glm::mat4 rot, trans, scale, total;
 	glUseProgram(program);
 
-	// Time.
-	//GLfloat t;
-	//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;
-
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-	// ---Model-independent shader data---
+	// ---Camera shader data---
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-	GLfloat camPos_GLf[3] = { camPos.x, camPos.y, camPos.z };
+	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
 	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
-	//glUniform1fv(glGetUniformLocation(program, "t"), 1, &t);
-
-
-	// ---Model-independent shader data---
 
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	glm::vec3 terrainTrans = glm::vec3(100, -500, -1000);
-	trans = glm::translate(terrainTrans);
-	total = trans;
+	scale = glm::scale(glm::vec3(dataHandler->getWidth(),
+								 dataHandler->getTerrainScale(),
+								 dataHandler->getHeight()));
+	total = scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
-	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 
-	// Teapot:
-	glm::vec3 teapotTrans = glm::vec3(200, 0, 200);
-	trans = glm::translate(teapotTrans);
-	scale = glm::scale(glm::vec3(0.5, 0.5, 0.5));
-	total = trans * scale;
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
-	DrawModel(m, program, "in_Position", "in_Normal", "in_TexCoord");
+	// precalculate the inverse since it is a very large model.
+	glm::mat3 inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(total)));
+	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
+
+
+	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
 
 	swap_buffers();
@@ -267,10 +250,6 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
-			break;
-		case SDLK_l:
-			dataHandler->performNormalizedConvolution();
-			terrain = dataHandler->getModel();
 			break;
 		default:
 			break;
