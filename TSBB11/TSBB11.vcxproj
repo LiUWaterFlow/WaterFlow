@@ -117,11 +117,15 @@
     <ClInclude Include="src\voxel.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="makefile" />
+    <None Include="resources\Doxyfile" />
+    <None Include="resources\mainpage.dox" />
     <None Include="src\shaders\combineshader.frag" />
     <None Include="src\shaders\confidenceshader.frag" />
     <None Include="src\shaders\filtershader.frag" />
     <None Include="src\shaders\main.frag" />
     <None Include="src\shaders\main.vert" />
+    <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
   </ItemGroup>

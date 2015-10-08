@@ -7,6 +7,11 @@
 
 Camera::Camera(int program, glm::mat4 *matrix)
 {
+
+    position = glm::vec3( 0, 500, 0 );
+    x = 0; 
+    look_at_pos = glm::vec3( 1, 500, 0 );
+    up = glm::vec3(0,1,0);
     this->matrix = matrix;
     this->program = program;
     *matrix = glm::lookAt(position, look_at_pos, up);
@@ -77,8 +82,8 @@ void Camera::change_look_at_pos(int xrel, int y, int width, int height)
         y = 1;
     }
     x += xrel;
-    float fi = ((float)x)/width*2*M_PI;
-    float theta = ((float)y)/height*M_PI;
+    float fi = ((float)x) / ((float)width) * 2.0f * M_PI;
+    float theta = ((float)y) / ((float)height) * M_PI;
 
     look_at_pos.x = -sin(theta)*sin(fi) + position.x;
     look_at_pos.y = cos(theta) + position.y;

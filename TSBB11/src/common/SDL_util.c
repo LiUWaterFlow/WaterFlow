@@ -71,8 +71,6 @@ void get_window_size(int *w, int*h)
 void init_SDL(const char* title, int width, int height)
 {
 	int flags = 0;
-
-
 	if(SDL_Init(SDL_INIT_VIDEO) != 0){
 		fprintf(stderr, "Failed to initialise SDL: %s", SDL_GetError());
 		exit_prog(1);
@@ -84,22 +82,20 @@ void init_SDL(const char* title, int width, int height)
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+
 	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
 
-
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+
 #ifdef __APPLE__
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
 
-
-
-
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+
 	fprintf(stderr, "Current Version Error 1 :   %s \n", SDL_GetError());
 
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
@@ -117,6 +113,7 @@ void init_SDL(const char* title, int width, int height)
 	}
 
 	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
+
 #ifndef __APPLE__
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
