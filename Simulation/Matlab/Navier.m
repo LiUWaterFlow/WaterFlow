@@ -14,19 +14,16 @@ function [ output ] = Navier()
 output = zeros(N+2,N+2);
 source = zeros(N+2, N+2);
 source(3,3) = 1;
-for k=1:(N+2)
-    for o=1:(N+2)
-       force_y(k,o) = -9.81; 
-    end
-end
 
 %diffuse_step
+for j=1:300
 disp('Add Source');
-output = add_source ( N, output, source, dt )
+output = add_source ( N, output, source, dt );
 disp('Diffuse source');
-source = diffuse ( N, 0, source, output, diffuse_rate, dt )
+source = diffuse ( N, 0, source, output, diffuse_rate, dt );
 disp('Advect Output');
-output = advect ( N, 0, output, source, force_x, force_y, dt )
+output = advect ( N, 0, output, source, force_x, force_y, dt );
+end
 
 end
 
