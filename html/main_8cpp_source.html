@@ -119,8 +119,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00020"></a>00020 <span class="preprocessor">        #include &lt;GL/glx.h&gt;</span>
 <a name="l00021"></a>00021 <span class="preprocessor">        #include &lt;GL/glext.h&gt;</span>
 <a name="l00022"></a>00022 <span class="preprocessor">        #include &lt;SDL2/SDL.h&gt;</span>
-<a name="l00023"></a>00023         
-<a name="l00024"></a>00024         
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 
 <a name="l00025"></a>00025 <span class="preprocessor">    #else</span>
 <a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">        #include &quot;glew.h&quot;</span>
 <a name="l00027"></a>00027 <span class="preprocessor">        #include &quot;Windows/sdl2/SDL.h&quot;</span>
@@ -180,238 +180,232 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00081"></a>00081 <span class="comment">// Datahandler for terrain data</span>
 <a name="l00082"></a>00082 <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* dataHandler;
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084 <span class="comment">// Textures:</span>
-<a name="l00085"></a>00085 <a class="code" href="struct_texture_data.html">TextureData</a> ttex; <span class="comment">// Terrain heightmap.</span>
+<a name="l00084"></a>00084 <span class="comment">// References to shader programs:</span>
+<a name="l00085"></a>00085 GLuint program;
 <a name="l00086"></a>00086 
-<a name="l00087"></a>00087 <span class="comment">// References to shader programs:</span>
-<a name="l00088"></a>00088 GLuint program;
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090 <span class="comment">// Camera variables:</span>
-<a name="l00091"></a>00091 <a class="code" href="class_camera.html">Camera</a> cam;
-<a name="l00092"></a>00092 <span class="comment">// Matrices.</span>
-<a name="l00093"></a>00093 glm::mat4 projectionMatrix;
-<a name="l00094"></a>00094 glm::mat4 viewMatrix;
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096 <span class="comment">// Light information:</span>
-<a name="l00097"></a>00097 glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; <span class="comment">// Since the sun is a directional source, this is the negative direction, not the position.</span>
-<a name="l00098"></a>00098 <span class="keywordtype">bool</span> sunIsDirectional = 1;
-<a name="l00099"></a>00099 <span class="keywordtype">float</span> sunSpecularExponent = 50.0;
-<a name="l00100"></a>00100 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="keywordtype">void</span> init(<span class="keywordtype">void</span>)
-<a name="l00103"></a>00103 {
-<a name="l00104"></a>00104 <span class="preprocessor">#ifdef WIN32</span>
-<a name="l00105"></a>00105 <span class="preprocessor"></span>    glewInit();
-<a name="l00106"></a>00106 <span class="preprocessor">#endif</span>
-<a name="l00107"></a>00107 <span class="preprocessor"></span>    <span class="comment">//initKeymapManager();</span>
-<a name="l00108"></a>00108     dumpInfo();
-<a name="l00109"></a>00109 
-<a name="l00110"></a>00110     <span class="comment">// GL inits.</span>
-<a name="l00111"></a>00111     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-<a name="l00112"></a>00112     glEnable(GL_DEPTH_TEST);
-<a name="l00113"></a>00113     glEnable(GL_CULL_FACE);
-<a name="l00114"></a>00114     glCullFace(GL_TRUE);
+<a name="l00087"></a>00087 <span class="comment">// Camera variables:</span>
+<a name="l00088"></a>00088 <a class="code" href="class_camera.html">Camera</a> cam;
+<a name="l00089"></a>00089 <span class="comment">// Matrices.</span>
+<a name="l00090"></a>00090 glm::mat4 projectionMatrix;
+<a name="l00091"></a>00091 glm::mat4 viewMatrix;
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 <span class="comment">// Light information:</span>
+<a name="l00094"></a>00094 glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; <span class="comment">// Since the sun is a directional source, this is the negative direction, not the position.</span>
+<a name="l00095"></a>00095 <span class="keywordtype">bool</span> sunIsDirectional = 1;
+<a name="l00096"></a>00096 <span class="keywordtype">float</span> sunSpecularExponent = 50.0;
+<a name="l00097"></a>00097 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 <span class="keywordtype">void</span> init(<span class="keywordtype">void</span>)
+<a name="l00100"></a>00100 {
+<a name="l00101"></a>00101 <span class="preprocessor">#ifdef WIN32</span>
+<a name="l00102"></a>00102 <span class="preprocessor"></span>    glewInit();
+<a name="l00103"></a>00103 <span class="preprocessor">#endif</span>
+<a name="l00104"></a>00104 <span class="preprocessor"></span>    <span class="comment">//initKeymapManager();</span>
+<a name="l00105"></a>00105     dumpInfo();
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107     <span class="comment">// GL inits.</span>
+<a name="l00108"></a>00108     glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+<a name="l00109"></a>00109     glEnable(GL_DEPTH_TEST);
+<a name="l00110"></a>00110     glEnable(GL_CULL_FACE);
+<a name="l00111"></a>00111     glCullFace(GL_TRUE);
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113     <span class="comment">// Initial placement of camera.</span>
+<a name="l00114"></a>00114     cam = <a class="code" href="class_camera.html">Camera</a>(program, &amp;viewMatrix);
 <a name="l00115"></a>00115 
-<a name="l00116"></a>00116     <span class="comment">// Initial placement of camera.</span>
-<a name="l00117"></a>00117     cam = <a class="code" href="class_camera.html">Camera</a>(program, &amp;viewMatrix);
-<a name="l00118"></a>00118 
-<a name="l00119"></a>00119     <span class="comment">// Load terrain data</span>
-<a name="l00120"></a>00120     dataHandler = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(<span class="stringliteral">&quot;resources/output.min.asc&quot;</span>, 1);
-<a name="l00121"></a>00121     terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
-<a name="l00122"></a>00122 
-<a name="l00123"></a>00123     <span class="comment">// Load and compile shaders.</span>
-<a name="l00124"></a>00124     program = loadShaders(<span class="stringliteral">&quot;src/shaders/main.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/main.frag&quot;</span>);
-<a name="l00125"></a>00125     glUseProgram(program);
-<a name="l00126"></a>00126 
-<a name="l00127"></a>00127     <span class="comment">// Initial one-time shader uploads.</span>
-<a name="l00128"></a>00128     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-<a name="l00129"></a>00129     GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
-<a name="l00130"></a>00130     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;lightSourcePos&quot;</span>), 1, sun_GLf);
-<a name="l00131"></a>00131     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;isDirectional&quot;</span>), sunIsDirectional);
-<a name="l00132"></a>00132     glUniform1fv(glGetUniformLocation(program, <span class="stringliteral">&quot;specularExponent&quot;</span>), 1, &amp;sunSpecularExponent);
-<a name="l00133"></a>00133     GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
-<a name="l00134"></a>00134     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;lightSourceColor&quot;</span>), 1, sunColor_GLf);
-<a name="l00135"></a>00135 }
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137 <span class="keywordtype">void</span> display(<span class="keywordtype">void</span>)
-<a name="l00138"></a>00138 {
-<a name="l00139"></a>00139     glm::mat4 rot, trans, scale, total;
-<a name="l00140"></a>00140     glUseProgram(program);
-<a name="l00141"></a>00141 
-<a name="l00142"></a>00142     <span class="comment">// Clear the screen.</span>
-<a name="l00143"></a>00143     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-<a name="l00144"></a>00144 
-<a name="l00145"></a>00145     <span class="comment">// Time.</span>
-<a name="l00146"></a>00146     <span class="comment">//GLfloat t;</span>
-<a name="l00147"></a>00147     <span class="comment">//t = glutGet(GLUT_ELAPSED_TIME) / 100.0;</span>
-<a name="l00148"></a>00148     <span class="comment">//glUniform1fv(glGetUniformLocation(program, &quot;t&quot;), 1, &amp;t);</span>
-<a name="l00149"></a>00149 
-<a name="l00150"></a>00150 
-<a name="l00151"></a>00151     <span class="comment">// ---Camera shader data---</span>
-<a name="l00152"></a>00152     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-<a name="l00153"></a>00153     GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
-<a name="l00154"></a>00154     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, camPos_GLf);
-<a name="l00155"></a>00155 
+<a name="l00116"></a>00116     <span class="comment">// Load terrain data</span>
+<a name="l00117"></a>00117     dataHandler = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(<span class="stringliteral">&quot;resources/output.min.asc&quot;</span>, 2);
+<a name="l00118"></a>00118     terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120 
+<a name="l00121"></a>00121     <span class="comment">// Load and compile shaders.</span>
+<a name="l00122"></a>00122     program = loadShaders(<span class="stringliteral">&quot;src/shaders/main.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/main.frag&quot;</span>);
+<a name="l00123"></a>00123     glUseProgram(program);
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125     <span class="comment">// Initial one-time shader uploads.</span>
+<a name="l00126"></a>00126     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+<a name="l00127"></a>00127     GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
+<a name="l00128"></a>00128     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;lightSourcePos&quot;</span>), 1, sun_GLf);
+<a name="l00129"></a>00129     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;isDirectional&quot;</span>), sunIsDirectional);
+<a name="l00130"></a>00130     glUniform1fv(glGetUniformLocation(program, <span class="stringliteral">&quot;specularExponent&quot;</span>), 1, &amp;sunSpecularExponent);
+<a name="l00131"></a>00131     GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
+<a name="l00132"></a>00132     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;lightSourceColor&quot;</span>), 1, sunColor_GLf);
+<a name="l00133"></a>00133 }
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135 <span class="keywordtype">void</span> display(<span class="keywordtype">void</span>)
+<a name="l00136"></a>00136 {
+<a name="l00137"></a>00137     glm::mat4 rot, trans, scale, total;
+<a name="l00138"></a>00138     glUseProgram(program);
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140     <span class="comment">// Clear the screen.</span>
+<a name="l00141"></a>00141     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00142"></a>00142 
+<a name="l00143"></a>00143     <span class="comment">// ---Camera shader data---</span>
+<a name="l00144"></a>00144     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+<a name="l00145"></a>00145     GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
+<a name="l00146"></a>00146     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, camPos_GLf);
+<a name="l00147"></a>00147 
+<a name="l00148"></a>00148 
+<a name="l00149"></a>00149     <span class="comment">// ---Model transformations, rendering---</span>
+<a name="l00150"></a>00150     <span class="comment">// Terrain:</span>
+<a name="l00151"></a>00151     scale = glm::scale(glm::vec3(dataHandler-&gt;<a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">getWidth</a>(),
+<a name="l00152"></a>00152                                  dataHandler-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(),
+<a name="l00153"></a>00153                                  dataHandler-&gt;<a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">getHeight</a>()));
+<a name="l00154"></a>00154     total = scale;
+<a name="l00155"></a>00155     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;MTWMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(total));
 <a name="l00156"></a>00156 
-<a name="l00157"></a>00157     <span class="comment">// ---Model transformations, rendering---</span>
-<a name="l00158"></a>00158     <span class="comment">// Terrain:</span>
-<a name="l00159"></a>00159     scale = glm::scale(glm::vec3(dataHandler-&gt;<a class="code" href="class_data_handler.html#aebeff8b4bc72f47447ca1153817d1d22" title="Getter for the width of the data.">getWidth</a>(), 
-<a name="l00160"></a>00160                                  dataHandler-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), 
-<a name="l00161"></a>00161                                  dataHandler-&gt;<a class="code" href="class_data_handler.html#a679c89a82574d4d3257535b752e38806" title="Getter for the height of the data.">getHeight</a>()));
-<a name="l00162"></a>00162     total = scale;
-<a name="l00163"></a>00163     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;MTWMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(total));
-<a name="l00164"></a>00164     DrawModel(terrain, program, <span class="stringliteral">&quot;in_Position&quot;</span>, <span class="stringliteral">&quot;in_Normal&quot;</span>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00165"></a>00165     <span class="comment">// --------------------------------------</span>
-<a name="l00166"></a>00166 
-<a name="l00167"></a>00167     swap_buffers();
-<a name="l00168"></a>00168 }
-<a name="l00169"></a>00169 
-<a name="l00170"></a>00170 <span class="comment">// Display timer. User made functions may NOT be called from here.</span>
-<a name="l00171"></a>00171 Uint32 display_timer(Uint32 interval, <span class="keywordtype">void</span>* param)
-<a name="l00172"></a>00172 {
-<a name="l00173"></a>00173     SDL_Event event;
-<a name="l00174"></a>00174 
-<a name="l00175"></a>00175     <span class="keyword">event</span>.type = SDL_USEREVENT;
-<a name="l00176"></a>00176     <span class="keyword">event</span>.user.code = DISPLAY_TIMER;
-<a name="l00177"></a>00177     <span class="keyword">event</span>.user.data1 = 0;
-<a name="l00178"></a>00178     <span class="keyword">event</span>.user.data2 = 0;
-<a name="l00179"></a>00179 
-<a name="l00180"></a>00180     SDL_PushEvent(&amp;event);
-<a name="l00181"></a>00181     <span class="keywordflow">return</span> interval;
-<a name="l00182"></a>00182 }
-<a name="l00183"></a>00183 
-<a name="l00184"></a>00184 Uint32 update_timer(Uint32 interval, <span class="keywordtype">void</span>* param)
-<a name="l00185"></a>00185 {
-<a name="l00186"></a>00186     SDL_Event event;
-<a name="l00187"></a>00187 
-<a name="l00188"></a>00188     <span class="keyword">event</span>.type = SDL_USEREVENT;
-<a name="l00189"></a>00189     <span class="keyword">event</span>.user.code = UPDATE_TIMER;
-<a name="l00190"></a>00190     <span class="keyword">event</span>.user.data1 = (<span class="keywordtype">void</span>*)(intptr_t)interval;
-<a name="l00191"></a>00191     <span class="keyword">event</span>.user.data2 = 0;
-<a name="l00192"></a>00192 
-<a name="l00193"></a>00193     SDL_PushEvent(&amp;event);
-<a name="l00194"></a>00194     <span class="keywordflow">return</span> interval;
-<a name="l00195"></a>00195 }
-<a name="l00196"></a>00196 
-<a name="l00197"></a>00197 <span class="comment">// Handle events.</span>
-<a name="l00198"></a>00198 <span class="keywordtype">void</span> event_handler(SDL_Event event)
-<a name="l00199"></a>00199 {
-<a name="l00200"></a>00200     <span class="keywordflow">switch</span> (event.type){
-<a name="l00201"></a>00201         <span class="keywordflow">case</span> SDL_USEREVENT:
-<a name="l00202"></a>00202             handle_userevent(event);
-<a name="l00203"></a>00203             <span class="keywordflow">break</span>;
-<a name="l00204"></a>00204         <span class="keywordflow">case</span> SDL_QUIT:
-<a name="l00205"></a>00205             exit(0);
-<a name="l00206"></a>00206             <span class="keywordflow">break</span>;
-<a name="l00207"></a>00207         <span class="keywordflow">case</span> SDL_KEYDOWN:
-<a name="l00208"></a>00208             handle_keypress(event);
-<a name="l00209"></a>00209             <span class="keywordflow">break</span>;
-<a name="l00210"></a>00210         <span class="keywordflow">case</span> SDL_WINDOWEVENT:
-<a name="l00211"></a>00211             <span class="keywordflow">switch</span> (event.window.event){
-<a name="l00212"></a>00212             <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
-<a name="l00213"></a>00213                 get_window_size(&amp;width, &amp;height);
-<a name="l00214"></a>00214                 resize_window(event);
-<a name="l00215"></a>00215                 reshape(width, height, projectionMatrix);
-<a name="l00216"></a>00216                 <span class="keywordflow">break</span>;
-<a name="l00217"></a>00217             }
-<a name="l00218"></a>00218             <span class="keywordflow">break</span>;
-<a name="l00219"></a>00219         <span class="keywordflow">case</span> SDL_MOUSEMOTION:
-<a name="l00220"></a>00220             handle_mouse(event);
+<a name="l00157"></a>00157     <span class="comment">// precalculate the inverse since it is a very large model.</span>
+<a name="l00158"></a>00158     glm::mat3 inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(total)));
+<a name="l00159"></a>00159     glUniformMatrix3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;iNormalMatrixTrans&quot;</span>), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
+<a name="l00160"></a>00160 
+<a name="l00161"></a>00161 
+<a name="l00162"></a>00162     DrawModel(terrain, program, <span class="stringliteral">&quot;in_Position&quot;</span>, <span class="stringliteral">&quot;in_Normal&quot;</span>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00163"></a>00163     <span class="comment">// --------------------------------------</span>
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165     swap_buffers();
+<a name="l00166"></a>00166 }
+<a name="l00167"></a>00167 
+<a name="l00168"></a>00168 <span class="comment">// Display timer. User made functions may NOT be called from here.</span>
+<a name="l00169"></a>00169 Uint32 display_timer(Uint32 interval, <span class="keywordtype">void</span>* param)
+<a name="l00170"></a>00170 {
+<a name="l00171"></a>00171     SDL_Event event;
+<a name="l00172"></a>00172 
+<a name="l00173"></a>00173     <span class="keyword">event</span>.type = SDL_USEREVENT;
+<a name="l00174"></a>00174     <span class="keyword">event</span>.user.code = DISPLAY_TIMER;
+<a name="l00175"></a>00175     <span class="keyword">event</span>.user.data1 = 0;
+<a name="l00176"></a>00176     <span class="keyword">event</span>.user.data2 = 0;
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178     SDL_PushEvent(&amp;event);
+<a name="l00179"></a>00179     <span class="keywordflow">return</span> interval;
+<a name="l00180"></a>00180 }
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182 Uint32 update_timer(Uint32 interval, <span class="keywordtype">void</span>* param)
+<a name="l00183"></a>00183 {
+<a name="l00184"></a>00184     SDL_Event event;
+<a name="l00185"></a>00185 
+<a name="l00186"></a>00186     <span class="keyword">event</span>.type = SDL_USEREVENT;
+<a name="l00187"></a>00187     <span class="keyword">event</span>.user.code = UPDATE_TIMER;
+<a name="l00188"></a>00188     <span class="keyword">event</span>.user.data1 = (<span class="keywordtype">void</span>*)(intptr_t)interval;
+<a name="l00189"></a>00189     <span class="keyword">event</span>.user.data2 = 0;
+<a name="l00190"></a>00190 
+<a name="l00191"></a>00191     SDL_PushEvent(&amp;event);
+<a name="l00192"></a>00192     <span class="keywordflow">return</span> interval;
+<a name="l00193"></a>00193 }
+<a name="l00194"></a>00194 
+<a name="l00195"></a>00195 <span class="comment">// Handle events.</span>
+<a name="l00196"></a>00196 <span class="keywordtype">void</span> event_handler(SDL_Event event)
+<a name="l00197"></a>00197 {
+<a name="l00198"></a>00198     <span class="keywordflow">switch</span> (event.type){
+<a name="l00199"></a>00199         <span class="keywordflow">case</span> SDL_USEREVENT:
+<a name="l00200"></a>00200             handle_userevent(event);
+<a name="l00201"></a>00201             <span class="keywordflow">break</span>;
+<a name="l00202"></a>00202         <span class="keywordflow">case</span> SDL_QUIT:
+<a name="l00203"></a>00203             exit(0);
+<a name="l00204"></a>00204             <span class="keywordflow">break</span>;
+<a name="l00205"></a>00205         <span class="keywordflow">case</span> SDL_KEYDOWN:
+<a name="l00206"></a>00206             handle_keypress(event);
+<a name="l00207"></a>00207             <span class="keywordflow">break</span>;
+<a name="l00208"></a>00208         <span class="keywordflow">case</span> SDL_WINDOWEVENT:
+<a name="l00209"></a>00209             <span class="keywordflow">switch</span> (event.window.event){
+<a name="l00210"></a>00210             <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
+<a name="l00211"></a>00211                 get_window_size(&amp;width, &amp;height);
+<a name="l00212"></a>00212                 resize_window(event);
+<a name="l00213"></a>00213                 reshape(width, height, projectionMatrix);
+<a name="l00214"></a>00214                 <span class="keywordflow">break</span>;
+<a name="l00215"></a>00215             }
+<a name="l00216"></a>00216             <span class="keywordflow">break</span>;
+<a name="l00217"></a>00217         <span class="keywordflow">case</span> SDL_MOUSEMOTION:
+<a name="l00218"></a>00218             handle_mouse(event);
+<a name="l00219"></a>00219             <span class="keywordflow">break</span>;
+<a name="l00220"></a>00220         <span class="keywordflow">default</span>:
 <a name="l00221"></a>00221             <span class="keywordflow">break</span>;
-<a name="l00222"></a>00222         <span class="keywordflow">default</span>:
-<a name="l00223"></a>00223             <span class="keywordflow">break</span>;
-<a name="l00224"></a>00224     }
-<a name="l00225"></a>00225 }
-<a name="l00226"></a>00226 
-<a name="l00227"></a>00227 <span class="comment">// Handle user defined events.</span>
-<a name="l00228"></a>00228 <span class="keywordtype">void</span> handle_userevent(SDL_Event event)
-<a name="l00229"></a>00229 {
-<a name="l00230"></a>00230     <span class="keywordflow">switch</span> (event.user.code){
-<a name="l00231"></a>00231     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)DISPLAY_TIMER:
-<a name="l00232"></a>00232         display();
-<a name="l00233"></a>00233         <span class="keywordflow">break</span>;
-<a name="l00234"></a>00234     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)UPDATE_TIMER:
-<a name="l00235"></a>00235         check_keys();
+<a name="l00222"></a>00222     }
+<a name="l00223"></a>00223 }
+<a name="l00224"></a>00224 
+<a name="l00225"></a>00225 <span class="comment">// Handle user defined events.</span>
+<a name="l00226"></a>00226 <span class="keywordtype">void</span> handle_userevent(SDL_Event event)
+<a name="l00227"></a>00227 {
+<a name="l00228"></a>00228     <span class="keywordflow">switch</span> (event.user.code){
+<a name="l00229"></a>00229     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)DISPLAY_TIMER:
+<a name="l00230"></a>00230         display();
+<a name="l00231"></a>00231         <span class="keywordflow">break</span>;
+<a name="l00232"></a>00232     <span class="keywordflow">case</span> (<span class="keywordtype">int</span>)UPDATE_TIMER:
+<a name="l00233"></a>00233         check_keys();
+<a name="l00234"></a>00234         <span class="keywordflow">break</span>;
+<a name="l00235"></a>00235     <span class="keywordflow">default</span>:
 <a name="l00236"></a>00236         <span class="keywordflow">break</span>;
-<a name="l00237"></a>00237     <span class="keywordflow">default</span>:
-<a name="l00238"></a>00238         <span class="keywordflow">break</span>;
-<a name="l00239"></a>00239     }
-<a name="l00240"></a>00240 }
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242 <span class="comment">// Handle keys</span>
-<a name="l00243"></a>00243 <span class="keywordtype">void</span> handle_keypress(SDL_Event event)
-<a name="l00244"></a>00244 {
-<a name="l00245"></a>00245     <span class="keywordflow">switch</span> (event.key.keysym.sym){
-<a name="l00246"></a>00246         <span class="keywordflow">case</span> SDLK_ESCAPE:
-<a name="l00247"></a>00247         <span class="comment">//case SDLK_q:</span>
-<a name="l00248"></a>00248             exit(0);
-<a name="l00249"></a>00249             <span class="keywordflow">break</span>;
-<a name="l00250"></a>00250         <span class="keywordflow">case</span> SDLK_g:
-<a name="l00251"></a>00251             SDL_SetRelativeMouseMode(SDL_FALSE);
-<a name="l00252"></a>00252             <span class="keywordflow">break</span>;
-<a name="l00253"></a>00253         <span class="keywordflow">case</span> SDLK_h:
-<a name="l00254"></a>00254             SDL_SetRelativeMouseMode(SDL_TRUE);
+<a name="l00237"></a>00237     }
+<a name="l00238"></a>00238 }
+<a name="l00239"></a>00239 
+<a name="l00240"></a>00240 <span class="comment">// Handle keys</span>
+<a name="l00241"></a>00241 <span class="keywordtype">void</span> handle_keypress(SDL_Event event)
+<a name="l00242"></a>00242 {
+<a name="l00243"></a>00243     <span class="keywordflow">switch</span> (event.key.keysym.sym){
+<a name="l00244"></a>00244         <span class="keywordflow">case</span> SDLK_ESCAPE:
+<a name="l00245"></a>00245         <span class="comment">//case SDLK_q:</span>
+<a name="l00246"></a>00246             exit(0);
+<a name="l00247"></a>00247             <span class="keywordflow">break</span>;
+<a name="l00248"></a>00248         <span class="keywordflow">case</span> SDLK_g:
+<a name="l00249"></a>00249             SDL_SetRelativeMouseMode(SDL_FALSE);
+<a name="l00250"></a>00250             <span class="keywordflow">break</span>;
+<a name="l00251"></a>00251         <span class="keywordflow">case</span> SDLK_h:
+<a name="l00252"></a>00252             SDL_SetRelativeMouseMode(SDL_TRUE);
+<a name="l00253"></a>00253             <span class="keywordflow">break</span>;
+<a name="l00254"></a>00254         <span class="keywordflow">default</span>:
 <a name="l00255"></a>00255             <span class="keywordflow">break</span>;
-<a name="l00256"></a>00256         <span class="keywordflow">case</span> SDLK_l:
-<a name="l00257"></a>00257             dataHandler-&gt;<a class="code" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution</a>();
-<a name="l00258"></a>00258             terrain = dataHandler-&gt;<a class="code" href="class_data_handler.html#a8f8805d93b3687459dfa0236d278c631" title="Pointer to the terrain model.">getModel</a>();
-<a name="l00259"></a>00259             <span class="keywordflow">break</span>;
-<a name="l00260"></a>00260         <span class="keywordflow">default</span>:
-<a name="l00261"></a>00261             <span class="keywordflow">break</span>;
-<a name="l00262"></a>00262     }
+<a name="l00256"></a>00256     }
+<a name="l00257"></a>00257 }
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259 <span class="keywordtype">void</span> handle_mouse(SDL_Event event)
+<a name="l00260"></a>00260 {
+<a name="l00261"></a>00261     get_window_size(&amp;width, &amp;height);
+<a name="l00262"></a>00262     cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
 <a name="l00263"></a>00263 }
 <a name="l00264"></a>00264 
-<a name="l00265"></a>00265 <span class="keywordtype">void</span> handle_mouse(SDL_Event event)
+<a name="l00265"></a>00265 <span class="keywordtype">void</span> check_keys()
 <a name="l00266"></a>00266 {
-<a name="l00267"></a>00267     get_window_size(&amp;width, &amp;height);
-<a name="l00268"></a>00268     cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
-<a name="l00269"></a>00269 }
-<a name="l00270"></a>00270 
-<a name="l00271"></a>00271 <span class="keywordtype">void</span> check_keys()
-<a name="l00272"></a>00272 {
-<a name="l00273"></a>00273     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
-<a name="l00274"></a>00274     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
-<a name="l00275"></a>00275         cam.forward(0.05f*scl*SPEED);
+<a name="l00267"></a>00267     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
+<a name="l00268"></a>00268     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
+<a name="l00269"></a>00269         cam.forward(0.05f*scl*SPEED);
+<a name="l00270"></a>00270     }
+<a name="l00271"></a>00271     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
+<a name="l00272"></a>00272         cam.forward(-0.05f*scl*SPEED);
+<a name="l00273"></a>00273     }
+<a name="l00274"></a>00274     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
+<a name="l00275"></a>00275         cam.strafe(0.05f*scl*SPEED);
 <a name="l00276"></a>00276     }
-<a name="l00277"></a>00277     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
-<a name="l00278"></a>00278         cam.forward(-0.05f*scl*SPEED);
+<a name="l00277"></a>00277     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
+<a name="l00278"></a>00278         cam.strafe(-0.05f*scl*SPEED);
 <a name="l00279"></a>00279     }
-<a name="l00280"></a>00280     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
-<a name="l00281"></a>00281         cam.strafe(0.05f*scl*SPEED);
-<a name="l00282"></a>00282     }
-<a name="l00283"></a>00283     <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
-<a name="l00284"></a>00284         cam.strafe(-0.05f*scl*SPEED);
-<a name="l00285"></a>00285     }
-<a name="l00286"></a>00286 }
-<a name="l00287"></a>00287 
-<a name="l00288"></a>00288 
-<a name="l00289"></a>00289 <span class="comment">// -----------------Ingemars hj�lpfunktioner-----------------</span>
-<a name="l00290"></a>00290 <span class="keywordtype">void</span> reshape(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, glm::mat4 &amp;projectionMatrix)
-<a name="l00291"></a>00291 {
-<a name="l00292"></a>00292     glViewport(0, 0, w, h);
-<a name="l00293"></a>00293     <span class="keywordtype">float</span> ratio = (GLfloat)w / (GLfloat)h;
-<a name="l00294"></a>00294     projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
-<a name="l00295"></a>00295 }
-<a name="l00296"></a>00296 <span class="comment">// ----------------------------------------------------------</span>
-<a name="l00297"></a>00297 
-<a name="l00298"></a>00298 <span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])
-<a name="l00299"></a>00299 {
-<a name="l00300"></a>00300     init_SDL((<span class="keyword">const</span> <span class="keywordtype">char</span>*) <span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, width, height);
-<a name="l00301"></a>00301 
-<a name="l00302"></a>00302     reshape(width, height, projectionMatrix);
-<a name="l00303"></a>00303     glEnableClientState(GL_VERTEX_ARRAY);
-<a name="l00304"></a>00304     init();
-<a name="l00305"></a>00305 
-<a name="l00306"></a>00306     SDL_TimerID timer_id;
-<a name="l00307"></a>00307     timer_id = SDL_AddTimer(30, &amp;display_timer, NULL);
-<a name="l00308"></a>00308     timer_id = SDL_AddTimer(10, &amp;update_timer, NULL);
-<a name="l00309"></a>00309     <span class="keywordflow">if</span> (timer_id == 0){
-<a name="l00310"></a>00310         std::cerr &lt;&lt; <span class="stringliteral">&quot;Error setting timer function: &quot;</span> &lt;&lt; SDL_GetError() &lt;&lt; std::endl;
-<a name="l00311"></a>00311     }
-<a name="l00312"></a>00312     set_event_handler(&amp;event_handler);
-<a name="l00313"></a>00313     inf_loop();
-<a name="l00314"></a>00314     <span class="keywordflow">return</span> 0;
-<a name="l00315"></a>00315 }
+<a name="l00280"></a>00280 }
+<a name="l00281"></a>00281 
+<a name="l00282"></a>00282 
+<a name="l00283"></a>00283 <span class="comment">// -----------------Ingemars hj�lpfunktioner-----------------</span>
+<a name="l00284"></a>00284 <span class="keywordtype">void</span> reshape(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, glm::mat4 &amp;projectionMatrix)
+<a name="l00285"></a>00285 {
+<a name="l00286"></a>00286     glViewport(0, 0, w, h);
+<a name="l00287"></a>00287     <span class="keywordtype">float</span> ratio = (GLfloat)w / (GLfloat)h;
+<a name="l00288"></a>00288     projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
+<a name="l00289"></a>00289 }
+<a name="l00290"></a>00290 <span class="comment">// ----------------------------------------------------------</span>
+<a name="l00291"></a>00291 
+<a name="l00292"></a>00292 <span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])
+<a name="l00293"></a>00293 {
+<a name="l00294"></a>00294     init_SDL((<span class="keyword">const</span> <span class="keywordtype">char</span>*) <span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, width, height);
+<a name="l00295"></a>00295 
+<a name="l00296"></a>00296     reshape(width, height, projectionMatrix);
+<a name="l00297"></a>00297     glEnableClientState(GL_VERTEX_ARRAY);
+<a name="l00298"></a>00298     init();
+<a name="l00299"></a>00299 
+<a name="l00300"></a>00300     SDL_TimerID timer_id;
+<a name="l00301"></a>00301     timer_id = SDL_AddTimer(30, &amp;display_timer, NULL);
+<a name="l00302"></a>00302     timer_id = SDL_AddTimer(10, &amp;update_timer, NULL);
+<a name="l00303"></a>00303     <span class="keywordflow">if</span> (timer_id == 0){
+<a name="l00304"></a>00304         std::cerr &lt;&lt; <span class="stringliteral">&quot;Error setting timer function: &quot;</span> &lt;&lt; SDL_GetError() &lt;&lt; std::endl;
+<a name="l00305"></a>00305     }
+<a name="l00306"></a>00306     set_event_handler(&amp;event_handler);
+<a name="l00307"></a>00307     inf_loop();
+<a name="l00308"></a>00308     <span class="keywordflow">return</span> 0;
+<a name="l00309"></a>00309 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -432,7 +426,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>main.cpp</b>      </li>
 
-    <li class="footer">Generated on Wed Oct 7 2015 04:49:12 for Waterflow by
+    <li class="footer">Generated on Thu Oct 8 2015 09:24:14 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -2,7 +2,7 @@ var class_data_handler =
 [
     [ "DataHandler", "class_data_handler.html#ad499ef01cf19b4c99388938a34c4b0c7", null ],
     [ "~DataHandler", "class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4", null ],
-    [ "calculateNormalsGPU", "class_data_handler.html#aa0980833ba804cf0b31f6ee4a4387589", null ],
+    [ "calculateNormalsGPU", "class_data_handler.html#a90bd32bd79aeace98e9faec378e5bf22", null ],
     [ "GenerateTerrain", "class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c", null ],
     [ "getCoord", "class_data_handler.html#a439774a91fe8218fe6fffe5882102608", null ],
     [ "getData", "class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b", null ],

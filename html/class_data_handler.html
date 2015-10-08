@@ -140,8 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes NODATA by normalized convolution.  <a href="#a8409a68f2aeb6b6d77e3f8cd0b7150e9"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_handler.html#aa0980833ba804cf0b31f6ee4a4387589">calculateNormalsGPU</a> (GLfloat *vertexArray, GLfloat *normalArray)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the normals for the whole terrain on the GPU.  <a href="#aa0980833ba804cf0b31f6ee4a4387589"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_handler.html#a90bd32bd79aeace98e9faec378e5bf22">calculateNormalsGPU</a> (GLfloat *vertexArray, GLfloat *normalArray, int width, int height)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the normals for the whole terrain on the GPU.  <a href="#a90bd32bd79aeace98e9faec378e5bf22"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c">GenerateTerrain</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates terrain with the scale from terrainScale.  <a href="#aea5187c7fba2cf4828a8cd3001665b0c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_handler.html#a3c2616e27ca6571bc52a0a9b2333299f">performGPUNormConv</a> ()</td></tr>
@@ -252,12 +252,12 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="aa0980833ba804cf0b31f6ee4a4387589"></a><!-- doxytag: member="DataHandler::calculateNormalsGPU" ref="aa0980833ba804cf0b31f6ee4a4387589" args="(GLfloat *vertexArray, GLfloat *normalArray)" -->
+<a class="anchor" id="a90bd32bd79aeace98e9faec378e5bf22"></a><!-- doxytag: member="DataHandler::calculateNormalsGPU" ref="a90bd32bd79aeace98e9faec378e5bf22" args="(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_data_handler.html#aa0980833ba804cf0b31f6ee4a4387589">DataHandler::calculateNormalsGPU</a> </td>
+          <td class="memname">void <a class="el" href="class_data_handler.html#a90bd32bd79aeace98e9faec378e5bf22">DataHandler::calculateNormalsGPU</a> </td>
           <td>(</td>
           <td class="paramtype">GLfloat *&#160;</td>
           <td class="paramname"><em>vertexArray</em>, </td>
@@ -266,7 +266,19 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">GLfloat *&#160;</td>
-          <td class="paramname"><em>normalArray</em>&#160;</td>
+          <td class="paramname"><em>normalArray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -288,7 +300,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">GenerateTerrain()</a> </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00439">439</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00463">463</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -313,7 +325,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dd>
 <a class="el" href="class_data_handler.html#af763075e733975a64199e70589e3d6e7" title="Gives a height for a certain position in the terrain.">giveHeight()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00318">318</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00331">331</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -353,7 +365,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>data(col,row) </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00057">57</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00052">52</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -375,7 +387,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>For uses like read all data to FBO or from GPU back to CPU. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the beginning of the mapdata data. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00087">87</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00082">82</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -396,7 +408,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the number of datapoints. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>columns * rows. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00102">102</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00097">97</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -417,7 +429,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the height of the data. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the number of rows. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00097">97</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00092">92</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -439,7 +451,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Used to get the model for drawing in the main program </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd><a class="el" href="struct_model.html">Model</a> to draw. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00112">112</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00107">107</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -460,7 +472,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Get the sampling rate of data for constructing the model. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>int value of the sample rate. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00082">82</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00077">77</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -481,7 +493,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Get the terrain scale. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Return a float of the diff between max and min sample in the data. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00107">107</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00102">102</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -502,7 +514,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the width of the data. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the number of columns. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00092">92</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00087">87</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -565,7 +577,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dd>
 giveNormal() </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00380">380</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00404">404</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -587,7 +599,7 @@ giveNormal() </dd></dl>
 <p>First filters the data with LP filter replacing only NODATA, second calculates confidence binary image, third filter the confidence image with LP to match first pass, fourth combine the confidence and initial pass to perform the normalized convolution. A final pass is performed to set the correct data in FBO's to simplify repeated use. </p>
 <dl class="warning"><dt><b>Warning:</b></dt><dd>The data is assumed to be present in FBO3 before use as will the result after use, the data is NOT read from the GPU! </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00242">242</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00255">255</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -613,7 +625,7 @@ giveNormal() </dd></dl>
 <dd>
 <a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">GenerateTerrain()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00198">198</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00193">193</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -642,7 +654,7 @@ giveNormal() </dd></dl>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Possible performance improvement using fread instead. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00117">117</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00112">112</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -666,7 +678,7 @@ giveNormal() </dd></dl>
 <dd>
 <a class="el" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00188">188</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00183">183</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -692,7 +704,7 @@ giveNormal() </dd></dl>
 <dd>
 <a class="el" href="class_data_handler.html#ad499ef01cf19b4c99388938a34c4b0c7" title="Reads DEM data, scales it and generates a model.">DataHandler()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00172">172</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00167">167</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -720,7 +732,7 @@ giveNormal() </dd></dl>
     <ul>
       <li class="navelem"><a class="el" href="class_data_handler.html">DataHandler</a>      </li>
 
-    <li class="footer">Generated on Wed Oct 7 2015 04:49:12 for Waterflow by
+    <li class="footer">Generated on Thu Oct 8 2015 09:24:14 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
