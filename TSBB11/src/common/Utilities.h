@@ -20,6 +20,7 @@ Model* generateCanvas();
 /// @brief Frees the memory used by the model
 ///
 /// All pointers inside the model are freed and finally the model too.
+/// @warning This deallocates each buffer object the model is not renderable after this has been called
 /// @note The pointer passed as input is freed do no use it after alling this function.
 /// @return A square flat model.
 void releaseModel(Model* m);

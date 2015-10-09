@@ -289,7 +289,6 @@ void DataHandler::performNormalizedConvolution()
 	releaseFBO(fbo2);
 	releaseFBO(fbo3);
 
-	//releaseModel(squareModel); // Fungerar inte?!?!?!?!?!?!??!?!
 	free(squareModel);
 }
 
@@ -316,7 +315,7 @@ void DataHandler::GenerateTerrain()
 	for (GLuint x = 0; x < preCalcWidth; x++)
 	{
 		for (GLuint z = 0; z < preCalcHeight; z++)
-		{	
+		{
 
 			preCalcVertexArray[(x + z * preCalcWidth) * 3 + 0] = (float)(x) / (float)preCalcWidth;
 			preCalcVertexArray[(x + z * preCalcWidth) * 3 + 1] = getCoord((x)*sampleFactor, (z)*sampleFactor);
@@ -358,7 +357,7 @@ void DataHandler::GenerateTerrain()
 					// Texture coordinates.
 					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
 					texCoordArray[(x + z * width) * 2 + 1] = (float)z;
-					
+
 					//Insert normals from the precalculated normals.
 					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
 					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 1];
@@ -438,7 +437,7 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
 
-	// Cleanup 
+	// Cleanup
 	glDeleteProgram(normalshader);
 	releaseFBO(fbo4); // Must be after useFBO reset or canvas size will get all weird
 	releaseFBO(fbo5);

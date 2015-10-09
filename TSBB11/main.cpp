@@ -114,7 +114,7 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc");
+	dataHandler = new DataHandler("resources/output.min.asc",2);
 	terrain = dataHandler->getModel();
 
 
