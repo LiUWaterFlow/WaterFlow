@@ -48,7 +48,12 @@ float FlowSource::getPressure(){
     if( *i <= currTime) currItr++;
     else break;
   }
-  return (currItr < pressureTime.size()) ? pressure.at(currItr) : 0;
+  if (currItr < pressureTime.size())
+    return pressure.at(currItr);
+  else if (pressureTime.back() == -1)
+    return pressure.back();
+  else
+    return 0;
 }
 
 // This function returns a thee valued vector with xyz defining the Normal direction at the internal time specified by the update function.
@@ -59,7 +64,12 @@ std::vector<float> FlowSource::getNormal(){
     if( *i <= currTime) currItr++;
     else break;
   }
-  return (currItr < normalTime.size()) ? normal.at(currItr) : err;
+  if (currItr < normalTime.size())
+    return normal.at(currItr);
+  else if (normalTime.back() == -1)
+    return normal.back();
+  else
+    return err;
 }
 
 // This returns the position as a three valued vector containing xyz.
