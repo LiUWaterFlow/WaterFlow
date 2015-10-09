@@ -48,7 +48,7 @@
 #define NULL 0L
 #endif
 
-// Sk�rmstorlek
+// Screensize
 int width = 600;
 int height = 600; // Defines instead?
 float scl = 6;
@@ -57,7 +57,7 @@ float scl = 6;
 #define DISPLAY_TIMER 0
 #define UPDATE_TIMER 1
 
-#define SPEED 10.0f
+#define SPEED 30.0f
 
 #define PI 3.14159265358979323846f
 
@@ -76,7 +76,7 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix);
 glm::mat4 projMat, viewMat;
 
 // Models:
-Model *terrain;
+std::vector <Model*>* terrain;
 
 // Datahandler for terrain data
 DataHandler* dataHandler;
@@ -114,7 +114,7 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 2);
+	dataHandler = new DataHandler("resources/output.min.asc");
 	terrain = dataHandler->getModel();
 
 
@@ -148,9 +148,9 @@ void display(void)
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	scale = glm::scale(glm::vec3(dataHandler->getWidth(),
+	scale = glm::scale(glm::vec3(dataHandler->getDataWidth(),
 								 dataHandler->getTerrainScale(),
-								 dataHandler->getHeight()));
+								 dataHandler->getDataHeight()));
 	total = scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 
@@ -159,7 +159,10 @@ void display(void)
 	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
 
 
-	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
+	for (GLuint i = 0; i < terrain->size(); i++)
+	{
+		DrawModel(terrain->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
+	}
 	// --------------------------------------
 
 	swap_buffers();
@@ -250,6 +253,9 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
+			break; 
+		case SDLK_l:
+			std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
 			break;
 		default:
 			break;
@@ -297,10 +303,10 @@ int main(int argc, char *argv[])
 	glEnableClientState(GL_VERTEX_ARRAY);
 	init();
 
-	SDL_TimerID timer_id;
-	timer_id = SDL_AddTimer(30, &display_timer, NULL);
-	timer_id = SDL_AddTimer(10, &update_timer, NULL);
-	if (timer_id == 0){
+	SDL_TimerID timer_id1,timer_id2;
+	timer_id1 = SDL_AddTimer(30, &display_timer, NULL);
+	timer_id2 = SDL_AddTimer(30, &update_timer, NULL);
+	if (timer_id1 == 0 || timer_id2 == 0){
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
 	set_event_handler(&event_handler);
