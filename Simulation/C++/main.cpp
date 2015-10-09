@@ -37,6 +37,24 @@ void set_bnd( int N, int b, float* x)
 		}
 	}
 
+	for(i=1; i<=N; i++)
+	{
+		x[IX(0,0,i)] = 		0.5*(x[IX(1,0,i)] + x[IX(0,1,i)]);
+		x[IX(0,N+1,i)] = 	0.5*(x[IX(1,N+1,i)] + x[IX(0,N,i)]);
+		x[IX(N+1,0,i)] = 	0.5*(x[IX(N+1,1,i)] + x[IX(N,0,i)]);
+		x[IX(N+1,N+1,i)] = 	0.5*(x[IX(N,N+1,i)] + x[IX(N+1,N,i)]);
+
+		x[IX(0,i,0)] = 		0.5*(x[IX(1,i,0)] + x[IX(0,i,1)]);
+		x[IX(N+1,i,0)] = 	0.5*(x[IX(N,i,0)] + x[IX(N+1,i,1)]);
+		x[IX(0,i,N+1)] = 	0.5*(x[IX(1,i,N+1)] + x[IX(0,i,N)]);
+		x[IX(N+1,i,N+1)] = 	0.5*(x[IX(N,i,N+1)] + x[IX(N+1,i,N)]);	
+
+		x[IX(i,0,0)] = 		0.5*(x[IX(i,1,0)] + x[IX(i,0,1)]);
+		x[IX(i,N+1,0)] = 	0.5*(x[IX(i,N,0)] + x[IX(i,N+1,1)]);
+		x[IX(i,0,N+1)] = 	0.5*(x[IX(i,1,N+1)] + x[IX(i,0,N)]);
+		x[IX(i,N+1,N+1)] = 	0.5*(x[IX(i,N,N+1)] + x[IX(i,N+1,N)]);
+	}
+
 	//corner boundries
 	x[IX(0, 0,0)] = 0.3333f*(x[IX(1,0,0)] + x[IX(0,1,0)] + x[IX(0,0,1)]);
 	x[IX(0, N+1,0)] = 0.3333f*(x[IX(1,N+1,0)] + x[IX(0,N,0)] + x[IX(0,N+1,1)]);
