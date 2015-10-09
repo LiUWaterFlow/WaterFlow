@@ -57,7 +57,7 @@ public:
   /// @param a Dummy variable for initial tests of size and performance
   /// @param b Dummy variable for initial tests of size and performance
   /// @see getVoxel
-  void setVoxel(int x,int y,int z, bool filled, float a,float b);
+  void setVoxel(GLuint x, GLuint y, GLuint z, bool filled, float a, float b);
 
   /// @brief Get value of voxel at x,y,z.
   ///
@@ -68,8 +68,8 @@ public:
   /// @param y Coordinate of the voxel, y cannot be negative.
   /// @param z Coordinate of the voxel, z cannot be negative.
   /// @see setVoxel
-  /// @return Returns a pointer to the voxel (i.e. changes can be made.)
-  voxel* getVoxel(int x,int y,int z);
+  /// @return Returns a pointer to the voxel (i.e. changes can be made.) If no voxel exists a nullpointer is returned.
+  voxel* getVoxel(GLuint x, GLuint y, GLuint z);
 
 
   std::vector<std::array<int, 2>>* LayerFloodFill(int init_x, int init_z, int height);
@@ -77,6 +77,8 @@ public:
   void FloodFill(int init_x, int init_z, int height);
 
 
-
-
+  /// @brief Create a data pointer to all existing voxels
+  ///
+  /// Goes through all voxels and creates an array containing the positions, used for uploading data to the GPU.
+  std::vector<GLuint> *Voxelgrid::getVoxelPositions();
 };

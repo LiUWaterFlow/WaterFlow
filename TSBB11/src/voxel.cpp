@@ -18,11 +18,13 @@ Voxelgrid - Destructor, ensure destruction of all pointer structures
 */
 
 Voxelgrid::~Voxelgrid(){
-  for (int x = 0; x < voxels->size(); x++) {
+  for (GLuint x = 0; x < voxels->size(); x++) {
     if(voxels->at(x) != nullptr){
-      for (int y = 0; y < voxels->at(x)->size(); y++) {
+		for (GLuint y = 0; y < voxels->at(x)->size(); y++)
+		{
         if(voxels->at(x)->at(y) != nullptr){
-          for (int z = 0; z < voxels->at(x)->at(y)->size(); z++) {
+			for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++)
+			{
             if( voxels->at(x)->at(y)->at(z) != nullptr){
               delete voxels->at(x)->at(y)->at(z);
             }
@@ -43,7 +45,8 @@ setVoxel take a x,y,z coordinate where the voxel will be created (or modified)
 with the values ax, bx.
 */
 
-void Voxelgrid::setVoxel(int x,int y,int z, bool filledx, float ax,float bx){
+void Voxelgrid::setVoxel(GLuint x, GLuint y, GLuint z, bool filledx, float ax, float bx)
+{
 
   //if x is not in table. Create y and z tables, resize x, and
   //point to children (y,z);
@@ -106,7 +109,8 @@ Get voxel at x,y,z. This function returns a pointer to the struct.
 If no voxel is present it returns a nullptr.
 */
 
-voxel* Voxelgrid::getVoxel(int x,int y,int z){
+voxel* Voxelgrid::getVoxel(GLuint x, GLuint y, GLuint z)
+{
   //std::cout << "In getVoxel, size of vector voxels is: " << voxels->size() << std::endl;
 
   //std::cout << "Voxels at x is empty" << std::endl;
@@ -163,7 +167,7 @@ void Voxelgrid::FloodFill(int init_x, int height, int init_z){
     /* Fill voxels beneath current voxel
     */
     height_test = height;
-    terrain_height = datahandler->getCoord(temp_x, temp_z);
+    terrain_height = (int)datahandler->getCoord(temp_x, temp_z);
 
     while(height_test > terrain_height && height_test >= 0){
 
@@ -176,7 +180,7 @@ above land and have not yet been added to the queue. Before coordina are added t
 (!= nullptr) thus equivalent to voxel added to cue as used in if-statement.
 */
 
-    if(temp_x + 1 < datahandler->getWidth() &&
+    if(temp_x + 1 < datahandler->getDataWidth() &&
         datahandler->getCoord(temp_x + 1, temp_z) < height &&
           getVoxel(temp_x + 1, height, temp_z) == nullptr){
       setVoxel(temp_x + 1, height, temp_z, true, 0, 0);
@@ -188,7 +192,7 @@ above land and have not yet been added to the queue. Before coordina are added t
       setVoxel(temp_x - 1, height, temp_z, true, 0, 0);
       queue.push_back({temp_x - 1, temp_z});
     }
-    if(temp_z < datahandler->getWidth() &&
+    if(temp_z < datahandler->getDataWidth() &&
         datahandler->getCoord(temp_x, temp_z + 1) < height &&
           getVoxel(temp_x, height, temp_z + 1) == nullptr){
       setVoxel(temp_x, height, temp_z + 1, true, 0, 0);
@@ -201,4 +205,33 @@ above land and have not yet been added to the queue. Before coordina are added t
       queue.push_back({temp_x, temp_z - 1});
     }
   }
+}
+
+std::vector<GLuint> *Voxelgrid::getVoxelPositions()
+{
+	std::vector<GLuint> *positions = new std::vector<GLuint>;
+
+	for (GLuint x = 0; x < voxels->size(); x++)
+	{
+		if (voxels->at(x) != nullptr)
+		{
+			for (GLuint y = 0; y < voxels->at(x)->size(); y++)
+			{
+				if (voxels->at(x)->at(y) != nullptr)
+				{
+					for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++)
+					{
+						if (voxels->at(x)->at(y)->at(z) != nullptr)
+						{
+							positions->push_back(x);
+							positions->push_back(y);
+							positions->push_back(z);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return positions;
 }
