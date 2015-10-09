@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['gap',['gap',['../structgap.html',1,'']]],
   ['generatecanvas',['generateCanvas',['../_utilities_8c.html#a553ad688ab9cff4181348ca37bb66c02',1,'generateCanvas():&#160;Utilities.c'],['../_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02',1,'generateCanvas():&#160;Utilities.c']]],
   ['generateterrain',['GenerateTerrain',['../class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c',1,'DataHandler']]],
   ['getcoord',['getCoord',['../class_data_handler.html#a439774a91fe8218fe6fffe5882102608',1,'DataHandler']]],
