@@ -8,6 +8,7 @@
 #include "GL_utilities.h"
 #include "loadobj.h"
 #include "glm.hpp"
+#include "Utilities.h"
 
 #include <fstream>
 #include <iostream>
@@ -16,40 +17,35 @@
 
 using namespace std;
 
+// ===== Constructors and destructors
 
-DataHandler::DataHandler(const char* inputfile,int sampleFactor)
+DataHandler::DataHandler(const char* inputfile,int sampleFactor, int blockSize)
+: sampleFactor(sampleFactor), blockSize(blockSize)
 {
-	datamodel = NULL;
 	readdata = new mapdata();
-	this->sampleFactor = sampleFactor;
-
 	datamodel = new std::vector<Model*>;
 
 	readDEM(inputfile);
 	scaleDataBefore();
-
-
-	// Create canvas to draw on
-	GLfloat square[] = { -1, -1, 0,
-		-1, 1, 0,
-		1, 1, 0,
-		1, -1, 0 };
-	GLfloat squareTexCoord[] = { 0, 0,
-		0, 1,
-		1, 1,
-		1, 0 };
-	GLuint squareIndices[] = { 0, 1, 2, 0, 2, 3 };
-	squareModel = LoadDataToModel(square, NULL, squareTexCoord, NULL, squareIndices, 4, 6);
-
 	performNormalizedConvolution();
-
+	scaleDataAfter();
 	GenerateTerrain();
 }
 
 DataHandler::~DataHandler()
 {
 	delete readdata;
+
+	while (datamodel->size())
+	{
+		Model* tmp = datamodel->back();
+		datamodel->pop_back();
+		//releaseModel(tmp); // Fungerar inte?!?!?!?!?!?!??!?!
+		free(tmp);
+	}
 }
+
+// ===== Getters =====
 
 float DataHandler::getCoord(int col, int row)
 {
@@ -75,27 +71,30 @@ float DataHandler::getCoord(int col, int row)
 
 	return retdata;
 }
-
 int DataHandler::getSampleFactor()
 {
 	return sampleFactor;
 }
-
 float* DataHandler::getData()
 {
 	return &readdata->data[0];
 }
-
-int DataHandler::getWidth()
+int DataHandler::getDataWidth()
 {
 	return readdata->ncols;
 }
-
-int DataHandler::getHeight()
+int DataHandler::getModelWidth()
+{
+	return (int)floor(readdata->ncols / sampleFactor);
+}
+int DataHandler::getDataHeight()
 {
 	return readdata->nrows;
 }
-
+int DataHandler::getModelHeight()
+{
+	return (int)floor(readdata->nrows / sampleFactor);
+}
 int DataHandler::getElem()
 {
 	return readdata->nelem;
@@ -108,6 +107,8 @@ std::vector<Model*>* DataHandler::getModel()
 {
 	return datamodel;
 }
+
+// ===== Actual functions =====
 
 void DataHandler::readDEM(const char* inputfile)
 {
@@ -163,7 +164,6 @@ void DataHandler::readDEM(const char* inputfile)
 	}
 }
 
-// Will scale the data so that data before normalized convolution is between 0.0 and 1.0
 void DataHandler::scaleDataBefore()
 {
 	for (int i = 0; i < getElem(); i++)
@@ -179,7 +179,120 @@ void DataHandler::scaleDataBefore()
 	}
 }
 
-// Data after normalized convolution should be between 0.1 and 1.0
+void DataHandler::performNormalizedConvolution()
+{
+	// Create the filters
+	GLuint filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
+	GLuint confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
+	GLuint combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
+
+	// Create somewhere to draw the data.
+	Model* squareModel = generateCanvas();
+
+	// Initialize the FBO's
+	FBOstruct *fbo1 = initFBO3(getDataWidth(), getDataHeight(), NULL);
+	FBOstruct *fbo2 = initFBO3(getDataWidth(), getDataHeight(), NULL);
+	FBOstruct *fbo3 = initFBO3(getDataWidth(), getDataHeight(), getData());
+
+	// Perform normalized convolution until no more NODATA
+	bool isNODATA = true;
+	while (isNODATA)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			// Filter original
+			useFBO(fbo1, fbo3, 0L);
+
+			// Clear framebuffer & zbuffer
+			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Activate shader program
+			glUseProgram(filtershader);
+			glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getDataWidth(), (float)getDataHeight());
+
+			glDisable(GL_CULL_FACE);
+			glDisable(GL_DEPTH_TEST);
+			DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
+
+			// Create confidence
+			useFBO(fbo2, fbo3, 0L);
+
+			// Clear framebuffer & zbuffer
+			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Activate shader program
+			glUseProgram(confidenceshader);
+
+			glDisable(GL_CULL_FACE);
+			glDisable(GL_DEPTH_TEST);
+			DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
+
+			// Filter confidence
+			useFBO(fbo3, fbo2, 0L);
+
+			// Clear framebuffer & zbuffer
+			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Activate shader program
+			glUseProgram(filtershader);
+			glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getDataWidth(), (float)getDataHeight());
+
+			glDisable(GL_CULL_FACE);
+			glDisable(GL_DEPTH_TEST);
+			DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
+
+			// Combine
+			useFBO(fbo2, fbo1, fbo3);
+
+			// Clear framebuffer & zbuffer
+			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Activate shader program
+			glUseProgram(combineshader);
+			glUniform1i(glGetUniformLocation(combineshader, "dataTex"), 0);
+			glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
+			glDisable(GL_CULL_FACE);
+			glDisable(GL_DEPTH_TEST);
+			DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
+
+			// Swap FBOs
+			FBOstruct* temp = fbo2;
+			fbo2 = fbo3;
+			fbo3 = temp;
+		}
+
+		glReadPixels(0, 0, getDataWidth(), getDataHeight(), GL_RED, GL_FLOAT, getData());
+
+		isNODATA = false;
+		for (int i = 0; i < getElem() && !isNODATA; i++)
+		{
+			isNODATA = (getData()[i] < 0.0001f);
+		}
+	}
+
+	// Reset to initial GL inits
+	useFBO(0L, 0L, 0L);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_TRUE);
+
+	// Cleanup
+	glDeleteProgram(filtershader);
+	glDeleteProgram(confidenceshader);
+	glDeleteProgram(combineshader);
+	releaseFBO(fbo1); // Must be after useFBO reset or canvas size will get all weird
+	releaseFBO(fbo2);
+	releaseFBO(fbo3);
+
+	//releaseModel(squareModel); // Fungerar inte?!?!?!?!?!?!??!?!
+	free(squareModel);
+}
+
 void DataHandler::scaleDataAfter()
 {
 	for (int i = 0; i < getElem(); i++)
@@ -189,172 +302,20 @@ void DataHandler::scaleDataAfter()
 	}
 }
 
-
-void DataHandler::performNormalizedConvolution()
-{
-	plaintextureshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/plaintextureshader.frag");
-	filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
-	confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
-	combineshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/combineshader.frag");
-
-	//extract screen size
-	GLint viewport[4] = {0,0,0,0};
-	GLint w, h;
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	w = viewport[2] - viewport[0];
-	h = viewport[3] - viewport[1];
-
-
-
-	// Initialize the FBO's
-	fbo1 = initFBO3(getWidth(), getHeight(), NULL);
-	fbo2 = initFBO3(getWidth(), getHeight(), NULL);
-	fbo3 = initFBO3(getWidth(), getHeight(), getData());
-
-	// Perform normalized convolution until no more NODATA
-	bool isNODATA = true;
-	while (isNODATA)
-	{
-		for (int i = 0; i < 5; i++)
-			performGPUNormConv();
-
-		glReadPixels(0, 0, getWidth(), getHeight(), GL_RED, GL_FLOAT, getData());
-
-		isNODATA = false;
-		for (int i = 0; i < getElem() && !isNODATA; i++)
-		{
-			isNODATA = (getData()[i] < 0.0001f);
-		}
-	}
-
-	scaleDataAfter();
-
-	//remove all data from previous model before generating a new one.
-	/*
-	if (datamodel != NULL)
-	{
-		delete datamodel->vertexArray;
-		delete datamodel->normalArray;
-		delete datamodel->texCoordArray;
-		delete datamodel->colorArray; // Rarely used
-		delete datamodel->indexArray;
-		delete datamodel;
-	}
-	*/
-
-	releaseFBO(fbo1);
-	delete fbo1;
-	releaseFBO(fbo2);
-	delete fbo2;
-	releaseFBO(fbo3);
-	delete fbo3;
-	glDeleteProgram(plaintextureshader);
-	glDeleteProgram(filtershader);
-	glDeleteProgram(confidenceshader);
-	glDeleteProgram(combineshader);
-
-	// Reset to initial GL inits
-	useFBO(0L, 0L, 0L);
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_TRUE);
-	// Reset render area
-	glViewport(0, 0, w, h);
-
-
-}
-
-void DataHandler::performGPUNormConv()
-{
-	// Filter original
-	useFBO(fbo1, fbo3, 0L);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(filtershader);
-	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getWidth(), (float)getHeight());
-
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
-
-	// Create confidence
-	useFBO(fbo2, fbo3, 0L);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(confidenceshader);
-
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
-
-	// Filter confidence
-	useFBO(fbo3, fbo2, 0L);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(filtershader);
-	glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getWidth(), (float)getHeight());
-
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
-
-	// Combine
-	useFBO(fbo2, fbo1, fbo3);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(combineshader);
-	glUniform1i(glGetUniformLocation(combineshader, "dataTex"), 0);
-	glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
-
-	// Swap FBOs
-	useFBO(fbo3, fbo2, 0L);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(plaintextureshader);
-
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, plaintextureshader, "in_Position", NULL, "in_TexCoord");
-}
-
 void DataHandler::GenerateTerrain()
 {
 	//Create the whole model for normal calculation.
-	int preCalcWidth, preCalcHeight, preCalcVertexC;
-	preCalcWidth = (int)floor(getWidth() / sampleFactor);
-	preCalcHeight = (int)floor(getHeight() / sampleFactor);
+	GLuint preCalcWidth, preCalcHeight, preCalcVertexC;
+	preCalcWidth = getModelWidth();
+	preCalcHeight = getModelHeight();
 	preCalcVertexC = preCalcWidth*preCalcHeight;
 
 	GLfloat *preCalcVertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
 	GLfloat *preCalcNormalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
 
-	for (size_t x = 0; x < preCalcWidth; x++)
+	for (GLuint x = 0; x < preCalcWidth; x++)
 	{
-		for (size_t z = 0; z < preCalcHeight; z++)
+		for (GLuint z = 0; z < preCalcHeight; z++)
 		{	
 
 			preCalcVertexArray[(x + z * preCalcWidth) * 3 + 0] = (float)(x) / (float)preCalcWidth;
@@ -365,12 +326,8 @@ void DataHandler::GenerateTerrain()
 
 	calculateNormalsGPU(preCalcVertexArray, preCalcNormalArray, preCalcWidth, preCalcHeight);
 
-	// Release the vertex memory (or should we reuse it and read from it). 
-	delete preCalcVertexArray;
-
-	int twidth = (int)floor(getWidth() / sampleFactor);
-	int theight = (int)floor(getHeight() / sampleFactor);
-	int blockSize = 250;
+	int twidth = preCalcWidth;
+	int theight = preCalcHeight;
 	int widthBlocks = (int)ceil(GLfloat(twidth) / GLfloat(blockSize));
 	int heightBlocks = (int)ceil(GLfloat(theight) / GLfloat(blockSize));
 	for (int i = 0; i < widthBlocks; i++)
@@ -394,9 +351,9 @@ void DataHandler::GenerateTerrain()
 				for (z = 0; z < height; z++)
 				{
 					// Vertex array.
-					vertexArray[(x + z * width) * 3 + 0] = (float)(x + blockSize*i) / (float)twidth;
-					vertexArray[(x + z * width) * 3 + 1] = getCoord((x + blockSize*i)*sampleFactor, (z + blockSize*j)*sampleFactor);
-					vertexArray[(x + z * width) * 3 + 2] = (float)(z / 1.0f + blockSize*j) / (float)theight;
+					vertexArray[(x + z * width) * 3 + 0] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
+					vertexArray[(x + z * width) * 3 + 1] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 1];
+					vertexArray[(x + z * width) * 3 + 2] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 2];
 
 					// Texture coordinates.
 					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
@@ -425,9 +382,6 @@ void DataHandler::GenerateTerrain()
 				}
 			}
 
-
-			
-
 			// Create Model and upload to GPU.
 			datamodel->push_back(LoadDataToModel(	vertexArray,
 													normalArray,
@@ -438,35 +392,92 @@ void DataHandler::GenerateTerrain()
 													triangleCount * 3));
 
 			//Should be safe to delete since own space is created in the model.
-			delete indexArray;
-			delete normalArray;
-			delete texCoordArray;
-			delete vertexArray;
-
+			free(indexArray);
+			free(normalArray);
+			free(texCoordArray);
+			free(vertexArray);
 		}
 	}
-	//Delete the preCalculated normals.
-	delete preCalcNormalArray;
+	//Delete the preCalculated normals and vertices
+	free(preCalcVertexArray);
+	free(preCalcNormalArray);
 }
 
-GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height) // Returns the height of a height map.
+void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
 {
-	GLfloat yheight = 0;
+	GLuint normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
 
-	int vertX1 = (int)floor(x);
-	int vertZ1 = (int)floor(z);
+	Model* squareModel = generateCanvas();
 
-	int vertX2 = (int)floor(x) + 1;
-	int vertZ2 = (int)floor(z) + 1;
+	// Initialize the FBO's
+	FBOstruct *fbo4 = initFBO4(width, height, vertexArray);
+	FBOstruct *fbo5 = initFBO4(width, height, NULL);
+
+	// Filter original
+	useFBO(fbo5, fbo4, 0L);
+
+	// Clear framebuffer & zbuffer
+	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate shader program
+	glUseProgram(normalshader);
+	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)width, (float)height);
+	glUniform1f(glGetUniformLocation(normalshader, "in_sample"), (float)sampleFactor);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
+
+	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
+
+	// Reset to initial GL inits
+	useFBO(0L, 0L, 0L);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_TRUE);
+
+	// Cleanup 
+	glDeleteProgram(normalshader);
+	releaseFBO(fbo4); // Must be after useFBO reset or canvas size will get all weird
+	releaseFBO(fbo5);
+
+	//releaseModel(squareModel); // Fungerar inte?!?!?!?!?!?!??!?!
+	free(squareModel);
+}
+
+GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a height map.
+{
+	int width = getModelWidth();
+	int height = getModelHeight();
+
+	int blockW = (int)fmod(x, blockSize);
+	int blockH = (int)fmod(z, blockSize);
+
+	int nblocksH = (int)ceil(float(height) / float(blockSize)); // Only need this since blocks are created height first
+	int modelID = blockH + blockW * nblocksH; 	// Get the right model
+	GLfloat* vertexArray = getModel()->at(modelID)->vertexArray;
+
+	float blockX = x - blockW * blockSize; // Get the x and z inside the block
+	float blockZ = z - blockW * blockSize;
+
+	int vertX1 = (int)floor(blockX);
+	int vertZ1 = (int)floor(blockZ);
+
+	int vertX2 = (int)floor(blockX) + 1;
+	int vertZ2 = (int)floor(blockZ) + 1;
 
 	int vertX3 = 0;
 	int vertZ3 = 0;
 
+	GLfloat yheight = 0;
+
 	if ((vertX1 > 1) && (vertZ1 > 1) && (vertX2 < height - 2) && (vertZ2 < width - 2))
 	{
 
-		GLfloat dist1 = vertX1 - x;
-		GLfloat dist2 = vertZ1 - z;
+		GLfloat dist1 = vertX1 - blockX;
+		GLfloat dist2 = vertZ1 - blockZ;
 
 		if (dist1 > dist2)
 		{
@@ -503,60 +514,7 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int 
 		GLfloat D;
 		D = glm::dot(planeNormal, p1);
 
-		yheight = (D - planeNormal.x*x - planeNormal.z*z) / planeNormal.y;
+		yheight = (D - planeNormal.x*blockX - planeNormal.z*blockZ) / planeNormal.y;
 	}
 	return yheight;
-}
-
-void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
-{
-	normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
-
-	//extract screen size
-	GLint viewport[4] = {0,0,0,0};
-	GLint w, h;
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	w = viewport[2] - viewport[0];
-	h = viewport[3] - viewport[1];
-
-	// Initialize the FBO's
-	fbo4 = initFBO4(width, height, vertexArray);
-	fbo5 = initFBO4(width, height, NULL);
-
-	// Filter original
-	useFBO(fbo5, fbo4, 0L);
-
-	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate shader program
-	glUseProgram(normalshader);
-	glUniform2f(glGetUniformLocation(normalshader, "in_size"), (float)width, (float)height);
-	glUniform1f(glGetUniformLocation(normalshader, "in_sample"), (float)sampleFactor);
-
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
-
-	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
-
-	releaseFBO(fbo4);
-	delete fbo4;
-	releaseFBO(fbo5);
-	delete fbo5;
-	glDeleteProgram(normalshader);
-
-	// Reset to initial GL inits
-
-	useFBO(0L, 0L, 0L);
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_TRUE);
-
-	// Reset render area
-	glViewport(0, 0, w, h);
-
-
 }

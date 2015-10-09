@@ -38,19 +38,6 @@ struct mapdata {
 class DataHandler 
 {
 private:
-	// Variables for GPU processing
-	GLuint plaintextureshader;	///< shader program to simple switch FBO
-	GLuint filtershader;		///< shader program to perform LP filtering
-	GLuint confidenceshader;	///< shader program to calculate confidence image
-	GLuint combineshader;		///< shader program for combining into result
-	GLuint normalshader;		///< shader program for calculating normals
-	FBOstruct *fbo1;			///< FBO for use during normalized convolution
-	FBOstruct *fbo2;			///< FBO for use during normalized convolution
-	FBOstruct *fbo3;			///< FBO for use during normalized convolution, data is loaded to this FBO
-	FBOstruct *fbo4;			///< FBO for use during normal calculation, data is loaded to this FBO
-	FBOstruct *fbo5;			///< FBO for use during normal calculation
-	Model* squareModel;			///< Canvas for GPU filtering
-
 	// Data containers
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
 	std::vector<Model*>* datamodel; 			///< model for the terrain data.
@@ -58,6 +45,7 @@ private:
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
 	int sampleFactor;			///< Sample factor used for constructing model.
+	int blockSize;
 
 	/// @brief Reads the input data to the private mapdata struct.
 	///
@@ -76,6 +64,23 @@ private:
 	/// @see DataHandler()
 	void scaleDataBefore();
 
+	/// @brief Removes NODATA by normalized convolution.
+	///
+	/// Runs several passes of performGPUNormConv() until there are no more
+	/// NODATA values present in the data. Runs 5 passes before reading the
+	/// data back to the CPU and checking the data.
+	/// When no NODATA is present scaleDataAfter() is performed and a new model is
+	/// generated. First filters the data with LP filter replacing only NODATA,
+	/// second calculates confidence binary image, third filter the
+	/// confidence image with LP to match first pass, fourth combine the
+	/// confidence and initial pass to perform the normalized convolution.
+	/// A final pass is performed to set the correct data in FBO's to simplify
+	/// repeated use.
+	/// @see performGPUNormConv()
+	/// @see scaleDataAfter()
+	/// @see GenerateTerrain()
+	void performNormalizedConvolution();
+
 	/// @brief Scales data when NODATA has been removed.
 	///
 	/// Used after normalized convolution to stretch data to 0.0 to 1.0.
@@ -85,19 +90,6 @@ private:
 	/// @see scaleDataBefore()
 	/// @see performNormalizedConvolution()
 	void scaleDataAfter();
-	
-	/// @brief Makes a single pass of normalized convolution on the mapdata.
-	///
-	/// First filters the data with LP filter replacing only NODATA,
-	/// second calculates confidence binary image, third filter the
-	/// confidence image with LP to match first pass, fourth combine the
-	/// confidence and initial pass to perform the normalized convolution.
-	/// A final pass is performed to set the correct data in FBO's to simplify
-	/// repeated use.
-	/// @warning The data is assumed to be present in FBO3 before use as will
-	/// the result after use, the data is NOT read from the GPU!
-	void performGPUNormConv();
-
 	
 	/// @brief Generates terrain with the scale from terrainScale.
 	///
@@ -119,8 +111,6 @@ private:
 	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height);
 
 public:
-	
-
 	/// @brief Reads DEM data, scales it and generates a model.
 	///
 	/// Reads the inputfile for DEM data and populates a mapdata struct,
@@ -135,22 +125,10 @@ public:
 	/// @see readDEM()
 	/// @see scaleDataBefore()
 	/// @see GenerateTerrain()
-	DataHandler(const char* inputfile, int sampleFactor = 1);
+	DataHandler(const char* inputfile, int sampleFactor = 1, int blockSize = 250);
 
 	/// @brief Handle the internal pointers.
 	~DataHandler();
-
-	/// @brief Removes NODATA by normalized convolution.
-	///
-	/// Runs several passes of performGPUNormConv() until there are no more
-	/// NODATA values present in the data. Runs 5 passes before reading the
-	/// data back to the CPU and checking the data.
-	/// When no NODATA is present scaleDataAfter() is performed and a new model is
-	/// generated.
-	/// @see performGPUNormConv()
-	/// @see scaleDataAfter()
-	/// @see GenerateTerrain()
-	void performNormalizedConvolution();
 
 	/// @brief Returns a datapoint from the mapdata.
 	///
@@ -178,15 +156,23 @@ public:
 	/// @param height size of the input data
 	/// @see GenerateTerrain()
 	/// @see giveNormal()
-	GLfloat giveHeight(GLfloat x, GLfloat z, GLfloat *vertexArray, int width, int height);
+	GLfloat giveHeight(GLfloat x, GLfloat z);
 
 	/// @brief Getter for the width of the data.
 	/// @return the number of columns.
-	int getWidth();
+	int getDataWidth();
+
+	/// @brief Getter for the width of the terrain model
+	/// @return width of the model
+	int getModelWidth();
 
 	/// @brief Getter for the height of the data.
 	/// @return the number of rows.
-	int getHeight();
+	int getDataHeight();
+
+	/// @brief Getter for the height of the terrain model
+	/// @return height of the model
+	int getModelHeight();
 
 	/// @brief Getter for the number of datapoints.
 	/// @return columns * rows.

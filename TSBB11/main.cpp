@@ -114,7 +114,7 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 2);
+	dataHandler = new DataHandler("resources/output.min.asc");
 	terrain = dataHandler->getModel();
 
 
@@ -148,9 +148,9 @@ void display(void)
 
 	// ---Model transformations, rendering---
 	// Terrain:
-	scale = glm::scale(glm::vec3(dataHandler->getWidth(),
+	scale = glm::scale(glm::vec3(dataHandler->getDataWidth(),
 								 dataHandler->getTerrainScale(),
-								 dataHandler->getHeight()));
+								 dataHandler->getDataHeight()));
 	total = scale;
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 
