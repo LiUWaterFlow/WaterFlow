@@ -30,6 +30,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include "AntTweakBar.h"
 #include "GL_utilities.h"
 #include "loadobj.h"
 #include "LoadTGA.h"
@@ -52,6 +53,9 @@
 int width = 600;
 int height = 600; // Defines instead?
 float scl = 6;
+int bar_vis;
+TwBar *myBar;
+float height_at_pos;
 #define DRAW_DISTANCE 10000.0
 
 #define DISPLAY_TIMER 0
@@ -130,6 +134,19 @@ void init(void)
 	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
+
+/*Initialize AntTweakBar
+*/
+	TwInit(TW_OPENGL_CORE, NULL);
+	TwWindowSize(width, height);
+
+
+	myBar = TwNewBar("Test bar");
+	TwAddVarRO(myBar, "CameraX", TW_TYPE_FLOAT, &cam.position.x, "");
+	TwAddVarRO(myBar, "CameraY", TW_TYPE_FLOAT, &cam.position.y, "");
+	TwAddVarRO(myBar, "CameraZ", TW_TYPE_FLOAT, &cam.position.z, "");
+	TwAddVarRO(myBar, "Height", TW_TYPE_FLOAT, &height_at_pos, "help= 'Shows terrain height at camera position' ");
+
 }
 
 void display(void)
@@ -161,6 +178,11 @@ void display(void)
 
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
 	// --------------------------------------
+
+	/*Draw the tweak bars
+	*/
+	height_at_pos = dataHandler->getCoord(cam.position.x, cam.position.z);
+	TwDraw();
 
 	swap_buffers();
 }
@@ -251,6 +273,13 @@ void handle_keypress(SDL_Event event)
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
 			break;
+		case SDLK_e:
+		if (bar_vis == 1){
+		bar_vis = 0;
+		TwDefine("myBar/visible=false");}
+		else{
+		bar_vis = 1;
+		TwDefine("myBar/visible=true");} // mybar is displayed again
 		default:
 			break;
 	}
@@ -303,7 +332,9 @@ int main(int argc, char *argv[])
 	if (timer_id == 0){
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
+
 	set_event_handler(&event_handler);
 	inf_loop();
+	TwTerminate();
 	return 0;
 }
