@@ -80,5 +80,6 @@ public:
   /// @brief Create a data pointer to all existing voxels
   ///
   /// Goes through all voxels and creates an array containing the positions, used for uploading data to the GPU.
+  /// @return Returs a pointer to a vector with all the positions in the order x1,y1,z1,x2,y2,z2 ...
   std::vector<GLuint> *Voxelgrid::getVoxelPositions();
 };
