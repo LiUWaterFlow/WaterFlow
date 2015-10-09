@@ -10,7 +10,12 @@ var searchData=
   ['getmodel',['getModel',['../class_data_handler.html#a0f9751c37a90dcf458e4814a5d0a3447',1,'DataHandler']]],
   ['getmodelheight',['getModelHeight',['../class_data_handler.html#a999feaf0f3f71e3c20693b495f8f549d',1,'DataHandler']]],
   ['getmodelwidth',['getModelWidth',['../class_data_handler.html#a963a4a7e19c288853de5cf7647564352',1,'DataHandler']]],
+  ['getnormal',['getNormal',['../class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801',1,'FlowSource']]],
+  ['getposition',['getPosition',['../class_flow_source.html#a3cf14642f55c4d082a1ba91d2948fa92',1,'FlowSource']]],
+  ['getpressure',['getPressure',['../class_flow_source.html#a8bfe33f49781c093cdee9fef53270393',1,'FlowSource']]],
+  ['getradius',['getRadius',['../class_flow_source.html#ac3563fd62ddc0068eaf86035654ea721',1,'FlowSource']]],
   ['getsamplefactor',['getSampleFactor',['../class_data_handler.html#a20f0ef4392a50220418a9c4024dcf129',1,'DataHandler']]],
   ['getterrainscale',['getTerrainScale',['../class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8',1,'DataHandler']]],
+  ['getwaterleft',['getWaterLeft',['../class_flow_source.html#a22a5f067cec60e4db23be237d15a56e2',1,'FlowSource']]],
   ['giveheight',['giveHeight',['../class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7',1,'DataHandler']]]
 ];
