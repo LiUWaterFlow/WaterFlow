@@ -16,7 +16,7 @@
 #include <string.h>
 #include <math.h>
 
-#define PI 3.141592
+#define PI 3.141592f
 
 
 typedef struct Mesh
@@ -628,20 +628,20 @@ static void generateNormals(Mesh* mesh)
 			float sqrLen1 = v1x * v1x + v1y * v1y + v1z * v1z;
 			float sqrLen2 = v2x * v2x + v2y * v2y + v2z * v2z;
 
-			float len0 = (sqrLen0 >= 1e-6) ? sqrt(sqrLen0) : 1e-3;
-			float len1 = (sqrLen1 >= 1e-6) ? sqrt(sqrLen1) : 1e-3;
-			float len2 = (sqrLen2 >= 1e-6) ? sqrt(sqrLen2) : 1e-3;
+			float len0 = (sqrLen0 >= 1e-6f) ? (float)sqrt(sqrLen0) : 1e-3f;
+			float len1 = (sqrLen1 >= 1e-6f) ? (float)sqrt(sqrLen1) : 1e-3f;
+			float len2 = (sqrLen2 >= 1e-6f) ? (float)sqrt(sqrLen2) : 1e-3f;
 
 			float influence0 = (v0x * v1x + v0y * v1y + v0z * v1z) / (len0 * len1);
 			float influence1 = -(v0x * v2x + v0y * v2y + v0z * v2z) / (len0 * len2);
 			float influence2 = (v1x * v2x + v1y * v2y + v1z * v2z) / (len1 * len2);
 
-			float angle0 = (influence0 >= 1.f) ? 0 : 
-				(influence0 <= -1.f) ? PI : acos(influence0);
-			float angle1 = (influence1 >= 1.f) ? 0 : 
-				(influence1 <= -1.f) ? PI : acos(influence1);
-			float angle2 = (influence2 >= 1.f) ? 0 : 
-				(influence2 <= -1.f) ? PI : acos(influence2);
+			float angle0 = (influence0 >= 1.f) ? 0.0f : 
+				(influence0 <= -1.f) ? PI : (float)acos(influence0);
+			float angle1 = (influence1 >= 1.f) ? 0.0f : 
+				(influence1 <= -1.f) ? PI : (float)acos(influence1);
+			float angle2 = (influence2 >= 1.f) ? 0.0f : 
+				(influence2 <= -1.f) ? PI : (float)acos(influence2);
 
 			float normalX = v1z * v0y - v1y * v0z;
 			float normalY = v1x * v0z - v1z * v0x;
@@ -667,7 +667,7 @@ static void generateNormals(Mesh* mesh)
 		for (normalIndex = 0; normalIndex < mesh->normalsCount; normalIndex++)
 		{
 			GLfloat* normal = &mesh->vertexNormals[normalIndex * 3];
-			float length = sqrt(normal[0] * normal[0] + normal[1] * normal[1]
+			float length = (float)sqrt(normal[0] * normal[0] + normal[1] * normal[1]
 							+ normal[2] * normal[2]);
 			float reciprocalLength = 1.f;
 
@@ -836,9 +836,9 @@ void CenterModel(Model *m)
 
 	for (i = 0; i < m->numVertices; i++)
 	{
-		m->vertexArray[3 * i] -= (maxx + minx)/2.0;
-		m->vertexArray[3 * i+1] -= (maxy + miny)/2.0;
-		m->vertexArray[3 * i+2] -= (maxz + minz)/2.0;
+		m->vertexArray[3 * i] -= (maxx + minx)/2.0f;
+		m->vertexArray[3 * i+1] -= (maxy + miny)/2.0f;
+		m->vertexArray[3 * i+2] -= (maxz + minz)/2.0f;
 	}
 }
 

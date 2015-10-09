@@ -3,16 +3,23 @@
 
 #ifdef __APPLE__
 	#include <OpenGL/gl3.h>
-  #include <GLUT/glut.h>
-	//#include "MicroGlut.h"
+	#include <GLUT/glut.h>
 #else
-	//#include "MicroGlut.h"
-	//#include <GL/gl.h>
-  #include "glew.h"
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		
+	#else
+		#include "glew.h"
+	#endif
 #endif
 
+
 #ifndef M_PI
-#define M_PI           3.14159265358979323846
+#define M_PI           3.14159265358979323846f
 #endif
 
 #define GLM_FORCE_RADIANS
@@ -25,15 +32,15 @@ class Camera {
     private:
         // x används för att musen inte ska fastna i kanterna på
         // fönstret
-        int x{0};
+        int x;
         int program;
     public:
         Camera(int program, glm::mat4 *matrix);
         Camera();
 
-		glm::vec3 position{ 23.5 * 6, 2.5 * 6, 28 * 6 };
-		glm::vec3 look_at_pos{ 23.5 * 6, 2.5 * 6, 28 * 5 };
-        glm::vec3 up{0,1,0};
+	glm::vec3 position;
+	glm::vec3 look_at_pos;
+        glm::vec3 up;
 
         glm::mat4 *matrix;
 

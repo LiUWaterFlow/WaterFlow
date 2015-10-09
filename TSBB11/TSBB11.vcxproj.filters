@@ -100,5 +100,17 @@
     <None Include="src\shaders\plaintextureshader.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="resources\mainpage.dox">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\Doxyfile">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="makefile">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\shaders\normalshader.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
