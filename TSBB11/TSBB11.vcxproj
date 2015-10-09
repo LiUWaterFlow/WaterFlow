@@ -103,6 +103,7 @@
     <ClCompile Include="src\common\Utilities.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
     <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\voxel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
     <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\voxel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />

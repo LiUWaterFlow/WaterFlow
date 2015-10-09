@@ -43,6 +43,7 @@
 #include "SDL_util.h"
 #include "camera.h"
 #include "readData.h"
+#include "voxel.h"
 
 #ifndef NULL
 #define NULL 0L
@@ -131,6 +132,8 @@ void init(void)
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 }
+
+
 
 void display(void)
 {
@@ -309,6 +312,8 @@ int main(int argc, char *argv[])
 	if (timer_id1 == 0 || timer_id2 == 0){
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
+
+
 	set_event_handler(&event_handler);
 	inf_loop();
 	return 0;
