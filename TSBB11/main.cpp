@@ -44,6 +44,7 @@
 #include "camera.h"
 #include "readData.h"
 #include "voxel.h"
+#include "voxelTesting.h"
 
 #ifndef NULL
 #define NULL 0L
@@ -300,15 +301,19 @@ int main(int argc, char *argv[])
 	glEnableClientState(GL_VERTEX_ARRAY);
 	init();
 
-	SDL_TimerID timer_id;
-	timer_id = SDL_AddTimer(30, &display_timer, NULL);
-	timer_id = SDL_AddTimer(10, &update_timer, NULL);
-	if (timer_id == 0){
-		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
-	}
+	Voxelgrid* grid = new Voxelgrid(dataHandler);
+	voxelTest::VoxelTest* tester = new voxelTest::VoxelTest(dataHandler,grid);
+	voxelTest::mainTest(tester);
+
+	//SDL_TimerID timer_id;
+	//timer_id = SDL_AddTimer(30, &display_timer, NULL);
+	//timer_id = SDL_AddTimer(10, &update_timer, NULL);
+	//if (timer_id == 0){
+	//	std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
+	//}
 
 
-	set_event_handler(&event_handler);
-	inf_loop();
+	//set_event_handler(&event_handler);
+	//inf_loop();
 	return 0;
 }

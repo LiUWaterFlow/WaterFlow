@@ -98,7 +98,7 @@ private:
 	/// the result after use, the data is NOT read from the GPU!
 	void performGPUNormConv();
 
-	
+
 	/// @brief Generates terrain with the scale from terrainScale.
 	///
 	/// The output terrain is stored in the private model.
@@ -119,7 +119,7 @@ private:
 	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height);
 
 public:
-	
+
 
 	/// @brief Reads DEM data, scales it and generates a model.
 	///
@@ -129,7 +129,7 @@ public:
 	/// terrain.
 	/// @param inputfile path to DEM data.
 	/// @param sampleFactor Downsampling factor for the terrain. Must be a power of 2. [1,2,4...]
-	/// default value is 1. (No downsampling). Note that the terrainScale will be used as 
+	/// default value is 1. (No downsampling). Note that the terrainScale will be used as
 	/// tScale/sampleFactor. So a downsampling should not change the overall proportions of the model
 	/// @param tScale sets terrainScale, default value is 500.0f
 	/// @see readDEM()

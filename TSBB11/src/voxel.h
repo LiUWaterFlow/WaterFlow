@@ -1,3 +1,7 @@
+#ifndef VOXEL_H
+#define VOXEL_H
+
+
 #include <vector>
 #include <array>
 #include <iostream>
@@ -39,6 +43,7 @@ public:
   /// @see DataHandle::getTerrainScale
   /// @see setVoxel
   /// @see getVoxel
+  /// @todo The Voxelgrid should be able to handle one voxel outside the area of the terrain in each dimension.
   Voxelgrid(DataHandler* handle);
 
 
@@ -80,3 +85,5 @@ public:
 
 
 };
+
+#endif

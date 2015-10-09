@@ -62,4 +62,3 @@ void main(void)
 
 	out_Color = vec4(totalLight, 1);
 }
-
