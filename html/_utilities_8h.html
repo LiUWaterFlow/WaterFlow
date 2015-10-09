@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>Waterflow: File Members</title>
+<title>Waterflow: src/common/Utilities.h File Reference</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -76,13 +76,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li class="current"><a href="globals.html"><span>File&#160;Members</span></a></li>
-    </ul>
-  </div>
-  <div id="navrow3" class="tabs2">
-    <ul class="tablist">
-      <li class="current"><a href="globals.html"><span>All</span></a></li>
-      <li><a href="globals_func.html"><span>Functions</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -96,21 +90,81 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-  initNavTree('globals.html','');
+  initNavTree('_utilities_8h.html','');
 </script>
 <div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle">
+<div class="title">src/common/Utilities.h File Reference</div>  </div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented file members with links to the documentation:</div><ul>
-<li>generateCanvas()
-: <a class="el" href="_utilities_8c.html#a553ad688ab9cff4181348ca37bb66c02">Utilities.c</a>
-, <a class="el" href="_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02">Utilities.h</a>
-</li>
-<li>releaseModel()
-: <a class="el" href="_utilities_8c.html#a0e2e35582a0b9df7c7fa8bae67c79b2f">Utilities.c</a>
-, <a class="el" href="_utilities_8h.html#a0e2e35582a0b9df7c7fa8bae67c79b2f">Utilities.h</a>
-</li>
-</ul>
+<div class="textblock"><code>#include &quot;loadobj.h&quot;</code><br/>
+</div>
+<p><a href="_utilities_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02">generateCanvas</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a square canvas for FBO drawing.  <a href="#a553ad688ab9cff4181348ca37bb66c02"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_utilities_8h.html#a0e2e35582a0b9df7c7fa8bae67c79b2f">releaseModel</a> (<a class="el" href="struct_model.html">Model</a> *m)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the model.  <a href="#a0e2e35582a0b9df7c7fa8bae67c79b2f"></a><br/></td></tr>
+</table>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>This file contains useful functions that doesn't quite fit anywhere else. </p>
+
+<p>Definition in file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+</div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a553ad688ab9cff4181348ca37bb66c02"></a><!-- doxytag: member="Utilities.h::generateCanvas" ref="a553ad688ab9cff4181348ca37bb66c02" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_model.html">Model</a>* <a class="el" href="_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02">generateCanvas</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Generates a square canvas for FBO drawing. </p>
+<p>Returns a model that can be useful for filtering and other tasks where a FBO is used. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A square flat model. </dd></dl>
+
+<p>Definition at line <a class="el" href="_utilities_8c_source.html#l00027">27</a> of file <a class="el" href="_utilities_8c_source.html">Utilities.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0e2e35582a0b9df7c7fa8bae67c79b2f"></a><!-- doxytag: member="Utilities.h::releaseModel" ref="a0e2e35582a0b9df7c7fa8bae67c79b2f" args="(Model *m)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="_utilities_8h.html#a0e2e35582a0b9df7c7fa8bae67c79b2f">releaseModel</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_model.html">Model</a> *&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Frees the memory used by the model. </p>
+<p>All pointers inside the model are freed and finally the model too. </p>
+<dl class="warning"><dt><b>Warning:</b></dt><dd>This deallocates each buffer object the model is not renderable after this has been called </dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>The pointer passed as input is freed do no use it after alling this function. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A square flat model. </dd></dl>
+
+<p>Definition at line <a class="el" href="_utilities_8c_source.html#l00047">47</a> of file <a class="el" href="_utilities_8c_source.html">Utilities.c</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
+</div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -125,9 +179,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-</div>
   <div id="nav-path" class="navpath">
     <ul>
+      <li class="navelem"><a class="el" href="_utilities_8h.html">Utilities.h</a>      </li>
 
     <li class="footer">Generated on Fri Oct 9 2015 10:22:46 for Waterflow by
     <a href="http://www.doxygen.org/index.html">

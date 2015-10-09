@@ -19,5 +19,7 @@ var files =
     [ "src/common/LoadTGA.c", null, null ],
     [ "src/common/LoadTGA.h", null, null ],
     [ "src/common/SDL_util.c", null, null ],
-    [ "src/common/SDL_util.h", null, null ]
+    [ "src/common/SDL_util.h", null, null ],
+    [ "src/common/Utilities.c", "_utilities_8c.html", "_utilities_8c" ],
+    [ "src/common/Utilities.h", "_utilities_8h.html", "_utilities_8h" ]
 ];
