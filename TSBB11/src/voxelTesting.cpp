@@ -3,8 +3,18 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include <cstdlib>
 
 namespace voxelTest{
+
+  void plsWait(){
+    std::cout << "Press any key to continue..." << std::endl;
+#ifdef _WIN32
+    system("pause");
+#else
+    system("read");
+#endif
+  }
 
   int parseLine(char* line){
     int i = strlen(line);
@@ -51,32 +61,39 @@ namespace voxelTest{
   void mainTest(VoxelTest* tester){
     Voxelgrid* grid = tester->gridPtr;
     startClock();
-    size_t count = 500;
+    size_t count = 300;
     size_t end = 0;
+
+    plsWait();
+
     for (size_t x = count; x != end; x--) {
       for (size_t y = count; y != end; y--) {
         for (size_t z = count; z != end; z--) {
-          grid->setVoxel(x,y,z,1,x,x);
+          grid->setVoxel(x,y,z,1,x,y);
         }
       }
     }
     endClock();
-
 
     //Read and modify the voxels
     startClock();
-    for (size_t x = count*2; x != end; x--) {
-      for (size_t y = count*2; y != end; y--) {
-        for (size_t z = count*2; z != end; z--) {
+    for (size_t x = 0; x < count; x++) {
+      for (size_t y = 0; y < count; y++) {
+        for (size_t z = 0; z < count; z++) {
           voxel* tmp = grid->getVoxel(x,y,z);
-          if(tmp != nullptr)
+          if(tmp != nullptr){
             tmp->a++;
+            //printf("x: %f  y: %f  ", tmp->a,tmp->b);
+          }
         }
       }
     }
+    printf("\n");
     endClock();
     //Delete the voxels
-
+    plsWait();
+    delete grid;
+    plsWait();
     //Read some voxels that doesn't exist
 
 
