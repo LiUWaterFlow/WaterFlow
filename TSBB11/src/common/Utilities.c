@@ -41,7 +41,6 @@ Model* generateCanvas()
 	free(squareIndices);
 	free(square);
 	free(squareTexCoord);
-	//squareTexCoord = new int;
 }
 
 //Only to be used for 'final destruction' of models. (they will not be renderable after this.)

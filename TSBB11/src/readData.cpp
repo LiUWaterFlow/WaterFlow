@@ -40,8 +40,7 @@ DataHandler::~DataHandler()
 	{
 		Model* tmp = datamodel->back();
 		datamodel->pop_back();
-		//releaseModel(tmp); // Fungerar inte?!?!?!?!?!?!??!?!
-		free(tmp);
+		releaseModel(tmp);
 	}
 }
 
@@ -288,8 +287,7 @@ void DataHandler::performNormalizedConvolution()
 	releaseFBO(fbo1); // Must be after useFBO reset or canvas size will get all weird
 	releaseFBO(fbo2);
 	releaseFBO(fbo3);
-
-	free(squareModel);
+	releaseModel(squareModel);
 }
 
 void DataHandler::scaleDataAfter()
@@ -441,9 +439,7 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	glDeleteProgram(normalshader);
 	releaseFBO(fbo4); // Must be after useFBO reset or canvas size will get all weird
 	releaseFBO(fbo5);
-
-	//releaseModel(squareModel); // Fungerar inte?!?!?!?!?!?!??!?!
-	free(squareModel);
+	releaseModel(squareModel);
 }
 
 GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a height map.
@@ -451,32 +447,22 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 	int width = getModelWidth();
 	int height = getModelHeight();
 
-	int blockW = (int)fmod(x, blockSize);
-	int blockH = (int)fmod(z, blockSize);
+	int vertX1 = (int)floor(x);
+	int vertZ1 = (int)floor(z);
 
-	int nblocksH = (int)ceil(float(height) / float(blockSize)); // Only need this since blocks are created height first
-	int modelID = blockH + blockW * nblocksH; 	// Get the right model
-	GLfloat* vertexArray = getModel()->at(modelID)->vertexArray;
-
-	float blockX = x - blockW * blockSize; // Get the x and z inside the block
-	float blockZ = z - blockW * blockSize;
-
-	int vertX1 = (int)floor(blockX);
-	int vertZ1 = (int)floor(blockZ);
-
-	int vertX2 = (int)floor(blockX) + 1;
-	int vertZ2 = (int)floor(blockZ) + 1;
+	int vertX2 = (int)floor(x) + 1;
+	int vertZ2 = (int)floor(z) + 1;
 
 	int vertX3 = 0;
 	int vertZ3 = 0;
 
 	GLfloat yheight = 0;
 
-	if ((vertX1 > 1) && (vertZ1 > 1) && (vertX2 < height - 2) && (vertZ2 < width - 2))
+	if ((vertX1 > 1) && (vertZ1 > 1) && (vertX2 < width - 2) && (vertZ2 < height - 2))
 	{
 
-		GLfloat dist1 = vertX1 - blockX;
-		GLfloat dist2 = vertZ1 - blockZ;
+		GLfloat dist1 = vertX1 - x;
+		GLfloat dist2 = vertZ1 - z;
 
 		if (dist1 > dist2)
 		{
@@ -488,32 +474,31 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 			vertX3 = vertX1 + 1;
 			vertZ3 = vertZ1;
 		}
-		GLfloat vertY1 = vertexArray[(vertX1 + vertZ1 * width) * 3 + 1];
+		GLfloat vertY1 = getData()[(vertX1 + vertZ1 * width)];
+		GLfloat vertY2 = getData()[(vertX2 + vertZ2 * width)];
+		GLfloat vertY3 = getData()[(vertX3 + vertZ3 * width)];
 
-		GLfloat vertY2 = vertexArray[(vertX2 + vertZ2 * width) * 3 + 1];
-
-		GLfloat vertY3 = vertexArray[(vertX3 + vertZ3 * width) * 3 + 1];
-
-		glm::vec3 p1 = { vertexArray[(vertX1 + vertZ1 * width) * 3 + 0], vertY1, vertexArray[(vertX1 + vertZ1 * width) * 3 + 2] };
-		glm::vec3 p2 = { vertexArray[(vertX2 + vertZ2 * width) * 3 + 0], vertY2, vertexArray[(vertX2 + vertZ2 * width) * 3 + 2] };
-		glm::vec3 p3 = { vertexArray[(vertX3 + vertZ3 * width) * 3 + 0], vertY3, vertexArray[(vertX3 + vertZ3 * width) * 3 + 2] };
+		glm::vec3 p1 = { (float)vertX1 / (float)width, vertY1, (float)vertZ1 / (float)height };
+		glm::vec3 p2 = { (float)vertX2 / (float)width, vertY2, (float)vertZ2 / (float)height };
+		glm::vec3 p3 = { (float)vertX3 / (float)width, vertY3, (float)vertZ3 / (float)height };
 
 		glm::vec3 planeNormal = { 0, 0, 0 };
 
 		// This if/else might not be making any difference whatsoever.
 		if (dist1 > dist2)
 		{
-			planeNormal = normalize(glm::cross(p2 - p1, p3 - p1));
+			planeNormal = glm::normalize(glm::cross(p2 - p1, p3 - p1));
 		}
 		else
 		{
-			planeNormal = normalize(glm::cross(p3 - p1, p2 - p1));
+			planeNormal = glm::normalize(glm::cross(p3 - p1, p2 - p1));
 		}
 
 		GLfloat D;
 		D = glm::dot(planeNormal, p1);
 
-		yheight = (D - planeNormal.x*blockX - planeNormal.z*blockZ) / planeNormal.y;
+		yheight = (D - planeNormal.x*x/width - planeNormal.z*z/height) / planeNormal.y;
+		yheight *= getTerrainScale();
 	}
 	return yheight;
 }

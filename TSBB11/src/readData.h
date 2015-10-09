@@ -45,7 +45,7 @@ private:
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
 	int sampleFactor;			///< Sample factor used for constructing model.
-	int blockSize;
+	int blockSize;				///< Size of each model block.
 
 	/// @brief Reads the input data to the private mapdata struct.
 	///

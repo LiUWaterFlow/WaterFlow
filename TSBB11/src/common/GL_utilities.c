@@ -453,7 +453,6 @@ void useFBO(FBOstruct *out, FBOstruct *in1, FBOstruct *in2)
 		{
 			lastw = viewport[2] - viewport[0];
 			lasth = viewport[3] - viewport[1];
-			fprintf(stderr, "LastW: %i, LastH: %i", lastw, lasth);
 		}
 	}
 

@@ -114,7 +114,7 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc",2);
+	dataHandler = new DataHandler("resources/output.min.asc");
 	terrain = dataHandler->getModel();
 
 
@@ -253,6 +253,9 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
+			break; 
+		case SDLK_l:
+			std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
 			break;
 		default:
 			break;
