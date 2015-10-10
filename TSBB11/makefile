@@ -7,7 +7,6 @@ ifeq ($(shell uname), Linux)
 endif
 $SOURCEDIR = src
 
-$(shell export DYLD_LIBRARY_PATH=$$DYLD_LIBRARY_PATH:/System/Library/Frameworks/OpenGL.framework/Versions/Current/)
 CPP_FILES := $(wildcard src/*.cpp)
 
 OBJ_FILES_CPP := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
@@ -22,9 +21,8 @@ MAIN = main.cpp
 OUT = bin/WaterFlow
 
 ifeq ($(PLATFORM),mac)
-$(shell export $ANT)
 INC += -F/Library/Frameworks/
-LINKS =  -framework OpenGL -framework GLUT -framework Cocoa -framework SDL2 -Llib/AntTweak/lib -lAntTweakBar
+LINKS =  -framework OpenGL -framework GLUT -framework Cocoa -framework SDL2 -lAntTweakBar
 endif
 
 GCC = g++ -Wall -pedantic -std=c++0x
@@ -39,11 +37,8 @@ endif
 
 
 
-all: $(OBJ_FILES_COMMON) $(OBJ_FILES_CPP) $(ANT)
+all: $(OBJ_FILES_COMMON) $(OBJ_FILES_CPP)
 	$(GCC) obj/*.o $(MAIN) -o $(OUT) $(INC) $(LINKS)
-
-ant:
-	eval $$(eval bash ./test.sh)
 
 obj/%.o : src/common/%.c
 	$(GCC) -c -o $@ $< $(INC)
