@@ -22,7 +22,7 @@ OUT = bin/WaterFlow
 
 ifeq ($(PLATFORM),mac)
 INC += -F/Library/Frameworks/
-LINKS =  -framework OpenGL -framework GLUT -framework Cocoa -framework SDL2 -lAntTweakBar
+LINKS =  -framework OpenGL -framework GLUT -framework Cocoa -framework SDL2 -L/usr/local/lib -lAntTweakBar
 endif
 
 GCC = g++ -Wall -pedantic -std=c++0x
