@@ -1,25 +1,22 @@
-//#define IX(i,j,k) ((i)+(N+2)*(j)+(N+2)*(N+2)*(k))
-//#define SWAP(x0, x) {float *tmp=x0;x0=x;x=tmp;}
-
-#include "iostream"
 #include "fluidsolver.h"
 
-//haxx så det funkar för tillfället
-//void *__gxx_personality_v0;
+#include "iostream"
 
-const int N=10;
-const int size=(N+2)*(N+2)*(N+2);
-
-//static float u[size], v[size], w[size], u_prev[size], v_prev[size], w_prev[size];
-//static float dens[size], dens_prev[size];
-
-
-/*voxels between corners not bounded correctly
- first and last slice not working correctly
-Works otherwise
-*/
-void set_bnd( int N, int b, float* x) 
+fluidsolver::fluidsolver(int N)
 {
+	_size = N;
+	_dt = 0.1f;
+}
+
+fluidsolver::fluidsolver(int height, int width, int depth) : _height(height), _width(width), _depth(depth)
+{
+	_size = height*width*depth;
+	_dt = 0.01;
+}
+
+void fluidsolver::set_bnd(int b, float* x)
+{
+	int N = _size;
 	int i,j;
 
 	for(i =1; i<=N; i++)
@@ -69,26 +66,23 @@ void set_bnd( int N, int b, float* x)
 	x[IX(N+1, 0,N+1)] = 0.3333f*(x[IX(N,0,N+1)] + x[IX(N+1,1,N+1)] + x[IX(N+1,0,N)]);
 	x[IX(N+1, N+1,N+1)] = 0.3333f*(x[IX(N,N+1,N+1)] + x[IX(N+1,N,N+1)] + x[IX(N+1,N+1,N)]);
 
-	
 }
 
-
-
-
-
-void add_source (int N, float *x, float *s, float dt) //fungerar som den ska yey
+void fluidsolver::add_source(float *x, float *s)
 {
-	int i, size=(N+2)*(N+2)*(N+2);
+	float dt = _dt;
+	int i, size=(_size+2)*(_size+2)*(_size+2); //add to the borders too
 	for (i=0;i<size;i++)
 	{
 		x[i] += dt*s[i];
 	}
 }
 
-void diffuse ( int N, int b, float *x, float *x0, float diff, float dt) //fungerar som den ska (tror vi) yey
+void fluidsolver::diffuse (int b, float *x, float *x0, float diff) //fungerar som den ska (tror vi) yey
 {
+	int N = _size;
 	int iter, i,j,k;
-	float a=dt*diff*N*N*N;
+	float a= _dt*diff*N*N*N;
 
 	for  (iter=0;iter<20;iter++)
 	{
@@ -105,14 +99,14 @@ void diffuse ( int N, int b, float *x, float *x0, float diff, float dt) //funger
 				}
 			}
 		}
-		set_bnd (N,b,x);
+		set_bnd (b,x);
 	}
-
 }
 
-//Working we think it does that
-void advect (int N, int b, float *d, float *d0, float *u, float *v, float *w, float dt)
+void fluidsolver::advect (int b, float *d, float *d0, float *u, float *v, float *w)
 {
+	float dt = _dt;
+	int N = _size;
 	int i,j,k,i0,j0,k0,i1,j1,k1;
 	float x,y,z,s0,t0,q0,s1,t1,q1,dt0;
 
@@ -155,11 +149,12 @@ void advect (int N, int b, float *d, float *d0, float *u, float *v, float *w, fl
 			}
 		}
 	}
-	set_bnd (N,b,d);
+	set_bnd (b,d);
 }
 
-void project (int N, float *u, float *v, float *w, float *p, float *div)
+void fluidsolver::project (float *u, float *v, float *w, float *p, float *div)
 {
+	int N = _size;
 	int i,j,k, iter;
 	float h;
 
@@ -177,7 +172,7 @@ void project (int N, float *u, float *v, float *w, float *p, float *div)
 			}		
 		}
 	}
-	set_bnd (N,0,div); set_bnd (N,0,p);
+	set_bnd (0,div); set_bnd (0,p);
 
 	for (iter=0;iter<20;iter++)
 	{
@@ -193,7 +188,7 @@ void project (int N, float *u, float *v, float *w, float *p, float *div)
 				}
 			}
 		}
-		 set_bnd(N, 0,p);	
+		 set_bnd(0,p);	
 	}
 
 	for( i=1; i<=N; i++)
@@ -209,58 +204,43 @@ void project (int N, float *u, float *v, float *w, float *p, float *div)
 		}
 	}
 
-	set_bnd(N,1,u);
-	set_bnd(N,2,v);
-	set_bnd(N,3,w);
-}	
-
-void dens_step (int N, float *x, float *x0, float *u, float *v, float *w, float diff, float dt)
-{
-	add_source (N,x,x0,dt);
-	SWAP (x0, x); diffuse (N,0,x,x0,diff,dt);
-	SWAP (x0, x); advect (N,0,x,x0,u,v,w,dt);
+	set_bnd(1,u);
+	set_bnd(2,v);
+	set_bnd(3,w);
 }
 
-void vel_step (int N, float *u, float *v, float *w, float *u0, float *v0, float *w0, float visc, float dt)
+void fluidsolver::dens_step (float *x, float *x0, float *u, float *v, float *w, float diff)
 {
-	add_source (N,u,u0,dt);
-	add_source (N,v,v0,dt);
-	add_source (N,w,w0,dt);
+	add_source (x,x0);
+	SWAP (x0, x); diffuse (0,x,x0,diff);
+	SWAP (x0, x); advect (0,x,x0,u,v,w);
+}
 
-	SWAP (u0,u); diffuse (N,1,u,u0,visc,dt);
-	SWAP (v0,v); diffuse (N,2,v,v0,visc,dt);
-	SWAP (w0,w); diffuse (N,3,w,w0,visc,dt);
+void fluidsolver::vel_step (float *u, float *v, float *w, float *u0, float *v0, float *w0, float visc)
+{
+	add_source (u,u0);
+	add_source (v,v0);
+	add_source (w,w0);
 
-	project (N,u,v,w,u0,v0); //still swaped
+	SWAP (u0,u); diffuse (1,u,u0,visc);
+	SWAP (v0,v); diffuse (2,v,v0,visc);
+	SWAP (w0,w); diffuse (3,w,w0,visc);
+
+	project (u,v,w,u0,v0); //still swaped
 
 	SWAP (u0,u);
 	SWAP (v0,v);
 	SWAP (w0,w);
 
-	advect (N,1,u,u0,u0,v0,w0,dt);
-	advect (N,2,v,v0,u0,v0,w0,dt);
-	advect (N,3,w,w0,u0,v0,w0,dt);
-	project (N,u,v,w,u0,v0);
+	advect (1,u,u0,u0,v0,w0);
+	advect (2,v,v0,u0,v0,w0);
+	advect (3,w,w0,u0,v0,w0);
+	project (u,v,w,u0,v0);
 }
 
-float sumArray(int N, float* v)
+void fluidsolver::print(float* v)
 {
-	float sum = 0;
-	for(int z = 0; z < N + 2; z++)
-	{
-		for(int y = 1; y < N + 1; y++)
-		{
-			for(int x = 1; x < N + 1; x++)
-			{
-				sum += v[x+(N+2)*y+(N+2)*(N+2)*z];
-			}
-		}
-	}
-	return sum;
-}
-
-void print(int N, float* v)
-{
+	int N = _size;
 	for(int z = 0; z < N + 2; z++)
 	{
 		std::cout << "z: " << z << "\n";
@@ -274,82 +254,4 @@ void print(int N, float* v)
 		}
 		std::cout << "\n\n";
 	}
-	std::cout << "Sum is: " << sumArray(N,v) << "\n";
-	std::cout << std::endl;
-}
-
-void zeroArray(const int size, float* x)
-{
-	for(int i = 0; i < size; i++)
-	{
-		x[i] = 0;
-	}
-}
-
-void StartData(float* dens, float* dens_prev, float* s, float* u, float* v, float * w, float* u_prev, float* v_prev, float* w_prev)
-{
-	
-
-	zeroArray(size,dens);
-	zeroArray(size,dens_prev);
-	zeroArray(size,s);
-	zeroArray(size,u);
-	zeroArray(size,v);
-	zeroArray(size,w);
-	zeroArray(size,u_prev);
-	zeroArray(size,v_prev);
-	zeroArray(size,w_prev);
-
-	dens_prev[IX(1,1,1)] = 10;
-
-	for(int i = 0; i < (N+2); i++) { for(int j = 0; j < (N+2); j++) { for(int k = 0; k < (N+2); k++)
-	{
-		u[IX(i,j,k)] = 1;
-		v[IX(i,j,k)] = 1;
-		w[IX(i,j,k)] = 1;
-		if(i%2)
-		{
-			u_prev[IX(i,j,k)] = 1;
-		}
-	} } }
-}
-
-int main()
-{
-	int N = 4;
-	float visc = 1;
-	float dt = 0.1f;
-	const int size = (N+2)*(N+2)*(N+2);
-	float diff = 1;
-
-	float* dens = new float[size];
-	float* dens_prev = new float[size];
-	float* s = new float[size];
-	float* u = new float[size];
-	float* v = new float[size];
-	float* w = new float[size];
-	float* u_prev = new float[size];
-	float* v_prev = new float[size];
-	float* w_prev = new float[size];
-	StartData( dens,  dens_prev,  s,  u,  v,  w, u_prev, v_prev, w_prev);
-	fluidsolver fluid(N);
-	
-	
-	for(int i=0; i< 1; i++)
-	{
-		vel_step(N,u,v,w,u_prev,v_prev,w_prev,visc,dt);
-		dens_step (N, dens, dens_prev, u, v, w,diff,dt);
-		print(N,dens);
-	}
-	StartData( dens,  dens_prev,  s,  u,  v,  w, u_prev, v_prev, w_prev);
-	std::cout << "\nFLUID_DENS\n";
-	for(int i=0; i< 1; i++)
-	{
-		fluid.vel_step(u,v,w,u_prev,v_prev,w_prev,visc);
-		fluid.dens_step(dens,dens_prev,u,v,w,diff);
-		fluid.print(dens);
-	}
-	
-
-	return 0;
 }
