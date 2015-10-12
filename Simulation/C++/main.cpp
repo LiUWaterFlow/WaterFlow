@@ -89,7 +89,7 @@ void diffuse ( int N, int b, float *x, float *x0, float diff, float dt) //funger
 	int iter, i,j,k;
 	float a=dt*diff*N*N*N;
 
-	for  (iter=0;iter<1;iter++)
+	for  (iter=0;iter<20;iter++)
 	{
 		for (i=1;i<=N;i++)
 		{
@@ -109,7 +109,7 @@ void diffuse ( int N, int b, float *x, float *x0, float diff, float dt) //funger
 
 }
 
-//Still need to be checked. Pref by hand
+//Working we think it does that
 void advect (int N, int b, float *d, float *d0, float *u, float *v, float *w, float dt)
 {
 	int i,j,k,i0,j0,k0,i1,j1,k1;
@@ -167,7 +167,7 @@ void project (int N, float *u, float *v, float *w, float *p, float *div)
 	{
 		for (j=1;j<=N;j++)
 		{
-			for(k = 0; i <= N; k++)
+			for(k = 1; k <= N; k++)
 			{
 				div[IX(i,j,k)] = -0.5*h*(u[IX(i+1,j,k)]-u[IX(i-1,j,k)]+
 						v[IX(i,j+1,k)]-v[IX(i,j-1,k)] +
@@ -207,6 +207,7 @@ void project (int N, float *u, float *v, float *w, float *p, float *div)
 			}
 		}
 	}
+
 	set_bnd(N,1,u);
 	set_bnd(N,2,v);
 	set_bnd(N,3,w);
@@ -241,14 +242,30 @@ void vel_step (int N, float *u, float *v, float *w, float *u0, float *v0, float 
 	project (N,u,v,w,u0,v0);
 }
 
+float sumArray(int N, float* v)
+{
+	float sum = 0;
+	for(int z = 0; z < N + 2; z++)
+	{
+		for(int y = 1; y < N + 1; y++)
+		{
+			for(int x = 1; x < N + 1; x++)
+			{
+				sum += v[x+(N+2)*y+(N+2)*(N+2)*z];
+			}
+		}
+	}
+	return sum;
+}
+
 void print(int N, float* v)
 {
 	for(int z = 0; z < N + 2; z++)
 	{
 		std::cout << "z: " << z << "\n";
-		for(int y = 0; y < N + 2; y++)
+		for(int y = 1; y < N + 1; y++)
 		{
-			for(int x = 0; x < N + 2; x++)
+			for(int x = 1; x < N + 1; x++)
 			{
 				std::cout << v[x+(N+2)*y+(N+2)*(N+2)*z] << " ";
 			}
@@ -256,6 +273,7 @@ void print(int N, float* v)
 		}
 		std::cout << "\n\n";
 	}
+	std::cout << "Sum is: " << sumArray(N,v) << "\n";
 	std::cout << std::endl;
 }
 
@@ -268,41 +286,53 @@ void zeroArray(const int size, float* x)
 }
 
 
+
 int main()
 {
-	int N = 10;
+	int N = 3;
+	float visc = 1;
+	float dt = 0.1f;
 	const int size = (N+2)*(N+2)*(N+2);
-	float* x = new float[size];
+	float diff = 1;
+
+	float* dens = new float[size];
+	float* dens_prev = new float[size];
 	float* s = new float[size];
 	float* u = new float[size];
 	float* v = new float[size];
 	float* w = new float[size];
-	float dt = 0.1;
+	float* u_prev = new float[size];
+	float* v_prev = new float[size];
+	float* w_prev = new float[size];
 
-	zeroArray(size,x);
+	zeroArray(size,dens);
+	zeroArray(size,dens_prev);
 	zeroArray(size,s);
 	zeroArray(size,u);
 	zeroArray(size,v);
 	zeroArray(size,w);
-	
-	add_source (N, x, s, dt);
-	
+	zeroArray(size,u_prev);
+	zeroArray(size,v_prev);
+	zeroArray(size,w_prev);
+
+	dens_prev[IX(2,2,2)] = 10;
 
 	for(int i = 0; i < (N+2); i++) { for(int j = 0; j < (N+2); j++) { for(int k = 0; k < (N+2); k++)
 	{
-		s[IX(i,5,5)] = 1;
-		u[IX(i,j,k)] = 0.1;
+		u[IX(i,j,k)] = 10;
+		v[IX(i,j,k)] = 10;
+		w[IX(i,j,k)] = 10;
 	} } }
-	s[IX(5,5,5)] = 0.1;
-	x[IX(2,2,2)] = 0.002;
-	//diffuse (N,1,x,s,1,1);
+	
+	
+	for(int i=0; i< 3; i++)
+	{
+		vel_step(N,u,v,w,u_prev,v_prev,w_prev,visc,dt);
+		dens_step (N, dens, dens_prev, u, v, w,diff,dt);
+		print(N,dens);
+		
+	}
+	
 
-	advect (N, 1, x, s, u, v, w, dt);
-	print(N,x);
-
-
-
-	delete[] x;
-	delete[] s;
 	return 0;
 }
