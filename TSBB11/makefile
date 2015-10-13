@@ -16,7 +16,7 @@ C_FILES_COMMON := $(wildcard src/common/*.c)
 
 OBJ_FILES_COMMON := $(addprefix obj/,$(notdir $(C_FILES_COMMON:.c=.o)))
 
-INC = -Isrc/ -Isrc/common/ -Isrc/common/glm -Ilib/AntTweak/include
+INC = -Isrc/ -Isrc/common/ -Isrc/common/glm -Isrc/common/AntTweak
 MAIN = main.cpp
 OUT = bin/WaterFlow
 
