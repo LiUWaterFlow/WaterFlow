@@ -275,8 +275,10 @@ void handle_keypress(SDL_Event event)
 void handle_mouse(SDL_Event event)
 {
 	get_window_size(&width, &height);
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	if(!state[SDL_SCANCODE_LSHIFT]){						//When shift held camera doesn't move with mouse.
 	cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
-
+	}
 /* Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse.
 	glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation.
 	glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model
