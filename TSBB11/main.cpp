@@ -191,7 +191,7 @@ void display(void)
 	/*Draw the tweak bars
 	*/
 
-	height_at_pos = dataHandler->getCoord(cam.position.x, cam.position.z);
+	height_at_pos = dataHandler->getCoord((int)cam.position.x, (int)cam.position.z); // <- should be giveHeight when merged to master
 	TwDraw();
 /*
 	while( SDL_PollEvent(&event) ) // process events
