@@ -78,6 +78,8 @@ glm::mat4 projMat, viewMat;
 // Models:
 std::vector <Model*>* terrain;
 
+glm::mat4 rot, trans, scale, total;
+
 // Datahandler for terrain data
 DataHandler* dataHandler;
 
@@ -118,23 +120,33 @@ void init(void)
 	terrain = dataHandler->getModel();
 
 
+	// ---Model transformations, rendering---
+	// Terrain:
+	scale = glm::scale(glm::vec3(dataHandler->getDataWidth(),
+								 dataHandler->getTerrainScale(),
+								 dataHandler->getDataHeight()));
+	total = scale;
+
+
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
 	glUseProgram(program);
 
 	// Initial one-time shader uploads.
 	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
 	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
 	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
+
 }
 
 void display(void)
 {
-	glm::mat4 rot, trans, scale, total;
+
 	glUseProgram(program);
 
 	// Clear the screen.
@@ -145,14 +157,6 @@ void display(void)
 	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
 	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, camPos_GLf);
 
-
-	// ---Model transformations, rendering---
-	// Terrain:
-	scale = glm::scale(glm::vec3(dataHandler->getDataWidth(),
-								 dataHandler->getTerrainScale(),
-								 dataHandler->getDataHeight()));
-	total = scale;
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(total));
 
 	// precalculate the inverse since it is a very large model.
 	glm::mat3 inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(total)));
@@ -220,6 +224,12 @@ void event_handler(SDL_Event event)
 		case SDL_MOUSEMOTION:
 			handle_mouse(event);
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+			handle_mouse(event);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			handle_mouse(event);
+			break;
 		default:
 			break;
 	}
@@ -253,7 +263,7 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
-			break; 
+			break;
 		case SDLK_l:
 			std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
 			break;
@@ -266,6 +276,30 @@ void handle_mouse(SDL_Event event)
 {
 	get_window_size(&width, &height);
 	cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
+
+/* Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse.
+	glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation.
+	glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model
+	coordinates from screen coordinates and Z-value. objY contains terrain height at clicked position after gluUnProject.
+*/
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+
+			float depth;
+			int x;
+			int y;
+			SDL_GetMouseState(&x, &y);
+			glReadPixels(x, width - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+
+			GLdouble objX;
+			GLdouble objY;
+			GLdouble objZ;
+			GLint viewport;
+			glGetIntegerv(GL_VIEWPORT, &viewport);
+			gluUnProject((GLdouble)x, (GLdouble)(width - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)(viewMatrix)), glm::value_ptr((glm::dmat4)projectionMatrix), &viewport, &objX, &objY, &objZ);
+
+			std::cout << "\nHeight at clicked pos (inverse coords): " << objY << std::endl;
+			std::cout << "Height at clicked pos (from mapdata at (x,z)): " << dataHandler->getTerrainScale() * dataHandler->getCoord(objX, objZ) << std::endl;
+	}
 }
 
 void check_keys()
@@ -291,7 +325,7 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix)
 {
 	glViewport(0, 0, w, h);
 	float ratio = (GLfloat)w / (GLfloat)h;
-	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
+	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 10000.0f);
 }
 // ----------------------------------------------------------
 
