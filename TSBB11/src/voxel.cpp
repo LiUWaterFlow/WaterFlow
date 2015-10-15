@@ -207,22 +207,15 @@ above land and have not yet been added to the queue. Before coordina are added t
   }
 }
 
-std::vector<GLuint> *Voxelgrid::getVoxelPositions()
-{
+std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 	std::vector<GLuint> *positions = new std::vector<GLuint>;
 
-	for (GLuint x = 0; x < voxels->size(); x++)
-	{
-		if (voxels->at(x) != nullptr)
-		{
-			for (GLuint y = 0; y < voxels->at(x)->size(); y++)
-			{
-				if (voxels->at(x)->at(y) != nullptr)
-				{
-					for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++)
-					{
-						if (voxels->at(x)->at(y)->at(z) != nullptr)
-						{
+	for (GLuint x = 0; x < voxels->size(); x++) {
+		if (voxels->at(x) != nullptr) {
+			for (GLuint y = 0; y < voxels->at(x)->size(); y++) {
+				if (voxels->at(x)->at(y) != nullptr) {
+					for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++) {
+						if (voxels->at(x)->at(y)->at(z) != nullptr) {
 							positions->push_back(x);
 							positions->push_back(y);
 							positions->push_back(z);
@@ -232,6 +225,42 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions()
 			}
 		}
 	}
-
 	return positions;
+}
+
+void Voxelgrid::drawVoxels() {
+	std::vector<GLuint> *voxelPositions = getVoxelPositions();
+	GLuint numVoxels = voxelPositions->size() / 3;
+	GLuint voxelShader = loadShadersG(voxV, voxF, voxG);
+
+	GLuint voxelBuffer, voxelVAO;
+	glGenBuffers(1, &voxelBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	glGenVertexArrays(1, &voxelVAO);
+	glBindVertexArray(voxelVAO);
+
+	GLuint posAttrib = glGetAttribLocation(voxelShader, "posValue");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 3, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	glUseProgram(voxelShader);
+
+	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "proj"), 1, GL_FALSE, glm::value_ptr(proj));
+	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "worldView"), 1, GL_FALSE, glm::value_ptr(worldView));
+
+	if (numVoxels > 0) {
+		glDrawArrays(GL_POINTS, 0, numVoxels);
+	}
+
+	glBindVertexArray(0);
+
+	printError("Particles Draw Billboards");
 }
