@@ -81,13 +81,15 @@ float height_at_pos;
 glm::mat4 projMat, viewMat;
 
 // Models:
-Model *terrain;
+Model* terrain;
+Model* skycube;
 
 // Datahandler for terrain data
 DataHandler* dataHandler;
 
 // References to shader programs:
 GLuint program;
+GLuint skyshader;
 
 // Camera variables:
 Camera cam;
@@ -130,6 +132,7 @@ void init(void)
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
+	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 	glUseProgram(program);
 
 	// Initial one-time shader uploads.
@@ -140,6 +143,9 @@ void init(void)
 	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
+
+	glUseProgram(skyshader);
+	glUniformMatrix4fv(glGetUniformLocation(skyshader, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
 /*Initialize AntTweakBar
 */
@@ -156,16 +162,59 @@ void init(void)
 
 	TwAddButton(myBar, "Run", Callback, NULL, " label='Run Forest' ");
 
+/* Initialize skycube
+*/
+
+GLfloat* vertexArray = new GLfloat [3*8] {-2, 2,-2,
+						 		  				-2, 2, 2,
+						  	 	  			 2, 2, 2,
+						  		 	  		 2, 2,-2,
+						 				  	   -2,-2,-2,
+						 				       -2,-2, 2,
+					 	  		  	  	 2,-2, 2,
+									     		 2,-2,-2};
+
+GLuint* indexArray = new GLuint [6*2*3] {0,1,4,
+													4,1,5,
+													5,1,2,
+													5,2,6,
+													3,2,7,
+													7,2,6,
+													0,3,4,
+													3,4,7,
+													0,3,2,
+													0,1,2,
+													0,4,7,
+													0,4,5};
+
+	// Create Model and upload to GPU.
+	skycube = LoadDataToModel(
+		vertexArray,
+		NULL,
+		NULL,
+		NULL,
+		indexArray,
+		8,
+		6*2*3);
 }
 
 void display(void)
 {
 	glm::mat4 rot, trans, scale, total;
-	glUseProgram(program);
 
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glUseProgram(skyshader);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
+	DrawModel(skycube, skyshader, "in_Position", NULL, "in_TexCoord");
+
+	glUseProgram(program);
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	// ---Camera shader data---
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
@@ -186,6 +235,7 @@ void display(void)
 
 
 	DrawModel(terrain, program, "in_Position", "in_Normal", "in_TexCoord");
+
 	// --------------------------------------
 
 	/*Draw the tweak bars
@@ -341,7 +391,7 @@ void reshape(int w, int h, glm::mat4 &projectionMatrix)
 {
 	glViewport(0, 0, w, h);
 	float ratio = (GLfloat)w / (GLfloat)h;
-	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 1000.0f);
+	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 10000.0f);
 }
 // ----------------------------------------------------------
 
