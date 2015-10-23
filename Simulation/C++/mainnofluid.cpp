@@ -1,16 +1,8 @@
-//#define IX(i,j,k) ((i)+(N+2)*(j)+(N+2)*(N+2)*(k))
+#include <iostream> //output
+#include <algorithm> //for swap
+#include <vector>
 
-//new defines
-#define IX(i) (i)
-#define IY(j) (j)
-#define IZ(k) (k)
-
-#define SWAP(x0, x) {float ***tmp=x0;x0=x;x=tmp;}
-
-#include "iostream"
-
-//haxx så det funkar för tillfället
-//void *__gxx_personality_v0;
+#include "../../TSBB11/src/common/glm/glm.hpp"
 
 const int N=10;
 const int size=(N+2)*(N+2)*(N+2);
@@ -18,6 +10,21 @@ const int size=(N+2)*(N+2)*(N+2);
 //static float u[size], v[size], w[size], u_prev[size], v_prev[size], w_prev[size];
 //static float dens[size], dens_prev[size];
 
+//the voxels
+class Voxel
+{
+public:
+	Voxel() {};
+	~Voxel() {};
+
+	float density;
+	glm::vec3 velocity;
+	glm::vec3 prev_velocity;
+
+	const float viscosity = 1.0f;
+	const float diffuse = 1.0f;
+	//dt should not be here because we might want to change it during runtime
+};
 
 /*voxels between corners not bounded correctly
  first and last slice not working correctly
@@ -33,46 +40,46 @@ void set_bnd( int N, int b, float*** x)
 		for(j=1;j<=N;j++)
 		{
 			//b = 1 means forces in x-axis
-			x[IX(0)][IY(i)][IZ(j)] = 		(b == 1? -x[IX(1)][IY(i)][IZ(j)] : x[IX(1)][IY(i)][IZ(j)]);
-			x[IX(N+1)][IY(i)][IZ(j)] = 		(b == 1? -x[IX(N)][IY(i)][IZ(j)] : x[IX(N)][IY(i)][IZ(j)]);
+			x[0][i][j] = 		(b == 1? -x[1][i][j] : x[1][i][j]);
+			x[N+1][i][j] = 		(b == 1? -x[N][i][j] : x[N][i][j]);
 			//b == 2 means forces in y-axis
-			x[IX(i)][IY(0)][IZ(j)] = 		(b == 2? -x[IX(i)][IY(1)][IZ(j)] : x[IX(i)][IY(1)][IZ(j)]);
-			x[IX(i)][IY(N+1)][IZ(j)] =		(b == 2? -x[IX(i)][IY(N)][IZ(j)] : x[IX(i)][IY(N)][IZ(j)]);
+			x[i][0][j] = 		(b == 2? -x[i][1][j] : x[i][1][j]);
+			x[i][N+1][j] =		(b == 2? -x[i][N][j] : x[i][N][j]);
 			//b == 3 means forces in z-axis
-			x[IX(i)][IY(j)][IZ(0)] = 		(b == 3? -x[IX(i)][IY(j)][IZ(1)] : x[IX(i)][IY(j)][IZ(1)]);
-			x[IX(i)][IY(j)][IZ(N+1)] =		(b == 3? -x[IX(i)][IY(j)][IZ(N)] : x[IX(i)][IY(j)][IZ(N)]);
+			x[i][j][0] = 		(b == 3? -x[i][j][1] : x[i][j][1]);
+			x[i][j][N+1] =		(b == 3? -x[i][j][N] : x[i][j][N]);
 		}
 	}
 
 	for(i=1; i<=N; i++)
 	{
-		x[IX(0)][IY(0)][IZ(i)] = 		0.5*(x[IX(1)][IY(0)][IZ(i)] + x[IX(0)][IY(1)][IZ(i)]);
-		x[IX(0)][IY(N+1)][IZ(i)] =	 	0.5*(x[IX(1)][IY(N+1)][IZ(i)] + x[IX(0)][IY(N)][IZ(i)]);
-		x[IX(N+1)][IY(0)][IZ(i)] = 		0.5*(x[IX(N+1)][IY(1)][IZ(i)] + x[IX(N)][IY(0)][IZ(i)]);
-		x[IX(N+1)][IY(N+1)][IZ(i)] = 		0.5*(x[IX(N)][IY(N+1)][IZ(i)] + x[IX(N+1)][IY(N)][IZ(i)]);
+		x[0][0][i] = 		0.5f*(x[1][0][i] + x[0][1][i]);
+		x[0][N+1][i] =	 	0.5f*(x[1][N+1][i] + x[0][N][i]);
+		x[N+1][0][i] = 		0.5f*(x[N+1][1][i] + x[N][0][i]);
+		x[N+1][N+1][i] = 		0.5f*(x[N][N+1][i] + x[N+1][N][i]);
 
-		x[IX(0)][IY(i)][IZ(0)] = 		0.5*(x[IX(1)][IY(i)][IZ(0)] + x[IX(0)][IY(i)][IZ(1)]);
-		x[IX(N+1)][IY(i)][IZ(0)] = 		0.5*(x[IX(N)][IY(i)][IZ(0)] + x[IX(N+1)][IY(i)][IZ(1)]);
-		x[IX(0)][IY(i)][IZ(N+1)] =	 	0.5*(x[IX(1)][IY(i)][IZ(N+1)] + x[IX(0)][IY(i)][IZ(N)]);
-		x[IX(N+1)][IY(i)][IZ(N+1)] = 		0.5*(x[IX(N)][IY(i)][IZ(N+1)] + x[IX(N+1)][IY(i)][IZ(N)]);	
+		x[0][i][0] = 		0.5f*(x[1][i][0] + x[0][i][1]);
+		x[N+1][i][0] = 		0.5f*(x[N][i][0] + x[N+1][i][1]);
+		x[0][i][N+1] =	 	0.5f*(x[1][i][N+1] + x[0][i][N]);
+		x[N+1][i][N+1] = 		0.5f*(x[N][i][N+1] + x[N+1][i][N]);	
 
-		x[IX(i)][IY(0)][IZ(0)] = 		0.5*(x[IX(i)][IY(1)][IZ(0)] + x[IX(i)][IY(0)][IZ(1)]);
-		x[IX(i)][IY(N+1)][IZ(0)] = 		0.5*(x[IX(i)][IY(N)][IZ(0)] + x[IX(i)][IY(N+1)][IZ(1)]);
-		x[IX(i)][IY(0)][IZ(N+1)] = 		0.5*(x[IX(i)][IY(1)][IZ(N+1)] + x[IX(i)][IY(0)][IZ(N)]);
-		x[IX(i)][IY(N+1)][IZ(N+1)] = 		0.5*(x[IX(i)][IY(N)][IZ(N+1)] + x[IX(i)][IY(N+1)][IZ(N)]);
+		x[i][0][0] = 		0.5f*(x[i][1][0] + x[i][0][1]);
+		x[i][N+1][0] = 		0.5f*(x[i][N][0] + x[i][N+1][1]);
+		x[i][0][N+1] = 		0.5f*(x[i][1][N+1] + x[i][0][N]);
+		x[i][N+1][N+1] = 		0.5f*(x[i][N][N+1] + x[i][N+1][N]);
 	}
 	
-	x[IX(0)][IY(0)][IZ(0)] = 0.3333f*(x[IX(1)][IY(0)][IZ(0)] + x[IX(0)][IY(1)][IZ(0)] + x[IX(0)][IY(0)][IZ(1)]);
-	x[IX(0)][IY(N+1)][IZ(0)] = 0.3333f*(x[IX(1)][IY(N+1)][IZ(0)] + x[IX(0)][IY(N)][IZ(0)] + x[IX(0)][IY(N+1)][IZ(1)]);
+	x[0][0][0] = 0.3333f*(x[1][0][0] + x[0][1][0] + x[0][0][1]);
+	x[0][N+1][0] = 0.3333f*(x[1][N+1][0] + x[0][N][0] + x[0][N+1][1]);
 
-	x[IX(N+1)][IY(0)][IZ(0)] = 0.3333f*(x[IX(N)][IY(0)][IZ(0)] + x[IX(N+1)][IY(1)][IZ(0)] + x[IX(N+1)][IY(0)][IZ(1)]);
-	x[IX(N+1)][IY(N+1)][IZ(0)] = 0.3333f*(x[IX(N)][IY(N+1)][IZ(0)] + x[IX(N+1)][IY(N)][IZ(0)] + x[IX(N+1)][IY(N+1)][IZ(1)]);
+	x[N+1][0][0] = 0.3333f*(x[N][0][0] + x[N+1][1][0] + x[N+1][0][1]);
+	x[N+1][N+1][0] = 0.3333f*(x[N][N+1][0] + x[N+1][N][0] + x[N+1][N+1][1]);
 
-	x[IX(0)][IY(0)][IZ(N+1)] = 0.3333f*(x[IX(1)][IY(0)][IZ(N+1)] + x[IX(0)][IY(1)][IZ(N+1)] + x[IX(0)][IY(0)][IZ(N)]);
-	x[IX(0)][IY(N+1)][IZ(N+1)] = 0.3333f*(x[IX(1)][IY(N+1)][IZ(N+1)] + x[IX(0)][IY(N)][IZ(N+1)] + x[IX(0)][IY(N+1)][IZ(N)]);
+	x[0][0][N+1] = 0.3333f*(x[1][0][N+1] + x[0][1][N+1] + x[0][0][N]);
+	x[0][N+1][N+1] = 0.3333f*(x[1][N+1][N+1] + x[0][N][N+1] + x[0][N+1][N]);
 
-	x[IX(N+1)][IY(0)][IZ(N+1)] = 0.3333f*(x[IX(N)][IY(0)][IZ(N+1)] + x[IX(N+1)][IY(1)][IZ(N+1)] + x[IX(N+1)][IY(0)][IZ(N)]);
-	x[IX(N+1)][IY(N+1)][IZ(N+1)] = 0.3333f*(x[IX(N)][IY(N+1)][IZ(N+1)] + x[IX(N+1)][IY(N)][IZ(N+1)] + x[IX(N+1)][IY(N+1)][IZ(N)]);
+	x[N+1][0][N+1] = 0.3333f*(x[N][0][N+1] + x[N+1][1][N+1] + x[N+1][0][N]);
+	x[N+1][N+1][N+1] = 0.3333f*(x[N][N+1][N+1] + x[N+1][N][N+1] + x[N+1][N+1][N]);
 
 	
 }
@@ -108,10 +115,10 @@ void diffuse ( int N, int b, float ***x, float ***x0, float diff, float dt) //fu
 			{
 				for (k=1;k<=N;k++)
 				{
-				x[IX(i)][IY(j)][IZ(k)] = (x0[IX(i)][IY(j)][IZ(k)] + a*(
-				x[IX(i-1)][IY(j)][IZ(k)] + x[IX(i+1)][IY(j)][IZ(k)] +
-				x[IX(i)][IY(j-1)][IZ(k)] + x[IX(i)][IY(j+1)][IZ(k)] + 
-				x[IX(i)][IY(j)][IZ(k-1)] + x[IX(i)][IY(j)][IZ(k+1)])  )/(1+6*a);
+				x[i][j][k] = (x0[i][j][k] + a*(
+				x[i-1][j][k] + x[i+1][j][k] +
+				x[i][j-1][k] + x[i][j+1][k] + 
+				x[i][j][k-1] + x[i][j][k+1])  )/(1+6*a);
 				}
 			}
 		}
@@ -133,16 +140,16 @@ void advect (int N, int b, float ***d, float ***d0, float ***u, float ***v, floa
 		{
 			for (k=1;k<=N;k++)
 			{
-				x = i-dt0*u[IX(i)][IY(j)][IZ(k)];
-				y = j-dt0*v[IX(i)][IY(j)][IZ(k)];
-				z = k-dt0*w[IX(i)][IY(j)][IZ(k)];
+				x = i-dt0*u[i][j][k];
+				y = j-dt0*v[i][j][k];
+				z = k-dt0*w[i][j][k];
 
-				if (x<0.5) 	{ x=0.5; }
-				if (x>N+0.5) 	{ x=N+0.5; }
-				if (y<0.5) 	{ y=0.5; }
-				if (y>N+0.5)	{ y=N+0.5; }
-				if (z<0.5) 	{ z=0.5; }
-				if (z>N+0.5)	{ z=N+0.5; }
+				if (x<0.5) 	{ x=0.5f; }
+				if (x>N+0.5) 	{ x=(float)N+0.5f; }
+				if (y<0.5) 	{ y=0.5f; }
+				if (y>N+0.5)	{ y=(float)N+0.5f; }
+				if (z<0.5) 	{ z=0.5f; }
+				if (z>N+0.5)	{ z=(float)N+0.5f; }
 			
 				i0 = (int)x;
 				i1 = i0 + 1;
@@ -158,10 +165,10 @@ void advect (int N, int b, float ***d, float ***d0, float ***u, float ***v, floa
 				q1 = z-k0;
 				q0 = 1-q1;
 			
-				d[IX(i)][IY(j)][IZ(k)] =	q0*(s0*(t0*d0[IX(i0)][IY(j0)][IZ(k0)] + t1*d0[IX(i0)][IY(j1)][IZ(k0)]) +
-								s1*(t0*d0[IX(i1)][IY(j0)][IZ(k0)] + t1*d0[IX(i1)][IY(j1)][IZ(k0)])) +
-								q1*(s0*(t0*d0[IX(i0)][IY(j0)][IZ(k1)] + t1*d0[IX(i0)][IY(j1)][IZ(k1)]) +
-								s1*(t0*d0[IX(i1)][IY(j0)][IZ(k1)] + t1*d0[IX(i1)][IY(j1)][IZ(k1)])); //could look nicer
+				d[i][j][k] =	q0*(s0*(t0*d0[i0][j0][k0] + t1*d0[i0][j1][k0]) +
+								s1*(t0*d0[i1][j0][k0] + t1*d0[i1][j1][k0])) +
+								q1*(s0*(t0*d0[i0][j0][k1] + t1*d0[i0][j1][k1]) +
+								s1*(t0*d0[i1][j0][k1] + t1*d0[i1][j1][k1])); //could look nicer
 			}
 		}
 	}
@@ -173,17 +180,17 @@ void project (int N, float ***u, float ***v, float ***w, float ***p, float ***di
 	int i,j,k, iter;
 	float h;
 
-	h = 1.0/N;
+	h = 1.0f/(float)N;
 	for (i=1;i<=N;i++)
 	{
 		for (j=1;j<=N;j++)
 		{
 			for(k = 1; k <= N; k++)
 			{
-				div[IX(i)][IY(j)][IZ(k)] = -0.5*h*(u[IX(i+1)][IY(j)][IZ(k)]-u[IX(i-1)][IY(j)][IZ(k)]+
-								v[IX(i)][IY(j+1)][IZ(k)]-v[IX(i)][IY(j-1)][IZ(k)] +
-								w[IX(i)][IY(j)][IZ(k+1)]-w[IX(i)][IY(j)][IZ(k-1)]); 
-				p[IX(i)][IY(j)][IZ(k)]=0;
+				div[i][j][k] = -0.5f*h*(u[i+1][j][k]-u[i-1][j][k]+
+								v[i][j+1][k]-v[i][j-1][k] +
+								w[i][j][k+1]-w[i][j][k-1]); 
+				p[i][j][k]=0;
 			}		
 		}
 	}
@@ -197,9 +204,9 @@ void project (int N, float ***u, float ***v, float ***w, float ***p, float ***di
 			{
 				for(k=1;k<=N;k++)
 				{
-					p[IX(i)][IY(j)][IZ(k)] = (div[IX(i)][IY(j)][IZ(k)] + p[IX(i-1)][IY(j)][IZ(k)] + p[IX(i+1)][IY(j)][IZ(k)] +
-								p[IX(i)][IY(j-1)][IZ(k)] + p[IX(i)][IY(j+1)][IZ(k)] +
-								p[IX(i)][IY(j)][IZ(k-1)] + p[IX(i)][IY(j)][IZ(k+1)])/6;
+					p[i][j][k] = (div[i][j][k] + p[i-1][j][k] + p[i+1][j][k] +
+								p[i][j-1][k] + p[i][j+1][k] +
+								p[i][j][k-1] + p[i][j][k+1])/6;
 				}
 			}
 		}
@@ -212,9 +219,9 @@ void project (int N, float ***u, float ***v, float ***w, float ***p, float ***di
 		{
 			for(k=1;k<=N;k++)
 			{
-				u[IX(i)][IY(j)][IZ(k)] -= 0.5*(p[IX(i+1)][IY(j)][IZ(k)] - p[IX(i-1)][IY(j)][IZ(k)])/h;
-				v[IX(i)][IY(j)][IZ(k)] -= 0.5*(p[IX(i)][IY(j+1)][IZ(k)] - p[IX(i)][IY(j-1)][IZ(k)])/h;
-				w[IX(i)][IY(j)][IZ(k)] -= 0.5*(p[IX(i)][IY(j)][IZ(k+1)] - p[IX(i)][IY(j)][IZ(k-1)])/h;
+				u[i][j][k] -= 0.5f*(p[i+1][j][k] - p[i-1][j][k])/h;
+				v[i][j][k] -= 0.5f*(p[i][j+1][k] - p[i][j-1][k])/h;
+				w[i][j][k] -= 0.5f*(p[i][j][k+1] - p[i][j][k-1])/h;
 			}
 		}
 	}
@@ -227,8 +234,8 @@ void project (int N, float ***u, float ***v, float ***w, float ***p, float ***di
 void dens_step (int N, float ***x, float ***x0, float ***u, float ***v, float ***w, float diff, float dt)
 {
 	add_source (N,x,x0,dt);
-	SWAP (x0, x); diffuse (N,0,x,x0,diff,dt);
-	SWAP (x0, x); advect (N,0,x,x0,u,v,w,dt);
+	std::swap(x0, x); diffuse (N,0,x,x0,diff,dt);
+	std::swap(x0, x); advect (N,0,x,x0,u,v,w,dt);
 }
 
 void vel_step (int N, float ***u, float ***v, float ***w, float ***u0, float ***v0, float ***w0, float visc, float dt)
@@ -237,15 +244,15 @@ void vel_step (int N, float ***u, float ***v, float ***w, float ***u0, float ***
 	add_source (N,v,v0,dt);
 	add_source (N,w,w0,dt);
 
-	SWAP (u0,u); diffuse (N,1,u,u0,visc,dt);
-	SWAP (v0,v); diffuse (N,2,v,v0,visc,dt);
-	SWAP (w0,w); diffuse (N,3,w,w0,visc,dt);
+	std::swap(u0,u); diffuse (N,1,u,u0,visc,dt);
+	std::swap(v0,v); diffuse (N,2,v,v0,visc,dt);
+	std::swap(w0,w); diffuse (N,3,w,w0,visc,dt);
 
 	project (N,u,v,w,u0,v0); //still swaped
 
-	SWAP (u0,u);
-	SWAP (v0,v);
-	SWAP (w0,w);
+	std::swap(u0,u);
+	std::swap(v0,v);
+	std::swap(w0,w);
 
 	advect (N,1,u,u0,u0,v0,w0,dt);
 	advect (N,2,v,v0,u0,v0,w0,dt);
@@ -394,13 +401,13 @@ int main()
 	zeroArray(N,v_prev);
 	zeroArray(N,w_prev);
 
-	dens_prev[IX(2)][IY(2)][IZ(2)] = 10.0f;
+	dens_prev[2][2][2] = 10.0f;
 
 	for(int i = 0; i < (N+2); i++) { for(int j = 0; j < (N+2); j++) { for(int k = 0; k < (N+2); k++)
 	{
-		u[IX(i)][IY(j)][IZ(k)] = 10.0f;
-		v[IX(i)][IY(j)][IZ(k)] = 10.0f;
-		w[IX(i)][IY(j)][IZ(k)] = 10.0f;
+		u[i][j][k] = 10.0f;
+		v[i][j][k] = 10.0f;
+		w[i][j][k] = 10.0f;
 	} } }
 	
 	for(int i=0; i<= 20; i++)
