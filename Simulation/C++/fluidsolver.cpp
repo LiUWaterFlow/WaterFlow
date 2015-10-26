@@ -2,6 +2,205 @@
 
 #include "iostream"
 
+
+
+
+
+void FluidSolver::diffuse_one_velocity(NeighbourVoxels* vox, float constantData)
+{
+	//constantData =  a=dt*diff*N*N*N;
+	vox->Origin.prev_velocity = (vox->Origin.velocity +
+					constantData*(vox->Left.prev_velocity + vox->Right.prev_velocity +
+					vox->Up.prev_velocity + vox->Down.prev_velocity +
+					vox->Back.prev_velocity + vox->Front.prev_velocity)  )/(1+6*constantData);
+};
+
+void FluidSolver::diffuse_one_density(NeightbourVoxels* vox, float constantData)
+{
+	//constantData =  a=dt*diff*N*N*N;
+	vox->Origin.prev_density = (vox->Origin.density +
+					constantData*(vox->Left.prev_density + vox->Right.prev_density +
+					vox->Up.prev_density + vox->Down.prev_density +
+					vox->Back.prev_density + vox->Front.prev_density)  )/(1+6*constantData);
+};
+
+
+void FluidSolver::diffuse_velocity(float dt)
+{
+
+	float someconstant = dt;  // 
+	NeighbourVoxels* temp;
+	//not including borders
+	for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
+	{
+		for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
+		{
+			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+			{
+				temp = m_grid.getNeighbourVoxels(x,y,z);
+				diffuse_one_velocity(temp,someconstant);
+			}
+		}
+	}
+	delete temp;
+};
+
+void FluidSolver::diffuse_density(float dt)
+{
+
+	float someconstant = dt;  // 
+	NeighbourVoxels* temp;
+	//not including borders
+	for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
+	{
+		for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
+		{
+			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+			{
+				temp = m_grid.getNeighbourVoxels(x,y,z);
+				diffuse_one_density(temp,someconstant);
+			}
+		}
+	}
+	delete temp;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 fluidsolver::fluidsolver(int N)
 {
 	_size = N;
@@ -152,7 +351,7 @@ void fluidsolver::advect (int b, float *d, float *d0, float *u, float *v, float 
 	set_bnd (b,d);
 }
 
-void fluidsolver::project (float *u, float *v, float *w, float *p, float *div)
+void fluidsolver::project (float *u, float *v, float *w, float *p, float *divergence)
 {
 	int N = _size;
 	int i,j,k, iter;
@@ -165,14 +364,14 @@ void fluidsolver::project (float *u, float *v, float *w, float *p, float *div)
 		{
 			for(k = 1; k <= N; k++)
 			{
-				div[IX(i,j,k)] = -0.5*h*(u[IX(i+1,j,k)]-u[IX(i-1,j,k)]+
+				divergence[IX(i,j,k)] = -0.5*h*(u[IX(i+1,j,k)]-u[IX(i-1,j,k)]+
 						v[IX(i,j+1,k)]-v[IX(i,j-1,k)] +
 						w[IX(i,j,k+1)] - w[IX(i,j,k-1)]); 
 				p[IX(i,j,k)]=0;
 			}		
 		}
 	}
-	set_bnd (0,div); set_bnd (0,p);
+	set_bnd (0,divergence); set_bnd (0,p);
 
 	for (iter=0;iter<20;iter++)
 	{
@@ -182,7 +381,7 @@ void fluidsolver::project (float *u, float *v, float *w, float *p, float *div)
 			{
 				for(k=1;k<=N;k++)
 				{
-					p[IX(i,j,k)] = (div[IX(i,j,k)] + p[IX(i-1,j,k)] + p[IX(i+1,j,k)] +
+					p[IX(i,j,k)] = (divergence[IX(i,j,k)] + p[IX(i-1,j,k)] + p[IX(i+1,j,k)] +
 							p[IX(i,j-1,k)] + p[IX(i,j+1,k)] +
 							p[IX(i,j,k-1)] + p[IX(i,j,k+1)])/6;
 				}
@@ -255,3 +454,4 @@ void fluidsolver::print(float* v)
 		std::cout << "\n\n";
 	}
 }
+*/

@@ -10,19 +10,22 @@ const int size=(N+2)*(N+2)*(N+2);
 //static float u[size], v[size], w[size], u_prev[size], v_prev[size], w_prev[size];
 //static float dens[size], dens_prev[size];
 
+enum class Boundry{NONE, TOP, BOTTOM, LEFT, RIGHT, FRONT, BACK};
+
 //the voxels
 class Voxel
 {
 public:
-	Voxel() {};
+	Voxel(): viscosity(1.0f), diffuse(1.0f), boundry(Boundry::NONE) {};
 	~Voxel() {};
 
 	float density;
 	glm::vec3 velocity;
 	glm::vec3 prev_velocity;
 
-	const float viscosity = 1.0f;
-	const float diffuse = 1.0f;
+	const float viscosity;
+	const float diffuse;
+	Boundry boundry;
 	//dt should not be here because we might want to change it during runtime
 };
 
@@ -83,7 +86,70 @@ void set_bnd( int N, int b, float*** x)
 
 	
 }
+/*
+void set_bnd_vox( int N, Voxel*** x) //velocity
+{
 
+	int i,j;
+
+	for(i =1; i<=N; i++)
+	{
+		for(j=1;j<=N;j++)
+		{
+			x[0][i][j].velocity.x = 		-x[1][i][j].velocity.x;
+			x[N+1][i][j].velocity.x = 		-x[N][i][j].velocity.x;
+
+			x[i][0][j].velocity.y = 		-x[i][1][j].velocity.y;
+			x[i][N+1][j].velocity.y =		-x[i][N][j].velocity.y;
+
+			x[i][j][0].velocity.z = 		-x[i][j][1].velocity.z;
+			x[i][j][N+1].velocity.z =		-x[i][j][N].velocity.z;
+		}
+	}
+	for(i=1; i<=N; i++)
+	{
+		x[0][0][i].velocity = 		0.5f*(x[1][0][i].velocity + x[0][1][i].velocity);
+		x[0][N+1][i].velocity =	 	0.5f*(x[1][N+1][i].velocity + x[0][N][i].velocity);
+		x[N+1][0][i].velocity = 		0.5f*(x[N+1][1][i].velocity + x[N][0][i].velocity);
+		x[N+1][N+1][i].velocity = 		0.5f*(x[N][N+1][i].velocity + x[N+1][N][i].velocity);
+
+		x[0][i][0].velocity = 		0.5f*(x[1][i][0].velocity + x[0][i][1].velocity);
+		x[N+1][i][0].velocity = 		0.5f*(x[N][i][0].velocity + x[N+1][i][1].velocity);
+		x[0][i][N+1].velocity =	 	0.5f*(x[1][i][N+1].velocity + x[0][i][N].velocity);
+		x[N+1][i][N+1].velocity = 		0.5f*(x[N][i][N+1].velocity + x[N+1][i][N].velocity);	
+
+		x[i][0][0].velocity = 		0.5f*(x[i][1][0].velocity + x[i][0][1].velocity);
+		x[i][N+1][0].velocity = 		0.5f*(x[i][N][0].velocity + x[i][N+1][1].velocity);
+		x[i][0][N+1].velocity = 		0.5f*(x[i][1][N+1].velocity + x[i][0][N].velocity);
+		x[i][N+1][N+1].velocity = 		0.5f*(x[i][N][N+1].velocity + x[i][N+1][N].velocity);
+	}
+	
+	x[0][0][0].velocity = 0.3333f*(x[1][0][0].velocity + x[0][1][0].velocity + x[0][0][1].velocity);
+	x[0][N+1][0].velocity = 0.3333f*(x[1][N+1][0].velocity + x[0][N][0].velocity + x[0][N+1][1].velocity);
+
+	x[N+1][0][0].velocity = 0.3333f*(x[N][0][0].velocity + x[N+1][1][0].velocity + x[N+1][0][1].velocity);
+	x[N+1][N+1][0].velocity = 0.3333f*(x[N][N+1][0].velocity + x[N+1][N][0].velocity + x[N+1][N+1][1].velocity);
+
+	x[0][0][N+1].velocity = 0.3333f*(x[1][0][N+1].velocity + x[0][1][N+1].velocity + x[0][0][N].velocity);
+	x[0][N+1][N+1].velocity = 0.3333f*(x[1][N+1][N+1].velocity + x[0][N][N+1].velocity + x[0][N+1][N].velocity);
+
+	x[N+1][0][N+1].velocity = 0.3333f*(x[N][0][N+1].velocity + x[N+1][1][N+1].velocity + x[N+1][0][N].velocity);
+	x[N+1][N+1][N+1].velocity = 0.3333f*(x[N][N+1][N+1].velocity + x[N+1][N][N+1].velocity + x[N+1][N+1][N].velocity);
+}
+*/
+
+void set_bnd_vox(std::vector<Voxel*> vox)
+{
+
+	for(auto it = vox.cbegin(); it!= vox.cend(); it++)
+	{
+		if(it->boundry == Boundry::NONE)
+		{
+			
+		}
+	}
+
+}
 
 
 
@@ -317,7 +383,7 @@ int main()
 	int N = 10;
 	float visc = 1;
 	float dt = 0.1f;
-	const int size = (N+2)*(N+2)*(N+2);
+	//const int size = (N+2)*(N+2)*(N+2);
 	float diff = 1;
 
 	float*** dens = new float**[N+2];
@@ -388,6 +454,14 @@ int main()
 		w_prev[i] = new float*[N+2];
 		for (int j = 0; j < N+2; j++){
 			w_prev[i][j] = new float[N+2];
+		}
+	}
+
+	Voxel*** vox = new Voxel**[N+2];
+	for (int i = 0; i < N+2; i++){
+		vox[i] = new Voxel*[N+2];
+		for (int j = 0; j < N+2; j++){
+			vox[i][j] = new Voxel[N+2];
 		}
 	}
 
@@ -492,6 +566,14 @@ int main()
 		delete [] w_prev[i];
 	}
 	delete [] w_prev;
+
+for (int i = 0; i < (N+2); i++){
+		for (int j =0; j < (N+2); j++){
+			delete [] vox[i][j];
+		}
+		delete [] vox[i];
+	}
+	delete [] vox;
 
 	return 0;
 }
