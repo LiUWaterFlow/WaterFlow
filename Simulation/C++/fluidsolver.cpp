@@ -69,7 +69,39 @@ void FluidSolver::diffuse_density(float dt)
 
 
 
+void FluidSolver::advect_one_velocity(Voxel* currentVox, NeighbourVoxels* particleOrigin, float constantData);
+{
+	
+/*
+	pointposition = gridposition-dt0*currentVox->velocity;
 
+	if (x<0.5) 	{ x=0.5f; }
+	if (x>N+0.5) 	{ x=(float)N+0.5f; }
+	if (y<0.5) 	{ y=0.5f; }
+	if (y>N+0.5)	{ y=(float)N+0.5f; }
+	if (z<0.5) 	{ z=0.5f; }
+	if (z>N+0.5)	{ z=(float)N+0.5f; }
+			
+	i0 = (int)x;
+	i1 = i0 + 1;
+	j0 = (int)y;
+	j1 = j0 + 1;
+	k0 = (int)z;
+	k1 = k0 + 1;
+			
+	s1 = x-i0;
+	s0 = 1-s1;
+	t1 = y-j0;
+	t0 = 1-t1;
+	q1 = z-k0;
+	q0 = 1-q1;
+
+	currentVox->velocity = q0*(s0*(t0*particleOrigin->CURRENT_MID_CENTER.prev_velocity + t1*particleOrigin->CURRENT_BOTTOM_CENTER.prev_velocity) +
+								s1*(t0*particleOrigin->CURRENT_MID_RIGHT.prev_velocity + t1*particleOrigin->CURRENT_BOTTOM_RIGHT.prev_velocity)) +
+								q1*(s0*(t0*particleOrigin->FRONT_MID_CENTER.prev_velocity + t1*particleOrigin->FRONT_BOTTOM_CENTER.prev_velocity) +
+								s1*(t0*particleOrigin->FRONT_MID_RIGHT.prev_velocity + t1*particleOrigin->FRONT_BOTTOM_RIGHT.prev_velocity));
+*/
+};
 
 
 
