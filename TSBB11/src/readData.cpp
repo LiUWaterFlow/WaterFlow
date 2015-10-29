@@ -458,7 +458,7 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 
 	GLfloat yheight = 0;
 
-	if ((vertX1 > 1) && (vertZ1 > 1) && (vertX2 < width - 2) && (vertZ2 < height - 2))
+	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 <= width) && (vertZ2 <= height))
 	{
 
 		GLfloat dist1 = vertX1 - x;

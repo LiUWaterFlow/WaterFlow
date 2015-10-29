@@ -1,65 +1,60 @@
-#version 150
+#version 150 
 
-in vec3 out_Normal;
-in vec2 out_TexCoord;
-in vec3 out_ObjPos;
+layout(points) in;
+layout(triangle_strip, max_vertices = 4) out;
 
-out vec4 out_Color;
+out vec2 texValue;
+out vec3 exNormal;
+out vec4 outPosition;
 
-uniform float t;
-uniform vec3 camPos;	// Kamernapositionen.
-uniform vec3 lightSourcePos;	// Ljuspositionen.
-uniform int isDirectional;
-uniform float specularExponent;
-uniform vec3 lightSourceColor;
+uniform mat4 VTPMatrix;
 
-vec3 r;
-vec3 s;				// Infallande ljus.
-vec3 eye;			// Vektor fr�n objektet till kameran.
-
-
-// Phong-modellen:
-float kamb;
-float kdiff;
-float kspec;
-vec3 ambLight;		// Ambient.
-vec3 diffLight;		// Diffuse.
-vec3 specLight;		// Specular.
-vec3 totalLight;	// Totalt ljus.
-
-void main(void)
+void main()
 {
-	// --- Phong stuff ---
-	// --- FIXA ---
-	//isDirectional = 1;
-	//lightSourceColor = vec3(1.0, 1.0, 1.0);
-	//specularExponent = 25.0;
-	// ------------
-	// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.
-	s = normalize(vec3(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z) - (1 - isDirectional) * out_ObjPos);
-	r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
+	// Create the initial positions
+	vec3 toEmit = gl_in[0].gl_Position.xyz;
+	vec3 toView = vec3(0,0,1);
+	vec3 left = normalize(cross(toView, vec3(0,1,0)));
+	vec3 top = normalize(cross(left,toView));
+	vec4 tempPos;
+	float radius = 0.5f;
 
-	// eye-vektorn ber�knas.
-	eye = normalize(camPos - out_ObjPos);
-
-	// Ljus enligt Phong-modellen:
-	kamb = 0.1;
-	kdiff = 0.5;
-	kspec = 0.5;
-	ambLight = kamb * vec3(1.0, 1.0, 1.0);
-	diffLight = vec3(0.0, 0.0, 0.0);
-	specLight = vec3(0.0, 0.0, 0.0);
-	// Diffuse-ljus ber�knas.
-	diffLight += kdiff * lightSourceColor * max(0.0, dot(s, normalize(out_Normal)));
-	// Spekul�rt ljus.
-	specLight += kspec * lightSourceColor * max(0.0, pow(dot(r, eye), specularExponent));
-
-	totalLight = vec3(0.0, 0.0, 0.0);
-	// De olika ljuskomponenterna adderas till det totala ljuset.
-	totalLight += ambLight;
-	totalLight += diffLight;
-	totalLight += specLight;
-
-	out_Color = vec4(totalLight, 1);
+	// Create the bottom left corner
+	toEmit += radius * (left - top);
+	tempPos = vec4(toEmit, 1.0f);
+	gl_Position = VTPMatrix * tempPos;
+	outPosition = tempPos;
+	texValue = vec2(0.0f, 0.0f);
+	exNormal = toView - top + left;
+	EmitVertex();
+	
+	// Create the bottom right corner
+	toEmit -= 2 * radius * left;
+	tempPos = vec4(toEmit, 1.0f);
+	gl_Position = VTPMatrix * tempPos;
+	outPosition = tempPos;
+	texValue = vec2(1.0f, 0.0f);
+	exNormal = toView - top - left;
+	EmitVertex();
+	
+	// Create the top left corner
+	toEmit += 2 * radius * (top + left);
+	tempPos = vec4(toEmit, 1.0f);
+	gl_Position = VTPMatrix * tempPos;
+	outPosition = tempPos;
+	texValue = vec2(0.0f, 1.0f);
+	exNormal = toView + top + left;
+	EmitVertex();
+		
+	// Create the top right corner
+	toEmit -= 2 * radius * left;
+	tempPos = vec4(toEmit, 1.0f);
+	gl_Position = VTPMatrix * tempPos;
+	outPosition = tempPos;
+	texValue = vec2(1.0f, 1.0f);
+	exNormal = toView + top - left;
+	EmitVertex();
+	
+	EndPrimitive();
 }
 

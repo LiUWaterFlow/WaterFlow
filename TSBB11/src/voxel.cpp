@@ -1,5 +1,8 @@
+
 #include "voxel.h"
 
+#include <iostream>
+#include "gtc/type_ptr.hpp"
 
 /* -----------------------------------------------------------------
 Voxelgrid - Create the initial vector strutcture.
@@ -36,6 +39,7 @@ Voxelgrid::~Voxelgrid(){
     }
   }
 delete voxels;
+delete voxelPositions;
 }
 
 
@@ -215,7 +219,7 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 			for (GLuint y = 0; y < voxels->at(x)->size(); y++) {
 				if (voxels->at(x)->at(y) != nullptr) {
 					for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++) {
-						if (voxels->at(x)->at(y)->at(z) != nullptr) {
+						if (voxels->at(x)->at(y)->at(z) != nullptr && voxels->at(x)->at(y)->at(z)->filled) {
 							positions->push_back(x);
 							positions->push_back(y);
 							positions->push_back(z);
@@ -228,18 +232,17 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 	return positions;
 }
 
-void Voxelgrid::drawVoxels() {
-	std::vector<GLuint> *voxelPositions = getVoxelPositions();
-	GLuint numVoxels = voxelPositions->size() / 3;
-	GLuint voxelShader = loadShadersG(voxV, voxF, voxG);
+void Voxelgrid::initDraw() {
+	voxelPositions = getVoxelPositions();
+	numVoxels = voxelPositions->size() / 3;
+	voxelShader = loadShadersG("src/shaders/simplevoxels.vert", "src/shaders/simplevoxels.frag", "src/shaders/simplevoxels.geom");
 
-	GLuint voxelBuffer, voxelVAO;
 	glGenBuffers(1, &voxelBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
 	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-
+	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
 	glGenVertexArrays(1, &voxelVAO);
 	glBindVertexArray(voxelVAO);
 
@@ -249,18 +252,31 @@ void Voxelgrid::drawVoxels() {
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
+void Voxelgrid::updateVoxelrender() {
+	delete voxelPositions;
+	voxelPositions = getVoxelPositions();
+	numVoxels = voxelPositions->size() / 3;
 
+	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Voxelgrid::drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 	glUseProgram(voxelShader);
-
-	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "proj"), 1, GL_FALSE, glm::value_ptr(proj));
-	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "worldView"), 1, GL_FALSE, glm::value_ptr(worldView));
+	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+	glBindVertexArray(voxelVAO);
+	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
 	if (numVoxels > 0) {
 		glDrawArrays(GL_POINTS, 0, numVoxels);
 	}
 
 	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	printError("Particles Draw Billboards");
+	printError("Voxel Draw Billboards");
 }

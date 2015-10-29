@@ -131,6 +131,9 @@
     <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
+    <None Include="src\shaders\simplevoxels.frag" />
+    <None Include="src\shaders\simplevoxels.geom" />
+    <None Include="src\shaders\simplevoxels.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

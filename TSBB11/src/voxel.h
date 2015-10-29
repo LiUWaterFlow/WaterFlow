@@ -1,6 +1,5 @@
 #include <vector>
 #include <array>
-#include <iostream>
 #include "readData.h"
 
 /// @strcut voxel
@@ -26,6 +25,11 @@ class Voxelgrid
 private:
   std::vector<std::vector<std::vector<voxel*>*>*>* voxels; ///< Container for the voxel lookup tables
   DataHandler* datahandler; ///< Handle to the datahandler and thus the model data.
+
+  std::vector<GLuint> *voxelPositions = nullptr;
+  GLuint numVoxels;
+  GLuint voxelShader;
+  GLuint voxelBuffer, voxelVAO;
 
 public:
 
@@ -83,5 +87,23 @@ public:
   /// @return Returs a pointer to a vector with all the positions in the order x1,y1,z1,x2,y2,z2 ...
   std::vector<GLuint> *getVoxelPositions();
 
-  void drawVoxels();
+  /// @brief Initialize Voxelgrid for drawing
+  ///
+  /// Gets the positions of all currently filled voxels, counts them, creates shader program, VAO and VBO.
+  /// @see drawVoxels
+  void initDraw();
+
+  /// @brief Updates the buffer on the GPU
+  ///
+  /// Which can be rendered by using drawVoxels()
+  /// @see initDraw
+  /// @see drawVoxels
+  void updateVoxelrender();
+
+  /// @brief Draw the voxel data
+  ///
+  /// Draws the current buffer of voxels to the screen as billboards
+  /// @see initDraw
+  /// @see updateVoxelrender
+  void drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
 };

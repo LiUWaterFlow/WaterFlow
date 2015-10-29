@@ -82,6 +82,9 @@ std::vector <Model*>* terrain;
 // Datahandler for terrain data
 DataHandler* dataHandler;
 
+// Voxel for testing
+Voxelgrid* voxels;
+
 // References to shader programs:
 GLuint program;
 
@@ -118,6 +121,17 @@ void init(void)
 	dataHandler = new DataHandler("resources/output.min.asc");
 	terrain = dataHandler->getModel();
 
+	
+	// Create voxel data
+	voxels = new Voxelgrid(dataHandler);
+	for (size_t i = 0; i < 100; i++) {
+		for (size_t j = dataHandler->giveHeight(1, 1); j < dataHandler->giveHeight(1, 1) + 100; j++) {
+			for (size_t k = 0; k < 100; k++) {
+				voxels->setVoxel(i, j, k, true, i, j);
+			}
+		}
+	}
+	voxels->initDraw();
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
@@ -164,9 +178,11 @@ void display(void)
 
 	for (GLuint i = 0; i < terrain->size(); i++)
 	{
-		DrawModel(terrain->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
+		DrawModel(terrain->at(i), program, "in_Position", "in_Normal", NULL);
 	}
 	// --------------------------------------
+
+	voxels->drawVoxels(projectionMatrix, viewMatrix);
 
 	swap_buffers();
 }

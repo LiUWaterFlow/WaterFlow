@@ -124,5 +124,14 @@
     <None Include="src\shaders\normalshader.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="src\shaders\simplevoxels.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\simplevoxels.geom">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\simplevoxels.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
