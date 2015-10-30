@@ -9,19 +9,19 @@
 void FluidSolver::diffuse_one_velocity(NeighbourVoxels* vox, float constantData)
 {
 	//constantData =  a=dt*diff*N*N*N;
-	vox->Origin.prev_velocity = (vox->Origin.velocity +
-					constantData*(vox->Left.prev_velocity + vox->Right.prev_velocity +
-					vox->Up.prev_velocity + vox->Down.prev_velocity +
-					vox->Back.prev_velocity + vox->Front.prev_velocity)  )/(1+6*constantData);
+	vox->CURRENT_MID_CENTER.prev_velocity = (vox->CURRENT_MID_CENTER.velocity +
+						constantData*(vox->CURRENT_MID_LEFT.prev_velocity + vox->CURRENT_MID_RIGHT.prev_velocity +
+						vox->CURRENT_TOP_CENTER.prev_velocity + vox->CURRENT_BOTTOM_CENTER.prev_velocity +
+						vox->BACK_MID_CENTER.prev_velocity + vox->FRONT_MID_CENTER.prev_velocity)  )/(1+6*constantData);
 };
 
-void FluidSolver::diffuse_one_density(NeightbourVoxels* vox, float constantData)
+void FluidSolver::diffuse_one_density(NeighbourVoxels* vox, float constantData)
 {
 	//constantData =  a=dt*diff*N*N*N;
-	vox->Origin.prev_density = (vox->Origin.density +
-					constantData*(vox->Left.prev_density + vox->Right.prev_density +
-					vox->Up.prev_density + vox->Down.prev_density +
-					vox->Back.prev_density + vox->Front.prev_density)  )/(1+6*constantData);
+	vox->CURRENT_MID_CENTER.prev_density = (vox->CURRENT_MID_CENTER.density +
+						constantData*(vox->CURRENT_MID_LEFT.prev_density + vox->CURRENT_MID_RIGHT.prev_density +
+						vox->CURRENT_TOP_CENTER.prev_density + vox->CURRENT_BOTTOM_CENTER.prev_density +
+						vox->BACK_MID_CENTER.prev_density + vox->FRONT_MID_CENTER.prev_density)  )/(1+6*constantData);
 };
 
 
@@ -67,44 +67,124 @@ void FluidSolver::diffuse_density(float dt)
 
 
 
+//everything from here needs to be double checked
 
 
-void FluidSolver::advect_one_velocity(Voxel* currentVox, NeighbourVoxels* particleOrigin, float constantData);
+void FluidSolver::advect_one_velocity(vector<int> prev_grid_position, vector<float> point_position, NeighbourVoxels* currentVox, float constantData);
 {
-	
-/*
-	pointposition = gridposition-dt0*currentVox->velocity;
+	int prev_x = prev_grid_position[0]
+	int prev_y = prev_grid_position[1]
+	int prev_z = prev_grid_position[2]
 
-	if (x<0.5) 	{ x=0.5f; }
-	if (x>N+0.5) 	{ x=(float)N+0.5f; }
-	if (y<0.5) 	{ y=0.5f; }
-	if (y>N+0.5)	{ y=(float)N+0.5f; }
-	if (z<0.5) 	{ z=0.5f; }
-	if (z>N+0.5)	{ z=(float)N+0.5f; }
-			
-	i0 = (int)x;
-	i1 = i0 + 1;
-	j0 = (int)y;
-	j1 = j0 + 1;
-	k0 = (int)z;
-	k1 = k0 + 1;
-			
-	s1 = x-i0;
-	s0 = 1-s1;
-	t1 = y-j0;
-	t0 = 1-t1;
-	q1 = z-k0;
-	q0 = 1-q1;
+	origintemp = m_grid.getNeighbourVoxels(prev_x,prev_y,prev_z);
 
-	currentVox->velocity = q0*(s0*(t0*particleOrigin->CURRENT_MID_CENTER.prev_velocity + t1*particleOrigin->CURRENT_BOTTOM_CENTER.prev_velocity) +
-								s1*(t0*particleOrigin->CURRENT_MID_RIGHT.prev_velocity + t1*particleOrigin->CURRENT_BOTTOM_RIGHT.prev_velocity)) +
-								q1*(s0*(t0*particleOrigin->FRONT_MID_CENTER.prev_velocity + t1*particleOrigin->FRONT_BOTTOM_CENTER.prev_velocity) +
-								s1*(t0*particleOrigin->FRONT_MID_RIGHT.prev_velocity + t1*particleOrigin->FRONT_BOTTOM_RIGHT.prev_velocity));
-*/
+	float s1 = point_position[0]-prev_grid_position[0];
+	float s0 = 1-s1;
+	float t1 = point_position[1]-prev_grid_position[1];
+	float t0 = 1-t1;
+	float q1 = point_position[2]-prev_grid_position[2];
+	float q0 = 1-q1;	
+
+	currentVox->CURRENT_MID_CENTER.velocity = q0*(s0*(t0*origintemp->CURRENT_MID_CENTER.prev_velocity + t1*origintemp->CURRENT_BOTTOM_CENTER.prev_velocity) +
+							s1*(t0*origintemp->CURRENT_MID_RIGHT.prev_velocity + t1*origintemp->CURRENT_BOTTOM_RIGHT.prev_velocity)) +
+							q1*(s0*(t0*origintemp->FRONT_MID_CENTER.prev_velocity + t1*origintemp->FRONT_BOTTOM_CENTER.prev_velocity) +
+							s1*(t0*origintemp->FRONT_MID_RIGHT.prev_velocity + t1*origintemp->FRONT_BOTTOM_RIGHT.prev_velocity));
 };
 
+void FluidSolver::advect_velocity(float dt)
+{
+	float someconstant = dt;
+	NeighbourVoxels* temp;
+	//not including borders
+	for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
+	{
+		for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
+		{
+			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+			{
+				temp = m_grid.getNeighbourVoxels(x,y,z);
 
+				std::vector<int> gridPosition = {x,y,z};
+				std::vector<float> pointPosition(3,0.0f);
+				std::vector<int> prev_gridPosition(3,0);
 
+				pointPosition = gridPosition - someconstant*temp->CURRENT_MID_CENTER.velocity; //might be prev_velocity
+
+				if (pointPosition[0]<0.5) 	{ pointPosition[0]=0.5f; }
+				if (pointPosition[0]>N+0.5) 	{ pointPosition[0]=(float)N+0.5f; }
+				if (pointPosition[1]<0.5) 	{ pointPosition[1]=0.5f; }
+				if (pointPosition[1]>N+0.5)	{ pointPosition[1]=(float)N+0.5f; }
+				if (pointPosition[2]<0.5) 	{ pointPosition[2]=0.5f; }
+				if (pointPosition[2]>N+0.5)	{ pointPosition[2]=(float)N+0.5f; }
+			
+				prev_gridPosition[0] = (int)pointPosition[0];
+				prev_gridPosition[1] = (int)pointPosition[1];
+				prev_gridPosition[2] = (int)pointPosition[2];
+
+				advect_one_velocity(prev_gridPosition,pointPosition,temp,someconstant);			
+			}
+		}
+	}
+	delete temp;		
+};
+
+void FluidSolver::advect_one_density(vector<int> prev_grid_position, vector<float> point_position, NeighbourVoxels* currentVox, float constantData);
+{
+	int prev_x = prev_grid_position[0]
+	int prev_y = prev_grid_position[1]
+	int prev_z = prev_grid_position[2]
+
+	origintemp = m_grid.getNeighbourVoxels(prev_x,prev_y,prev_z);
+
+	float s1 = point_position[0]-prev_grid_position[0];
+	float s0 = 1-s1;
+	float t1 = point_position[1]-prev_grid_position[1];
+	float t0 = 1-t1;
+	float q1 = point_position[2]-prev_grid_position[2];
+	float q0 = 1-q1;	
+
+	currentVox->CURRENT_MID_CENTER.density = q0*(s0*(t0*origintemp->CURRENT_MID_CENTER.prev_density + t1*origintemp->CURRENT_BOTTOM_CENTER.prev_density) +
+							s1*(t0*origintemp->CURRENT_MID_RIGHT.prev_density + t1*origintemp->CURRENT_BOTTOM_RIGHT.prev_density)) +
+							q1*(s0*(t0*origintemp->FRONT_MID_CENTER.prev_density + t1*origintemp->FRONT_BOTTOM_CENTER.prev_density) +
+							s1*(t0*origintemp->FRONT_MID_RIGHT.prev_density + t1*origintemp->FRONT_BOTTOM_RIGHT.prev_density));
+};
+
+void FluidSolver::advect_density(float dt)
+{
+	float someconstant = dt;
+	NeighbourVoxels* temp;
+	//not including borders
+	for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
+	{
+		for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
+		{
+			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+			{
+				temp = m_grid.getNeighbourVoxels(x,y,z);
+
+				std::vector<int> gridPosition = {x,y,z};
+				std::vector<float> pointPosition(3,0.0f);
+				std::vector<int> prev_gridPosition(3,0);
+
+				pointPosition = gridPosition - someconstant*temp->CURRENT_MID_CENTER.velocity; //velocity regardless of calculating density or velocity
+
+				if (pointPosition[0]<0.5) 	{ pointPosition[0]=0.5f; }
+				if (pointPosition[0]>N+0.5) 	{ pointPosition[0]=(float)N+0.5f; }
+				if (pointPosition[1]<0.5) 	{ pointPosition[1]=0.5f; }
+				if (pointPosition[1]>N+0.5)	{ pointPosition[1]=(float)N+0.5f; }
+				if (pointPosition[2]<0.5) 	{ pointPosition[2]=0.5f; }
+				if (pointPosition[2]>N+0.5)	{ pointPosition[2]=(float)N+0.5f; }
+			
+				prev_gridPosition[0] = (int)pointPosition[0];
+				prev_gridPosition[1] = (int)pointPosition[1];
+				prev_gridPosition[2] = (int)pointPosition[2];
+
+				advect_one_density(prev_gridPosition,pointPosition,temp,someconstant);			
+			}
+		}
+	}
+	delete temp;		
+};
 
 
 

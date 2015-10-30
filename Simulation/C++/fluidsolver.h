@@ -169,8 +169,10 @@ private:
 
 	void advect_velocity(float dt);
 	void advect_density(float dt);
-	void advect_one_velocity(Voxel* currentVox, Voxel* particleOrigin, float constantData);
-	void advect_one_density(Voxel* currentVox, Voxel* particleOrigin, float constantData);
+	//void advect_one_velocity(Voxel* currentVox, Voxel* particleOrigin, float constantData);
+	//void advect_one_density(Voxel* currentVox, Voxel* particleOrigin, float constantData);
+	void advect_one_velocity(vector<int> prev_grid_position, vector<float> point_position, NeighbourVoxels* currentVox, float constantData);
+	void advect_one_density(vector<int> prev_grid_position, vector<float> point_position, NeighbourVoxels* currentVox, float constantData);
 
 	Grid m_grid;
 };
