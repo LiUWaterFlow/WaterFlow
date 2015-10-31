@@ -1,27 +1,11 @@
 #ifndef FLUIDSOLVER_H
 #define FLUIDSOLVER_H
 
-//#define IX(i,j,k) ((i)+(N+2)*(j)+(N+2)*(N+2)*(k))
-//#define SWAP(x0, x) {float *tmp=x0;x0=x;x=tmp;}
-
 #include "../../TSBB11/src/common/glm/glm.hpp"
 #include <vector>
 #include <assert.h>
 
-//enum class Boundry{NONE, TOP, BOTTOM, LEFT, RIGHT, FRONT, BACK};
-/*
-enum class Boundry{LEFT_TOP_BACK, LEFT_TOP_CURRENT, LEFT_TOP_FRONT,
-			LEFT_MID_BACK, LEFT_MID_CURRENT, LEFT_MID_FRONT,
-			LEFT_BOTTOM_BACK, LEFT_BOTTOM_CURRENT, LEFT_BOTTOM_FRONT,
-			CENTER_TOP_BACK, CENTER_TOP_CURRENT, CENTER_TOP_FRONT,
-			CENTER_MID_BACK, CENTER_MID_CURRENT, CENTER_MID_FRONT,
-			CENTER_BOTTOM_BACK, CENTER_BOTTOM_CURRENT, CENTER_BOTTOM_FRONT,
-			RIGHT_TOP_BACK, RIGHT_TOP_CURRENT, RIGHT_TOP_FRONT,
-			RIGHT_MID_BACK, RIGHT_MID_CURRENT, RIGHT_MID_FRONT,
-			RIGHT_BOTTOM_BACK, RIGHT_BOTTOM_CURRENT, RIGHT_BOTTOM_FRONT};
-*/
-
-enum class Boundry{BACK_TOP_LEFT, BACK_TOP_CENTER, BACK_TOP_RIGHT,
+enum CUBEPOS{BACK_TOP_LEFT, BACK_TOP_CENTER, BACK_TOP_RIGHT,
 			BACK_MID_LEFT, BACK_MID_CENTER, BACK_MID_RIGHT,
 			BACK_BOTTOM_LEFT, BACK_BOTTOM_CENTER, BACK_BOTTOM_RIGHT,
 			CURRENT_TOP_LEFT, CURRENT_TOP_CENTER, CURRENT_TOP_RIGHT,
@@ -36,7 +20,7 @@ enum class Boundry{BACK_TOP_LEFT, BACK_TOP_CENTER, BACK_TOP_RIGHT,
 class Voxel
 {
 public:
-	Voxel(): viscosity(1.0f), diffuse(1.0f), boundry(Boundry::NONE) {};
+	Voxel(): viscosity(1.0f), diffuse(1.0f) {};
 	~Voxel() {};
 
 	float density;
@@ -49,7 +33,6 @@ public:
 
 	const float viscosity;
 	const float diffuse;
-	Boundry boundry;
 	//dt should not be here because we might want to change it during runtime
 };
 
@@ -58,20 +41,11 @@ class NeighbourVoxels
 {
 public:
 	NeighbourVoxels () {};
-	//~NeighbourVoxels() { delete Up; delete Down; delete Left; delete Right; delete Front; delete Back; delete Origin;};
 	~NeighbourVoxels() {
-	voxels.erease(voxels.cbegin(), voxels.cend());
+		voxels.erase(voxels.cbegin(), voxels.cend());
+	};
 		
 	std::vector<Voxel*> voxels;
-/*
-	Voxel* Up;
-	Voxel* Down;
-	Voxel* Left;
-	Voxel* Right;
-	Voxel* Front;
-	Voxel* Back;
-	Voxel* Origin;
-*/
 };
 
 class Grid
@@ -103,54 +77,50 @@ public:
 		return &m_grid[x][y][z];
 	}
 
-	NeighbourVoxels* getNeighbour(unsigned int x, unsigned int y, unsigned int z)
+	NeighbourVoxels getNeighbour(unsigned int x, unsigned int y, unsigned int z)
 	{
-		NeighbourVoxels* vox = new NeighbourVoxels;
-		vox->voxels[Boundry::BACK_TOP_LEFT] = getVoxel(x-1,y-1,z-1);
-		vox->voxels[Boundry::BACK_TOP_CENTER] = getVoxel(x,y-1,z-1);
-		vox->voxels[Boundry::BACK_TOP_RIGHT] = getVoxel(x+1,y-1,z-1);
+		NeighbourVoxels vox;
+		vox.voxels[CUBEPOS::BACK_TOP_LEFT] = getVoxel(x-1,y-1,z-1);
+		vox.voxels[CUBEPOS::BACK_TOP_CENTER] = getVoxel(x,y-1,z-1);
+		vox.voxels[CUBEPOS::BACK_TOP_RIGHT] = getVoxel(x+1,y-1,z-1);
 
-		vox->voxels[Boundry::BACK_MID_LEFT] = getVoxel(x-1,y,z-1);
-		vox->voxels[Boundry::BACK_MID_CENTER] = getVoxel(x,y,z-1);
-		vox->voxels[Boundry::BACK_MID_RIGHT] = getVoxel(x+1,y,z-1);
+		vox.voxels[CUBEPOS::BACK_MID_LEFT] = getVoxel(x-1,y,z-1);
+		vox.voxels[CUBEPOS::BACK_MID_CENTER] = getVoxel(x,y,z-1);
+		vox.voxels[CUBEPOS::BACK_MID_RIGHT] = getVoxel(x+1,y,z-1);
 
-		vox->voxels[Boundry::BACK_BOTTOM_LEFT] = getVoxel(x-1,y+1,z-1);
-		vox->voxels[Boundry::BACK_BOTTOM_CENTER] = getVoxel(x,y+1,z-1);
-		vox->voxels[Boundry::BACK_BOTTOM_RIGHT] = getVoxel(x+1,y+1,z-1);
+		vox.voxels[CUBEPOS::BACK_BOTTOM_LEFT] = getVoxel(x-1,y+1,z-1);
+		vox.voxels[CUBEPOS::BACK_BOTTOM_CENTER] = getVoxel(x,y+1,z-1);
+		vox.voxels[CUBEPOS::BACK_BOTTOM_RIGHT] = getVoxel(x+1,y+1,z-1);
 
-		vox->voxels[Boundry::CURRENT_TOP_LEFT] = getVoxel(x-1,y-1,z);
-		vox->voxels[Boundry::CURRENT_TOP_CENTER] = getVoxel(x,y-1,z);
-		vox->voxels[Boundry::CURRENT_TOP_RIGHT] = getVoxel(x+1,y-1,z);
+		vox.voxels[CUBEPOS::CURRENT_TOP_LEFT] = getVoxel(x-1,y-1,z);
+		vox.voxels[CUBEPOS::CURRENT_TOP_CENTER] = getVoxel(x,y-1,z);
+		vox.voxels[CUBEPOS::CURRENT_TOP_RIGHT] = getVoxel(x+1,y-1,z);
 
-		vox->voxels[Boundry::CURRENT_MID_LEFT] = getVoxel(x-1,y,z);
-		vox->voxels[Boundry::CURRENT_MID_CENTER] = getVoxel(x,y,z);
-		vox->voxels[Boundry::CURRENT_MID_RIGHT] = getVoxel(x+1,y,z);
+		vox.voxels[CUBEPOS::CURRENT_MID_LEFT] = getVoxel(x-1,y,z);
+		vox.voxels[CUBEPOS::CURRENT_MID_CENTER] = getVoxel(x,y,z);
+		vox.voxels[CUBEPOS::CURRENT_MID_RIGHT] = getVoxel(x+1,y,z);
 
-		vox->voxels[Boundry::CURRENT_BOTTOM_LEFT] = getVoxel(x-1,y+1,z);
-		vox->voxels[Boundry::CURRENT_BOTTOM_CENTER] = getVoxel(x,y+1,z);
-		vox->voxels[Boundry::CURRENT_BOTTOM_RIGHT] = getVoxel(x+1,y+1,z);
+		vox.voxels[CUBEPOS::CURRENT_BOTTOM_LEFT] = getVoxel(x-1,y+1,z);
+		vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER] = getVoxel(x,y+1,z);
+		vox.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT] = getVoxel(x+1,y+1,z);
 
-		vox->voxels[Boundry::FRONT_TOP_LEFT] = getVoxel(x-1,y-1,z+1);
-		vox->voxels[Boundry::FRONT_TOP_CENTER] = getVoxel(x,y-1,z+1);
-		vox->voxels[Boundry::FRONT_TOP_RIGHT] = getVoxel(x+1,y-1,z+1);
+		vox.voxels[CUBEPOS::FRONT_TOP_LEFT] = getVoxel(x-1,y-1,z+1);
+		vox.voxels[CUBEPOS::FRONT_TOP_CENTER] = getVoxel(x,y-1,z+1);
+		vox.voxels[CUBEPOS::FRONT_TOP_RIGHT] = getVoxel(x+1,y-1,z+1);
 
-		vox->voxels[Boundry::FRONT_MID_LEFT] = getVoxel(x-1,y,z+1);
-		vox->voxels[Boundry::FRONT_MID_CENTER] = getVoxel(x,y,z+1);
-		vox->voxels[Boundry::FRONT_MID_RIGHT] = getVoxel(x+1,y,z+1);
+		vox.voxels[CUBEPOS::FRONT_MID_LEFT] = getVoxel(x-1,y,z+1);
+		vox.voxels[CUBEPOS::FRONT_MID_CENTER] = getVoxel(x,y,z+1);
+		vox.voxels[CUBEPOS::FRONT_MID_RIGHT] = getVoxel(x+1,y,z+1);
 
-		vox->voxels[Boundry::FRONT_BOTTOM_LEFT] = getVoxel(x-1,y+1,z+1);
-		vox->voxels[Boundry::FRONT_BOTTOM_CENTER] = getVoxel(x,y+1,z+1);
-		vox->voxels[Boundry::FRONT_BOTTOM_RIGHT] = getVoxel(x+1,y+1,z+1);
-
-		/*vox->Up = getVoxel(x,y - 1, z);
-		vox->Down = getVoxel(x,y + 1, z);
-		vox->Left = getVoxel(x -1, y, z);
-		vox->Right = getVoxel(x + 1, y, z);
-		vox->Front = getVoxel(x, y, z +1);
-		vox->Back = getVoxel(x, y, z - 1);
-		vox->Origin = getVoxel(x,y,z);*/
+		vox.voxels[CUBEPOS::FRONT_BOTTOM_LEFT] = getVoxel(x-1,y+1,z+1);
+		vox.voxels[CUBEPOS::FRONT_BOTTOM_CENTER] = getVoxel(x,y+1,z+1);
+		vox.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT] = getVoxel(x+1,y+1,z+1);
+		
 		return vox;
 	}
+	unsigned int XLength;
+	unsigned int YLength;
+	unsigned int ZLength;
 private:
 	Voxel*** m_grid;
 	unsigned int m_size;
@@ -164,15 +134,14 @@ public:
 private:
 	void diffuse_velocity(float dt);
 	void diffuse_density(float dt);
-	void diffuse_one_velocity(NeighbourVoxels* vox, float constantData);
-	void diffuse_one_density(NeighbourVoxels* vox, float constantData);
+	void diffuse_one_velocity(NeighbourVoxels& vox, float constantData);
+	void diffuse_one_density(NeighbourVoxels& vox, float constantData);
 
 	void advect_velocity(float dt);
 	void advect_density(float dt);
-	//void advect_one_velocity(Voxel* currentVox, Voxel* particleOrigin, float constantData);
-	//void advect_one_density(Voxel* currentVox, Voxel* particleOrigin, float constantData);
-	void advect_one_velocity(vector<int> prev_grid_position, vector<float> point_position, NeighbourVoxels* currentVox, float constantData);
-	void advect_one_density(vector<int> prev_grid_position, vector<float> point_position, NeighbourVoxels* currentVox, float constantData);
+	void advect_core_function(float someconstant, glm::ivec3 gridPosition, glm::ivec3 &prev_gridPosition, glm::vec3 &pointPosition, const glm::vec3& midVelocity);
+	void advect_one_velocity(glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox, float constantData);
+	void advect_one_density(glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox, float constantData);
 
 	Grid m_grid;
 };
