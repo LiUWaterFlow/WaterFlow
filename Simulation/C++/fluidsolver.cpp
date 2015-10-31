@@ -2,7 +2,7 @@
 
 #include "iostream"
 
-void FluidSolver::diffuse_one_velocity(NeighbourVoxels& vox, float constantData)
+void FluidSolver::diffuse_one_velocity(float constantData, NeighbourVoxels& vox)
 {
 	//constantData =  a=dt*diff*N*N*N;
 	vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity = 
@@ -15,7 +15,7 @@ void FluidSolver::diffuse_one_velocity(NeighbourVoxels& vox, float constantData)
 		vox.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_velocity)) / (1 + 6 * constantData);
 };
 
-void FluidSolver::diffuse_one_density(NeighbourVoxels& vox, float constantData)
+void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
 {
 	//constantData =  a=dt*diff*N*N*N;
 	vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_density = 
@@ -42,7 +42,7 @@ void FluidSolver::diffuse_velocity(float dt)
 			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
 			{
 				temp = m_grid.getNeighbour(x,y,z);
-				diffuse_one_velocity(temp,someconstant);
+				diffuse_one_velocity(someconstant, temp);
 			}
 		}
 	}
@@ -60,7 +60,7 @@ void FluidSolver::diffuse_density(float dt)
 			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
 			{
 				temp = m_grid.getNeighbour(x,y,z);
-				diffuse_one_density(temp,someconstant);
+				diffuse_one_density(someconstant, temp);
 			}
 		}
 	}
@@ -81,14 +81,14 @@ void FluidSolver::advect_velocity(float dt)
 			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
 			{
 				temp = m_grid.getVoxel(x, y, z);
-				advect_core_function(someconstant, glm::vec3(x, y, z), prev_gridPosition, pointPosition, temp->velocity);
-				advect_one_velocity(prev_gridPosition,pointPosition,temp,someconstant);			
+				advect_core_function(someconstant, prev_gridPosition, glm::vec3(x, y, z), pointPosition, temp->velocity);
+				advect_one_velocity(someconstant, prev_gridPosition, pointPosition, temp);
 			}
 		}
 	}	
 };
 
-void FluidSolver::advect_one_velocity(glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox, float constantData)
+void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
 	//pick out how far away from the voxel we stand in to the point
@@ -137,14 +137,14 @@ void FluidSolver::advect_density(float dt)
 			for (unsigned int z = 1; z < m_grid.ZLength - 1; z++)
 			{
 				temp = m_grid.getVoxel(x, y, z);
-				advect_core_function(someconstant,glm::vec3(x,y,z),prev_gridPosition, pointPosition, temp->velocity);
-				advect_one_density(prev_gridPosition, pointPosition, temp, someconstant);
+				advect_core_function(someconstant, prev_gridPosition, glm::vec3(x, y, z), pointPosition, temp->velocity);
+				advect_one_density(someconstant, prev_gridPosition, pointPosition, temp);
 			}
 		}
 	}
 };
 
-void FluidSolver::advect_core_function(float someconstant, glm::ivec3 gridPosition, glm::ivec3 &prev_gridPosition, glm::vec3 &pointPosition, const glm::vec3 &midVelocity)
+void FluidSolver::advect_core_function(float someconstant, glm::ivec3 &prev_gridPosition, glm::ivec3 gridPosition, glm::vec3 &pointPosition, const glm::vec3 &midVelocity)
 {
 	pointPosition = (glm::vec3)gridPosition - someconstant*midVelocity; //might be prev_velocity
 
@@ -171,7 +171,7 @@ void FluidSolver::advect_core_function(float someconstant, glm::ivec3 gridPositi
 	prev_gridPosition = glm::floor(pointPosition);
 };
 
-void FluidSolver::advect_one_density(glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox, float constantData)
+void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
 	//pick out how far away from the voxel we stand in to the point
@@ -184,25 +184,25 @@ void FluidSolver::advect_one_density(glm::ivec3 prev_grid_position, glm::vec3 po
 
 	currentVox->density =
 		q0*(
-		s0*(
-		t0*origintemp.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_density
-		+
-		t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_density)
-		+
-		s1*(
-		t0*origintemp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_density
-		+
-		t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT]->prev_density))
+			s0*(
+				t0*origintemp.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_density
+				+
+				t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_density)
+			+
+			s1*(
+				t0*origintemp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_density
+				+
+				t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT]->prev_density))
 		+
 		q1*(
-		s0*(
-		t0*origintemp.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_density
-		+
-		t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_CENTER]->prev_density)
-		+
-		s1*(
-		t0*origintemp.voxels[CUBEPOS::FRONT_MID_RIGHT]->prev_density
-		+
-		t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT]->prev_density));
+			s0*(
+				t0*origintemp.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_density
+				+
+				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_CENTER]->prev_density)
+			+
+			s1*(
+				t0*origintemp.voxels[CUBEPOS::FRONT_MID_RIGHT]->prev_density
+			+
+				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT]->prev_density));
 };
 

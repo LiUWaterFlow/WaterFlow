@@ -134,14 +134,14 @@ public:
 private:
 	void diffuse_velocity(float dt);
 	void diffuse_density(float dt);
-	void diffuse_one_velocity(NeighbourVoxels& vox, float constantData);
-	void diffuse_one_density(NeighbourVoxels& vox, float constantData);
+	void diffuse_one_velocity(float constantData, NeighbourVoxels& vox);
+	void diffuse_one_density(float constantData, NeighbourVoxels& vox);
 
 	void advect_velocity(float dt);
 	void advect_density(float dt);
-	void advect_core_function(float someconstant, glm::ivec3 gridPosition, glm::ivec3 &prev_gridPosition, glm::vec3 &pointPosition, const glm::vec3& midVelocity);
-	void advect_one_velocity(glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox, float constantData);
-	void advect_one_density(glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox, float constantData);
+	void advect_core_function(float someconstant, glm::ivec3 &prev_gridPosition, glm::ivec3 gridPosition, glm::vec3 &pointPosition, const glm::vec3& midVelocity);
+	void advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
+	void advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
 
 	Grid m_grid;
 };
