@@ -7,12 +7,14 @@ void FluidSolver::diffuse_one_velocity(float constantData, NeighbourVoxels& vox)
 	//constantData =  a=dt*diff*N*N*N;
 	vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity = 
 		(vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity +
-		constantData * (vox.voxels[CUBEPOS::CURRENT_MID_LEFT]->prev_velocity +
-		vox.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_velocity +
-		vox.voxels[CUBEPOS::CURRENT_TOP_CENTER]->prev_velocity +
-		vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_velocity +
-		vox.voxels[CUBEPOS::BACK_MID_CENTER]->prev_velocity +
-		vox.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_velocity)) / (1 + 6 * constantData);
+		constantData *
+			(vox.voxels[CUBEPOS::CURRENT_MID_LEFT]->prev_velocity +
+			vox.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_velocity +
+			vox.voxels[CUBEPOS::CURRENT_TOP_CENTER]->prev_velocity +
+			vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_velocity +
+			vox.voxels[CUBEPOS::BACK_MID_CENTER]->prev_velocity +
+			vox.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_velocity)
+		) / (1 + 6 * constantData);
 };
 
 void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
@@ -20,18 +22,18 @@ void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
 	//constantData =  a=dt*diff*N*N*N;
 	vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_density = 
 		(vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->density + 
-		constantData * (vox.voxels[CUBEPOS::CURRENT_MID_LEFT]->prev_density +
-		vox.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_density + 
-		vox.voxels[CUBEPOS::CURRENT_TOP_CENTER]->prev_density +
-		vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_density + 
-		vox.voxels[CUBEPOS::BACK_MID_CENTER]->prev_density + 
-		vox.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_density)) / (1 + 6 * constantData);
+		constantData * 
+			(vox.voxels[CUBEPOS::CURRENT_MID_LEFT]->prev_density +
+			vox.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_density + 
+			vox.voxels[CUBEPOS::CURRENT_TOP_CENTER]->prev_density +
+			vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_density + 
+			vox.voxels[CUBEPOS::BACK_MID_CENTER]->prev_density + 
+			vox.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_density)
+		) / (1 + 6 * constantData);
 };
-
 
 void FluidSolver::diffuse_velocity(float dt)
 {
-
 	float someconstant = dt;  // 
 	NeighbourVoxels temp;
 	//not including borders
@@ -81,7 +83,7 @@ void FluidSolver::advect_velocity(float dt)
 			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
 			{
 				temp = m_grid.getVoxel(x, y, z);
-				advect_core_function(someconstant, prev_gridPosition, glm::vec3(x, y, z), pointPosition, temp->velocity);
+				advect_core_function(someconstant, prev_gridPosition, glm::ivec3(x, y, z), pointPosition, temp->velocity);
 				advect_one_velocity(someconstant, prev_gridPosition, pointPosition, temp);
 			}
 		}
@@ -206,3 +208,37 @@ void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_po
 				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT]->prev_density));
 };
 
+void FluidSolver::project_velocity(float dt)
+{
+	NeighbourVoxels temp;
+	for (unsigned int z = 0; z < m_grid.ZLength; z++)
+	{
+		for (unsigned int y = 0; y < m_grid.YLength; y++)
+		{
+			for (unsigned int x = 0; x < m_grid.XLength; x++)
+			{
+				temp = m_grid.getNeighbour(x, y, z);
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->divergence = -0.5f*(
+					temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->velocity.x - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->velocity.x
+					+ temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->velocity.y - temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y
+					+ temp.voxels[CUBEPOS::FRONT_MID_CENTER]->velocity.z - temp.voxels[CUBEPOS::BACK_MID_CENTER]->velocity.z); /* /N */
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = 0.0f;
+			}
+		}
+	}
+	//force boundries for divergence
+
+	for (unsigned int z = 0; z < m_grid.ZLength; z++)
+	{
+		for (unsigned int y = 0; y < m_grid.YLength; y++)
+		{
+			for (unsigned int x = 0; x < m_grid.XLength; x++)
+			{
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x -= 0.5f*(temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure); /* /N */
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y -= 0.5f*(temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure - temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure); /* /N */
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z -= 0.5f*(temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure - temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure); /* /N */
+			}
+		}
+	}
+	//force boundries for velocity
+};

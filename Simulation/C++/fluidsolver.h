@@ -27,7 +27,7 @@ public:
 	float prev_density;
 	
 	float divergence;
-	float prev_divergence;
+	float preassure;
 	glm::vec3 velocity;
 	glm::vec3 prev_velocity;
 
@@ -75,6 +75,11 @@ public:
 	Voxel* getVoxel(unsigned int x,unsigned int y,unsigned int z)
 	{
 		return &m_grid[x][y][z];
+	}
+
+	Voxel* getVoxel(glm::ivec3 xyz)
+	{
+		return &m_grid[xyz.x][xyz.y][xyz.z];
 	}
 
 	NeighbourVoxels getNeighbour(unsigned int x, unsigned int y, unsigned int z)
@@ -137,11 +142,16 @@ private:
 	void diffuse_one_velocity(float constantData, NeighbourVoxels& vox);
 	void diffuse_one_density(float constantData, NeighbourVoxels& vox);
 
+	float diffuse_one_float(float constantData, float center, float left, float right, float above, float below, float front, float back);
+
 	void advect_velocity(float dt);
 	void advect_density(float dt);
 	void advect_core_function(float someconstant, glm::ivec3 &prev_gridPosition, glm::ivec3 gridPosition, glm::vec3 &pointPosition, const glm::vec3& midVelocity);
 	void advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
 	void advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
+
+	void project_velocity(float dt);
+	void project_density(float dt);
 
 	Grid m_grid;
 };
