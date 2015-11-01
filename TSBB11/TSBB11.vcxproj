@@ -43,6 +43,7 @@
     <LinkIncremental>true</LinkIncremental>
     <ExtensionsToDeleteOnClean>*.cdf;*.cache;*.obj;*.ilk;*.resources;*.tlb;*.tli;*.tlh;*.tmp;*.rsp;*.pgc;*.pgd;*.meta;*.tlog;*.manifest;*.res;*.pch;*.exp;*.idb;*.rep;*.xdc;*.pdb;*_manifest.rc;*.bsc;*.sbr;*.xml;*.metagen;*.bi;*.dll;</ExtensionsToDeleteOnClean>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,6 +101,7 @@
     <ClCompile Include="src\common\loadobj.c" />
     <ClCompile Include="src\common\LoadTGA.c" />
     <ClCompile Include="src\common\SDL_util.c" />
+    <ClCompile Include="src\common\Utilities.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
     <ClCompile Include="src\readData.cpp" />
     <ClCompile Include="src\voxel.cpp" />
@@ -111,6 +113,7 @@
     <ClInclude Include="src\common\loadobj.h" />
     <ClInclude Include="src\common\LoadTGA.h" />
     <ClInclude Include="src\common\SDL_util.h" />
+    <ClInclude Include="src\common\Utilities.h" />
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
@@ -130,6 +133,9 @@
     <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
+    <None Include="src\shaders\simplevoxels.frag" />
+    <None Include="src\shaders\simplevoxels.geom" />
+    <None Include="src\shaders\simplevoxels.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

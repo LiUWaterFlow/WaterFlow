@@ -1,7 +1,7 @@
 #version 150
 
 in vec3 out_Normal;
-in vec2 out_TexCoord;
+//in vec2 out_TexCoord; not currently used
 in vec3 out_ObjPos;
 
 out vec4 out_Color;
