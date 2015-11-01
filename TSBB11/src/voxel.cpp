@@ -180,6 +180,7 @@ void Voxelgrid::FloodFill(int x, int z, int height){
       setVoxel(temp_x, height_test, temp_z, true, 0, 0);
       height_test--;
     }
+	
 
 	
 

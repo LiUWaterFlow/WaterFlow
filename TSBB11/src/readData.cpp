@@ -444,8 +444,8 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a height map.
 {
-	int width = getModelWidth();
-	int height = getModelHeight();
+	int width = getDataWidth();
+	int height = getDataHeight();
 
 	int vertX1 = (int)floor(x);
 	int vertZ1 = (int)floor(z);

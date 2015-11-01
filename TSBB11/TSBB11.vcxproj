@@ -56,19 +56,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;src\shaders;src\common;src\common\glm;src\common\Windows</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\shaders;src\common;src\common\glm;src\common\Windows;src\common\AntTweak</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;AntTweakBar.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\x86;lib\AntTweak;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)"\lib\x86\*.DLL "$(TargetDir)" /D /K /Y</Command>
+      <Command>XCOPY "$(SolutionDir)"lib\x86\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\*.DLL "$(TargetDir)" /D /K /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -80,18 +80,18 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;src\shaders;src\common;src\common\glm;src\common\Windows</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\shaders;src\common;src\common\glm;src\common\Windows;src\common\AntTweak</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\x86;lib\AntTweak;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;AntTweakBar.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)"\lib\x86\*.DLL "$(TargetDir)" /D /K /Y</Command>
+      <Command>XCOPY "$(SolutionDir)"lib\x86\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\*.DLL "$(TargetDir)" /D /K /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\common\AntTweak\AntTweakBar.h" />
     <ClInclude Include="src\common\GL_utilities.h" />
     <ClInclude Include="src\common\loadobj.h" />
     <ClInclude Include="src\common\LoadTGA.h" />

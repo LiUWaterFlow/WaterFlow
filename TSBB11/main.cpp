@@ -30,6 +30,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include "AntTweakBar.h"
 #include "GL_utilities.h"
 #include "loadobj.h"
 #include "LoadTGA.h"
@@ -54,6 +55,7 @@
 int width = 600;
 int height = 600; // Defines instead?
 float scl = 6;
+
 #define DRAW_DISTANCE 10000.0
 
 #define DISPLAY_TIMER 0
@@ -73,7 +75,10 @@ void check_keys();
 
 void reshape(int w, int h, glm::mat4 &projectionMatrix);
 // -------------------------------------------------------------
-
+//AntTweakBar variabels
+int bar_vis;
+TwBar *myBar;
+float height_at_pos;
 // Transformation matrices:
 glm::mat4 projMat, viewMat;
 
@@ -101,6 +106,11 @@ bool sunIsDirectional = 1;
 float sunSpecularExponent = 50.0;
 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
+void TW_CALL Callback(void * clientData)
+{
+std::cout << "TW button pressed" << std::endl;
+}
+
 void init(void)
 {
 #ifdef WIN32
@@ -125,7 +135,7 @@ void init(void)
 	
 	// Create voxel data
 	voxels = new Voxelgrid(dataHandler);
-	voxels->FloodFill((int)1300, (int)1300,floor((int)dataHandler->giveHeight(1300, 1300))+1);
+	voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55);
 	voxels->initDraw();
 
 	// Load and compile shaders.
@@ -140,6 +150,22 @@ void init(void)
 	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
+
+/*Initialize AntTweakBar
+*/
+	TwInit(TW_OPENGL_CORE, NULL);
+	TwWindowSize(width, height);
+
+
+	myBar = TwNewBar("Test bar");
+	TwAddVarRO(myBar, "CameraX", TW_TYPE_FLOAT, &cam.position.x, "");
+	TwAddVarRO(myBar, "CameraY", TW_TYPE_FLOAT, &cam.position.y, "");
+	TwAddVarRO(myBar, "CameraZ", TW_TYPE_FLOAT, &cam.position.z, "");
+	TwAddVarRO(myBar, "Height", TW_TYPE_FLOAT, &height_at_pos, "help= 'Shows terrain height at camera position' ");
+	TwAddVarRW(myBar, "MovSpeed", TW_TYPE_FLOAT, &scl, " min=0 max=10 step=0.01 group=Engine label='Movement speed' ");
+
+	TwAddButton(myBar, "Run", Callback, NULL, " label='Run Forest' ");
+
 }
 
 
@@ -178,7 +204,18 @@ void display(void)
 	// --------------------------------------
 
 	voxels->drawVoxels(projectionMatrix, viewMatrix);
+	/*Draw the tweak bars
+	*/
 
+	height_at_pos = dataHandler->giveHeight((int)cam.position.x, (int)cam.position.z); // <- should be giveHeight when merged to master
+	TwDraw();
+/*
+	while( SDL_PollEvent(&event) ) // process events
+	{
+			// send event to AntTweakBar
+			handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
+	}
+*/
 	swap_buffers();
 }
 
@@ -212,6 +249,8 @@ Uint32 update_timer(Uint32 interval, void* param)
 // Handle events.
 void event_handler(SDL_Event event)
 {
+	//int handled;
+	//handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
 	switch (event.type){
 		case SDL_USEREVENT:
 			handle_userevent(event);
@@ -233,6 +272,13 @@ void event_handler(SDL_Event event)
 			break;
 		case SDL_MOUSEMOTION:
 			handle_mouse(event);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
+			std::cout << "Mouse button down" << std::endl;
+			break;
+		case SDL_MOUSEBUTTONUP:
+			TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
 			break;
 		default:
 			break;
@@ -257,6 +303,7 @@ void handle_userevent(SDL_Event event)
 // Handle keys
 void handle_keypress(SDL_Event event)
 {
+	TwKeyPressed(event.key.keysym.sym, TW_KMOD_NONE);
 	switch (event.key.keysym.sym){
 		case SDLK_ESCAPE:
 		//case SDLK_q:
@@ -271,6 +318,13 @@ void handle_keypress(SDL_Event event)
 		case SDLK_l:
 			std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
 			break;
+		case SDLK_e:
+		if (bar_vis == 1){
+		bar_vis = 0;
+		TwDefine("myBar/visible=false");}
+		else{
+		bar_vis = 1;
+		TwDefine("myBar/visible=true");} // mybar is displayed again
 		default:
 			break;
 	}
@@ -280,6 +334,7 @@ void handle_mouse(SDL_Event event)
 {
 	get_window_size(&width, &height);
 	cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
+	TwMouseMotion(event.motion.x, event.motion.y);
 }
 
 void check_keys()
@@ -324,8 +379,8 @@ int main(int argc, char *argv[])
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
 
-
 	set_event_handler(&event_handler);
 	inf_loop();
+	TwTerminate();
 	return 0;
 }
