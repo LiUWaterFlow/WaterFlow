@@ -1,10 +1,10 @@
 #version 150
 
-in vec2 outTexCoord;
-uniform sampler2D texUnit;
+in vec3 Position;
+uniform samplerCube cube_texture;
 out vec4 out_Color;
 
 void main(void)
 {
-    out_Color = vec4(0.0, 1, 1, 1);
+    out_Color = texture(cube_texture, Position);
 }

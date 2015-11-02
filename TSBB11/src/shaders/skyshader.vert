@@ -1,16 +1,15 @@
 #version 150
 
 in vec3 in_Position;
-in vec2 in_TexCoord;
-
-out vec2 out_TexCoord;
 
 uniform mat4 VTPMatrix;
+uniform mat4 WTVMatrix;
+
+out vec3 Position;
 
 
 void main(void)
 {
-	out_TexCoord = in_TexCoord;
-
-	gl_Position = VTPMatrix * vec4(in_Position, 1.0);
+	Position = in_Position;
+	gl_Position = VTPMatrix * vec4(mat3(WTVMatrix) * in_Position, 1.0);
 }

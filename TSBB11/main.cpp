@@ -90,6 +90,7 @@ DataHandler* dataHandler;
 // References to shader programs:
 GLuint program;
 GLuint skyshader;
+GLuint tex_cube;
 
 // Camera variables:
 Camera cam;
@@ -117,7 +118,7 @@ void init(void)
 	dumpInfo();
 
 	// GL inits.
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glClearColor(0.1f, 1.0f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
@@ -165,27 +166,16 @@ void init(void)
 /* Initialize skycube
 */
 
-GLfloat* vertexArray = new GLfloat [3*8] {-2, 2,-2,
-						 		  				-2, 2, 2,
-						  	 	  			 2, 2, 2,
-						  		 	  		 2, 2,-2,
-						 				  	   -2,-2,-2,
-						 				       -2,-2, 2,
-					 	  		  	  	 2,-2, 2,
-									     		 2,-2,-2};
+GLfloat* vertexArray = new GLfloat [3*8] {-2, -2, 2,
+						 		  												2, -2, 2,
+						  	 	  			 								2, 2, 2,
+						  		 	  		 								-2, 2,2,
+						 				  	   							-2,-2,-2,
+						 				       								2,-2,-2,
+					 	  		  	  	 								2, 2,-2,
+									     		 								-2,2,-2};
 
-GLuint* indexArray = new GLuint [6*2*3] {0,1,4,
-													4,1,5,
-													5,1,2,
-													5,2,6,
-													3,2,7,
-													7,2,6,
-													0,3,4,
-													3,4,7,
-													0,3,2,
-													0,1,2,
-													0,4,7,
-													0,4,5};
+GLuint* indexArray = new GLuint [6*2*3] {0,1,2,2,3,0,3,2,6,6,7,3,7,6,5,5,4,7,4,0,3,3,7,4,0,1,5,5,4,0,1,5,6,6,2,1};
 
 	// Create Model and upload to GPU.
 	skycube = LoadDataToModel(
@@ -196,10 +186,52 @@ GLuint* indexArray = new GLuint [6*2*3] {0,1,4,
 		indexArray,
 		8,
 		6*2*3);
+
+		// Creating cubemap texture
+		glGenTextures (1, &tex_cube);
+		glActiveTexture (GL_TEXTURE0);
+
+		glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
+
+		TextureData texture1;
+		memset(&texture1, 0, sizeof(texture1));
+		TextureData texture2;
+		memset(&texture2, 0, sizeof(texture2));
+		TextureData texture3;
+		memset(&texture3, 0, sizeof(texture3));
+		TextureData texture4;
+		memset(&texture4, 0, sizeof(texture4));
+		TextureData texture5;
+		memset(&texture5, 0, sizeof(texture5));
+		TextureData texture6;
+		memset(&texture6, 0, sizeof(texture6));
+
+		if (LoadTGATextureData("resources/Skycube/Xn.tga", &texture1)) std::cout << "tex1 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Xp.tga", &texture2)) std::cout << "tex2 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Yn.tga", &texture3)) std::cout << "tex3 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Yp.tga", &texture4)) std::cout << "tex4 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Zn.tga", &texture5)) std::cout << "tex5 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Zp.tga", &texture6)) std::cout << "tex6 success!" << std::endl;
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, texture1.width, texture1.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture1.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, texture2.width, texture2.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture2.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, texture3.width, texture3.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture3.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, texture4.width, texture4.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture4.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, texture5.width, texture5.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture5.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, texture6.width, texture6.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture6.imageData);
+
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
+
+
 
 void display(void)
 {
+	glClearColor(0.1f, 1.0f, 0.1f, 0.0f);
 	glm::mat4 rot, trans, scale, total;
 
 	// Clear the screen.
@@ -209,7 +241,15 @@ void display(void)
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 
-	DrawModel(skycube, skyshader, "in_Position", NULL, "in_TexCoord");
+	// ---Camera shader data---
+	glUniformMatrix4fv(glGetUniformLocation(skyshader, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+	glUniform1i(glGetUniformLocation(skyshader, "cube_texture"), 0);
+	glActiveTexture (GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
+
+	DrawModel(skycube, skyshader, "in_Position", NULL, NULL);
 
 	glUseProgram(program);
 
