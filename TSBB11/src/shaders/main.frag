@@ -60,5 +60,5 @@ void main(void)
 	totalLight += diffLight;
 	totalLight += specLight;
 
-	out_Color = vec4(totalLight, 1);
+	out_Color = vec4(totalLight + 0.0000001f * out_TexCoord.s, 1);
 }

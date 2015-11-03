@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <deque>
+#include <vector>
 #include <array>
 #include <inttypes.h>
 #include "readData.h"
@@ -41,10 +41,10 @@ private:
   GLuint voxelBuffer, voxelVAO;
 
   int64_t hashSize;
-  GLfloat rehashTresh = 0.2;
+  GLfloat rehashTresh = 0.75;
 
 
-  std::deque<voxel*>* hashTable;
+  std::vector<voxel*>* hashTable;
   int64_t hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize);
 
 
@@ -52,7 +52,7 @@ public:
   GLuint numInTable = 0;
   GLuint numCollisions = 0;
 
-  /// @brief Constructs a empty voxel grid
+  /// @brief Constructs a empty voxel grids
   ///
   /// Constructs an initially empty sparse voxelgrid, which scales so that there
   /// is N number of voxels in height representing the lowest point to the heighest.
@@ -131,6 +131,7 @@ public:
   voxel* hashGet(int16_t x, int16_t y, int16_t z);
   void rehash();
   bool isEqualPoint(voxel* vox,short int x, short int y,short int z);
+  void hashInit(); 
 
 };
 

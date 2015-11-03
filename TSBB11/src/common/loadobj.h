@@ -14,7 +14,7 @@ extern "C" {
 		#include <GL/glu.h>
 		#include <GL/glx.h>
 		#include <GL/glext.h>
-		
+
 	#else
 		#include "glew.h"
 	#endif
@@ -29,7 +29,7 @@ typedef struct
   GLuint* indexArray;
   int numVertices;
   int numIndices;
-  
+
   // Space for saving VBO and VAO IDs
   GLuint vao; // VAO
   GLuint vb, ib, nb, tb; // VBOs

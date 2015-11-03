@@ -8,10 +8,11 @@
 namespace voxelTest{
 
   void plsWait(){
-    std::cout << "Press any key to continue..." << std::endl;
+    
 #ifdef _WINDOWS
     system("pause");
 #else
+	std::cout << "Press any key to continue..." << std::endl;
     system("read");
 #endif
   }
@@ -61,37 +62,67 @@ namespace voxelTest{
   void mainTest(VoxelTest* tester){
     Voxelgrid* grid = tester->gridPtr;
     startClock();
-    size_t count = 400;
+    size_t count = 300;
     size_t end = 0;
+	bool testHash = false;
 
-    //plsWait();
+	if (testHash) {
+		//plsWait();
+
+		grid->hashInit();
+
+		for (size_t x = count; x != end; x--) {
+			for (size_t y = count; y != end; y--) {
+				for (size_t z = count; z != end; z--) {
+					grid->hashAdd(x, y, z, 1, x, y);
+				}
+			}
+		}
+		endClock();
+
+		std::cout << (float)grid->numCollisions/(float)grid->numInTable << std::endl;
+
+		//Read and modify the voxels
+		startClock();
+		for (size_t x = count; x != end; x--) {
+			for (size_t y = count; y != end; y--) {
+				for (size_t z = count; z != end; z--) {
+					voxel* tmp = grid->hashGet(x, y, z);
+					if (tmp != nullptr)
+						tmp->a += 1;
+				}
+			}
+		}
+		printf("\n");
+		endClock();
+	
+	}
+	else{
 
     for (size_t x = count; x != end; x--) {
       for (size_t y = count; y != end; y--) {
         for (size_t z = count; z != end; z--) {
-          grid->hashAdd(x,y,z,1,x,y);
+          grid->setVoxel(x,y,z,1,x,y);
         }
       }
     }
     endClock();
-
-    std::cout << (float)grid->numCollisions/(float)grid->numInTable << std::endl;
 
     //Read and modify the voxels
     startClock();
-    for (size_t x = 0; x < count; x++) {
-      for (size_t y = 0; y < count; y++) {
-        for (size_t z = 0; z < count; z++) {
-          voxel* tmp = grid->hashGet(x,y,z);
-          if(tmp != nullptr){
-            tmp->a++;
-            //printf("x: %f  y: %f  ", tmp->a,tmp->b);
-          }
-        }
-      }
-    }
+	for (size_t x = count; x != end; x--) {
+		for (size_t y = count; y != end; y--) {
+			for (size_t z = count; z != end; z--) {
+				voxel* tmp = grid->getVoxel(x, y, z);
+				if(tmp != nullptr)
+					tmp->a += 1;
+			}
+		}
+	}
     printf("\n");
     endClock();
+
+	}
     //Delete the voxels
     plsWait();
     delete grid;

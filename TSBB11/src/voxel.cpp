@@ -7,13 +7,13 @@
 
 void Voxelgrid::rehash(){
   hashSize = hashSize*2;
-  std::deque<voxel*>* tempTable = new std::deque<voxel*>(hashSize,nullptr);
+  std::vector<voxel*>* tempTable = new std::vector<voxel*>(hashSize,nullptr);
   numCollisions = 0;
   numInTable = 0;
 
   std::cout << "Rehash Triggered: " << hashSize << std::endl;
 
-  for (std::deque<voxel*>::iterator it = hashTable->begin(); it!=hashTable->end(); ++it){
+  for (std::vector<voxel*>::iterator it = hashTable->begin(); it!=hashTable->end(); ++it){
     if(*it != nullptr){
 
       voxel* temp = *it;
@@ -24,12 +24,13 @@ void Voxelgrid::rehash(){
       }else{
         numCollisions++;
         hashPos++;
-        hashPos = hashPos % hashSize;
-        while(tempTable->at(hashPos)  != nullptr){
-          hashPos++;
-          hashPos = hashPos % hashSize;
-
-        }
+		int numLinearRepeat = 0;
+		hashPos = hashPos % hashSize;
+		while (tempTable->at(hashPos) != nullptr) {
+			hashPos++;
+			hashPos = hashPos % hashSize;
+			numLinearRepeat++;
+		}
         numInTable++;
         tempTable->at(hashPos) = *it;
       }
@@ -38,6 +39,8 @@ void Voxelgrid::rehash(){
 
   delete hashTable;
   hashTable = tempTable;
+
+  std::cout << "rehash finished" << std::endl;
 }
 
 int64_t Voxelgrid::hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize){
@@ -53,18 +56,25 @@ void Voxelgrid::hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, fl
   temp->a = a;
   temp->b = b;
   int64_t hashPos = hashFunc(x,y,z,hashSize);
+
   if(hashTable->at(hashPos)  == nullptr){
     hashTable->at(hashPos) = temp;
     numInTable++;
   }else{
     numCollisions++;
     hashPos++;
+	int numLinearRepeat = 0;
     hashPos = hashPos % hashSize;
-    while(hashTable->at(hashPos)  != nullptr){
+    while(hashTable->at(hashPos)  != nullptr && numLinearRepeat < 100000){
       hashPos++;
       hashPos = hashPos % hashSize;
-
+	  numLinearRepeat++;
     }
+	if (numLinearRepeat > 90000) {
+		rehash();
+		hashAdd(x, y, z, filled, a, b);
+		return;
+	}
     numInTable++;
     hashTable->at(hashPos) = temp;
   }
@@ -92,13 +102,16 @@ bool Voxelgrid::isEqualPoint(voxel* vox,short int x, short int y,short int z){
 }
 
 
+void Voxelgrid::hashInit() {
+	this->hashTable = new std::vector<voxel*>(hashSize, nullptr);
+}
+
 /* -----------------------------------------------------------------
 Voxelgrid - Create the initial vector strutcture.
 */
 
 Voxelgrid::Voxelgrid(DataHandler* dataHandler,int64_t hashSize){
   this->hashSize = hashSize;
-  this->hashTable =  new std::deque<voxel*>(hashSize,nullptr);
 
   this->voxels  = new std::vector<std::vector<std::vector<voxel*>*>*>;
   this->datahandler = dataHandler;
