@@ -83,6 +83,9 @@
     <ClInclude Include="src\common\Utilities.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\AntTweak\AntTweakBar.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\main.frag">
