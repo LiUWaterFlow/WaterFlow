@@ -129,13 +129,13 @@ void init(void)
 	cam = Camera(program, &viewMatrix);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc");
+	dataHandler = new DataHandler("resources/output.min.asc",4);
 	terrain = dataHandler->getModel();
 
-	
+
 	// Create voxel data
 	voxels = new Voxelgrid(dataHandler);
-	voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55);
+	voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
 	voxels->initDraw();
 
 	// Load and compile shaders.
@@ -314,7 +314,7 @@ void handle_keypress(SDL_Event event)
 			break;
 		case SDLK_h:
 			SDL_SetRelativeMouseMode(SDL_TRUE);
-			break; 
+			break;
 		case SDLK_l:
 			std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
 			break;
@@ -373,8 +373,8 @@ int main(int argc, char *argv[])
 	init();
 
 	SDL_TimerID timer_id;
-	timer_id = SDL_AddTimer(30, &display_timer, NULL);
-	timer_id = SDL_AddTimer(10, &update_timer, NULL);
+	timer_id = SDL_AddTimer(60, &display_timer, NULL);
+	timer_id = SDL_AddTimer(60, &update_timer, NULL);
 	if (timer_id == 0){
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}

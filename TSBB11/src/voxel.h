@@ -83,7 +83,7 @@ public:
 
   std::vector<std::array<int, 2>>* LayerFloodFill(int init_x, int init_z, int height);
   void LayerFloodFill_Rec(int x, int z, int height, std::vector<std::array<int, 2>>* filled_coords);
-  void FloodFill(int x, int z, int height);
+  void FloodFill(int x, int z, int height, bool fillDown = true);
 
 
   /// @brief Create a data pointer to all existing voxels

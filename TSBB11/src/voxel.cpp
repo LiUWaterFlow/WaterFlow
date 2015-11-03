@@ -23,11 +23,11 @@ Voxelgrid - Destructor, ensure destruction of all pointer structures
 Voxelgrid::~Voxelgrid(){
   for (GLuint x = 0; x < voxels->size(); x++) {
     if(voxels->at(x) != nullptr){
-		for (GLuint y = 0; y < voxels->at(x)->size(); y++)
-		{
+      for (GLuint y = 0; y < voxels->at(x)->size(); y++)
+      {
         if(voxels->at(x)->at(y) != nullptr){
-			for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++)
-			{
+          for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++)
+          {
             if( voxels->at(x)->at(y)->at(z) != nullptr){
               delete voxels->at(x)->at(y)->at(z);
             }
@@ -38,8 +38,8 @@ Voxelgrid::~Voxelgrid(){
       delete voxels->at(x);
     }
   }
-delete voxels;
-delete voxelPositions;
+  delete voxels;
+  delete voxelPositions;
 }
 
 
@@ -146,7 +146,7 @@ coordinates relative to the current coordinates (last position in queue) are add
 As each element in the queue is processed the voxels beneath the current voxel are filled.
 */
 
-void Voxelgrid::FloodFill(int x, int z, int height){
+void Voxelgrid::FloodFill(int x, int z, int height, bool fillDown){
 
   std::vector<std::vector<int>> queue;
   std::cout << x << std::endl;
@@ -160,8 +160,8 @@ void Voxelgrid::FloodFill(int x, int z, int height){
   int height_test;
   int terrain_height;
 
-/* While queue is not empty, keep processing queue from back to front.
-*/
+  /* While queue is not empty, keep processing queue from back to front.
+  */
   while(queue.size() > 0){
 
     temp_x  = queue.back().at(0);
@@ -174,110 +174,110 @@ void Voxelgrid::FloodFill(int x, int z, int height){
     height_test = height;
     terrain_height = (int)datahandler->giveHeight(temp_x, temp_z);
 
-	
-    while(height_test > terrain_height && height_test >= 0){
+    if(fillDown){
+      while(height_test > terrain_height && height_test >= 0){
 
-      setVoxel(temp_x, height_test, temp_z, true, 0, 0);
-      height_test--;
+        setVoxel(temp_x, height_test, temp_z, true, 0, 0);
+        height_test--;
+      }
     }
-	
 
-	
 
-/* Checking voxels adjacent to current voxel and adding their coordinates to the queue if they are inside the terrain,
-above land and have not yet been added to the queue. Before coordinates are added the struct is created. Struct existance
-(!= nullptr) thus equivalent to voxel added to cue as used in if-statement.
-*/
-	 // temp_x + 1 < datahandler->getDataWidth() -1 dye to giveHeight not able to give height and edge!!!
-	if (temp_x + 1 < datahandler->getDataWidth() -1  && datahandler->giveHeight(temp_x + 1, temp_z) < height && getVoxel(temp_x + 1, height, temp_z) == nullptr) {
-		setVoxel(temp_x + 1, height, temp_z, true, 0, 0);
-		queue.push_back({temp_x + 1,temp_z});
-	}
 
-	
-	if (temp_x - 1 > 0 && datahandler->giveHeight(temp_x - 1, temp_z) < height && getVoxel(temp_x - 1, height, temp_z) == nullptr) {
-		setVoxel(temp_x - 1, height, temp_z, true, 0, 0);
-		queue.push_back({ temp_x - 1, temp_z });
-	}
-	if (temp_z + 1 < datahandler->getDataHeight() -1  && datahandler->giveHeight(temp_x, temp_z+1) < height && getVoxel(temp_x, height, temp_z+1) == nullptr) {
-		setVoxel(temp_x, height, temp_z + 1, true, 0, 0);
-		queue.push_back({ temp_x,temp_z + 1 });
-	}
+    /* Checking voxels adjacent to current voxel and adding their coordinates to the queue if they are inside the terrain,
+    above land and have not yet been added to the queue. Before coordinates are added the struct is created. Struct existance
+    (!= nullptr) thus equivalent to voxel added to cue as used in if-statement.
+    */
+    // temp_x + 1 < datahandler->getDataWidth() -1 dye to giveHeight not able to give height and edge!!!
+    if (temp_x + 1 < datahandler->getDataWidth() -1  && datahandler->giveHeight(temp_x + 1, temp_z) < height && getVoxel(temp_x + 1, height, temp_z) == nullptr) {
+      setVoxel(temp_x + 1, height, temp_z, true, 0, 0);
+      queue.push_back({temp_x + 1,temp_z});
+    }
 
-	if (temp_z - 1 > 0 && datahandler->giveHeight(temp_x, temp_z - 1) < height && getVoxel(temp_x, height, temp_z - 1) == nullptr) {
-		setVoxel(temp_x, height, temp_z - 1, true, 0, 0);
-		queue.push_back({ temp_x, temp_z - 1 });
-	}
+
+    if (temp_x - 1 > 0 && datahandler->giveHeight(temp_x - 1, temp_z) < height && getVoxel(temp_x - 1, height, temp_z) == nullptr) {
+      setVoxel(temp_x - 1, height, temp_z, true, 0, 0);
+      queue.push_back({ temp_x - 1, temp_z });
+    }
+    if (temp_z + 1 < datahandler->getDataHeight() -1  && datahandler->giveHeight(temp_x, temp_z+1) < height && getVoxel(temp_x, height, temp_z+1) == nullptr) {
+      setVoxel(temp_x, height, temp_z + 1, true, 0, 0);
+      queue.push_back({ temp_x,temp_z + 1 });
+    }
+
+    if (temp_z - 1 > 0 && datahandler->giveHeight(temp_x, temp_z - 1) < height && getVoxel(temp_x, height, temp_z - 1) == nullptr) {
+      setVoxel(temp_x, height, temp_z - 1, true, 0, 0);
+      queue.push_back({ temp_x, temp_z - 1 });
+    }
   }
- 
+
 }
 
 std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
-	std::vector<GLuint> *positions = new std::vector<GLuint>;
+  std::vector<GLuint> *positions = new std::vector<GLuint>;
 
-	for (GLuint x = 0; x < voxels->size(); x++) {
-		if (voxels->at(x) != nullptr) {
-			for (GLuint y = 0; y < voxels->at(x)->size(); y++) {
-				if (voxels->at(x)->at(y) != nullptr) {
-					for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++) {
-						if (voxels->at(x)->at(y)->at(z) != nullptr && voxels->at(x)->at(y)->at(z)->filled) {
-							positions->push_back(x);
-							positions->push_back(y);
-							positions->push_back(z);
-						}
-					}
-				}
-			}
-		}
-	}
-	return positions;
+  for (GLuint x = 0; x < voxels->size(); x++) {
+    if (voxels->at(x) != nullptr) {
+      for (GLuint y = 0; y < voxels->at(x)->size(); y++) {
+        if (voxels->at(x)->at(y) != nullptr) {
+          for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++) {
+            if (voxels->at(x)->at(y)->at(z) != nullptr && voxels->at(x)->at(y)->at(z)->filled) {
+              positions->push_back(x);
+              positions->push_back(y);
+              positions->push_back(z);
+            }
+          }
+        }
+      }
+    }
+  }
+  return positions;
 }
 
 void Voxelgrid::initDraw() {
-	voxelPositions = getVoxelPositions();
-	numVoxels = voxelPositions->size() / 3;
-	voxelShader = loadShadersG("src/shaders/simplevoxels.vert", "src/shaders/simplevoxels.frag", "src/shaders/simplevoxels.geom");
+  voxelPositions = getVoxelPositions();
+  numVoxels = voxelPositions->size() / 3;
+  voxelShader = loadShadersG("src/shaders/simplevoxels.vert", "src/shaders/simplevoxels.frag", "src/shaders/simplevoxels.geom");
 
-	glGenBuffers(1, &voxelBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glGenBuffers(1, &voxelBuffer);
+  glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+  glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-	glGenVertexArrays(1, &voxelVAO);
-	glBindVertexArray(voxelVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+  glGenVertexArrays(1, &voxelVAO);
+  glBindVertexArray(voxelVAO);
 
-	GLuint posAttrib = glGetAttribLocation(voxelShader, "posValue");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
+  GLuint posAttrib = glGetAttribLocation(voxelShader, "posValue");
+  glEnableVertexAttribArray(posAttrib);
+  glVertexAttribPointer(posAttrib, 3, GL_UNSIGNED_INT, GL_FALSE, 0, 0);
 
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Voxelgrid::updateVoxelrender() {
-	delete voxelPositions;
-	voxelPositions = getVoxelPositions();
-	numVoxels = voxelPositions->size() / 3;
+  delete voxelPositions;
+  voxelPositions = getVoxelPositions();
+  numVoxels = voxelPositions->size() / 3;
 
-	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+  glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Voxelgrid::drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-	glUseProgram(voxelShader);
-	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-	glBindVertexArray(voxelVAO);
-	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(voxelShader, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+  glUseProgram(voxelShader);
+  glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+  glBindVertexArray(voxelVAO);
+  glUniformMatrix4fv(glGetUniformLocation(voxelShader, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+  glUniformMatrix4fv(glGetUniformLocation(voxelShader, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
-	if (numVoxels > 0) {
-		glDrawArrays(GL_POINTS, 0, numVoxels);
-	}
+  if (numVoxels > 0) {
+    glDrawArrays(GL_POINTS, 0, numVoxels);
+  }
 
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	printError("Voxel Draw Billboards");
+  printError("Voxel Draw Billboards");
 }
