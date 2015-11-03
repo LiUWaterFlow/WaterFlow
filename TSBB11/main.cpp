@@ -111,7 +111,7 @@ std::cout << "TW button pressed" << std::endl;
 }
 
 void init(void) {
-#ifdef WIN32
+#ifdef _WINDOWS
 	glewInit();
 #endif
 	//initKeymapManager();
