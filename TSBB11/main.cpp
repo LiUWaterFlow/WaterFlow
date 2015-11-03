@@ -135,7 +135,7 @@ void init(void)
 
 	// Create voxel data
 	voxels = new Voxelgrid(dataHandler,27000000);
-	voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
+	//voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
 	voxels->initDraw();
 
 	// Load and compile shaders.

@@ -9,7 +9,7 @@ namespace voxelTest{
 
   void plsWait(){
     std::cout << "Press any key to continue..." << std::endl;
-#ifdef _WIN32
+#ifdef _WINDOWS
     system("pause");
 #else
     system("read");
@@ -61,7 +61,7 @@ namespace voxelTest{
   void mainTest(VoxelTest* tester){
     Voxelgrid* grid = tester->gridPtr;
     startClock();
-    size_t count = 300;
+    size_t count = 400;
     size_t end = 0;
 
     //plsWait();
