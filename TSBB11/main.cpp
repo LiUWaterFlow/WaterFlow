@@ -10,22 +10,22 @@
 // * Use glUniform1fv instead of glUniform1f, since glUniform1f has a bug under Linux.
 
 #ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#include <SDL2/SDL.h>
+	#include <OpenGL/gl3.h>
+	#include <SDL2/SDL.h>
 #else
-#ifdef  __linux__
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glx.h>
-#include <GL/glext.h>
-#include <SDL2/SDL.h>
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		#include <SDL2/SDL.h>
 
 
-#else
-#include "glew.h"
-#include "Windows/sdl2/SDL.h"
-#endif
+	#else
+		#include "glew.h"
+		#include "Windows/sdl2/SDL.h"
+	#endif
 #endif
 
 #include <cstdlib>
@@ -82,6 +82,7 @@ glm::mat4 projMat, viewMat;
 
 // Models:
 std::vector <Model*>* terrain;
+Model* skycube;
 
 glm::mat4 rot, trans, scale, total;
 
@@ -90,6 +91,8 @@ DataHandler* dataHandler;
 
 // References to shader programs:
 GLuint program;
+GLuint skyshader;
+GLuint tex_cube;
 
 // Camera variables:
 Camera cam;
@@ -104,7 +107,7 @@ float sunSpecularExponent = 50.0;
 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
 void TW_CALL Callback(void * clientData) {
-	std::cout << "TW button pressed" << std::endl;
+std::cout << "TW button pressed" << std::endl;
 }
 
 void init(void) {
@@ -115,7 +118,7 @@ void init(void) {
 	dumpInfo();
 
 	// GL inits.
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+	glClearColor(0.1f, 1.0f, 0.1f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_TRUE);
@@ -138,6 +141,7 @@ void init(void) {
 
 	// Load and compile shaders.
 	program = loadShaders("src/shaders/main.vert", "src/shaders/main.frag");
+	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 	glUseProgram(program);
 
 	// Initial one-time shader uploads.
@@ -150,8 +154,11 @@ void init(void) {
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 
-	/*Initialize AntTweakBar
-	*/
+	glUseProgram(skyshader);
+	glUniformMatrix4fv(glGetUniformLocation(skyshader, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+
+/*Initialize AntTweakBar
+*/
 	TwInit(TW_OPENGL_CORE, NULL);
 	TwWindowSize(width, height);
 
@@ -165,6 +172,68 @@ void init(void) {
 
 	TwAddButton(myBar, "Run", Callback, NULL, " label='Run Forest' ");
 
+/* Initialize skycube
+*/
+
+GLfloat* vertexArray = new GLfloat [3*8] {-2, -2, 2,
+						 		  												2, -2, 2,
+						  	 	  			 								2, 2, 2,
+						  		 	  		 								-2, 2,2,
+						 				  	   							-2,-2,-2,
+						 				       								2,-2,-2,
+					 	  		  	  	 								2, 2,-2,
+									     		 								-2,2,-2};
+
+GLuint* indexArray = new GLuint [6*2*3] {0,1,2,2,3,0,3,2,6,6,7,3,7,6,5,5,4,7,4,0,3,3,7,4,0,1,5,5,4,0,1,5,6,6,2,1};
+
+	// Create Model and upload to GPU.
+	skycube = LoadDataToModel(
+		vertexArray,
+		NULL,
+		NULL,
+		NULL,
+		indexArray,
+		8,
+		6*2*3);
+
+		// Creating cubemap texture
+		glGenTextures (1, &tex_cube);
+		glActiveTexture (GL_TEXTURE0);
+
+		glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
+
+		TextureData texture1;
+		memset(&texture1, 0, sizeof(texture1));
+		TextureData texture2;
+		memset(&texture2, 0, sizeof(texture2));
+		TextureData texture3;
+		memset(&texture3, 0, sizeof(texture3));
+		TextureData texture4;
+		memset(&texture4, 0, sizeof(texture4));
+		TextureData texture5;
+		memset(&texture5, 0, sizeof(texture5));
+		TextureData texture6;
+		memset(&texture6, 0, sizeof(texture6));
+
+		if (LoadTGATextureData("resources/Skycube/Xn.tga", &texture1)) std::cout << "tex1 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Xp.tga", &texture2)) std::cout << "tex2 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Yn.tga", &texture3)) std::cout << "tex3 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Yp.tga", &texture4)) std::cout << "tex4 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Zn.tga", &texture5)) std::cout << "tex5 success!" << std::endl;
+		if (LoadTGATextureData("resources/Skycube/Zp.tga", &texture6)) std::cout << "tex6 success!" << std::endl;
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, texture1.width, texture1.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture1.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, texture2.width, texture2.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture2.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, texture3.width, texture3.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture3.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, texture4.width, texture4.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture4.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, texture5.width, texture5.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture5.imageData);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, texture6.width, texture6.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture6.imageData);
+
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	  glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 void display(void) {
@@ -174,6 +243,24 @@ void display(void) {
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glUseProgram(skyshader);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
+	// ---Camera shader data---
+	glUniformMatrix4fv(glGetUniformLocation(skyshader, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+	glUniform1i(glGetUniformLocation(skyshader, "cube_texture"), 0);
+	glActiveTexture (GL_TEXTURE0);
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
+
+	DrawModel(skycube, skyshader, "in_Position", NULL, NULL);
+
+	glUseProgram(program);
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	// ---Camera shader data---
 	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	GLfloat camPos_GLf[3] = { cam.position.x, cam.position.y, cam.position.z };
@@ -195,13 +282,13 @@ void display(void) {
 
 	height_at_pos = dataHandler->getCoord((int)cam.position.x, (int)cam.position.z); // <- should be giveHeight when merged to master
 	TwDraw();
-	/*
-		while( SDL_PollEvent(&event) ) // process events
-		{
-		// send event to AntTweakBar
-		handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
-		}
-		*/
+/*
+	while( SDL_PollEvent(&event) ) // process events
+	{
+			// send event to AntTweakBar
+			handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
+	}
+*/
 	swap_buffers();
 }
 
@@ -235,37 +322,37 @@ void event_handler(SDL_Event event) {
 	//int handled;
 	//handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
 	switch (event.type) {
-	case SDL_USEREVENT:
-		handle_userevent(event);
-		break;
-	case SDL_QUIT:
-		exit(0);
-		break;
-	case SDL_KEYDOWN:
-		handle_keypress(event);
-		break;
-	case SDL_WINDOWEVENT:
-		switch (event.window.event) {
-		case SDL_WINDOWEVENT_RESIZED:
-			get_window_size(&width, &height);
-			resize_window(event);
-			reshape(width, height, projectionMatrix);
+		case SDL_USEREVENT:
+			handle_userevent(event);
 			break;
-		}
-		break;
-	case SDL_MOUSEMOTION:
+		case SDL_QUIT:
+			exit(0);
+			break;
+		case SDL_KEYDOWN:
+			handle_keypress(event);
+			break;
+		case SDL_WINDOWEVENT:
+		switch (event.window.event) {
+			case SDL_WINDOWEVENT_RESIZED:
+				get_window_size(&width, &height);
+				resize_window(event);
+				reshape(width, height, projectionMatrix);
+				break;
+			}
+			break;
+		case SDL_MOUSEMOTION:
+			handle_mouse(event);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
 		handle_mouse(event);
-		break;
-	case SDL_MOUSEBUTTONDOWN:
-		TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
 		handle_mouse(event);
-		break;
-	case SDL_MOUSEBUTTONUP:
-		TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
-		handle_mouse(event);
-		break;
-	default:
-		break;
+			break;
+		default:
+			break;
 	}
 }
 
@@ -287,29 +374,29 @@ void handle_userevent(SDL_Event event) {
 void handle_keypress(SDL_Event event) {
 	TwKeyPressed(event.key.keysym.sym, TW_KMOD_NONE);
 	switch (event.key.keysym.sym) {
-	case SDLK_ESCAPE:
+		case SDLK_ESCAPE:
 		//case SDLK_q:
-		exit(0);
-		break;
-	case SDLK_g:
-		SDL_SetRelativeMouseMode(SDL_FALSE);
-		break;
-	case SDLK_h:
-		SDL_SetRelativeMouseMode(SDL_TRUE);
-		break;
+			exit(0);
+			break;
+		case SDLK_g:
+			SDL_SetRelativeMouseMode(SDL_FALSE);
+			break;
+		case SDLK_h:
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+			break;
 	case SDLK_l:
 		std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
 		break;
-	case SDLK_e:
+		case SDLK_e:
 		if (bar_vis == 1) {
-			bar_vis = 0;
+		bar_vis = 0;
 			TwDefine("myBar/visible=false");
 		} else {
-			bar_vis = 1;
+		bar_vis = 1;
 			TwDefine("myBar/visible=true");
 		} // mybar is displayed again
-	default:
-		break;
+		default:
+			break;
 	}
 }
 
@@ -318,10 +405,10 @@ void handle_mouse(SDL_Event event) {
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	//When shift held camera doesn't move with mouse.
 	if (!state[SDL_SCANCODE_LSHIFT]) {
-		cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
+	cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
 	} else {
-		TwMouseMotion(event.motion.x, event.motion.y);
-	}
+	TwMouseMotion(event.motion.x, event.motion.y);
+}
 	/* Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse.
 		glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation.
 		glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model
