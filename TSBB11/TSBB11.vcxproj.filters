@@ -48,6 +48,9 @@
     <ClCompile Include="src\readData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\common\Utilities.c">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\GL_utilities.h">
@@ -76,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="src\readData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Utilities.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\AntTweak\AntTweakBar.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

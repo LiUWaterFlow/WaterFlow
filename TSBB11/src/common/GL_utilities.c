@@ -424,24 +424,14 @@ FBOstruct *initFBO4(int width, int height, void* data)
 
 void releaseFBO(FBOstruct *fbo)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
 	glDeleteTextures(1, &fbo->texid);
 	glDeleteFramebuffers(1, &fbo->fb);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	free(fbo); // Allocated using malloc
 }
 
 static int lastw = 0;
 static int lasth = 0;
 
-// Obsolete (apparently not)
-void updateScreenSizeForFBOHandler(int w, int h)
-{
-	lastw = w;
-	lasth = h;
-}
 
 // choose input (textures) and output (FBO)
 void useFBO(FBOstruct *out, FBOstruct *in1, FBOstruct *in2)
