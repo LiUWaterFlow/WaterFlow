@@ -343,7 +343,7 @@ void handle_mouse(SDL_Event event) {
 		gluUnProject((GLdouble)x, (GLdouble)(width - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)(viewMatrix)), glm::value_ptr((glm::dmat4)projectionMatrix), viewport, &objX, &objY, &objZ);
 
 		std::cout << "\nHeight at clicked pos (inverse coords): " << objY << std::endl;
-		std::cout << "Height at clicked pos (from mapdata at (x,z)): " << dataHandler->getTerrainScale() * dataHandler->giveHeight(objX, objZ) << std::endl;
+		std::cout << "Height at clicked pos (from mapdata at (x,z)): " << dataHandler->giveHeight(objX, objZ) << std::endl;
 	}
 }
 
