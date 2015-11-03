@@ -3,7 +3,9 @@
 
 
 #include <vector>
+#include <deque>
 #include <array>
+#include <inttypes.h>
 #include "readData.h"
 
 /// @strcut voxel
@@ -14,6 +16,9 @@ struct voxel{
   bool filled;  ///<The fill state of the voxel (maybe not needed)
   float a;      ///<Float a (temporary for space measurements and testing)
   float b;      ///<Float b (temporary for space measurements and testing)
+  int16_t x;
+  int16_t y;
+  int16_t z;
 };
 
 /// @class Voxelgrid
@@ -35,7 +40,17 @@ private:
   GLuint voxelShader;
   GLuint voxelBuffer, voxelVAO;
 
+  int64_t hashSize;
+  GLfloat rehashTresh = 0.2;
+
+
+  std::deque<voxel*>* hashTable;
+  int64_t hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize);
+
+
 public:
+  GLuint numInTable = 0;
+  GLuint numCollisions = 0;
 
   /// @brief Constructs a empty voxel grid
   ///
@@ -48,7 +63,7 @@ public:
   /// @see setVoxel
   /// @see getVoxel
   /// @todo The Voxelgrid should be able to handle one voxel outside the area of the terrain in each dimension.
-  Voxelgrid(DataHandler* handle);
+  Voxelgrid(DataHandler* handle,int64_t hashSize);
 
 
   /// @brief Completely delete the sparse voxelgrid.
@@ -111,6 +126,12 @@ public:
   /// @see initDraw
   /// @see updateVoxelrender
   void drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
+
+  void hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, float b);
+  voxel* hashGet(int16_t x, int16_t y, int16_t z);
+  void rehash();
+  bool isEqualPoint(voxel* vox,short int x, short int y,short int z);
+
 };
 
 #endif

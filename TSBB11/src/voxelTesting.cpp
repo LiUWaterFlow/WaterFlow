@@ -64,23 +64,25 @@ namespace voxelTest{
     size_t count = 300;
     size_t end = 0;
 
-    plsWait();
+    //plsWait();
 
     for (size_t x = count; x != end; x--) {
       for (size_t y = count; y != end; y--) {
         for (size_t z = count; z != end; z--) {
-          grid->setVoxel(x,y,z,1,x,y);
+          grid->hashAdd(x,y,z,1,x,y);
         }
       }
     }
     endClock();
+
+    std::cout << (float)grid->numCollisions/(float)grid->numInTable << std::endl;
 
     //Read and modify the voxels
     startClock();
     for (size_t x = 0; x < count; x++) {
       for (size_t y = 0; y < count; y++) {
         for (size_t z = 0; z < count; z++) {
-          voxel* tmp = grid->getVoxel(x,y,z);
+          voxel* tmp = grid->hashGet(x,y,z);
           if(tmp != nullptr){
             tmp->a++;
             //printf("x: %f  y: %f  ", tmp->a,tmp->b);

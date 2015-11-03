@@ -134,7 +134,7 @@ void init(void)
 
 
 	// Create voxel data
-	voxels = new Voxelgrid(dataHandler);
+	voxels = new Voxelgrid(dataHandler,27000000);
 	voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
 	voxels->initDraw();
 
@@ -370,17 +370,24 @@ int main(int argc, char *argv[])
 
 	reshape(width, height, projectionMatrix);
 	glEnableClientState(GL_VERTEX_ARRAY);
+
+
 	init();
 
-	SDL_TimerID timer_id;
-	timer_id = SDL_AddTimer(60, &display_timer, NULL);
-	timer_id = SDL_AddTimer(60, &update_timer, NULL);
-	if (timer_id == 0){
-		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
-	}
+	voxelTest::VoxelTest* tester = new voxelTest::VoxelTest(dataHandler,voxels);
+	mainTest(tester);
 
-	set_event_handler(&event_handler);
-	inf_loop();
-	TwTerminate();
+
+
+	// SDL_TimerID timer_id;
+	// timer_id = SDL_AddTimer(60, &display_timer, NULL);
+	// timer_id = SDL_AddTimer(60, &update_timer, NULL);
+	// if (timer_id == 0){
+	// 	std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
+	// }
+	//
+	// set_event_handler(&event_handler);
+	// inf_loop();
+	// TwTerminate();
 	return 0;
 }

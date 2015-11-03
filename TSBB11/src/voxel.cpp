@@ -4,14 +4,103 @@
 #include <iostream>
 #include "gtc/type_ptr.hpp"
 
+
+void Voxelgrid::rehash(){
+  hashSize = hashSize*2;
+  std::deque<voxel*>* tempTable = new std::deque<voxel*>(hashSize,nullptr);
+  numCollisions = 0;
+  numInTable = 0;
+
+  std::cout << "Rehash Triggered: " << hashSize << std::endl;
+
+  for (std::deque<voxel*>::iterator it = hashTable->begin(); it!=hashTable->end(); ++it){
+    if(*it != nullptr){
+
+      voxel* temp = *it;
+      int64_t hashPos = hashFunc(temp->x,temp->y,temp->z,hashSize);
+      if(tempTable->at(hashPos)  == nullptr){
+        tempTable->at(hashPos) = *it;
+        numInTable++;
+      }else{
+        numCollisions++;
+        hashPos++;
+        hashPos = hashPos % hashSize;
+        while(tempTable->at(hashPos)  != nullptr){
+          hashPos++;
+          hashPos = hashPos % hashSize;
+
+        }
+        numInTable++;
+        tempTable->at(hashPos) = *it;
+      }
+    }
+  }
+
+  delete hashTable;
+  hashTable = tempTable;
+}
+
+int64_t Voxelgrid::hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize){
+  return (((73856093 * x) + (19349663 * y) + (83492791 * z)) % inHashSize);
+}
+
+void Voxelgrid::hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, float b){
+  voxel* temp = new voxel;
+  temp->filled = filled;
+  temp->x = x;
+  temp->y = y;
+  temp->z = z;
+  temp->a = a;
+  temp->b = b;
+  int64_t hashPos = hashFunc(x,y,z,hashSize);
+  if(hashTable->at(hashPos)  == nullptr){
+    hashTable->at(hashPos) = temp;
+    numInTable++;
+  }else{
+    numCollisions++;
+    hashPos++;
+    hashPos = hashPos % hashSize;
+    while(hashTable->at(hashPos)  != nullptr){
+      hashPos++;
+      hashPos = hashPos % hashSize;
+
+    }
+    numInTable++;
+    hashTable->at(hashPos) = temp;
+  }
+  if((float)numCollisions/(float)numInTable > rehashTresh){
+    rehash();
+  }
+}
+
+voxel* Voxelgrid::hashGet(short int x, short int y, short int z){
+  int64_t hashPos = hashFunc(x,y,z,hashSize);
+  if(hashTable->at(hashPos)  != nullptr){
+    while(hashTable->at(hashPos) != nullptr && !isEqualPoint(hashTable->at(hashPos),x,y,z)){
+      hashPos++;
+      hashPos = hashPos % hashSize;
+    }
+    return hashTable->at(hashPos);
+  }else{
+    return nullptr;
+  }
+
+}
+
+bool Voxelgrid::isEqualPoint(voxel* vox,short int x, short int y,short int z){
+  return (vox->x == x && vox->y == y && vox->z == z);
+}
+
+
 /* -----------------------------------------------------------------
 Voxelgrid - Create the initial vector strutcture.
 */
 
-Voxelgrid::Voxelgrid(DataHandler* dataHandler){
+Voxelgrid::Voxelgrid(DataHandler* dataHandler,int64_t hashSize){
+  this->hashSize = hashSize;
+  this->hashTable =  new std::deque<voxel*>(hashSize,nullptr);
 
   this->voxels  = new std::vector<std::vector<std::vector<voxel*>*>*>;
-
   this->datahandler = dataHandler;
 }
 
