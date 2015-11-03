@@ -10,22 +10,22 @@
 // * Use glUniform1fv instead of glUniform1f, since glUniform1f has a bug under Linux.
 
 #ifdef __APPLE__
-	#include <OpenGL/gl3.h>
-	#include <SDL2/SDL.h>
+#include <OpenGL/gl3.h>
+#include <SDL2/SDL.h>
 #else
-	#ifdef  __linux__
-		#define GL_GLEXT_PROTOTYPES
-		#include <GL/gl.h>
-		#include <GL/glu.h>
-		#include <GL/glx.h>
-		#include <GL/glext.h>
-		#include <SDL2/SDL.h>
+#ifdef  __linux__
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glx.h>
+#include <GL/glext.h>
+#include <SDL2/SDL.h>
 
 
-	#else
-		#include "glew.h"
-		#include "Windows/sdl2/SDL.h"
-	#endif
+#else
+#include "glew.h"
+#include "Windows/sdl2/SDL.h"
+#endif
 #endif
 
 #include <cstdlib>
@@ -103,13 +103,11 @@ bool sunIsDirectional = 1;
 float sunSpecularExponent = 50.0;
 glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 
-void TW_CALL Callback(void * clientData)
-{
-std::cout << "TW button pressed" << std::endl;
+void TW_CALL Callback(void * clientData) {
+	std::cout << "TW button pressed" << std::endl;
 }
 
-void init(void)
-{
+void init(void) {
 #ifdef WIN32
 	glewInit();
 #endif
@@ -133,8 +131,8 @@ void init(void)
 	// ---Model transformations, rendering---
 	// Terrain:
 	scale = glm::scale(glm::vec3(dataHandler->getDataWidth(),
-								 dataHandler->getTerrainScale(),
-								 dataHandler->getDataHeight()));
+		dataHandler->getTerrainScale(),
+		dataHandler->getDataHeight()));
 	total = scale;
 
 
@@ -152,8 +150,8 @@ void init(void)
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 
-/*Initialize AntTweakBar
-*/
+	/*Initialize AntTweakBar
+	*/
 	TwInit(TW_OPENGL_CORE, NULL);
 	TwWindowSize(width, height);
 
@@ -169,8 +167,7 @@ void init(void)
 
 }
 
-void display(void)
-{
+void display(void) {
 
 	glUseProgram(program);
 
@@ -188,8 +185,7 @@ void display(void)
 	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
 
 
-	for (GLuint i = 0; i < terrain->size(); i++)
-	{
+	for (GLuint i = 0; i < terrain->size(); i++) {
 		DrawModel(terrain->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
 	}
 	// --------------------------------------
@@ -199,19 +195,18 @@ void display(void)
 
 	height_at_pos = dataHandler->getCoord((int)cam.position.x, (int)cam.position.z); // <- should be giveHeight when merged to master
 	TwDraw();
-/*
-	while( SDL_PollEvent(&event) ) // process events
-	{
-			// send event to AntTweakBar
-			handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
-	}
-*/
+	/*
+		while( SDL_PollEvent(&event) ) // process events
+		{
+		// send event to AntTweakBar
+		handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
+		}
+		*/
 	swap_buffers();
 }
 
 // Display timer. User made functions may NOT be called from here.
-Uint32 display_timer(Uint32 interval, void* param)
-{
+Uint32 display_timer(Uint32 interval, void* param) {
 	SDL_Event event;
 
 	event.type = SDL_USEREVENT;
@@ -223,8 +218,7 @@ Uint32 display_timer(Uint32 interval, void* param)
 	return interval;
 }
 
-Uint32 update_timer(Uint32 interval, void* param)
-{
+Uint32 update_timer(Uint32 interval, void* param) {
 	SDL_Event event;
 
 	event.type = SDL_USEREVENT;
@@ -237,49 +231,47 @@ Uint32 update_timer(Uint32 interval, void* param)
 }
 
 // Handle events.
-void event_handler(SDL_Event event)
-{
+void event_handler(SDL_Event event) {
 	//int handled;
 	//handled = TwEventSDL(&event, SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
-	switch (event.type){
-		case SDL_USEREVENT:
-			handle_userevent(event);
+	switch (event.type) {
+	case SDL_USEREVENT:
+		handle_userevent(event);
+		break;
+	case SDL_QUIT:
+		exit(0);
+		break;
+	case SDL_KEYDOWN:
+		handle_keypress(event);
+		break;
+	case SDL_WINDOWEVENT:
+		switch (event.window.event) {
+		case SDL_WINDOWEVENT_RESIZED:
+			get_window_size(&width, &height);
+			resize_window(event);
+			reshape(width, height, projectionMatrix);
 			break;
-		case SDL_QUIT:
-			exit(0);
-			break;
-		case SDL_KEYDOWN:
-			handle_keypress(event);
-			break;
-		case SDL_WINDOWEVENT:
-			switch (event.window.event){
-			case SDL_WINDOWEVENT_RESIZED:
-				get_window_size(&width, &height);
-				resize_window(event);
-				reshape(width, height, projectionMatrix);
-				break;
-			}
-			break;
-		case SDL_MOUSEMOTION:
-			handle_mouse(event);
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
-			handle_mouse(event);
-			break;
-		case SDL_MOUSEBUTTONUP:
-			TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
-			handle_mouse(event);
-			break;
-		default:
-			break;
+		}
+		break;
+	case SDL_MOUSEMOTION:
+		handle_mouse(event);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
+		handle_mouse(event);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
+		handle_mouse(event);
+		break;
+	default:
+		break;
 	}
 }
 
 // Handle user defined events.
-void handle_userevent(SDL_Event event)
-{
-	switch (event.user.code){
+void handle_userevent(SDL_Event event) {
+	switch (event.user.code) {
 	case (int)DISPLAY_TIMER:
 		display();
 		break;
@@ -292,107 +284,103 @@ void handle_userevent(SDL_Event event)
 }
 
 // Handle keys
-void handle_keypress(SDL_Event event)
-{
+void handle_keypress(SDL_Event event) {
 	TwKeyPressed(event.key.keysym.sym, TW_KMOD_NONE);
-	switch (event.key.keysym.sym){
-		case SDLK_ESCAPE:
+	switch (event.key.keysym.sym) {
+	case SDLK_ESCAPE:
 		//case SDLK_q:
-			exit(0);
-			break;
-		case SDLK_g:
-			SDL_SetRelativeMouseMode(SDL_FALSE);
-			break;
-		case SDLK_h:
-			SDL_SetRelativeMouseMode(SDL_TRUE);
-			break; 
-		case SDLK_l:
-			std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
-			break;
-		case SDLK_e:
-		if (bar_vis == 1){
-		bar_vis = 0;
-		TwDefine("myBar/visible=false");}
-		else{
-		bar_vis = 1;
-		TwDefine("myBar/visible=true");} // mybar is displayed again
-		default:
-			break;
+		exit(0);
+		break;
+	case SDLK_g:
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+		break;
+	case SDLK_h:
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		break;
+	case SDLK_l:
+		std::cout << "Height: " << dataHandler->giveHeight(cam.position.x, cam.position.z) << std::endl;
+		break;
+	case SDLK_e:
+		if (bar_vis == 1) {
+			bar_vis = 0;
+			TwDefine("myBar/visible=false");
+		} else {
+			bar_vis = 1;
+			TwDefine("myBar/visible=true");
+		} // mybar is displayed again
+	default:
+		break;
 	}
 }
 
-void handle_mouse(SDL_Event event)
-{
+void handle_mouse(SDL_Event event) {
 	get_window_size(&width, &height);
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
-	if(!state[SDL_SCANCODE_LSHIFT]){						//When shift held camera doesn't move with mouse.
-	cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
-	TwMouseMotion(event.motion.x, event.motion.y);
-}
-/* Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse.
-	glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation.
-	glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model
-	coordinates from screen coordinates and Z-value. objY contains terrain height at clicked position after gluUnProject.
-*/
+	//When shift held camera doesn't move with mouse.
+	if (!state[SDL_SCANCODE_LSHIFT]) {
+		cam.change_look_at_pos(event.motion.xrel, event.motion.y, width, height);
+	} else {
+		TwMouseMotion(event.motion.x, event.motion.y);
+	}
+	/* Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse.
+		glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation.
+		glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model
+		coordinates from screen coordinates and Z-value. objY contains terrain height at clicked position after gluUnProject.
+		*/
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 
-			float depth;
-			int x;
-			int y;
-			SDL_GetMouseState(&x, &y);
-			glReadPixels(x, width - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		float depth;
+		int x;
+		int y;
+		SDL_GetMouseState(&x, &y);
+		glReadPixels(x, width - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 
-			GLdouble objX;
-			GLdouble objY;
-			GLdouble objZ;
-			GLint viewport;
-			glGetIntegerv(GL_VIEWPORT, &viewport);
-			gluUnProject((GLdouble)x, (GLdouble)(width - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)(viewMatrix)), glm::value_ptr((glm::dmat4)projectionMatrix), &viewport, &objX, &objY, &objZ);
+		GLdouble objX = 0.0;
+		GLdouble objY = 0.0;
+		GLdouble objZ = 0.0;
+		GLint viewport[4] = { 0, 0, 0, 0 };
+		glGetIntegerv(GL_VIEWPORT, viewport);
+		gluUnProject((GLdouble)x, (GLdouble)(width - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)(viewMatrix)), glm::value_ptr((glm::dmat4)projectionMatrix), viewport, &objX, &objY, &objZ);
 
-			std::cout << "\nHeight at clicked pos (inverse coords): " << objY << std::endl;
-			std::cout << "Height at clicked pos (from mapdata at (x,z)): " << dataHandler->getTerrainScale() * dataHandler->getCoord(objX, objZ) << std::endl;
+		std::cout << "\nHeight at clicked pos (inverse coords): " << objY << std::endl;
+		std::cout << "Height at clicked pos (from mapdata at (x,z)): " << dataHandler->getTerrainScale() * dataHandler->giveHeight(objX, objZ) << std::endl;
 	}
 }
 
-void check_keys()
-{
+void check_keys() {
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 	if (keystate[SDL_SCANCODE_W]) {
 		cam.forward(0.05f*scl*SPEED);
-	}
-	else if (keystate[SDL_SCANCODE_S]) {
+	} else if (keystate[SDL_SCANCODE_S]) {
 		cam.forward(-0.05f*scl*SPEED);
 	}
 	if (keystate[SDL_SCANCODE_A]) {
 		cam.strafe(0.05f*scl*SPEED);
-	}
-	else if (keystate[SDL_SCANCODE_D]) {
+	} else if (keystate[SDL_SCANCODE_D]) {
 		cam.strafe(-0.05f*scl*SPEED);
 	}
 }
 
 
 // -----------------Ingemars hj�lpfunktioner-----------------
-void reshape(int w, int h, glm::mat4 &projectionMatrix)
-{
+void reshape(int w, int h, glm::mat4 &projectionMatrix) {
 	glViewport(0, 0, w, h);
 	float ratio = (GLfloat)w / (GLfloat)h;
 	projectionMatrix = glm::perspective(PI / 2, ratio, 1.0f, 10000.0f);
 }
 // ----------------------------------------------------------
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	init_SDL((const char*) "TSBB11, Waterflow visualization (SDL)", width, height);
 
 	reshape(width, height, projectionMatrix);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	init();
 
-	SDL_TimerID timer_id1,timer_id2;
+	SDL_TimerID timer_id1, timer_id2;
 	timer_id1 = SDL_AddTimer(30, &display_timer, NULL);
 	timer_id2 = SDL_AddTimer(30, &update_timer, NULL);
-	if (timer_id1 == 0 || timer_id2 == 0){
+	if (timer_id1 == 0 || timer_id2 == 0) {
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
 
