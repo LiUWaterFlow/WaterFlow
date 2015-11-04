@@ -130,6 +130,11 @@ public:
 	/// @brief Handle the internal pointers.
 	~DataHandler();
 
+	/// @brief Draws the terrain to the screen
+	///
+	/// Sets the correct data for drawing the terrain and then draws it to the screen
+	void drawTerrain(GLuint program);
+
 	/// @brief Returns a datapoint from the mapdata.
 	///
 	/// Simplifies the getting of data by allowing access by coordinate since

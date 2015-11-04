@@ -43,6 +43,27 @@ Model* generateCanvas()
 	free(squareTexCoord);
 }
 
+Model* generateCube(GLfloat s) {
+	GLfloat vertexArray[3 * 8] = {	-s, -s, s,
+									s, -s, s,
+									s, s, s,
+									-s, s, s,
+									-s, -s, -s,
+									s, -s, -s,
+									s, s, -s,
+									-s, s, -s};
+
+	GLuint indexArray[6 * 2 * 3] = {0, 1, 2, 2, 3, 0, 
+									3, 2, 6, 6, 7, 3, 
+									7, 6, 5, 5, 4, 7, 
+									4, 0, 3, 3, 7, 4, 
+									0, 1, 5, 5, 4, 0, 
+									1, 5, 6, 6, 2, 1};
+
+	// Create Model and upload to GPU.
+	return LoadDataToModel(vertexArray,	NULL, NULL, NULL, indexArray, 8, 6 * 2 * 3);
+}
+
 //Only to be used for 'final destruction' of models. (they will not be renderable after this.)
 void releaseModel(Model* m)
 {

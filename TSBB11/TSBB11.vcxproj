@@ -99,9 +99,9 @@
     <ClCompile Include="src\common\GL_utilities.c" />
     <ClCompile Include="src\common\loadobj.c" />
     <ClCompile Include="src\common\LoadTGA.c" />
-    <ClCompile Include="src\common\SDL_util.c" />
     <ClCompile Include="src\common\Utilities.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
+    <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,11 +110,11 @@
     <ClInclude Include="src\common\GL_utilities.h" />
     <ClInclude Include="src\common\loadobj.h" />
     <ClInclude Include="src\common\LoadTGA.h" />
-    <ClInclude Include="src\common\SDL_util.h" />
     <ClInclude Include="src\common\Utilities.h" />
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
+    <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +129,8 @@
     <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
+    <None Include="src\shaders\skyshader.frag" />
+    <None Include="src\shaders\skyshader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

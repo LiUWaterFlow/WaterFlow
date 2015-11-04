@@ -92,13 +92,18 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 								const char *vfn, const char *ffn, const char *gfn, const char *tcfn, const char *tefn)
 {
 	GLuint v,f,g,tc,te,p;
-
+	printError("compile 0: ");
 	v = glCreateShader(GL_VERTEX_SHADER);
 	f = glCreateShader(GL_FRAGMENT_SHADER);
+
+	printError("compile 1: ");
+
 	glShaderSource(v, 1, &vs, NULL);
 	glShaderSource(f, 1, &fs, NULL);
 	glCompileShader(v);
 	glCompileShader(f);
+
+	printError("compile 2: ");
 	if (gs != NULL)
 	{
 		g = glCreateShader(GL_GEOMETRY_SHADER);
@@ -119,7 +124,9 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 		glCompileShader(te);
 	}
 #endif
+	printError("compile 3: ");
 	p = glCreateProgram();
+	printError("compile 4: ");
 	glAttachShader(p,v);
 	glAttachShader(p,f);
 	if (gs != NULL)
@@ -128,7 +135,9 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 		glAttachShader(p,tc);
 	if (tes != NULL)
 		glAttachShader(p,te);
+	printError("compile 5: ");
 	glLinkProgram(p);
+	printError("compile 6: ");
 	glUseProgram(p);
 
 	printShaderInfoLog(v, vfn);
@@ -279,7 +288,7 @@ FBOstruct *initFBO(int width, int height, int int_method)
 	glGenFramebuffers(1, &fbo->fb); // frame buffer id
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
 	glGenTextures(1, &fbo->texid);
-	fprintf(stderr, "%i \n",fbo->texid);
+	//fprintf(stderr, "%i \n",fbo->texid);
 	glBindTexture(GL_TEXTURE_2D, fbo->texid);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -304,7 +313,7 @@ FBOstruct *initFBO(int width, int height, int int_method)
     glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo->rb );
     CHECK_FRAMEBUFFER_STATUS();
 
-	fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
+	//fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return fbo;
 }
@@ -323,7 +332,7 @@ FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage
     glGenFramebuffers(1, &fbo->fb); // frame buffer id
     glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
     glGenTextures(1, &fbo->texid);
-    fprintf(stderr, "%i \n",fbo->texid);
+    //fprintf(stderr, "%i \n",fbo->texid);
     glBindTexture(GL_TEXTURE_2D, fbo->texid);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -359,7 +368,7 @@ FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage
     glBindRenderbuffer(GL_RENDERBUFFER, fbo->rb);
     CHECK_FRAMEBUFFER_STATUS();
 
-    fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
+    //fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     return fbo;
 }
@@ -375,7 +384,7 @@ FBOstruct *initFBO3(int width, int height, void* data)
 	glGenFramebuffers(1, &fbo->fb); // frame buffer id
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
 	glGenTextures(1, &fbo->texid);
-	fprintf(stderr, "%i \n", fbo->texid);
+	//fprintf(stderr, "%i \n", fbo->texid);
 	glBindTexture(GL_TEXTURE_2D, fbo->texid);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -388,7 +397,7 @@ FBOstruct *initFBO3(int width, int height, void* data)
 
 	CHECK_FRAMEBUFFER_STATUS();
 
-	fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
+	//fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return fbo;
 }
@@ -404,7 +413,7 @@ FBOstruct *initFBO4(int width, int height, void* data)
 	glGenFramebuffers(1, &fbo->fb); // frame buffer id
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
 	glGenTextures(1, &fbo->texid);
-	fprintf(stderr, "%i \n", fbo->texid);
+	//fprintf(stderr, "%i \n", fbo->texid);
 	glBindTexture(GL_TEXTURE_2D, fbo->texid);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -417,7 +426,7 @@ FBOstruct *initFBO4(int width, int height, void* data)
 
 	CHECK_FRAMEBUFFER_STATUS();
 
-	fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
+	//fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return fbo;
 }
