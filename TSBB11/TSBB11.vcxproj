@@ -277,7 +277,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>lib\x64;lib\AntTweak</AdditionalLibraryDirectories>
       <AdditionalDependencies>AntTweakBar64.lib;SDL2.lib;SDL2main.lib;glu32.lib;opengl32.lib</AdditionalDependencies>
-      <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)"lib\x64\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar64.DLL "$(TargetDir)" /D /K /Y</Command>
