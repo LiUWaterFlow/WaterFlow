@@ -15,7 +15,7 @@ Drawable::Drawable(GLuint program)
 SkyCube::SkyCube(GLuint program)
 : Drawable(program) {
 	/* Initialize skycube */
-	model = generateCube(2.0f);
+	model = generateCube(10.0f);
 
 	// Creating cubemap texture
 	glGenTextures(1, &textureID);

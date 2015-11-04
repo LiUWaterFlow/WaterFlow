@@ -130,8 +130,5 @@
     <None Include="src\shaders\terrainshader.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\plaintextureshader1.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

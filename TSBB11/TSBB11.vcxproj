@@ -319,7 +319,6 @@
     <None Include="src\shaders\terrainshader.frag" />
     <None Include="src\shaders\terrainshader.vert" />
     <None Include="src\shaders\normalshader.frag" />
-    <None Include="src\shaders\plaintextureshader1.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
     <None Include="src\shaders\skyshader.frag" />
     <None Include="src\shaders\skyshader.vert" />

@@ -192,6 +192,7 @@ void Program::handleEvent(SDL_Event* event) {
 		case SDL_WINDOWEVENT_RESIZED:
 			SDL_SetWindowSize(screen, event->window.data1, event->window.data2);
 			SDL_GetWindowSize(screen, &screenW, &screenH);
+			glViewport(0, 0, screenW, screenH);
 			TwWindowSize(screenW, screenH);
 			cam->updateVTP();
 			break;
