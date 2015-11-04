@@ -61,10 +61,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AntTweakBar.lib;glu32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;glu32.lib;opengl32.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>lib\x86;lib\AntTweak;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)"lib\x86\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\*.DLL "$(TargetDir)" /D /K /Y</Command>
@@ -101,6 +103,7 @@
     <ClCompile Include="src\common\LoadTGA.c" />
     <ClCompile Include="src\common\Utilities.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
+    <ClCompile Include="src\drawable.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
   </ItemGroup>
@@ -114,6 +117,7 @@
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
+    <ClInclude Include="src\drawable.h" />
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
   </ItemGroup>
@@ -124,8 +128,8 @@
     <None Include="src\shaders\combineshader.frag" />
     <None Include="src\shaders\confidenceshader.frag" />
     <None Include="src\shaders\filtershader.frag" />
-    <None Include="src\shaders\main.frag" />
-    <None Include="src\shaders\main.vert" />
+    <None Include="src\shaders\terrainshader.frag" />
+    <None Include="src\shaders\terrainshader.vert" />
     <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />

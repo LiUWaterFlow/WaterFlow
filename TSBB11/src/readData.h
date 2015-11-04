@@ -4,9 +4,7 @@
 #ifndef READDATA_H
 #define READDATA_H
 
-#include "glm.hpp"
 #include "loadobj.h"
-#include "GL_utilities.h"
 
 #include <vector>
 
@@ -129,11 +127,6 @@ public:
 
 	/// @brief Handle the internal pointers.
 	~DataHandler();
-
-	/// @brief Draws the terrain to the screen
-	///
-	/// Sets the correct data for drawing the terrain and then draws it to the screen
-	void drawTerrain(GLuint program);
 
 	/// @brief Returns a datapoint from the mapdata.
 	///

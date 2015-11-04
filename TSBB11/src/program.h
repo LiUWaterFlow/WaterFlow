@@ -23,39 +23,39 @@
 
 #include "camera.h"
 #include "readData.h"
+#include "drawable.h"
 
 #include "AntTweakBar.h"
-#include "glm.hpp"
-
-#include <vector>
 
 class Program {
 private:
 	SDL_Window *screen;
 	SDL_GLContext glcontext;
 
-	int screenW;
-	int screenH;
+	int screenW, screenH;
 
 	bool isRunning;
+	bool mouseHidden;
+
+	// Time variables
+	GLfloat currentTime;
+	GLfloat deltaTime;
+	GLfloat FPS;
 
 	//AntTweakBar variabels
-	int bar_vis;
-	TwBar *myBar;
-	float heightAtPos;
+	bool barVis;
+	TwBar *antBar;
+	float heightAtPos, heightAtClickData, heighAtClickProj;
+	double objX, objZ;
 	
-	// Models:
-	std::vector <Model*>* terrain;
-	Model* skycube;
-	Model* teapot;
+	// Drawables:
+	Drawable *skycube, *terrain;
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;
 
 	// References to shader programs:
-	GLuint program;
-	GLuint skyshader;
-	GLuint tex_cube;
+	GLuint terrainshader, skyshader;
 
 	// Camera variables:
 	Camera* cam;
@@ -65,11 +65,21 @@ public:
 
 	bool init();
 	
-	void handleEvent(SDL_Event event);
-	void handleKeypress(SDL_Event event);
-	void handleMouse(SDL_Event event);
+	void handleEvent(SDL_Event* event);
+	void handleKeypress(SDL_Event* event);
+	void handleMouseMove(SDL_Event* event);
+
+	/// @brief Get data from mouse click
+	///
+	/// Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse.
+	/// glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation.
+	/// glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model
+	/// coordinates from screen coordinates and Z-value. objY contains terrain height at clicked position after gluUnProject.
+	/// @note Left shift need to be pressed to collect data
+	void handleMouseButton(SDL_Event* event);
 	void checkKeys();
 
+	void timeUpdate();
 	void update();
 	void display();
 

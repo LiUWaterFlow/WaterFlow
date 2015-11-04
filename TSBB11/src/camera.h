@@ -2,39 +2,37 @@
 #define CAMERA_H
 
 #ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#include <GLUT/glut.h>
+#	include <OpenGL/gl3.h>
+#	include <SDL2/SDL.h>
 #else
-#ifdef  __linux__
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glx.h>
-#include <GL/glext.h>
-
-#else
-#include "glew.h"
+#	ifdef  __linux__
+#		define GL_GLEXT_PROTOTYPES
+#		include <GL/gl.h>
+#		include <GL/glu.h>
+#		include <GL/glx.h>
+#		include <GL/glext.h>
+#		include <SDL2/SDL.h>
+#	else
+#		include "glew.h"
+#		include "Windows/sdl2/SDL.h"
+#	endif
 #endif
-#endif
-
 
 #ifndef M_PI
 #define M_PI           3.14159265358979323846f
 #endif
 
-#define GLM_FORCE_RADIANS
 #include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
-#include "gtx/rotate_vector.hpp"
-#include "gtc/type_ptr.hpp"
 
 class Camera {
 private:
 	// x används för att musen inte ska fastna i kanterna på
 	// fönstret
 	int x;
+	float fi, theta, rotSpeed;
 	int *screenW, *screenH;
 	GLfloat speed, drawDistance;
+	bool isFrozen;
 
 	glm::vec3 position;
 	glm::vec3 lookAtPos;
@@ -52,7 +50,7 @@ public:
 	void jump(GLfloat d);
 
 	void updateWTV();
-	void updateVTP(int* newScreenW, int* newScreenH);
+	void updateVTP();
 	void uploadCamData(GLuint program);
 
 	glm::mat4* getWTV(); 
@@ -60,6 +58,9 @@ public:
 	glm::vec3* getPos();
 	GLfloat getSpeed();
 	GLfloat* getSpeedPtr();
+	GLfloat getRotSpeed();
+	GLfloat* getRotSpeedPtr();
+	void toggleFrozen();
 
 	/*************************************************************
 	 * change_look_at_pos:
@@ -67,7 +68,7 @@ public:
 	 * width, height är storlek på nuvarande fönster
 	 * Sätter look_at_pos därefter
 	 * **********************************************************/
-	void changeLookAtPos(int xrel, int y);
+	void changeLookAtPos(int xrel, int yrel);
 };
 
 #endif

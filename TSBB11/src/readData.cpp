@@ -1,20 +1,16 @@
 /// @file readData.cpp
 /// @brief Implementations of functions in readData.h
 
-#include "stdio.h"
+//#include "stdio.h"
 
 #include "readData.h"
 
-#include "GL_utilities.h"
-#include "loadobj.h"
-#include "glm.hpp"
-#include "gtx/transform.hpp"
-#include "gtc/type_ptr.hpp"
 #include "Utilities.h"
+#include "GL_utilities.h"
 
-#include <fstream>
+#include "glm.hpp"
+
 #include <iostream>
-#include <string>
 
 
 using namespace std;
@@ -443,8 +439,8 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a height map.
 {
-	int width = getModelWidth();
-	int height = getModelHeight();
+	int width = getDataWidth();
+	int height = getDataHeight();
 
 	int vertX1 = (int)floor(x);
 	int vertZ1 = (int)floor(z);
@@ -457,7 +453,7 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 
 	GLfloat yheight = 0;
 
-	if ((vertX1 > 1) && (vertZ1 > 1) && (vertX2 < width - 2) && (vertZ2 < height - 2))
+	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 <= width) && (vertZ2 <= height))
 	{
 
 		GLfloat dist1 = vertX1 - x;
@@ -500,15 +496,4 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 		yheight *= getTerrainScale();
 	}
 	return yheight;
-}
-
-void DataHandler::drawTerrain(GLuint program) {
-	glm::mat4 MTWMatrix = glm::scale(glm::vec3(getDataWidth(), getTerrainScale(), getDataHeight()));
-	glm::mat3 inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(MTWMatrix));
-	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
-
-	for (GLuint i = 0; i < datamodel->size(); i++) {
-		DrawModel(datamodel->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
-	}
 }
