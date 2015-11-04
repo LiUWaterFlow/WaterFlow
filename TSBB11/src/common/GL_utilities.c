@@ -92,18 +92,14 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 								const char *vfn, const char *ffn, const char *gfn, const char *tcfn, const char *tefn)
 {
 	GLuint v,f,g,tc,te,p;
-	printError("compile 0: ");
 	v = glCreateShader(GL_VERTEX_SHADER);
 	f = glCreateShader(GL_FRAGMENT_SHADER);
-
-	printError("compile 1: ");
 
 	glShaderSource(v, 1, &vs, NULL);
 	glShaderSource(f, 1, &fs, NULL);
 	glCompileShader(v);
 	glCompileShader(f);
 
-	printError("compile 2: ");
 	if (gs != NULL)
 	{
 		g = glCreateShader(GL_GEOMETRY_SHADER);
@@ -124,9 +120,7 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 		glCompileShader(te);
 	}
 #endif
-	printError("compile 3: ");
 	p = glCreateProgram();
-	printError("compile 4: ");
 	glAttachShader(p,v);
 	glAttachShader(p,f);
 	if (gs != NULL)
@@ -135,9 +129,7 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 		glAttachShader(p,tc);
 	if (tes != NULL)
 		glAttachShader(p,te);
-	printError("compile 5: ");
 	glLinkProgram(p);
-	printError("compile 6: ");
 	glUseProgram(p);
 
 	printShaderInfoLog(v, vfn);
@@ -152,7 +144,6 @@ GLuint compileShaders(const char *vs, const char *fs, const char *gs, const char
 	if (gs != NULL)		glDeleteShader(g);
 	if (tcs != NULL)	glDeleteShader(tc);
 	if (tes != NULL)	glDeleteShader(te);
-
 
 	printProgramInfoLog(p, vfn, ffn, gfn, tcfn, tefn);
 

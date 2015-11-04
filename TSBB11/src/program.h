@@ -43,7 +43,6 @@ private:
 	GLfloat FPS;
 
 	//AntTweakBar variabels
-	bool barVis;
 	TwBar *antBar;
 	float heightAtPos, heightAtClickData, heighAtClickProj;
 	double objX, objZ;

@@ -12,7 +12,6 @@ Program::Program() {
 	screenH = 800;
 
 	isRunning = true;
-	barVis = true;
 	mouseHidden = true;
 
 	heightAtClickData = 0.0f;
@@ -80,7 +79,7 @@ bool Program::init() {
 	glLoadIdentity();
 #endif
 
-#ifdef WIN32
+#ifdef _WINDOWS
 	glewInit();
 #endif
 
@@ -230,12 +229,13 @@ void Program::handleKeypress(SDL_Event* event) {
 		}
 		break;
 	case SDLK_r:
-		barVis = !barVis;
-		if (!barVis) {
-			TwDefine(" UIinfo visible=false");
+		int isBarHidden;
+		TwGetParam(antBar, NULL, "iconified", TW_PARAM_INT32, 1, &isBarHidden);
+		if (!isBarHidden) {
+			TwDefine(" UIinfo iconified=true");
 		} else {
-			TwDefine(" UIinfo visible=true");
-		} // mybar is displayed again
+			TwDefine(" UIinfo iconified=false");
+		}
 	default:
 		break;
 	}
