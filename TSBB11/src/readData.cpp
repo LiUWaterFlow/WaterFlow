@@ -125,17 +125,16 @@ void DataHandler::readDEM(const char* inputfile)
 {
 	FILE* file = fopen(inputfile, "r");
 
-	char intext [80];
 	float incoord = 0;
 
 	if (file != NULL)
 	{
-		fscanf(file, "%s %i", &intext, &readdata->ncols);
-		fscanf(file, "%s %i", &intext, &readdata->nrows);
-		fscanf(file, "%s %f", &intext, &readdata->xllcorner);
-		fscanf(file, "%s %f", &intext, &readdata->yllcorner);
-		fscanf(file, "%s %f", &intext, &readdata->cellsize);
-		fscanf(file, "%s %f", &intext, &readdata->NODATA_value);
+		if (fscanf(file, "%*s %i", &readdata->ncols) != 1) cout << "Reading DEM error!" << endl;
+		if (fscanf(file, "%*s %i", &readdata->nrows) != 1) cout << "Reading DEM error!" << endl;
+		if (fscanf(file, "%*s %f", &readdata->xllcorner) != 1) cout << "Reading DEM error!" << endl;
+		if (fscanf(file, "%*s %f", &readdata->yllcorner) != 1) cout << "Reading DEM error!" << endl;
+		if (fscanf(file, "%*s %f", &readdata->cellsize) != 1) cout << "Reading DEM error!" << endl;
+		if (fscanf(file, "%*s %f", &readdata->NODATA_value) != 1) cout << "Reading DEM error!" << endl;
 
 		readdata->max_value = readdata->NODATA_value;
 		readdata->min_value = 20000000;

@@ -35,6 +35,12 @@ char* readFile(char *file)
 	fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
 	length = ftell(fptr); /* Find out how many bytes into the file we are */
 	buf = (char*)malloc(length+1); /* Allocate a buffer for the entire length of the file and a null terminator */
+
+	if (buf == NULL) {
+		fprintf(stderr, "Could not allocate space for readFile buffer!\n");
+		return NULL;
+	}
+
 	fseek(fptr, 0, SEEK_SET); /* Go back to the beginning of the file */
 	fread(buf, length, 1, fptr); /* Read the contents of the file in to the buffer */
 	fclose(fptr); /* Close the file */
@@ -272,6 +278,11 @@ FBOstruct *initFBO(int width, int height, int int_method)
 {
 	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
 
+	if (fbo == NULL) {
+		fprintf(stderr, "initFBO could not allocate memory for FBO!\n");
+		return NULL;
+	}
+
 	fbo->width = width;
 	fbo->height = height;
 
@@ -315,6 +326,11 @@ FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage
 {
     FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
 
+	if (fbo == NULL) {
+		fprintf(stderr, "initFBO could not allocate memory for FBO!\n");
+		return NULL;
+	}
+
     fbo->width = width;
     fbo->height = height;
 
@@ -351,7 +367,7 @@ FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glBindTexture(GL_TEXTURE_2D, 0);
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fbo->depth, 0);
-      fprintf(stderr, "depthtexture: %i\n",fbo->depth);
+      fprintf(stderr, "depthtexture: %u\n",fbo->depth);
     }
 
     // Renderbuffer
@@ -367,6 +383,11 @@ FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage
 FBOstruct *initFBO3(int width, int height, void* data)
 {
 	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
+
+	if (fbo == NULL) {
+		fprintf(stderr, "initFBO could not allocate memory for FBO!\n");
+		return NULL;
+	}
 
 	fbo->width = width;
 	fbo->height = height;
@@ -396,6 +417,11 @@ FBOstruct *initFBO3(int width, int height, void* data)
 FBOstruct *initFBO4(int width, int height, void* data)
 {
 	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
+
+	if (fbo == NULL) {
+		fprintf(stderr, "initFBO could not allocate memory for FBO!\n");
+		return NULL;
+	}
 
 	fbo->width = width;
 	fbo->height = height;
