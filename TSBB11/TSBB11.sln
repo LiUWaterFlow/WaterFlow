@@ -9,8 +9,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Analyze|Win32 = Analyze|Win32
 		Analyze|x64 = Analyze|x64
-		Debug_64|Win32 = Debug_64|Win32
-		Debug_64|x64 = Debug_64|x64
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
@@ -21,10 +19,6 @@ Global
 		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Analyze|Win32.Build.0 = Analyze|Win32
 		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Analyze|x64.ActiveCfg = Analyze|x64
 		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Analyze|x64.Build.0 = Analyze|x64
-		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug_64|Win32.ActiveCfg = Debug|Win32
-		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug_64|Win32.Build.0 = Debug|Win32
-		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug_64|x64.ActiveCfg = Debug|x64
-		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug_64|x64.Build.0 = Debug|x64
 		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug|Win32.Build.0 = Debug|Win32
 		{492A4FA5-6ADE-40ED-A564-20ADD198714E}.Debug|x64.ActiveCfg = Debug|x64
@@ -36,8 +30,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
