@@ -8,7 +8,7 @@
 namespace voxelTest{
 
   void plsWait(){
-    
+
 #ifdef _WINDOWS
     system("pause");
 #else
@@ -64,7 +64,7 @@ namespace voxelTest{
     startClock();
     size_t count = 300;
     size_t end = 0;
-	bool testHash = false;
+	bool testHash = true;
 
 	if (testHash) {
 		//plsWait();
@@ -95,7 +95,7 @@ namespace voxelTest{
 		}
 		printf("\n");
 		endClock();
-	
+
 	}
 	else{
 

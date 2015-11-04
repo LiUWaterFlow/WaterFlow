@@ -137,7 +137,7 @@ void init(void) {
 
 
 	// Create voxel data
-	voxels = new Voxelgrid(dataHandler, 33554432); //2^26
+	voxels = new Voxelgrid(dataHandler, pow(2,25)); //2^26
 	//voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
 	voxels->initDraw();
 
