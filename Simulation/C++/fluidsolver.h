@@ -5,6 +5,9 @@
 #include <vector>
 #include <assert.h>
 
+#ifndef LIN_SOLVE
+#define LIN_SOLVE 20
+#endif
 enum CUBEPOS{BACK_TOP_LEFT, BACK_TOP_CENTER, BACK_TOP_RIGHT,
 			BACK_MID_LEFT, BACK_MID_CENTER, BACK_MID_RIGHT,
 			BACK_BOTTOM_LEFT, BACK_BOTTOM_CENTER, BACK_BOTTOM_RIGHT,
@@ -72,6 +75,13 @@ public:
 		delete [] m_grid;
 	}
 
+	std::vector<Voxel*> getBorderTop() { std::vector<Voxel*> temp; return temp; }
+	std::vector<Voxel*> getBorderBottom() { std::vector<Voxel*> temp; return temp; }
+	std::vector<Voxel*> getBorderLeft() { std::vector<Voxel*> temp; return temp; }
+	std::vector<Voxel*> getBorderRight() { std::vector<Voxel*> temp; return temp; }
+	std::vector<Voxel*> getBorderFront() { std::vector<Voxel*> temp; return temp; }
+	std::vector<Voxel*> getBorderBack() { std::vector<Voxel*> temp; return temp; }
+
 	Voxel* getVoxel(unsigned int x,unsigned int y,unsigned int z)
 	{
 		return &m_grid[x][y][z];
@@ -123,6 +133,8 @@ public:
 		
 		return vox;
 	}
+
+	NeighbourVoxels getNeighbour(Voxel* it) { return NeighbourVoxels(); }
 	unsigned int XLength;
 	unsigned int YLength;
 	unsigned int ZLength;
@@ -152,6 +164,10 @@ private:
 
 	void project_velocity(float dt);
 	void project_density(float dt);
+
+	void force_boundries_velocity();
+	void force_boundries_density();
+	void force_boundries_preassure();
 
 	Grid m_grid;
 };

@@ -37,16 +37,20 @@ void FluidSolver::diffuse_velocity(float dt)
 	float someconstant = dt;  // 
 	NeighbourVoxels temp;
 	//not including borders
-	for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
+	for (unsigned int k = 0; k < LIN_SOLVE; k++)
 	{
-		for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
+		for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
 		{
-			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+			for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
 			{
-				temp = m_grid.getNeighbour(x,y,z);
-				diffuse_one_velocity(someconstant, temp);
+				for (unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+				{
+					temp = m_grid.getNeighbour(x, y, z);
+					diffuse_one_velocity(someconstant, temp);
+				}
 			}
 		}
+		//set bounds for velocity
 	}
 };
 
@@ -55,20 +59,24 @@ void FluidSolver::diffuse_density(float dt)
 	float someconstant = dt;  // 
 	NeighbourVoxels temp;
 	//not including borders
-	for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
+	for (unsigned int k = 0; k < LIN_SOLVE; k++)
 	{
-		for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
+		for (unsigned int x = 1; x < m_grid.XLength - 1; x++)
 		{
-			for(unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+			for (unsigned int y = 1; y < m_grid.YLength - 1; y++)
 			{
-				temp = m_grid.getNeighbour(x,y,z);
-				diffuse_one_density(someconstant, temp);
+				for (unsigned int z = 1; z < m_grid.ZLength - 1; z++)
+				{
+					temp = m_grid.getNeighbour(x, y, z);
+					diffuse_one_density(someconstant, temp);
+				}
 			}
 		}
+		//set bounds for density
 	}
 };
 
-//everything from here needs to be double checked
+//Advect moves stuff around in the system
 void FluidSolver::advect_velocity(float dt)
 {
 	float someconstant = dt;
@@ -227,6 +235,29 @@ void FluidSolver::project_velocity(float dt)
 		}
 	}
 	//force boundries for divergence
+	//force boundries for preassure
+
+	for (unsigned int k= 0; k < LIN_SOLVE; k++)
+	{
+		for (unsigned int z = 0; z < m_grid.ZLength; z++)
+		{
+			for (unsigned int y = 0; y < m_grid.YLength; y++)
+			{
+				for (unsigned int x = 0; x < m_grid.XLength; x++)
+				{
+					temp = m_grid.getNeighbour(x, y, z);
+					temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure =
+						(
+						temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->divergence
+						+ temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure + temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure
+						+ temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure + temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure
+						+ temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure + temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure
+						) / 6;
+				}
+			}
+		}
+		//force boundries for preassure
+	}
 
 	for (unsigned int z = 0; z < m_grid.ZLength; z++)
 	{
@@ -242,3 +273,135 @@ void FluidSolver::project_velocity(float dt)
 	}
 	//force boundries for velocity
 };
+
+void FluidSolver::force_boundries_velocity()
+{
+	std::vector<Voxel*> top = m_grid.getBorderTop();
+	std::vector<Voxel*> bottom = m_grid.getBorderBottom();
+	std::vector<Voxel*> left = m_grid.getBorderLeft();
+	std::vector<Voxel*> right = m_grid.getBorderRight();
+	std::vector<Voxel*> front = m_grid.getBorderFront();
+	std::vector<Voxel*> back = m_grid.getBorderBack();
+
+	for each (Voxel* it in top)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y;
+	}
+	for each (Voxel* it in bottom)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->velocity.y;
+	}
+	for each (Voxel* it in left)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x = -temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->velocity.x;
+	}
+	for each (Voxel* it in right)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x = -temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->velocity.x;
+	}
+	for each (Voxel* it in front)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z = -temp.voxels[CUBEPOS::BACK_MID_CENTER]->velocity.z;
+	}
+	for each (Voxel* it in back)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z = -temp.voxels[CUBEPOS::FRONT_MID_CENTER]->velocity.z;
+	}
+
+	//then do corners properly Dunno how to do it at the moment with next grid implimentation
+	//Probably just check the corners....Just 8 special cases
+}
+
+void FluidSolver::force_boundries_density()
+{
+	std::vector<Voxel*> top = m_grid.getBorderTop();
+	std::vector<Voxel*> bottom = m_grid.getBorderBottom();
+	std::vector<Voxel*> left = m_grid.getBorderLeft();
+	std::vector<Voxel*> right = m_grid.getBorderRight();
+	std::vector<Voxel*> front = m_grid.getBorderFront();
+	std::vector<Voxel*> back = m_grid.getBorderBack();
+
+	for each (Voxel* it in top)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->density;
+	}
+	for each (Voxel* it in bottom)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->density;
+	}
+	for each (Voxel* it in left)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->density;
+	}
+	for each (Voxel* it in right)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->density;
+	}
+	for each (Voxel* it in front)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::BACK_MID_CENTER]->density;
+	}
+	for each (Voxel* it in back)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::FRONT_MID_CENTER]->density;
+	}
+
+	//then do corners properly Dunno how to do it at the moment with next grid implimentation
+	//Probably just check the corners....Just 8 special cases
+}
+
+void FluidSolver::force_boundries_preassure()
+{
+	std::vector<Voxel*> top = m_grid.getBorderTop();
+	std::vector<Voxel*> bottom = m_grid.getBorderBottom();
+	std::vector<Voxel*> left = m_grid.getBorderLeft();
+	std::vector<Voxel*> right = m_grid.getBorderRight();
+	std::vector<Voxel*> front = m_grid.getBorderFront();
+	std::vector<Voxel*> back = m_grid.getBorderBack();
+
+	for each (Voxel* it in top)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure;
+	}
+	for each (Voxel* it in bottom)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure;
+	}
+	for each (Voxel* it in left)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure;
+	}
+	for each (Voxel* it in right)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure;
+	}
+	for each (Voxel* it in front)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure;
+	}
+	for each (Voxel* it in back)
+	{
+		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure;
+	}
+
+	//then do corners properly Dunno how to do it at the moment with next grid implimentation
+	//Probably just check the corners....Just 8 special cases
+}
