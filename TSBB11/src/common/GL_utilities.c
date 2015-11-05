@@ -22,7 +22,7 @@
 
 // Shader loader
 
-char* readFile(char *file)
+char* readFile(const char *file)
 {
 	FILE *fptr;
 	long length;
@@ -32,7 +32,11 @@ char* readFile(char *file)
 	fptr = fopen(file, "rb"); /* Open file for reading */
 	if (!fptr) /* Return NULL on failure */
 		return NULL;
-	fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
+	int temp = fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
+	if (temp != 0) {
+		fprintf(stderr, "Could not allocate space for readFile buffer!\n");
+		return NULL;
+	}
 	length = ftell(fptr); /* Find out how many bytes into the file we are */
 	buf = (char*)malloc(length+1); /* Allocate a buffer for the entire length of the file and a null terminator */
 

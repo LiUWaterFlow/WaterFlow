@@ -149,6 +149,7 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ShowProgress>NotSet</ShowProgress>
+      <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)"lib\x86\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar.DLL "$(TargetDir)" /D /K /Y</Command>
@@ -196,6 +197,7 @@
       <AdditionalIncludeDirectories>src;src\shaders;src\common;src\common\glm;src\common\Windows;src\common\AntTweak</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <EnablePREfast>false</EnablePREfast>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -206,6 +208,7 @@
       </AdditionalOptions>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
+      <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)"lib\x64\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar64.DLL "$(TargetDir)" /D /K /Y</Command>
