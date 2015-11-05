@@ -145,7 +145,7 @@ void DataHandler::readDEM(const char* inputfile)
 		float incoord = 0;
 		
 		for (int i = 0; i < getElem(); i++) {
-			incoord = strtof(currentStr, &currentStr);
+			incoord = myStrtof(currentStr, &currentStr);
 
 			if (incoord > readdata->max_value) {
 				readdata->max_value = incoord;
