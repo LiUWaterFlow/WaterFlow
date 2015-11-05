@@ -17,6 +17,12 @@ extern "C" {
 /// @return A square flat model.
 Model* generateCanvas();
 
+/// @brief Generate a cube
+///
+/// Returns a model that can be used for a skycube for example
+/// @return A cube of scale s
+Model* generateCube(GLfloat s);
+
 /// @brief Frees the memory used by the model
 ///
 /// All pointers inside the model are freed and finally the model too.

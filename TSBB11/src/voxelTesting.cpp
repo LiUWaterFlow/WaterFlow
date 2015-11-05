@@ -5,7 +5,28 @@
 #include "string.h"
 #include <cstdlib>
 
+#ifdef _WINDOWS
+#include <Windows.h>
+#include <iostream>
+#include <sstream>
+
+#define DBOUT( s )            \
+{                             \
+   std::wostringstream os_;    \
+   os_ << s;                   \
+   OutputDebugStringW( os_.str().c_str() );  \
+}
+
+#else
+#define DBOUT( s ) \
+{					\
+}					\
+#endif
+#endif
+
 namespace voxelTest{
+
+
 
   void plsWait(){
     
@@ -50,8 +71,10 @@ namespace voxelTest{
     begin_time = clock();
 
   }
-  void endClock(){
-    std::cout << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
+  void endClock() {
+	float time = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	DBOUT("Value of time: " << time << std::endl);
+	std::cout << time << std::endl;
   }
 
 
@@ -64,16 +87,37 @@ namespace voxelTest{
     gridPtr = inGridPtr;
   }
 
-  void mainTest(VoxelTest* tester){
-    Voxelgrid* grid = tester->gridPtr;
-	grid->hashSize = pow(2, 26);
+  void mainTest(DataHandler* data) {
 
-    startClock();
-    size_t count = 350;
-    size_t end = 0;
-	bool testHash = true;
-	bool randomRead = true;
-	int xd, yd, zd;
+	  Voxelgrid* grid = new Voxelgrid(data, pow(2, 26));
+
+
+	  startClock();
+	  size_t count = 350;
+	  size_t end = 0;
+	  bool testHash = !true;
+	  bool randomRead = !true;
+	  bool neighbours = !true;
+	  int xd, yd, zd;
+
+	  srand(2500);
+
+	  startClock();
+	  if (randomRead){
+		  for (size_t x = count; x != end; x--) {
+			  for (size_t y = count; y != end; y--) {
+				  for (size_t z = count; z != end; z--) {
+
+					  xd = randi(count, end);
+					  yd = randi(count, end);
+					  zd = randi(count, end);
+				  }
+			  }
+		  }
+	  }
+	  endClock();
+
+	  srand(2500);
 
 	if (testHash) {
 		//plsWait();
@@ -108,9 +152,18 @@ namespace voxelTest{
 						zd = z;
 					}
 
-					voxel* tmp = grid->hashGet(xd, yd, zd);
-					if (tmp != nullptr)
-						tmp->a += 1;
+					if (neighbours) {
+						neighs* tmp = grid->getNeighbourhoodHash(xd, yd, zd);
+						if (tmp != nullptr)
+							tmp->voxs[0]->a += 1;
+
+						delete tmp;
+					}
+					else {
+						voxel* tmp = grid->hashGet(xd, yd, zd);
+						if (tmp != nullptr)
+							tmp->a += 1;
+					}
 				}
 			}
 		}
@@ -146,10 +199,18 @@ namespace voxelTest{
 					yd = y;
 					zd = z;
 				}
+				if (neighbours) {
+					neighs* tmp = grid->getNeighbourhood(xd, yd, zd);
+					if (tmp != nullptr)
+						tmp->voxs[0]->a += 1;
 
-				voxel* tmp = grid->getVoxel(xd, yd, zd);
-				if(tmp != nullptr)
-					tmp->a += 1;
+					delete tmp;
+				}
+				else {
+					voxel* tmp = grid->getVoxel(xd, yd, zd);
+					if (tmp != nullptr)
+						tmp->a += 1;
+				}
 			}
 		}
 	}

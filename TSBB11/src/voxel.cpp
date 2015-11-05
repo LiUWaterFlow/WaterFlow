@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "gtc/type_ptr.hpp"
+#include "GL_utilities.h"
+#include "glm.hpp" 
 
 
 void Voxelgrid::rehash(){

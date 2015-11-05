@@ -1,18 +1,16 @@
 /// @file readData.cpp
 /// @brief Implementations of functions in readData.h
 
-#include "stdio.h"
+//#include "stdio.h"
 
 #include "readData.h"
 
-#include "GL_utilities.h"
-#include "loadobj.h"
-#include "glm.hpp"
 #include "Utilities.h"
+#include "GL_utilities.h"
 
-#include <fstream>
+#include "glm.hpp"
+
 #include <iostream>
-#include <string>
 
 
 using namespace std;
@@ -25,11 +23,25 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor, int blockSize)
 	readdata = new mapdata();
 	datamodel = new std::vector<Model*>;
 
+	std::cout << "Reading DEM data from: " << inputfile << "...";
 	readDEM(inputfile);
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Scaling input data to range 0.1 - 1.0...";
 	scaleDataBefore();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Performing normalized convolution...";
 	performNormalizedConvolution();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Scaling input data to range 0.0 - 1.0...";
 	scaleDataAfter();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Generating terrain data...";
 	GenerateTerrain();
+	std::cout << " done!" << std::endl;
 }
 
 DataHandler::~DataHandler()
@@ -193,6 +205,9 @@ void DataHandler::performNormalizedConvolution()
 	FBOstruct *fbo2 = initFBO3(getDataWidth(), getDataHeight(), NULL);
 	FBOstruct *fbo3 = initFBO3(getDataWidth(), getDataHeight(), getData());
 
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
 	// Perform normalized convolution until no more NODATA
 	bool isNODATA = true;
 	while (isNODATA)
@@ -203,59 +218,48 @@ void DataHandler::performNormalizedConvolution()
 			useFBO(fbo1, fbo3, 0L);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(filtershader);
 			glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getDataWidth(), (float)getDataHeight());
 
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
 
 			// Create confidence
 			useFBO(fbo2, fbo3, 0L);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(confidenceshader);
 
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
 
 			// Filter confidence
 			useFBO(fbo3, fbo2, 0L);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(filtershader);
 			glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getDataWidth(), (float)getDataHeight());
 
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
 
 			// Combine
 			useFBO(fbo2, fbo1, fbo3);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(combineshader);
 			glUniform1i(glGetUniformLocation(combineshader, "dataTex"), 0);
 			glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
+
 			DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
 
 			// Swap FBOs
@@ -275,10 +279,6 @@ void DataHandler::performNormalizedConvolution()
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_TRUE);
 
 	// Cleanup
 	glDeleteProgram(filtershader);
@@ -414,7 +414,6 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	useFBO(fbo5, fbo4, 0L);
 
 	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Activate shader program
@@ -430,10 +429,6 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_TRUE);
 
 	// Cleanup
 	glDeleteProgram(normalshader);

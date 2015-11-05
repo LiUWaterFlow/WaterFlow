@@ -7,6 +7,7 @@
 #include <array>
 #include <inttypes.h>
 #include "readData.h"
+#include "glm.hpp"
 
 /// @strcut voxel
 /// @brief Contains information and data in each voxel.
