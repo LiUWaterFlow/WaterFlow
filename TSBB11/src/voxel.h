@@ -21,6 +21,10 @@ struct voxel{
   int16_t z;
 };
 
+struct neighs {
+	voxel* voxs[27];
+};
+
 /// @class Voxelgrid
 /// @brief Handles the representation of the voxelgrid.
 ///
@@ -40,15 +44,22 @@ private:
   GLuint voxelShader;
   GLuint voxelBuffer, voxelVAO;
 
-  int64_t hashSize;
+  
   GLfloat rehashTresh = 0.75;
 
 
   std::vector<voxel*>* hashTable;
   int64_t hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize);
 
+  int xoff[27];
+  int yoff[27];
+  int zoff[27];
+
 
 public:
+
+  int64_t hashSize;
+
   GLuint numInTable = 0;
   GLuint numCollisions = 0;
 
@@ -132,6 +143,9 @@ public:
   void rehash();
   bool isEqualPoint(voxel* vox,short int x, short int y,short int z);
   void hashInit(); 
+
+  neighs* getNeighbourhood(int16_t x, int16_t y, int16_t z);
+  neighs* Voxelgrid::getNeighbourhoodHash(int16_t x, int16_t y, int16_t z);
 
 };
 

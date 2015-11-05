@@ -138,7 +138,7 @@ void init(void) {
 
 	// Create voxel data
 	voxels = new Voxelgrid(dataHandler, 33554432); //2^26
-	//voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
+	voxels->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+55,false);
 	voxels->initDraw();
 
 	// ---Model transformations, rendering---
@@ -488,8 +488,10 @@ int main(int argc, char *argv[]) {
 		std::cerr << "Error setting timer function: " << SDL_GetError() << std::endl;
 	}
 
+	set_event_handler(&event_handler);
+	inf_loop();
+
 	TwTerminate();
 	*/
-
 	return 0;
 }

@@ -106,6 +106,33 @@ void Voxelgrid::hashInit() {
 	this->hashTable = new std::vector<voxel*>(hashSize, nullptr);
 }
 
+
+neighs* Voxelgrid::getNeighbourhoodHash(int16_t x, int16_t y, int16_t z) {
+
+	neighs* neigh = new neighs();
+	for (size_t i = 0; i < 27; i++)
+	{
+		neigh->voxs[i] = hashGet(x + xoff[i],y+yoff[i],z+zoff[i]);
+	}
+
+	return neigh;
+
+}
+
+neighs* Voxelgrid::getNeighbourhood(int16_t x, int16_t y, int16_t z) {
+
+	neighs* neigh = new neighs();
+	for (size_t i = 0; i < 27; i++)
+	{
+		neigh->voxs[i] = getVoxel(x + xoff[i], y + yoff[i], z + zoff[i]);
+	}
+
+	return neigh;
+
+}
+
+
+
 /* -----------------------------------------------------------------
 Voxelgrid - Create the initial vector strutcture.
 */
@@ -115,6 +142,21 @@ Voxelgrid::Voxelgrid(DataHandler* dataHandler,int64_t hashSize){
 
   this->voxels  = new std::vector<std::vector<std::vector<voxel*>*>*>;
   this->datahandler = dataHandler;
+
+  int i = 0; 
+  for (size_t x = -1; x < 2; x++)
+  {
+	  for (size_t y = -1; y < 2; y++)
+	  {
+		  for (size_t z = -1; z < 2; z++)
+		  {
+			  xoff[i] = x;
+			  yoff[i] = y;
+			  zoff[i] = z;
+			  i++;
+		  }
+	  }
+  }
 }
 
 
@@ -383,3 +425,4 @@ void Voxelgrid::drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 
   printError("Voxel Draw Billboards");
 }
+

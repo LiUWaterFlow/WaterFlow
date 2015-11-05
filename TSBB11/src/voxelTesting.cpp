@@ -54,6 +54,11 @@ namespace voxelTest{
     std::cout << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
   }
 
+
+  int randi(int max, int min) {
+	  return min + (rand() % (int)(max - min + 1));
+  }
+
   VoxelTest::VoxelTest(DataHandler* inDataPtr,Voxelgrid* inGridPtr){
     dataPtr = inDataPtr;
     gridPtr = inGridPtr;
@@ -61,10 +66,14 @@ namespace voxelTest{
 
   void mainTest(VoxelTest* tester){
     Voxelgrid* grid = tester->gridPtr;
+	grid->hashSize = pow(2, 26);
+
     startClock();
-    size_t count = 300;
+    size_t count = 350;
     size_t end = 0;
-	bool testHash = false;
+	bool testHash = true;
+	bool randomRead = true;
+	int xd, yd, zd;
 
 	if (testHash) {
 		//plsWait();
@@ -81,13 +90,25 @@ namespace voxelTest{
 		endClock();
 
 		std::cout << (float)grid->numCollisions/(float)grid->numInTable << std::endl;
-
+		
 		//Read and modify the voxels
 		startClock();
 		for (size_t x = count; x != end; x--) {
 			for (size_t y = count; y != end; y--) {
 				for (size_t z = count; z != end; z--) {
-					voxel* tmp = grid->hashGet(x, y, z);
+					
+					if (randomRead) {
+						xd = randi(count, end);
+						yd = randi(count, end);
+						zd = randi(count, end);
+					}
+					else {
+						xd = x;
+						yd = y;
+						zd = z;
+					}
+
+					voxel* tmp = grid->hashGet(xd, yd, zd);
 					if (tmp != nullptr)
 						tmp->a += 1;
 				}
@@ -98,7 +119,7 @@ namespace voxelTest{
 	
 	}
 	else{
-
+		
     for (size_t x = count; x != end; x--) {
       for (size_t y = count; y != end; y--) {
         for (size_t z = count; z != end; z--) {
@@ -107,13 +128,26 @@ namespace voxelTest{
       }
     }
     endClock();
-
+	
     //Read and modify the voxels
     startClock();
 	for (size_t x = count; x != end; x--) {
 		for (size_t y = count; y != end; y--) {
 			for (size_t z = count; z != end; z--) {
-				voxel* tmp = grid->getVoxel(x, y, z);
+
+
+				if (randomRead) {
+					xd = randi(count, end);
+					yd = randi(count, end);
+					zd = randi(count, end);
+				}
+				else {
+					xd = x;
+					yd = y;
+					zd = z;
+				}
+
+				voxel* tmp = grid->getVoxel(xd, yd, zd);
 				if(tmp != nullptr)
 					tmp->a += 1;
 			}
