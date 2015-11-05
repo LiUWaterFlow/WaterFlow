@@ -20,7 +20,7 @@ Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH)
     up = glm::vec3(0,1,0);
 
 	screenW = initScreenW;
-	screenH = initScreenW;
+	screenH = initScreenH;
 
 	rotSpeed = 0.01f;
 	speed = 1.0f;

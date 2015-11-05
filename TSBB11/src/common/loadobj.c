@@ -114,8 +114,8 @@ static void OBJGetToken(int * tokenType)
 			c = getc(fp);
 		}
 	s[i] = 0;
-	sscanf(s, "%f", &floatValue[0]);
-	sscanf(s, "%d", &intValue[0]);
+	if (sscanf(s, "%f", &floatValue[0]) != 1) fprintf(stderr, "sscanf did not read!\n");
+	if (sscanf(s, "%d", &intValue[0]) != 1) fprintf(stderr, "sscanf did not read!\n");
 	// Check for /
 	if (c == '/') // parse another number
 		{
@@ -135,8 +135,8 @@ static void OBJGetToken(int * tokenType)
 				}
 			else
 				{
-		sscanf(s, "%f", &floatValue[1]);
-		sscanf(s, "%d", &intValue[1]);
+				if (sscanf(s, "%f", &floatValue[1]) != 1) fprintf(stderr, "sscanf did not read!\n");
+				if (sscanf(s, "%d", &intValue[1]) != 1) fprintf(stderr, "sscanf did not read!\n");
 				}
 			*tokenType = tripletToken;
 		}
@@ -158,8 +158,8 @@ static void OBJGetToken(int * tokenType)
 				}
 			else
 				{
-		sscanf(s, "%f", &floatValue[2]);
-		sscanf(s, "%i", &intValue[2]);
+				if (sscanf(s, "%f", &floatValue[2]) != 1) fprintf(stderr, "sscanf did not read!\n");
+				if (sscanf(s, "%i", &intValue[2]) != 1) fprintf(stderr, "sscanf did not read!\n");
 				}
 			*tokenType = tripletToken;
 		}
@@ -213,7 +213,7 @@ static void SkipToCRLF()
 
 static void ReadOneVertex(MeshPtr theMesh)
 {
-	GLfloat x, y, z;
+	GLfloat x = 0.0f, y = 0.0f, z = 0.0f;
 	int tokenType;
 
 	// Three floats expected
@@ -242,7 +242,7 @@ static void ReadOneVertex(MeshPtr theMesh)
 static void ReadOneTexture(MeshPtr theMesh)
 {
 	int tokenType;
-	GLfloat s, t;
+	GLfloat s = 0.0f, t = 0.0f;
 
 	// Two floats expected
 	OBJGetToken(&tokenType);
@@ -266,7 +266,7 @@ static void ReadOneTexture(MeshPtr theMesh)
 static void ReadOneNormal(MeshPtr theMesh)
 {
 	int tokenType;
-	GLfloat x, y, z;
+	GLfloat x = 0.0f, y = 0.0f, z = 0.0f;
 
 	// Three floats expected
 	OBJGetToken(&tokenType);
@@ -432,6 +432,12 @@ static struct Mesh * LoadOBJ(const char *filename)
 	Mesh *theMesh;
 	
 	theMesh = (Mesh *)malloc(sizeof(Mesh));
+
+	if (theMesh == NULL) {
+		fprintf(stderr, "LoadOBJ could not allocate memory for the mesh!\n");
+		return NULL;
+	}
+
 	theMesh->coordIndex = NULL;
 	theMesh->vertices = NULL;
 	// ProcessMesh may deal with these
@@ -1023,8 +1029,13 @@ Model* LoadDataToModel(
 			int numInd)
 {
 	Model* m = (Model*)malloc(sizeof(Model));
+
+	if (m == NULL) {
+		fprintf(stderr, "LoadDataToModel could not allocate memory for the model!\n");
+		return NULL;
+	}
+
 	memset(m, 0, sizeof(Model));
-	
 	m->vertexArray = vertices;
 	m->texCoordArray = texCoords;
 	m->normalArray = normals;

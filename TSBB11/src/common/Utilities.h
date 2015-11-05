@@ -31,8 +31,18 @@ Model* generateCube(GLfloat s);
 /// @return A square flat model.
 void releaseModel(Model* m);
 
+/// @brief Converts string to floats
+///
+/// Takes the pointer to the beginning of a string and reads a float, ignoring starting whitespace. 
+/// Handles sign and up to 9 decimals. Use strEnd to get a pointer to where the it stopped reading the string.
+/// Most of this code comes from StackOverflow
+/// @return A float value read from the string.
+float myStrtof(char* strStart, char** strEnd);
+
 #ifdef __cplusplus
 }
 #endif
+
+
 
 #endif // UTILITIES_H

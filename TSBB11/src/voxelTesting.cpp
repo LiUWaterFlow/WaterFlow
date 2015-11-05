@@ -92,18 +92,19 @@ namespace voxelTest{
 	  Voxelgrid* grid = new Voxelgrid(data, pow(2, 26));
 
 
-	  startClock();
+
 	  size_t count = 350;
 	  size_t end = 0;
 	  bool testHash = !true;
 	  bool randomRead = !true;
-	  bool neighbours = !true;
+	  bool neighbours = true;
 	  int xd, yd, zd;
 
 	  srand(2500);
 
-	  startClock();
+	 
 	  if (randomRead){
+		  startClock();
 		  for (size_t x = count; x != end; x--) {
 			  for (size_t y = count; y != end; y--) {
 				  for (size_t z = count; z != end; z--) {
@@ -114,9 +115,10 @@ namespace voxelTest{
 				  }
 			  }
 		  }
+		  endClock();
 	  }
-	  endClock();
-
+	 
+	  startClock();
 	  srand(2500);
 
 	if (testHash) {
@@ -154,7 +156,7 @@ namespace voxelTest{
 
 					if (neighbours) {
 						neighs* tmp = grid->getNeighbourhoodHash(xd, yd, zd);
-						if (tmp != nullptr)
+						if (tmp->voxs[0] != nullptr)
 							tmp->voxs[0]->a += 1;
 
 						delete tmp;
@@ -201,7 +203,7 @@ namespace voxelTest{
 				}
 				if (neighbours) {
 					neighs* tmp = grid->getNeighbourhood(xd, yd, zd);
-					if (tmp != nullptr)
+					if (tmp->voxs[0] != nullptr)
 						tmp->voxs[0]->a += 1;
 
 					delete tmp;

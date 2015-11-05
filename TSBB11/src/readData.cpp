@@ -1,8 +1,6 @@
 /// @file readData.cpp
 /// @brief Implementations of functions in readData.h
 
-//#include "stdio.h"
-
 #include "readData.h"
 
 #include "Utilities.h"
@@ -11,9 +9,6 @@
 #include "glm.hpp"
 
 #include <iostream>
-
-
-using namespace std;
 
 // ===== Constructors and destructors
 
@@ -71,13 +66,13 @@ float DataHandler::getCoord(int col, int row)
 		}
 		else
 		{
-			cerr << "Input does not exist in data. Col: " << col <<" Row: " << row << endl;
+			std::cerr << "Input does not exist in data. Col: " << col << " Row: " << row << std::endl;
 			index = 0;
 		}
 		retdata = readdata->data[index];
 	}
 	else {
-		cerr << "No mapdata exists." << endl;
+		std::cerr << "No mapdata exists." << std::endl;
 	}
 
 	return retdata;
@@ -123,19 +118,23 @@ std::vector<Model*>* DataHandler::getModel()
 
 void DataHandler::readDEM(const char* inputfile)
 {
-	FILE* file = fopen(inputfile, "r");
+	char* buffer = readFile(inputfile);
+	char* currentStr = buffer;
+	int readChars = 0;
 
-	char intext [80];
-	float incoord = 0;
-
-	if (file != NULL)
-	{
-		fscanf(file, "%s %i", &intext, &readdata->ncols);
-		fscanf(file, "%s %i", &intext, &readdata->nrows);
-		fscanf(file, "%s %f", &intext, &readdata->xllcorner);
-		fscanf(file, "%s %f", &intext, &readdata->yllcorner);
-		fscanf(file, "%s %f", &intext, &readdata->cellsize);
-		fscanf(file, "%s %f", &intext, &readdata->NODATA_value);
+	if (buffer != NULL) {
+		if (sscanf(currentStr, "%*s %i %n", &readdata->ncols, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %i %n", &readdata->nrows, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->xllcorner, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->yllcorner, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->cellsize, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->NODATA_value, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
 
 		readdata->max_value = readdata->NODATA_value;
 		readdata->min_value = 20000000;
@@ -143,35 +142,25 @@ void DataHandler::readDEM(const char* inputfile)
 		readdata->nelem = readdata->ncols * readdata->nrows;
 		readdata->data.resize(getElem());
 
-		int nRead = 0;
-		for (int i = 0; i < getElem(); i++)
-		{
-			nRead = fscanf(file, "%f", &incoord);
+		float incoord = 0;
+		
+		for (int i = 0; i < getElem(); i++) {
+			incoord = myStrtof(currentStr, &currentStr);
 
-			if (nRead != 1)
-			{
-				cerr << "Less values than it should be!" << endl;
-				break;
-			}
-
-			if (incoord > readdata->max_value)
-			{
+			if (incoord > readdata->max_value) {
 				readdata->max_value = incoord;
 			}
-			if (incoord > readdata->NODATA_value + 1.0f && incoord < readdata->min_value)
-			{
+			if (incoord > readdata->NODATA_value + 1.0f && incoord < readdata->min_value) {
 				readdata->min_value = incoord;
 			}
 
 			readdata->data[i] = incoord;
 		}
-
 		terrainScale = readdata->max_value - readdata->min_value;
 
-		fclose(file);
-	}
-	else {
-		cerr << "Could not open file: " << inputfile << endl;
+		free(buffer);
+	} else {
+		std::cerr << "Could not read file: " << inputfile << std::endl;
 	}
 }
 
@@ -212,7 +201,7 @@ void DataHandler::performNormalizedConvolution()
 	bool isNODATA = true;
 	while (isNODATA)
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			// Filter original
 			useFBO(fbo1, fbo3, 0L);
@@ -453,7 +442,7 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 
 	GLfloat yheight = 0;
 
-	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 <= width) && (vertZ2 <= height))
+	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 < width) && (vertZ2 < height))
 	{
 
 		GLfloat dist1 = vertX1 - x;

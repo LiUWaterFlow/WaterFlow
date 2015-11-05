@@ -97,7 +97,7 @@ bool Program::init() {
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc",4);
+	dataHandler = new DataHandler("resources/output.min.asc",2);
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
@@ -200,6 +200,7 @@ void Program::handleEvent(SDL_Event* event) {
 		case SDL_WINDOWEVENT_RESIZED:
 			SDL_SetWindowSize(screen, event->window.data1, event->window.data2);
 			SDL_GetWindowSize(screen, &screenW, &screenH);
+			glViewport(0, 0, screenW, screenH);
 			TwWindowSize(screenW, screenH);
 			cam->updateVTP();
 			break;

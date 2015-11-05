@@ -115,9 +115,6 @@
     <None Include="src\shaders\filtershader.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\plaintextureshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="src\shaders\plaintextureshader.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>

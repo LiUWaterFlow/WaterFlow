@@ -93,7 +93,7 @@ public:
   /// @param a Dummy variable for initial tests of size and performance
   /// @param b Dummy variable for initial tests of size and performance
   /// @see getVoxel
-  void setVoxel(GLuint x, GLuint y, GLuint z, bool filled, float a, float b);
+  void setVoxel(int16_t x, int16_t y, int16_t z, bool filled, float a, float b);
 
   /// @brief Get value of voxel at x,y,z.
   ///
@@ -105,7 +105,7 @@ public:
   /// @param z Coordinate of the voxel, z cannot be negative.
   /// @see setVoxel
   /// @return Returns a pointer to the voxel (i.e. changes can be made.) If no voxel exists a nullpointer is returned.
-  voxel* getVoxel(GLuint x, GLuint y, GLuint z);
+  voxel* getVoxel(int16_t x, int16_t y, int16_t z);
 
 
   std::vector<std::array<int, 2>>* LayerFloodFill(int init_x, int init_z, int height);

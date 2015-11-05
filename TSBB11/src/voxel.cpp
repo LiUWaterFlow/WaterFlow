@@ -46,7 +46,7 @@ void Voxelgrid::rehash(){
 }
 
 int64_t Voxelgrid::hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize){
-  return (((73856093 * x) + (19349663 * y) + (83492791 * z)) % inHashSize);
+  return abs((((73856093 * x) + (19349663 * y) + (83492791 * z)) % inHashSize));
 }
 
 void Voxelgrid::hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, float b){
@@ -85,7 +85,7 @@ void Voxelgrid::hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, fl
   }
 }
 
-voxel* Voxelgrid::hashGet(short int x, short int y, short int z){
+voxel* Voxelgrid::hashGet(int16_t x, int16_t y, int16_t z){
   int64_t hashPos = hashFunc(x,y,z,hashSize);
   if(hashTable->at(hashPos)  != nullptr){
     while(hashTable->at(hashPos) != nullptr && !isEqualPoint(hashTable->at(hashPos),x,y,z)){
@@ -195,8 +195,14 @@ setVoxel take a x,y,z coordinate where the voxel will be created (or modified)
 with the values ax, bx.
 */
 
-void Voxelgrid::setVoxel(GLuint x, GLuint y, GLuint z, bool filledx, float ax, float bx)
+void Voxelgrid::setVoxel(int16_t x, int16_t y, int16_t z, bool filledx, float ax, float bx)
 {
+	GLuint xorig = x;
+	GLuint yorig = y;
+	GLuint zorig = z;
+	x += 10;
+	y += 10;
+	z += 10; 
 
   //if x is not in table. Create y and z tables, resize x, and
   //point to children (y,z);
@@ -204,45 +210,45 @@ void Voxelgrid::setVoxel(GLuint x, GLuint y, GLuint z, bool filledx, float ax, f
     std::vector<voxel*>* tempZ = new std::vector<voxel*>(z+1);
     std::vector<std::vector<voxel*>*>* tempY = new std::vector<std::vector<voxel*>*>(y+1);
     voxels->resize(x+1,nullptr);
-    voxels->at(x) = tempY;
-    voxels->at(x)->at(y) = tempZ;
+    (*voxels)[x] = tempY;
+    (*(*voxels)[x])[y] = tempZ;
 
   }
   //if y is not in table. Create z table, resize y, and
   //point to childtable z; Note that existence of y table is
   //managed by the first part of the if-statement
-  else if(voxels->at(x) != nullptr && voxels->at(x)->size() < y+1){
+  else if((*voxels)[x] != nullptr && (*voxels)[x]->size() < y+1){
 
     std::vector<voxel*>* tempZ = new std::vector<voxel*>(z+1);
-    voxels->at(x)->resize(y+1,nullptr);
-    voxels->at(x)->at(y) = tempZ;
+    (*voxels)[x]->resize(y+1,nullptr);
+    (*(*voxels)[x])[y] = tempZ;
 
   }
   //if z is not large enough resize. Note that existence of z table is
   //managed by the first two parts of the if-statement
-  else if(voxels->at(x) != nullptr &&  voxels->at(x)->at(y) != nullptr && voxels->at(x)->at(y)->size() < z+1){
-    voxels->at(x)->at(y)->resize(z+1,nullptr);
+  else if((*voxels)[x] != nullptr &&  (*(*voxels)[x])[y] != nullptr && (*(*voxels)[x])[y]->size() < z+1){
+    (*(*voxels)[x])[y]->resize(z+1,nullptr);
 
   }
 
   //If x is large enough but does not contain a table at position x
   //create and insert relevant tables.
-  if(voxels->at(x) == nullptr){
+  if((*voxels)[x] == nullptr){
     std::vector<voxel*>* tempZ = new std::vector<voxel*>(z+1);
     std::vector<std::vector<voxel*>*>* tempY = new std::vector<std::vector<voxel*>*>(y+1);
-    voxels->at(x) = tempY;
-    voxels->at(x)->at(y) = tempZ;
+    (*voxels)[x] = tempY;
+    (*(*voxels)[x])[y] = tempZ;
   }
   //If y is large enough but does not contain a table at position y
   //create and insert relevant tables.
-  else if(voxels->at(x)->at(y) == nullptr){
+  else if((*(*voxels)[x])[y] == nullptr){
     std::vector<voxel*>* tempZ = new std::vector<voxel*>(z+1);
-    voxels->at(x)->at(y) = tempZ;
+    (*(*voxels)[x])[y] = tempZ;
   }
   //If there is already a voxel at position x,y,z, delete this in
   //preperation for new insertion.
-  else if(voxels->at(x)->at(y)->at(z)  != nullptr){
-    delete voxels->at(x)->at(y)->at(z);
+  else if((*(*(*voxels)[x])[y])[z]  != nullptr){
+    delete (*(*(*voxels)[x])[y])[z];
   }
 
   //create and insert the new voxel.
@@ -250,7 +256,10 @@ void Voxelgrid::setVoxel(GLuint x, GLuint y, GLuint z, bool filledx, float ax, f
   temp->filled = filledx;
   temp->a = ax;
   temp->b = bx;
-  voxels->at(x)->at(y)->at(z) = temp;
+  temp->x = xorig;
+  temp->y = yorig;
+  temp->z = zorig;
+  (*(*(*voxels)[x])[y])[z] = temp;
 
 }
 
@@ -259,30 +268,36 @@ Get voxel at x,y,z. This function returns a pointer to the struct.
 If no voxel is present it returns a nullptr.
 */
 
-voxel* Voxelgrid::getVoxel(GLuint x, GLuint y, GLuint z)
+voxel* Voxelgrid::getVoxel(int16_t x, int16_t y, int16_t z)
 {
-  //std::cout << "In getVoxel, size of vector voxels is: " << voxels->size() << std::endl;
 
-  //std::cout << "Voxels at x is empty" << std::endl;
+	x += 10;
+	y += 10;
+	z += 10;
 
-  //ensure table existance and table size, if either fails return nullptr.
-  if(voxels->size() < x+1 || voxels->at(x) == nullptr){
-    //std::cout << "In first if in get_Voxel" << std::endl;
-    return nullptr;
-  }
-  //ensure table existance and table size, if either fails return nullptr.
-  else if(voxels->at(x)->size() < y+1 || voxels->at(x)->at(y) == nullptr){
-    //std::cout << "In second if in get_Voxel" << std::endl;
-    return nullptr;
-  }
-  //ensure table existance and table size, if either fails return nullptr.
-  else if(voxels->at(x)->at(y)->size() < z+1 || voxels->at(x)->at(y)->at(z) == nullptr){
-    return nullptr;
-  }
 
-  //Existance is ensured, return pointer at location x,y,z
-  //std::cout << "Just before returning voxel in get_Voxel" << std::endl;
-  return voxels->at(x)->at(y)->at(z);
+	//std::cout << "In getVoxel, size of vector voxels is: " << voxels->size() << std::endl;
+
+	//std::cout << "Voxels at x is empty" << std::endl;
+
+	//ensure table existance and table size, if either fails return nullptr.
+	if (voxels->size() < x + 1 || (*voxels)[x] == nullptr) {
+		//std::cout << "In first if in get_Voxel" << std::endl;
+		return nullptr;
+	}
+	//ensure table existance and table size, if either fails return nullptr.
+	else if ((*voxels)[x]->size() < y + 1 || (*(*voxels)[x])[y] == nullptr) {
+		//std::cout << "In second if in get_Voxel" << std::endl;
+		return nullptr;
+	}
+	//ensure table existance and table size, if either fails return nullptr.
+	else if ((*(*voxels)[x])[y]->size() < z + 1 || (*(*(*voxels)[x])[y])[z] == nullptr) {
+		return nullptr;
+	}
+
+	//Existance is ensured, return pointer at location x,y,z
+	//std::cout << "Just before returning voxel in get_Voxel" << std::endl;
+	return (voxel*)(*(*(*voxels)[x])[y])[z];
 }
 
 
