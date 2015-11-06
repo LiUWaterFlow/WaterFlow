@@ -3,7 +3,8 @@
 echo $OSTYPE
 if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "OSX system detected - Setting up"
-
+        mkdir obj
+        mkdir bin
         echo "Copying AntTweak to /usr/local/lib/ (non overwriting)"
         cp -n lib/AntTweak/libAntTweakbar.a /usr/local/lib/libAntTweakbar.a
         cp -n lib/AntTweak/libAntTweakbar.dylib /usr/local/lib/libAntTweakbar.dylib
