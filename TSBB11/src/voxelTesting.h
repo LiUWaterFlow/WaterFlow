@@ -1,7 +1,7 @@
 #ifndef VOXELTESTING_H
 #define VOXELTESTING_H
 
-#include "voxel.h"
+#include "voxelGrid.h"
 #include "readData.h"
 #include "glm.hpp"
 #include <iostream>

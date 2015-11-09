@@ -43,7 +43,7 @@
 #include "SDL_util.h"
 #include "camera.h"
 #include "readData.h"
-#include "voxel.h"
+#include "voxelgrid.h"
 #include "voxelTesting.h"
 
 #ifndef NULL
@@ -302,8 +302,8 @@ int main(int argc, char *argv[])
 	init();
 
 	Voxelgrid* grid = new Voxelgrid(dataHandler);
-	voxelTest::VoxelTest* tester = new voxelTest::VoxelTest(dataHandler,grid);
-	voxelTest::mainTest(tester);
+	//voxelTest::VoxelTest* tester = new voxelTest::VoxelTest(dataHandler,grid);
+	//voxelTest::mainTest(tester);
 
 	//SDL_TimerID timer_id;
 	//timer_id = SDL_AddTimer(30, &display_timer, NULL);

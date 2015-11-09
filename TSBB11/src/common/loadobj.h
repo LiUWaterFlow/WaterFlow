@@ -16,7 +16,7 @@ extern "C" {
 		#include <GL/glext.h>
 		
 	#else
-		#include "glew.h"
+		#include "Windows\glew.h"
 	#endif
 #endif
 

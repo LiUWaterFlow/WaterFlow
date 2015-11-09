@@ -5,9 +5,16 @@
 
 #include "readData.h"
 
+/*
 #include "GL_utilities.h"
 #include "loadobj.h"
 #include "glm.hpp"
+*/
+#include "common\GL_utilities.h"
+#include "common\loadobj.h"
+#include "common\glm\glm.hpp"
+#include "common\Windows\wglew.h"
+#include "common\Windows\glew.h"
 
 #include <fstream>
 #include <iostream>

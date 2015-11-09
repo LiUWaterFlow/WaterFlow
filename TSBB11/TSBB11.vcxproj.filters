@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{b90cfd10-025a-471f-a396-c11a1583074b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Simulation">
+      <UniqueIdentifier>{b71c1eb4-a59b-4884-897e-efb4862ce3de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,7 +51,13 @@
     <ClCompile Include="src\readData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\voxel.cpp">
+    <ClCompile Include="src\voxelTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Simulation\C++\fluidsolver.cpp">
+      <Filter>Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Voxelgrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,8 +89,17 @@
     <ClInclude Include="src\readData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\voxel.h">
+    <ClInclude Include="src\voxelTesting.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Simulation\C++\fluidsolver.h">
+      <Filter>Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Voxelgrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fluidDataStructures.h">
+      <Filter>Simulation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

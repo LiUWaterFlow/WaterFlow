@@ -80,9 +80,9 @@ namespace voxelTest{
     for (size_t x = 0; x < count; x++) {
       for (size_t y = 0; y < count; y++) {
         for (size_t z = 0; z < count; z++) {
-          voxel* tmp = grid->getVoxel(x,y,z);
+          Voxel* tmp = grid->getVoxel(x,y,z);
           if(tmp != nullptr){
-            tmp->a++;
+            //tmp->a++;
             //printf("x: %f  y: %f  ", tmp->a,tmp->b);
           }
         }
@@ -96,6 +96,11 @@ namespace voxelTest{
     plsWait();
     //Read some voxels that doesn't exist
 
+
+  }
+
+  void fluidTest()
+  {
 
   }
 

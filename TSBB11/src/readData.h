@@ -4,9 +4,17 @@
 #ifndef READDATA_H
 #define READDATA_H
 
+/*
 #include "glm.hpp"
 #include "loadobj.h"
 #include "GL_utilities.h"
+*/
+
+#include "common\glm\glm.hpp"
+#include "common\loadobj.h"
+#include "common\GL_utilities.h"
+#include "common\Windows\wglew.h"
+#include "common\Windows\glew.h"
 
 #include <vector>
 
