@@ -23,7 +23,7 @@
 
 #include "camera.h"
 #include "readData.h"
-#include "drawable.h"
+#include "myDrawable.h"
 
 #include "AntTweakBar.h"
 
@@ -47,8 +47,8 @@ private:
 	float heightAtPos, heightAtClickData, heighAtClickProj;
 	double objX, objZ;
 	
-	// Drawables:
-	Drawable *skycube, *terrain;
+	// myDrawables:
+	myDrawable *skycube, *terrain;
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;
