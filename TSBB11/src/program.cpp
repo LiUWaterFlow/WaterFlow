@@ -6,6 +6,7 @@
 #include "GL_utilities.h"
 
 #include "gtc/type_ptr.hpp"
+#include <iostream>;
 
 Program::Program() {
 	screenW = 800;
@@ -248,12 +249,11 @@ void Program::handleMouseButton(SDL_Event* event) {
 		float depth;
 		int x;
 		int y;
-		SDL_GetMouseState(&x, &y);
-		glReadPixels(x, screenW - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-
-		GLdouble objY = 0.0;
 		GLint viewport[4] = { 0, 0, 0, 0 };
 		glGetIntegerv(GL_VIEWPORT, viewport);
+		SDL_GetMouseState(&x, &y);
+		glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		GLdouble objY = 0.0;
 		gluUnProject((GLdouble)x, (GLdouble)(screenW - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
 		heighAtClickProj = (GLfloat)objY;
