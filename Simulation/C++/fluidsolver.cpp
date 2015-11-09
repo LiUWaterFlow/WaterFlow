@@ -283,34 +283,34 @@ void FluidSolver::force_boundries_velocity()
 	std::vector<Voxel*> front = m_grid.getBorderFront();
 	std::vector<Voxel*> back = m_grid.getBorderBack();
 
-	for each (Voxel* it in top)
+	for( auto it = top.cbegin(); it != c.end(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y;
 	}
-	for each (Voxel* it in bottom)
+	for( auto it = bottom.cbegin(); it != bottom.end(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->velocity.y;
 	}
-	for each (Voxel* it in left)
+	for( auto it = left.cbegin(); it != left.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x = -temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->velocity.x;
 	}
-	for each (Voxel* it in right)
+	for( auto it = right.cbegin(); it != right.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x = -temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->velocity.x;
 	}
-	for each (Voxel* it in front)
+	for( auto it = front.cbegin(); it != front.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z = -temp.voxels[CUBEPOS::BACK_MID_CENTER]->velocity.z;
 	}
-	for each (Voxel* it in back)
+	for( auto it = back.cbegin(); it != back.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z = -temp.voxels[CUBEPOS::FRONT_MID_CENTER]->velocity.z;
 	}
 
@@ -327,34 +327,34 @@ void FluidSolver::force_boundries_density()
 	std::vector<Voxel*> front = m_grid.getBorderFront();
 	std::vector<Voxel*> back = m_grid.getBorderBack();
 
-	for each (Voxel* it in top)
+	for( auto it = top.cbegin(); it != c.end(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->density;
 	}
-	for each (Voxel* it in bottom)
+	for( auto it = bottom.cbegin(); it != bottom.end(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->density;
 	}
-	for each (Voxel* it in left)
+	for( auto it = left.cbegin(); it != left.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->density;
 	}
-	for each (Voxel* it in right)
+	for( auto it = right.cbegin(); it != right.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->density;
 	}
-	for each (Voxel* it in front)
+	for( auto it = front.cbegin(); it != front.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::BACK_MID_CENTER]->density;
 	}
-	for each (Voxel* it in back)
+	for( auto it = back.cbegin(); it != back.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::FRONT_MID_CENTER]->density;
 	}
 
@@ -371,34 +371,34 @@ void FluidSolver::force_boundries_preassure()
 	std::vector<Voxel*> front = m_grid.getBorderFront();
 	std::vector<Voxel*> back = m_grid.getBorderBack();
 
-	for each (Voxel* it in top)
+	for( auto it = top.cbegin(); it != top.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure;
 	}
-	for each (Voxel* it in bottom)
+	for( auto it = bottom.cbegin(); it != bottom.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure;
 	}
-	for each (Voxel* it in left)
+	for( auto it = left.cbegin(); it != left.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure;
 	}
-	for each (Voxel* it in right)
+	for( auto it = right.cbegin(); it != right.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure;
 	}
-	for each (Voxel* it in front)
+	for( auto it = front.cbegin(); it != front.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure;
 	}
-	for each (Voxel* it in back)
+	for( auto it = back.cbegin(); it != back.cend(); it++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour(it);
+		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure;
 	}
 
