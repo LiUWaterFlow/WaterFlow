@@ -57,17 +57,21 @@ public:
 	Grid()
 	{
 		m_grid = new Voxel**[m_size+2];
-		for (unsigned int i = 0; i < m_size+2; i++){
-		m_grid[i] = new Voxel*[m_size+2];
-		for (unsigned int j = 0; j < m_size+2; j++){
-			m_grid[i][j] = new Voxel[m_size+2];
-		}
+		for (unsigned int i = 0; i < m_size+2; i++)
+		{
+			m_grid[i] = new Voxel*[m_size+2];
+			for (unsigned int j = 0; j < m_size+2; j++)
+			{
+				m_grid[i][j] = new Voxel[m_size+2];
+			}
 		}
 	}
 	~Grid()
 	{
-		for (unsigned int i = 0; i < (m_size+2); i++){
-			for (unsigned int j =0; j < (m_size+2); j++){
+		for (unsigned int i = 0; i < (m_size+2); i++)
+		{
+			for (unsigned int j =0; j < (m_size+2); j++)
+			{
 				delete [] m_grid[i][j];
 			}
 			delete [] m_grid[i];
