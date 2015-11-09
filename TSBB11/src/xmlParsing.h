@@ -9,6 +9,18 @@
 #include <sstream>
 #include <string>
 
+struct Flood_Fill_data{
+ int x;
+ int z;
+ int height;
+};
+
+struct init_Data_struct {
+  const char* data_filename;
+  std::vector<FlowSource*> Flowsources;
+  std::vector<Flood_Fill_data*> FFData;
+};
+
 /// @brief Converts a string with CSV to a vector with floats.
 /// @param str a string with comma separated float values e.g. "1 , 2.5, -8.3"
 /// @return vector of floats with the values from the input string.
@@ -51,6 +63,11 @@ void parseRadius(FlowSource* obj, pugi::xml_node node);
 /// @param xmlFile relative path to an xml file containing flow sources data.
 /// @return A vector filled with pointers to flowSource objects containing data given by an XML file.
 std::vector<FlowSource*> loadFlows(const char* xmlFile);
+
+
+const char* loadMapPath(const char* xmlFile);
+
+std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile);
 
 /// @brief This function removes flowSources to free up memory
 /// @param Vector with pointers to flowSource objects to be deleted.

@@ -7,10 +7,10 @@ std::vector<float> fStrToVector(std::string str){
   std::vector<float> valueVector;
   std::stringstream ss(str);
   std::string fValue;
-  
+
   while(std::getline(ss, fValue, ',')){
     std::stringstream fs(fValue);
-    float f = 0.0; 
+    float f = 0.0;
     fs >> f;
     valueVector.push_back(f);
   }
@@ -22,10 +22,10 @@ std::vector<int> iStrToVector(std::string str){
   std::vector<int> valueVector;
   std::stringstream ss(str);
   std::string iValue;
-  
+
   while(std::getline(ss, iValue, ',')){
     std::stringstream is(iValue);
-    int i = 0; 
+    int i = 0;
     is >> i;
     valueVector.push_back(i);
   }
@@ -38,7 +38,7 @@ void parsePressure(FlowSource* obj, pugi::xml_node pres, pugi::xml_node time){
   std::string pstr = pres.attribute("p").value();
   std::vector<int> timevec = iStrToVector(timestr);
   std::vector<float> pvec = fStrToVector(pstr);
-  obj->setPressure(pvec, timevec); 
+  obj->setPressure(pvec, timevec);
 }
 
 // This function parses the Position node and adds it to by pointer provided FlowSource Object.
@@ -64,23 +64,23 @@ void parseNormal(FlowSource* obj, pugi::xml_node norm, pugi::xml_node time){
   nvec.push_back(ndir);
   }
   std::vector<int> timevec = iStrToVector(timestr);
-  obj->setNormal(nvec, timevec); 
+  obj->setNormal(nvec, timevec);
 }
 
 
 void parseTotalWater(FlowSource* obj, pugi::xml_node node){
-  float tot; 
+  float tot;
   tot = node.attribute("tot").as_float();
   obj->setTotalWater(tot);
 }
 
 void parseRadius(FlowSource* obj, pugi::xml_node node){
-  float r; 
+  float r;
   r = node.attribute("r").as_float();
   obj->setRadius(r);
 }
 
-// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates. TODO: Implement a function that delets all the objects. 
+// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates. TODO: Implement a function that delets all the objects.
 std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   pugi::xml_document doc;
   std::vector<FlowSource*> srces;
@@ -99,6 +99,33 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   }
   return srces;
 }
+
+const char* loadMapPath(const char* xmlFile){
+  pugi::xml_document doc;
+  if(!doc.load_file(xmlFile)) return "No XML file";
+  std::cout << "Load success" << std::endl;
+  const char* path = doc.child("Profile").child("Data").child("MapName").attribute("path").value();
+  return path;
+}
+
+std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile){
+  pugi::xml_document doc;
+  doc.load_file(xmlFile);
+
+  std::vector<Flood_Fill_data*> out_data;
+  pugi::xml_node floods = doc.child("Profile").child("Floods");
+
+  for (pugi::xml_node_iterator it = floods.begin(); it != floods.end(); ++it){
+    Flood_Fill_data* Flood_Fill = new Flood_Fill_data;
+    Flood_Fill->x = it->attribute("x").as_int();
+    Flood_Fill->z = it->attribute("z").as_int();
+    Flood_Fill->height = it->attribute("height").as_int();
+
+    out_data.push_back(Flood_Fill);
+  }
+  return out_data;
+}
+
 
 void deleteAllFlows(std::vector<FlowSource*> srces){
   for(auto it = srces.begin(); it != srces.end(); ++it){

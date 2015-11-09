@@ -79,11 +79,18 @@ bool Program::init() {
 
 	dumpInfo();
 
+	const char* xmlfile = "src/xml/xgconsole.xml";
+
+	init_Data_struct init_data;
+	init_data.data_filename = loadMapPath(xmlfile);
+	init_data.Flowsources = loadFlows(xmlfile);
+	init_data.FFData = loadFFData(xmlfile);
+	std::cout << "First flood: " << init_data.FFData.at(0)->x << std::endl;
 	// Initial placement of camera.
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 1);
+	dataHandler = new DataHandler(init_data.data_filename, 1);
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");

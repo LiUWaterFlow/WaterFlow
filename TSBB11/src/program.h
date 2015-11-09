@@ -24,6 +24,7 @@
 #include "camera.h"
 #include "readData.h"
 #include "myDrawable.h"
+#include "xmlParsing.h"
 
 #include "AntTweakBar.h"
 
@@ -46,7 +47,7 @@ private:
 	TwBar *antBar;
 	float heightAtPos, heightAtClickData, heighAtClickProj;
 	double objX, objZ;
-	
+
 	// myDrawables:
 	myDrawable *skycube, *terrain;
 
@@ -63,7 +64,7 @@ public:
 	int exec();
 
 	bool init();
-	
+
 	void handleEvent(SDL_Event* event);
 	void handleKeypress(SDL_Event* event);
 	void handleMouseMove(SDL_Event* event);
