@@ -79,17 +79,21 @@ bool Program::init() {
 
 	dumpInfo();
 
+
+/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this
+	 is then used as startdata.
+*/
 	const char* xmlfile = "src/xml/xgconsole.xml";
 
-	init_Data_struct init_data;
-	init_data.data_filename = loadMapPath(xmlfile);
-	init_data.Flowsources = loadFlows(xmlfile);
-	init_data.FFData = loadFFData(xmlfile);
-	std::cout << "First flood: " << init_data.FFData.at(0)->x << std::endl;
+	init_Data_struct init_data(xmlfile);
+	std::cout << "first flood x: " << init_data.FFData[0]->x << std::endl;
+	std::cout << "second flood x: " << init_data.FFData[1]->x << std::endl;
+
 	// Initial placement of camera.
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
+	std::cout << "data_filename before dataHandler init: " << init_data.data_filename << std::endl;
 	dataHandler = new DataHandler(init_data.data_filename, 1);
 
 	// Load and compile shaders.

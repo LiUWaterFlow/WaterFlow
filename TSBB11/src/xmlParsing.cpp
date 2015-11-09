@@ -2,6 +2,21 @@
 
 // This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.
 
+
+Flood_Fill_data::Flood_Fill_data(int in_x, int in_z, int in_height)
+{
+  this->x = in_x;
+  this->z = in_z;
+  this->height = in_height;
+}
+
+init_Data_struct::init_Data_struct(const char* XMLfile)
+{
+  this->data_filename = loadMapPath(XMLfile);
+  this->Flowsources = loadFlows(XMLfile);
+  this->FFData = loadFFData(XMLfile);
+}
+
 // Converts a string with CSV to a vector with floats.
 std::vector<float> fStrToVector(std::string str){
   std::vector<float> valueVector;
@@ -105,6 +120,9 @@ const char* loadMapPath(const char* xmlFile){
   if(!doc.load_file(xmlFile)) return "No XML file";
   std::cout << "Load success" << std::endl;
   const char* path = doc.child("Profile").child("Data").child("MapName").attribute("path").value();
+  path += NULL;
+  std::cout <<"hejhej: " << strlen(path) << std::endl;
+  std::cout << "Path in loadmapdata: " << path << std::endl;
   return path;
 }
 
@@ -116,10 +134,7 @@ std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile){
   pugi::xml_node floods = doc.child("Profile").child("Floods");
 
   for (pugi::xml_node_iterator it = floods.begin(); it != floods.end(); ++it){
-    Flood_Fill_data* Flood_Fill = new Flood_Fill_data;
-    Flood_Fill->x = it->attribute("x").as_int();
-    Flood_Fill->z = it->attribute("z").as_int();
-    Flood_Fill->height = it->attribute("height").as_int();
+    Flood_Fill_data* Flood_Fill = new Flood_Fill_data(it->attribute("x").as_int(), it->attribute("z").as_int(), it->attribute("height").as_int());
 
     out_data.push_back(Flood_Fill);
   }

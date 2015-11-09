@@ -10,12 +10,14 @@
 #include <string>
 
 struct Flood_Fill_data{
+ Flood_Fill_data(int, int, int);
  int x;
  int z;
  int height;
 };
 
 struct init_Data_struct {
+  init_Data_struct(const char* XMLfile);
   const char* data_filename;
   std::vector<FlowSource*> Flowsources;
   std::vector<Flood_Fill_data*> FFData;
