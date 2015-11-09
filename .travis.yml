@@ -1,0 +1,48 @@
+# whitelist
+branches:
+  only:
+    - master
+language: 
+  - cpp
+compiler:
+  - g++
+env:
+  global:
+    - secure: "l3JLJvxDnFA4LzIwjv5o0zR9r4ERInz1p0HK2mDeohVmIokzOoVoux7fpIUdm6+lGwnO4JJ7uScZA1ocdGxbheHgTnArjfwebxojF+qWv46XmbT+rhy4Uawm+rDLsJ/r6rnM3wjOYs2e0sTu6ddxODkIpP5QMynBNNwQN+Dv68/6WiLfBhC2yF6FfKh9bvMl/zR5eREOs8k3WsEVRs8bySGfHYi9rilff+K7bDKYGxCVDeQbpRREFfn+Y880jNRMEPxMbljrosF6jbV2BvQCytuuaZOMewhqvAN7N6U1pImqOe1qDrKBqW8ibi8XATXXCQfVelOyxMkVdBHHT0qezoASCmRmVvu7bPypwCwnhBdE10Dw1swohes67RQexSyGiArZop8kLRzNOUva3fudCPMrQaCAM27bJYF8c4Z1x4c4RMlZwdhGniXKKVnbDUGCg08XZr+qZuJWHOm7KuOh7eayOEeWwGcY8FAOO4zMM2AuethcNGnDyJ4XG0HwX0B9a5Ett5wYlaCkKvf+iuXN14kVFj74pszZyl0lcKsUjUYbv1R6NZEdyz1h6XDeGbfZqQcu5aW+bLJYKmRQ5DJ6V8ZuDVPnO3Ms+aMHxzR3DJAHYRZJMbnI0BqhfSoAa7if7AatSsUSMSUcHziaAFw8fx43WGp85ifVw5KNoYOsvh8="
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install -qq doxygen
+ 
+before_script:
+  - ## the following automatically builds the doxygen
+  - ## documentation and pushes it to the gh_pages branch
+  -
+  - # First, set up credentials using the environment variables
+  - # GIT_NAME, GIT_EMAIL and GH_TOKEN. These were passed
+  - # encrypted to travis and should have been decrypted
+  - # using travis' private key before this script was run.
+  - git config --global user.name "${GIT_NAME}"
+  - git config --global user.email ${GIT_EMAIL}
+  -
+  - # now we make the directory for the docs and cd into it
+  - mkdir docFiles
+  - cd docFiles/
+  -
+  - # clone the whole repo again, but switch to gh_pages branch
+  - git clone https://github.com/LiUWaterFlow/WaterFlow.git .
+  - git checkout gh-pages
+  -
+  - # Go to directory for make
+  - cd ../TSBB11/
+
+script: make docs
+
+after_success:
+  - # cd into the docs dir and commit and push the new docs.
+  - cd ../docFiles
+  - git add --all .
+  - git commit -m "Auto-updating Doxygen developer documentation"
+  - git push https://${GH_TOKEN}@github.com/LiUWaterFlow/WaterFlow.git gh-pages

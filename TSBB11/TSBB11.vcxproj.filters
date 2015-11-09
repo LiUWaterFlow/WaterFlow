@@ -48,6 +48,9 @@
     <ClCompile Include="src\readData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\voxel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\GL_utilities.h">
@@ -77,6 +80,9 @@
     <ClInclude Include="src\readData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\voxel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\main.frag">
@@ -98,6 +104,18 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="src\shaders\plaintextureshader.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="resources\mainpage.dox">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\Doxyfile">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="makefile">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\shaders\normalshader.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
