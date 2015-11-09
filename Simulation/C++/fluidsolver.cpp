@@ -283,7 +283,7 @@ void FluidSolver::force_boundries_velocity()
 	std::vector<Voxel*> front = m_grid.getBorderFront();
 	std::vector<Voxel*> back = m_grid.getBorderBack();
 
-	for( auto it = top.cbegin(); it != c.end(); it++)
+	for( auto it = top.cbegin(); it != top.cend(); it++)
 	{
 		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y;
@@ -327,7 +327,7 @@ void FluidSolver::force_boundries_density()
 	std::vector<Voxel*> front = m_grid.getBorderFront();
 	std::vector<Voxel*> back = m_grid.getBorderBack();
 
-	for( auto it = top.cbegin(); it != c.end(); it++)
+	for( auto it = top.cbegin(); it != top.cend(); it++)
 	{
 		NeighbourVoxels temp = m_grid.getNeighbour(*it);
 		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->density;
