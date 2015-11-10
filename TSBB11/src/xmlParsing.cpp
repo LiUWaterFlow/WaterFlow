@@ -115,14 +115,11 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   return srces;
 }
 
-const char* loadMapPath(const char* xmlFile){
+std::string loadMapPath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";
   std::cout << "Load success" << std::endl;
-  const char* path = doc.child("Profile").child("Data").child("MapName").attribute("path").value();
-  path += NULL;
-  std::cout <<"hejhej: " << strlen(path) << std::endl;
-  std::cout << "Path in loadmapdata: " << path << std::endl;
+  std::string path = doc.child("Profile").child("Data").child("MapName").attribute("path").value();
   return path;
 }
 

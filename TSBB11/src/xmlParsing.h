@@ -18,7 +18,8 @@ struct Flood_Fill_data{
 
 struct init_Data_struct {
   init_Data_struct(const char* XMLfile);
-  const char* data_filename;
+  /* const char* data_filename; */
+  std::string data_filename;
   std::vector<FlowSource*> Flowsources;
   std::vector<Flood_Fill_data*> FFData;
 };
@@ -67,7 +68,7 @@ void parseRadius(FlowSource* obj, pugi::xml_node node);
 std::vector<FlowSource*> loadFlows(const char* xmlFile);
 
 
-const char* loadMapPath(const char* xmlFile);
+std::string loadMapPath(const char* xmlFile);
 
 std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile);
 

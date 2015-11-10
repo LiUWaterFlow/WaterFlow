@@ -93,8 +93,8 @@ bool Program::init() {
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	std::cout << "data_filename before dataHandler init: " << init_data.data_filename << std::endl;
-	dataHandler = new DataHandler(init_data.data_filename, 1);
+	// std::cout << "data_filename before dataHandler init: " << init_data.data_filename << std::endl; 
+	dataHandler = new DataHandler(init_data.data_filename.c_str(), 1);
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
