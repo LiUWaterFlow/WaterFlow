@@ -64,9 +64,10 @@ void SkyCube::draw() {
 	DrawModel(model, program, "in_Position", NULL, NULL);
 }
 
-Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, glm::vec3 scale)
+Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, GLuint texID, glm::vec3 scale)
 : myDrawable(program) {
 	model = initModel;
+	textureID = texID;
 	MTWMatrix = glm::scale(scale);
 	inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));
 
@@ -85,11 +86,15 @@ Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, glm::vec3 scale
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 
+	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
+
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(MTWMatrix));
 	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
 }
 
 void Terrain::draw() {
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	for (GLuint i = 0; i < model->size(); i++) {
 		DrawModel(model->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
 	}

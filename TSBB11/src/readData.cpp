@@ -109,6 +109,9 @@ GLfloat DataHandler::getTerrainScale()
 {
 	return terrainScale;
 }
+GLuint DataHandler::getTextureID() {
+	return terrainTexture;
+}
 std::vector<Model*>* DataHandler::getModel()
 {
 	return datamodel;
@@ -297,7 +300,7 @@ void DataHandler::GenerateTerrain()
 	preCalcVertexC = preCalcWidth*preCalcHeight;
 
 	GLfloat *preCalcVertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
-	GLfloat *preCalcNormalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
+	GLfloat *preCalcNormalArray = (GLfloat *)malloc(sizeof(GLfloat) * 4 * preCalcVertexC);
 
 	for (GLuint x = 0; x < preCalcWidth; x++)
 	{
@@ -346,9 +349,9 @@ void DataHandler::GenerateTerrain()
 					texCoordArray[(x + z * width) * 2 + 1] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 2];
 
 					//Insert normals from the precalculated normals.
-					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
-					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 1];
-					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j) *preCalcWidth) * 3 + 2];
+					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 4 + 0];
+					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 4 + 1];
+					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j) *preCalcWidth) * 4 + 2];
 
 				}
 			}
@@ -397,7 +400,7 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 	// Initialize the FBO's
 	FBOstruct *fbo4 = initFBO4(width, height, vertexArray);
-	FBOstruct *fbo5 = initFBO4(width, height, NULL);
+	FBOstruct *fbo5 = initFBO5(width, height, NULL);
 
 	// Filter original
 	useFBO(fbo5, fbo4, 0L);
@@ -414,7 +417,9 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	glDisable(GL_DEPTH_TEST);
 	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
 
-	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, normalArray);
+	
+	
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
@@ -422,7 +427,11 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	// Cleanup
 	glDeleteProgram(normalshader);
 	releaseFBO(fbo4); // Must be after useFBO reset or canvas size will get all weird
-	releaseFBO(fbo5);
+
+	// Save the texture id to the height and normal map of the terrain
+	terrainTexture = fbo5->texid;
+	releaseFBO2(fbo5, 1); // this does not delete the texture containing the terrain data.
+
 	releaseModel(squareModel);
 }
 

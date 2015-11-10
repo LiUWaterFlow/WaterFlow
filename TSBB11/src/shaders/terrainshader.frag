@@ -12,6 +12,7 @@ uniform vec3 lightSourcePos;	// Ljuspositionen.
 uniform int isDirectional;
 uniform float specularExponent;
 uniform vec3 lightSourceColor;
+uniform sampler2D texUnit;
 
 vec3 r;
 vec3 s;				// Infallande ljus.
@@ -54,6 +55,9 @@ void main(void)
 	totalLight += diffLight;
 	totalLight += specLight;
 
-	out_Color = vec4(totalLight + 0.0000001f * out_TexCoord.s, 1);
+	// Just to check that the terrain data texture is working
+	vec4 terrainData = texture(texUnit, out_TexCoord) + 0.0000001f * totalLight.x;
+
+	out_Color = vec4(terrainData);
 }
 

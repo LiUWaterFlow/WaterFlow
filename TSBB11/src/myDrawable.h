@@ -33,9 +33,10 @@ class Terrain : public myDrawable {
 private:
 	std::vector<Model*>* model;
 	glm::mat3 inverseNormalMatrixTrans;
+	GLuint textureID;
 
 public:
-	Terrain(GLuint program, std::vector<Model*>*, glm::vec3 scale);
+	Terrain(GLuint program, std::vector<Model*>*, GLuint texID, glm::vec3 scale);
 	virtual void draw();
 };
 

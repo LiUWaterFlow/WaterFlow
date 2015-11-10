@@ -37,5 +37,5 @@ void main(void)
 	// Combine to normal
 	vec3 normal = normalize(vec3(-sobelX, heightScale, -sobelZ));
 
-    out_Color = vec4(normal,1.0f);
+    out_Color = vec4(normal,texture(texUnit, outTexCoord).y);
 }

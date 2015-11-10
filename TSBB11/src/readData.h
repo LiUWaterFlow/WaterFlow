@@ -39,6 +39,7 @@ private:
 	// Data containers
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
 	std::vector<Model*>* datamodel; 			///< model for the terrain data.
+	GLuint terrainTexture;		///< texture containing normals and height terrain data.
 
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
@@ -183,6 +184,10 @@ public:
 	/// @brief Get the terrain scale.
 	/// @return Return a float of the diff between max and min sample in the data.
 	GLfloat getTerrainScale();
+
+	/// @brief Get the texture id for the terrain height and normals.
+	/// @return Returns the ID for the terrain data texture.
+	GLuint getTextureID();
 
 	/// @brief Pointer to the terrain model
 	///
