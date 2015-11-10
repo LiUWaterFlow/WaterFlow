@@ -1,21 +1,14 @@
 /// @file readData.cpp
 /// @brief Implementations of functions in readData.h
 
-#include "stdio.h"
-
 #include "readData.h"
 
-#include "GL_utilities.h"
-#include "loadobj.h"
-#include "glm.hpp"
 #include "Utilities.h"
+#include "GL_utilities.h"
 
-#include <fstream>
+#include "glm.hpp"
+
 #include <iostream>
-#include <string>
-
-
-using namespace std;
 
 // ===== Constructors and destructors
 
@@ -25,11 +18,25 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor, int blockSize)
 	readdata = new mapdata();
 	datamodel = new std::vector<Model*>;
 
+	std::cout << "Reading DEM data from: " << inputfile << "...";
 	readDEM(inputfile);
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Scaling input data to range 0.1 - 1.0...";
 	scaleDataBefore();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Performing normalized convolution...";
 	performNormalizedConvolution();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Scaling input data to range 0.0 - 1.0...";
 	scaleDataAfter();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Generating terrain data...";
 	GenerateTerrain();
+	std::cout << " done!" << std::endl;
 }
 
 DataHandler::~DataHandler()
@@ -59,13 +66,13 @@ float DataHandler::getCoord(int col, int row)
 		}
 		else
 		{
-			cerr << "Input does not exist in data. Col: " << col <<" Row: " << row << endl;
+			std::cerr << "Input does not exist in data. Col: " << col << " Row: " << row << std::endl;
 			index = 0;
 		}
 		retdata = readdata->data[index];
 	}
 	else {
-		cerr << "No mapdata exists." << endl;
+		std::cerr << "No mapdata exists." << std::endl;
 	}
 
 	return retdata;
@@ -111,19 +118,23 @@ std::vector<Model*>* DataHandler::getModel()
 
 void DataHandler::readDEM(const char* inputfile)
 {
-	FILE* file = fopen(inputfile, "r");
+	char* buffer = readFile(inputfile);
+	char* currentStr = buffer;
+	int readChars = 0;
 
-	char intext [80];
-	float incoord = 0;
-
-	if (file != NULL)
-	{
-		fscanf(file, "%s %i", &intext, &readdata->ncols);
-		fscanf(file, "%s %i", &intext, &readdata->nrows);
-		fscanf(file, "%s %f", &intext, &readdata->xllcorner);
-		fscanf(file, "%s %f", &intext, &readdata->yllcorner);
-		fscanf(file, "%s %f", &intext, &readdata->cellsize);
-		fscanf(file, "%s %f", &intext, &readdata->NODATA_value);
+	if (buffer != NULL) {
+		if (sscanf(currentStr, "%*s %i %n", &readdata->ncols, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %i %n", &readdata->nrows, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->xllcorner, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->yllcorner, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->cellsize, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
+		if (sscanf(currentStr, "%*s %f %n", &readdata->NODATA_value, &readChars) != 1) std::cout << "Reading DEM error!" << std::endl;
+		currentStr += readChars;
 
 		readdata->max_value = readdata->NODATA_value;
 		readdata->min_value = 20000000;
@@ -131,35 +142,25 @@ void DataHandler::readDEM(const char* inputfile)
 		readdata->nelem = readdata->ncols * readdata->nrows;
 		readdata->data.resize(getElem());
 
-		int nRead = 0;
-		for (int i = 0; i < getElem(); i++)
-		{
-			nRead = fscanf(file, "%f", &incoord);
+		float incoord = 0;
+		
+		for (int i = 0; i < getElem(); i++) {
+			incoord = myStrtof(currentStr, &currentStr);
 
-			if (nRead != 1)
-			{
-				cerr << "Less values than it should be!" << endl;
-				break;
-			}
-
-			if (incoord > readdata->max_value)
-			{
+			if (incoord > readdata->max_value) {
 				readdata->max_value = incoord;
 			}
-			if (incoord > readdata->NODATA_value + 1.0f && incoord < readdata->min_value)
-			{
+			if (incoord > readdata->NODATA_value + 1.0f && incoord < readdata->min_value) {
 				readdata->min_value = incoord;
 			}
 
 			readdata->data[i] = incoord;
 		}
-
 		terrainScale = readdata->max_value - readdata->min_value;
 
-		fclose(file);
-	}
-	else {
-		cerr << "Could not open file: " << inputfile << endl;
+		free(buffer);
+	} else {
+		std::cerr << "Could not read file: " << inputfile << std::endl;
 	}
 }
 
@@ -193,69 +194,61 @@ void DataHandler::performNormalizedConvolution()
 	FBOstruct *fbo2 = initFBO3(getDataWidth(), getDataHeight(), NULL);
 	FBOstruct *fbo3 = initFBO3(getDataWidth(), getDataHeight(), getData());
 
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
 	// Perform normalized convolution until no more NODATA
 	bool isNODATA = true;
 	while (isNODATA)
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			// Filter original
 			useFBO(fbo1, fbo3, 0L);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(filtershader);
 			glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getDataWidth(), (float)getDataHeight());
 
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
 
 			// Create confidence
 			useFBO(fbo2, fbo3, 0L);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(confidenceshader);
 
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			DrawModel(squareModel, confidenceshader, "in_Position", NULL, "in_TexCoord");
 
 			// Filter confidence
 			useFBO(fbo3, fbo2, 0L);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(filtershader);
 			glUniform2f(glGetUniformLocation(filtershader, "in_size"), (float)getDataWidth(), (float)getDataHeight());
 
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			DrawModel(squareModel, filtershader, "in_Position", NULL, "in_TexCoord");
 
 			// Combine
 			useFBO(fbo2, fbo1, fbo3);
 
 			// Clear framebuffer & zbuffer
-			glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Activate shader program
 			glUseProgram(combineshader);
 			glUniform1i(glGetUniformLocation(combineshader, "dataTex"), 0);
 			glUniform1i(glGetUniformLocation(combineshader, "confTex"), 1);
-			glDisable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
+
 			DrawModel(squareModel, combineshader, "in_Position", NULL, "in_TexCoord");
 
 			// Swap FBOs
@@ -275,10 +268,6 @@ void DataHandler::performNormalizedConvolution()
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_TRUE);
 
 	// Cleanup
 	glDeleteProgram(filtershader);
@@ -414,7 +403,6 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	useFBO(fbo5, fbo4, 0L);
 
 	// Clear framebuffer & zbuffer
-	glClearColor(0.1f, 0.1f, 0.3f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Activate shader program
@@ -430,10 +418,6 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_TRUE);
 
 	// Cleanup
 	glDeleteProgram(normalshader);
@@ -458,7 +442,7 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 
 	GLfloat yheight = 0;
 
-	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 <= width-1) && (vertZ2 <= height-1))
+	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 < width) && (vertZ2 < height))
 	{
 
 		GLfloat dist1 = vertX1 - x;

@@ -1,5 +1,6 @@
 
 #include "voxel.h"
+#include "GL_utilities.h"
 
 #include <iostream>
 #include "gtc/type_ptr.hpp"

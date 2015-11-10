@@ -6,6 +6,8 @@
 #include <vector>
 #include <array>
 #include <inttypes.h>
+
+#include "glm.hpp"
 #include "readData.h"
 
 /// @strcut voxel
@@ -131,7 +133,7 @@ public:
   voxel* hashGet(int16_t x, int16_t y, int16_t z);
   void rehash();
   bool isEqualPoint(voxel* vox,short int x, short int y,short int z);
-  void hashInit(); 
+  void hashInit();
 
 };
 

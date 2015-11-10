@@ -4,9 +4,7 @@
 #ifndef READDATA_H
 #define READDATA_H
 
-#include "glm.hpp"
 #include "loadobj.h"
-#include "GL_utilities.h"
 
 #include <vector>
 

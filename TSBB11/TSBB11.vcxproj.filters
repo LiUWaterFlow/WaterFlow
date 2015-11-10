@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -42,9 +42,6 @@
     <ClCompile Include="src\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\SDL_util.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="src\readData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -55,6 +52,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\voxelTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\myDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,9 +83,6 @@
     <ClInclude Include="src\common\Windows\sdl2\SDL.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\SDL_util.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="src\readData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -98,14 +98,14 @@
     <ClInclude Include="src\common\AntTweak\AntTweakBar.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="src\program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\myDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\main.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\main.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="src\shaders\combineshader.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
@@ -113,9 +113,6 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="src\shaders\filtershader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\plaintextureshader.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="src\shaders\plaintextureshader.vert">
@@ -140,6 +137,18 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="src\shaders\simplevoxels.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\skyshader.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\skyshader.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\terrainshader.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="src\shaders\terrainshader.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
