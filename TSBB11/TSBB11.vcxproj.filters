@@ -51,7 +51,7 @@
     <ClCompile Include="src\program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\drawable.cpp">
+    <ClCompile Include="src\myDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClInclude Include="src\program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\drawable.h">
+    <ClInclude Include="src\myDrawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

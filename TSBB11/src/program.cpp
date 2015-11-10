@@ -6,7 +6,7 @@
 #include "GL_utilities.h"
 
 #include "gtc/type_ptr.hpp"
-#include <iostream>;
+#include <iostream>
 
 Program::Program() {
 	screenW = 800;
