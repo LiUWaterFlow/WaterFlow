@@ -24,7 +24,7 @@ void LoadTGASetMipmapping(bool active)
 
 bool LoadTGATextureData(const char *filename, TextureData *texture)	// Loads A TGA File Into Memory
 {
-	GLuint i;
+	size_t i;
 	GLubyte
 		TGAuncompressedheader[12]={ 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},	// Uncompressed TGA Header
 		TGAcompressedheader[12]={ 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0},	// Compressed TGA Header
@@ -35,8 +35,9 @@ bool LoadTGATextureData(const char *filename, TextureData *texture)	// Loads A T
 	GLuint bytesPerPixel,		// Holds Number Of Bytes Per Pixel Used In The TGA File
 		imageSize,		// Used To Store The Image Size When Setting Aside Ram
 		temp;			// Temporary Variable
-	long rowSize, stepSize, bytesRead;
-	unsigned long w, h;
+	long rowSize, stepSize;
+	size_t bytesRead;
+	unsigned int w, h;
 	GLubyte *rowP;
 	int err;
 	GLubyte rle;
