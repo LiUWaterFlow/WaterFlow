@@ -42,12 +42,16 @@ private:
   std::vector<std::vector<std::vector<voxel*>*>*>* voxels; ///< Container for the voxel lookup tables
   DataHandler* datahandler; ///< Handle to the datahandler and thus the model data.
 
-  std::vector<GLuint> *voxelPositions = nullptr;
+  std::vector<GLuint>* voxelPositions = nullptr;
   GLuint numVoxels;
   GLuint voxelShader;
   GLuint voxelBuffer, voxelVAO;
 
-  
+  std::vector<GLint>* waterHeight; ///< The map of height data for the topmost water voxel.
+  GLuint width; ///< The width of the map, needed for saving data in linear containers.
+  GLuint height; ///< The height of the map, needed for voxel extraction
+
+
   GLfloat rehashTresh = 0.75;
 
 
@@ -149,6 +153,20 @@ public:
 
   neighs* getNeighbourhood(int16_t x, int16_t y, int16_t z);
   neighs* Voxelgrid::getNeighbourhoodHash(int16_t x, int16_t y, int16_t z);
+
+
+  /// @brief Sets the height in waterHeight.
+  ///
+  /// The function only sets the data granted that height is larger than the value currently
+  /// residing there.
+  /// @see getHeight
+  void setHeight(int16_t x, int16_t y, int16_t z);
+
+  /// @brief Gets the height in waterHeight
+  ///
+  /// The function returns the value at x,z in waterHeight
+  /// @see getHeight
+  GLint getHeight(int16_t x, int16_t z);
 
 };
 

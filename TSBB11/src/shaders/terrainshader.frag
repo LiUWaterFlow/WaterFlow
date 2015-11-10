@@ -1,7 +1,7 @@
 #version 150
 
 in vec3 out_Normal;
-//in vec2 out_TexCoord; not currently used
+in vec2 out_TexCoord;// not currently used
 in vec3 out_ObjPos;
 
 out vec4 out_Color;
@@ -54,5 +54,5 @@ void main(void)
 	totalLight += diffLight;
 	totalLight += specLight;
 
-	out_Color = vec4(totalLight, 1);
+	out_Color = vec4(totalLight+0.000001*out_TexCoord.s, 1);
 }
