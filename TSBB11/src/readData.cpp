@@ -143,7 +143,7 @@ void DataHandler::readDEM(const char* inputfile)
 		readdata->data.resize(getElem());
 
 		float incoord = 0;
-		
+
 		for (int i = 0; i < getElem(); i++) {
 			incoord = myStrtof(currentStr, &currentStr);
 
@@ -342,8 +342,8 @@ void DataHandler::GenerateTerrain()
 					vertexArray[(x + z * width) * 3 + 2] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 2];
 
 					// Texture coordinates.
-					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
-					texCoordArray[(x + z * width) * 2 + 1] = (float)z;
+					texCoordArray[(x + z * width) * 2 + 0] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
+					texCoordArray[(x + z * width) * 2 + 1] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 2];
 
 					//Insert normals from the precalculated normals.
 					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
