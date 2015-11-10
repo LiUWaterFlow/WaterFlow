@@ -29,7 +29,7 @@ namespace voxelTest{
 
 
   void plsWait(){
-    
+
 #ifdef _WINDOWS
     system("pause");
 #else
@@ -171,7 +171,7 @@ namespace voxelTest{
 		}
 		printf("\n");
 		endClock();
-	
+
 	}
 	else{
 		

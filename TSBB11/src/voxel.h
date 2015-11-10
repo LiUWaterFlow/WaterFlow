@@ -6,6 +6,8 @@
 #include <vector>
 #include <array>
 #include <inttypes.h>
+
+#include "glm.hpp"
 #include "readData.h"
 #include "glm.hpp"
 
@@ -143,7 +145,7 @@ public:
   voxel* hashGet(int16_t x, int16_t y, int16_t z);
   void rehash();
   bool isEqualPoint(voxel* vox,short int x, short int y,short int z);
-  void hashInit(); 
+  void hashInit();
 
   neighs* getNeighbourhood(int16_t x, int16_t y, int16_t z);
   neighs* Voxelgrid::getNeighbourhoodHash(int16_t x, int16_t y, int16_t z);

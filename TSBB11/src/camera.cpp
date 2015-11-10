@@ -16,7 +16,7 @@ Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH)
 	position = startPos;
 	fi = 0.0f;
 	theta = (GLfloat)M_PI / 2.0f;
-	
+
     up = glm::vec3(0,1,0);
 
 	screenW = initScreenW;
@@ -90,7 +90,7 @@ void Camera::rotate(char direction, GLfloat angle)
 			lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 0, 1));
             break;
     }
-   
+
     updateWTV();
 }
 
@@ -135,7 +135,7 @@ void Camera::changeLookAtPos(int xrel, int yrel)
 
 		fi += rotSpeed * xrel;
 		theta += rotSpeed * yrel;
-		
+
 		fi = fmod(fi, 2.0f * (GLfloat)M_PI);
 		theta = theta < (GLfloat)M_PI - eps ? (theta > eps ? theta : eps) : (GLfloat)M_PI - eps;
 

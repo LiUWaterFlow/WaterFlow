@@ -1,5 +1,6 @@
 
 #include "voxel.h"
+#include "GL_utilities.h"
 
 #include <iostream>
 #include "gtc/type_ptr.hpp"
@@ -382,9 +383,9 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
         if (voxels->at(x)->at(y) != nullptr) {
           for (GLuint z = 0; z < voxels->at(x)->at(y)->size(); z++) {
             if (voxels->at(x)->at(y)->at(z) != nullptr && voxels->at(x)->at(y)->at(z)->filled) {
-              positions->push_back(x);
-              positions->push_back(y);
-              positions->push_back(z);
+              positions->push_back(x-10);
+              positions->push_back(y-10);
+              positions->push_back(z-10);
             }
           }
         }

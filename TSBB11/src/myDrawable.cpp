@@ -1,7 +1,7 @@
-/// @file drawable.cpp
-/// @brief Implementations of functions in drawable.h
+/// @file myDrawable.cpp
+/// @brief Implementations of functions in myDrawable.h
 
-#include "drawable.h"
+#include "myDrawable.h"
 
 #include "Utilities.h"
 #include "LoadTGA.h"
@@ -9,11 +9,11 @@
 #include "gtx/transform.hpp"
 #include "gtc/type_ptr.hpp"
 
-Drawable::Drawable(GLuint program) 
+myDrawable::myDrawable(GLuint program) 
 : program(program) {}
 
 SkyCube::SkyCube(GLuint program)
-: Drawable(program) {
+: myDrawable(program) {
 	/* Initialize skycube */
 	model = generateCube(10.0f);
 
@@ -65,7 +65,7 @@ void SkyCube::draw() {
 }
 
 Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, glm::vec3 scale)
-: Drawable(program) {
+: myDrawable(program) {
 	model = initModel;
 	MTWMatrix = glm::scale(scale);
 	inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));

@@ -23,7 +23,8 @@
 
 #include "camera.h"
 #include "readData.h"
-#include "drawable.h"
+#include "myDrawable.h"
+#include "voxel.h"
 #include "voxel.h"
 
 #include "AntTweakBar.h"
@@ -47,12 +48,15 @@ private:
 	TwBar *antBar;
 	float heightAtPos, heightAtClickData, heighAtClickProj;
 	double objX, objZ;
-	
-	// Drawables:
-	Drawable *skycube, *terrain;
+
+	// myDrawables:
+	myDrawable *skycube, *terrain;
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;
+
+	//Voxgrid
+	Voxelgrid* voxs;
 
 	// References to shader programs:
 	GLuint terrainshader, skyshader;
@@ -66,7 +70,7 @@ public:
 	int testVoxels();
 
 	bool init();
-	
+
 	void handleEvent(SDL_Event* event);
 	void handleKeypress(SDL_Event* event);
 	void handleMouseMove(SDL_Event* event);

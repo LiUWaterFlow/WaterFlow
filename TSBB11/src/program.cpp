@@ -6,6 +6,7 @@
 #include "GL_utilities.h"
 #include "voxelTesting.h"
 #include "gtc/type_ptr.hpp"
+#include <iostream>
 
 Program::Program() {
 	screenW = 800;
@@ -26,6 +27,7 @@ Program::~Program() {}
 
 int Program::exec() {
 	if (!init()) return -1;
+
 
 	SDL_Event Event;
 
@@ -51,45 +53,38 @@ int Program::testVoxels() {
 
 bool Program::init() {
 	// SDL, glew and OpenGL init
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		fprintf(stderr, "Failed to initialise SDL: %s", SDL_GetError());
 		return false;
 	}
+
+	#ifdef __APPLE__
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	#endif
+
+
 	screen = SDL_CreateWindow("TSBB11, Waterflow visualization (SDL)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenW, screenH, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	if (screen == 0) {
 		fprintf(stderr, "Failed to set Video Mode: %s", SDL_GetError());
 		return false;
 	}
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+
+
 	glcontext = SDL_GL_CreateContext(screen);
+
+
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
 	printError("After SDL init: ");
 
-#ifdef __APPLE__
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 
-	glViewport(0, 0, screenW, screenH);
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(0, width, 0, height, -1, 1);
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT);
-	glLoadIdentity();
-#endif
-
-#ifdef _WINDOWS
+	#ifdef _WINDOWS
 	glewInit();
-#endif
+	#endif
 
 	dumpInfo();
 
@@ -98,6 +93,11 @@ bool Program::init() {
 
 	// Load terrain data
 	dataHandler = new DataHandler("resources/output.min.asc",2);
+
+	//Voxels and floodfill
+	voxs = new Voxelgrid(dataHandler,27000000);
+	voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
+	voxs->initDraw();
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
@@ -170,6 +170,9 @@ void Program::display() {
 	cam->uploadCamData(terrainshader);
 	terrain->draw();
 
+	//Voxel draws,
+	voxs->drawVoxels(*cam->getVTP(),*cam->getWTV());
+
 	// ====================== Draw AntBar ===========================
 	TwDraw();
 
@@ -189,15 +192,15 @@ void Program::clean() {
 // Handle events.
 void Program::handleEvent(SDL_Event* event) {
 	switch (event->type) {
-	case SDL_QUIT:
+		case SDL_QUIT:
 		isRunning = false;
 		break;
-	case SDL_KEYDOWN:
+		case SDL_KEYDOWN:
 		handleKeypress(event);
 		break;
-	case SDL_WINDOWEVENT:
+		case SDL_WINDOWEVENT:
 		switch (event->window.event) {
-		case SDL_WINDOWEVENT_RESIZED:
+			case SDL_WINDOWEVENT_RESIZED:
 			SDL_SetWindowSize(screen, event->window.data1, event->window.data2);
 			SDL_GetWindowSize(screen, &screenW, &screenH);
 			glViewport(0, 0, screenW, screenH);
@@ -206,17 +209,17 @@ void Program::handleEvent(SDL_Event* event) {
 			break;
 		}
 		break;
-	case SDL_MOUSEMOTION:
+		case SDL_MOUSEMOTION:
 		handleMouseMove(event);
 		break;
-	case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONDOWN:
 		TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
 		handleMouseButton(event);
 		break;
-	case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEBUTTONUP:
 		TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
 		break;
-	default:
+		default:
 		break;
 	}
 }
@@ -225,10 +228,10 @@ void Program::handleEvent(SDL_Event* event) {
 void Program::handleKeypress(SDL_Event* event) {
 	TwKeyPressed(event->key.keysym.sym, TW_KMOD_NONE);
 	switch (event->key.keysym.sym) {
-	case SDLK_ESCAPE:
+		case SDLK_ESCAPE:
 		isRunning = false;
 		break;
-	case SDLK_h:
+		case SDLK_h:
 		cam->toggleFrozen();
 		mouseHidden = !mouseHidden;
 		if (!mouseHidden) {
@@ -237,7 +240,7 @@ void Program::handleKeypress(SDL_Event* event) {
 			SDL_SetRelativeMouseMode(SDL_TRUE);
 		}
 		break;
-	case SDLK_r:
+		case SDLK_r:
 		int isBarHidden;
 		TwGetParam(antBar, NULL, "iconified", TW_PARAM_INT32, 1, &isBarHidden);
 		if (!isBarHidden) {
@@ -245,7 +248,7 @@ void Program::handleKeypress(SDL_Event* event) {
 		} else {
 			TwDefine(" UIinfo iconified=false");
 		}
-	default:
+		default:
 		break;
 	}
 }
@@ -263,12 +266,11 @@ void Program::handleMouseButton(SDL_Event* event) {
 		float depth;
 		int x;
 		int y;
-		SDL_GetMouseState(&x, &y);
-		glReadPixels(x, screenW - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-
-		GLdouble objY = 0.0;
 		GLint viewport[4] = { 0, 0, 0, 0 };
 		glGetIntegerv(GL_VIEWPORT, viewport);
+		SDL_GetMouseState(&x, &y);
+		glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		GLdouble objY = 0.0;
 		gluUnProject((GLdouble)x, (GLdouble)(screenW - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
 		heighAtClickProj = (GLfloat)objY;
