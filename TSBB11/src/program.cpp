@@ -93,7 +93,7 @@ bool Program::init() {
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	// std::cout << "data_filename before dataHandler init: " << init_data.data_filename << std::endl; 
+	// std::cout << "data_filename before dataHandler init: " << init_data.data_filename << std::endl;
 	dataHandler = new DataHandler(init_data.data_filename.c_str(), 1);
 
 	// Load and compile shaders.
@@ -265,7 +265,7 @@ void Program::handleMouseButton(SDL_Event* event) {
 		SDL_GetMouseState(&x, &y);
 		glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 		GLdouble objY = 0.0;
-		gluUnProject((GLdouble)x, (GLdouble)(screenW - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
+		gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
 		heighAtClickProj = (GLfloat)objY;
 		heightAtClickData = dataHandler->giveHeight((GLfloat)objX, (GLfloat)objZ);
