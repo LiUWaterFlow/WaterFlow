@@ -294,7 +294,7 @@
     <ClCompile Include="src\common\LoadTGA.c" />
     <ClCompile Include="src\common\Utilities.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
-    <ClCompile Include="src\drawable.cpp" />
+    <ClCompile Include="src\myDrawable.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
   </ItemGroup>
@@ -308,7 +308,7 @@
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
-    <ClInclude Include="src\drawable.h" />
+    <ClInclude Include="src\myDrawable.h" />
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
   </ItemGroup>
