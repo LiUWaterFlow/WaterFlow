@@ -168,6 +168,15 @@ public:
   /// @see getHeight
   GLint getHeight(int16_t x, int16_t z);
 
+  /// @brief Returns a pointer to waterHeight.
+  ///
+  /// @warning The heightMap is NOT updated on deletion of a voxel only on addition. 
+  /// @todo The heightMap SHOULD be updated on deletion of a voxel. 
+  /// @see getHeight
+  /// @see setHeight
+  /// @see waterHeight
+  std::vector<GLint>* getHeightMap();
+
 };
 
 #endif

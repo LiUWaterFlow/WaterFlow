@@ -481,3 +481,7 @@ GLint Voxelgrid::getHeight(int16_t x, int16_t z) {
 	return waterHeight->at(x + z*width);
 
 }
+
+std::vector<GLint>* Voxelgrid::getHeightMap() {
+	return waterHeight;
+}
