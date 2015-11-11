@@ -51,7 +51,8 @@ void FluidSolver::diffuse_velocity(float dt)
 			}
 		}
 		//set bounds for velocity
-	}
+		force_boundries_velocity();
+	} //end of Lin solver
 };
 
 void FluidSolver::diffuse_density(float dt)
@@ -73,7 +74,8 @@ void FluidSolver::diffuse_density(float dt)
 			}
 		}
 		//set bounds for density
-	}
+		force_boundries_density();
+	} //end of lin solver
 };
 
 //Advect moves stuff around in the system
@@ -98,41 +100,6 @@ void FluidSolver::advect_velocity(float dt)
 	}	
 };
 
-void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
-{
-	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
-	//pick out how far away from the voxel we stand in to the point
-	float s1 = point_position.x - prev_grid_position.x;
-	float s0 = 1 - s1;
-	float t1 = point_position.y - prev_grid_position.y;
-	float t0 = 1 - t1;
-	float q1 = point_position.z - prev_grid_position.z;
-	float q0 = 1 - q1;
-
-	currentVox->velocity = 
-		q0*(
-			s0*(
-				t0*origintemp.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_velocity
-				+
-				t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_velocity)
-			+
-			s1*(
-				t0*origintemp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_velocity
-				+
-				t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT]->prev_velocity))
-		+
-		q1*(
-			s0*(
-				t0*origintemp.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_velocity
-				+
-				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_CENTER]->prev_velocity)
-			+
-			s1*(
-				t0*origintemp.voxels[CUBEPOS::FRONT_MID_RIGHT]->prev_velocity
-				+
-				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT]->prev_velocity));
-};
-
 void FluidSolver::advect_density(float dt)
 {
 	float someconstant = dt;
@@ -140,11 +107,11 @@ void FluidSolver::advect_density(float dt)
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
 	//not including borders
-	for (unsigned int x = 1; x < m_grid.getXMaxSize() - 1; x++)
+	for (unsigned int z = 1; z < m_grid.getZMaxSize() - 1; z++)
 	{
 		for (unsigned int y = 1; y < m_grid.getYMaxSize() - 1; y++)
 		{
-			for (unsigned int z = 1; z < m_grid.getZMaxSize() - 1; z++)
+			for (unsigned int x = 1; x < m_grid.getXMaxSize() - 1; x++)
 			{
 				temp = m_grid.getVoxel(x, y, z);
 				advect_core_function(someconstant, prev_gridPosition, glm::vec3(x, y, z), pointPosition, temp->velocity);
@@ -181,6 +148,41 @@ void FluidSolver::advect_core_function(float someconstant, glm::ivec3 &prev_grid
 	prev_gridPosition = glm::floor(pointPosition);
 };
 
+void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
+{
+	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
+	//pick out how far away from the voxel we stand in to the point
+	float s1 = point_position.x - prev_grid_position.x;
+	float s0 = 1 - s1;
+	float t1 = point_position.y - prev_grid_position.y;
+	float t0 = 1 - t1;
+	float q1 = point_position.z - prev_grid_position.z;
+	float q0 = 1 - q1;
+
+	currentVox->velocity =
+		q0*(
+			s0*(
+				t0*origintemp.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_velocity
+				+
+				t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->prev_velocity)
+			+
+			s1*(
+				t0*origintemp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->prev_velocity
+				+
+				t1*origintemp.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT]->prev_velocity))
+		+
+		q1*(
+			s0*(
+				t0*origintemp.voxels[CUBEPOS::FRONT_MID_CENTER]->prev_velocity
+				+
+				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_CENTER]->prev_velocity)
+			+
+			s1*(
+				t0*origintemp.voxels[CUBEPOS::FRONT_MID_RIGHT]->prev_velocity
+				+
+				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT]->prev_velocity));
+};
+
 void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
@@ -212,7 +214,7 @@ void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_po
 			+
 			s1*(
 				t0*origintemp.voxels[CUBEPOS::FRONT_MID_RIGHT]->prev_density
-			+
+				+
 				t1*origintemp.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT]->prev_density));
 };
 
@@ -235,8 +237,9 @@ void FluidSolver::project_velocity(float dt)
 		}
 	}
 	//force boundries for divergence
+	force_boundries_divergence();
 	//force boundries for preassure
-
+	force_boundries_preassure();
 	for (unsigned int k= 0; k < LIN_SOLVE; k++)
 	{
 		for (unsigned int z = 0; z < m_grid.getZMaxSize(); z++)
@@ -257,6 +260,7 @@ void FluidSolver::project_velocity(float dt)
 			}
 		}
 		//force boundries for preassure
+		force_boundries_preassure();
 	}
 
 	for (unsigned int z = 0; z < m_grid.getZMaxSize(); z++)
@@ -266,148 +270,297 @@ void FluidSolver::project_velocity(float dt)
 			for (unsigned int x = 0; x < m_grid.getXMaxSize(); x++)
 			{
 				temp = m_grid.getNeighbour(x, y, z);
-				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x -= 0.5f*(temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure); /* /N */
-				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y -= 0.5f*(temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure - temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure); /* /N */
-				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z -= 0.5f*(temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure - temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure); /* /N */
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x -= 0.5f*(
+					temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure); /* /N */
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y -= 0.5f*(
+					temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure - temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure); /* /N */
+				temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z -= 0.5f*(
+					temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure - temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure); /* /N */
 			}
 		}
 	}
 	//force boundries for velocity
+	force_boundries_velocity();
 };
 
+//need to check how we define max sizes
 void FluidSolver::force_boundries_velocity()
 {
-	/*
-	std::vector<Voxel*> top = m_grid.getBorderTop();
-	std::vector<Voxel*> bottom = m_grid.getBorderBottom();
-	std::vector<Voxel*> left = m_grid.getBorderLeft();
-	std::vector<Voxel*> right = m_grid.getBorderRight();
-	std::vector<Voxel*> front = m_grid.getBorderFront();
-	std::vector<Voxel*> back = m_grid.getBorderBack();
-	
-	for( auto it = top.cbegin(); it != top.cend(); it++)
+	unsigned int maxX = m_grid.getXMaxSize();
+	unsigned int maxY = m_grid.getYMaxSize();
+	unsigned int maxZ = m_grid.getZMaxSize();
+	for (unsigned int i = 0; i <= maxX; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y;
+		for (unsigned int j = 0; j <= maxY; j++)
+		{
+			//near
+			m_grid.getGuaranteedVoxel(i, j, 0)->velocity = -m_grid.getGuaranteedVoxel(i, j, 1)->velocity;
+			//far
+			m_grid.getGuaranteedVoxel(i, j, m_grid.getZMaxSize())->velocity = -m_grid.getGuaranteedVoxel(i, j, maxZ -1)->velocity;
+		}
 	}
-	for( auto it = bottom.cbegin(); it != bottom.end(); it++)
+	for (unsigned int i = 0; i <= maxX; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y = -temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->velocity.y;
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//bottom
+			m_grid.getGuaranteedVoxel(i, 0, j)->velocity = -m_grid.getGuaranteedVoxel(i, 1, j)->velocity;
+			//top
+			m_grid.getGuaranteedVoxel(i, maxY, j)->velocity = -m_grid.getGuaranteedVoxel(i, maxY - 1, j)->velocity;
+		}
 	}
-	for( auto it = left.cbegin(); it != left.cend(); it++)
+	for (unsigned int i = 0; i < maxY; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x = -temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->velocity.x;
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//left
+			m_grid.getGuaranteedVoxel(0, i, j)->velocity = -m_grid.getGuaranteedVoxel(1, i, j)->velocity;
+			//right
+			m_grid.getGuaranteedVoxel(maxX, i, j)->velocity = -m_grid.getGuaranteedVoxel(maxX - 1, i, j)->velocity;
+		}
 	}
-	for( auto it = right.cbegin(); it != right.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x = -temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->velocity.x;
-	}
-	for( auto it = front.cbegin(); it != front.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z = -temp.voxels[CUBEPOS::BACK_MID_CENTER]->velocity.z;
-	}
-	for( auto it = back.cbegin(); it != back.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z = -temp.voxels[CUBEPOS::FRONT_MID_CENTER]->velocity.z;
-	}
-	*/
-	//then do corners properly Dunno how to do it at the moment with next grid implimentation
-	//Probably just check the corners....Just 8 special cases
+	//left bottom near
+	m_grid.getGuaranteedVoxel(0, 0, 0)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, 0)->velocity
+		+ m_grid.getGuaranteedVoxel(0, 1, 0)->velocity + m_grid.getGuaranteedVoxel(0, 0, 1)->velocity);
+
+	//top-left-near
+	m_grid.getGuaranteedVoxel(0,maxY + 1,0)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, 0)->velocity
+		+ m_grid.getGuaranteedVoxel(0, maxY, 0)->velocity + m_grid.getGuaranteedVoxel(0, maxY + 1, 1)->velocity);
+	//bottom-right-near
+	m_grid.getGuaranteedVoxel(maxX+1,0,0)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX,0,0)->velocity
+		+ m_grid.getGuaranteedVoxel(maxX+1,1,0)->velocity + m_grid.getGuaranteedVoxel(maxX+1,0,1)->velocity);
+	//right-top-near
+	m_grid.getGuaranteedVoxel(maxX+1,maxY+1,0)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX,maxY+1,0)->velocity
+		+ m_grid.getGuaranteedVoxel(maxX+1,maxY,0)->velocity + m_grid.getGuaranteedVoxel(maxX+1,maxY+1,1)->velocity);
+	//left-bottom-far
+	m_grid.getGuaranteedVoxel(0,0,maxZ+1)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1,0,maxZ+1)->velocity
+		+ m_grid.getGuaranteedVoxel(0,1,maxZ+1)->velocity + m_grid.getGuaranteedVoxel(0,0,maxZ)->velocity);
+	//left-top-far
+	m_grid.getGuaranteedVoxel(0,maxY+1,maxZ+1)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1,maxY+1,maxZ+1)->velocity
+		+ m_grid.getGuaranteedVoxel(0,maxY,maxZ+1)->velocity + m_grid.getGuaranteedVoxel(0,maxY+1,maxZ)->velocity);
+	//right-bottom-far
+	m_grid.getGuaranteedVoxel(maxX+1,0,maxZ+1)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX,0,maxZ+1)->velocity
+		+ m_grid.getGuaranteedVoxel(maxX+1,1,maxZ+1)->velocity + m_grid.getGuaranteedVoxel(maxX+1,0,maxZ)->velocity);
+	//right-top-far
+	m_grid.getGuaranteedVoxel(maxX+1,maxY+1,maxZ+1)->velocity = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX,maxY+1,maxZ+1)->velocity
+		+ m_grid.getGuaranteedVoxel(maxX+1,maxY,maxZ+1)->velocity + m_grid.getGuaranteedVoxel(maxX+1,maxY+1,maxZ)->velocity);
 }
 
 void FluidSolver::force_boundries_density()
 {
-	/*
-	std::vector<Voxel*> top = m_grid.getBorderTop();
-	std::vector<Voxel*> bottom = m_grid.getBorderBottom();
-	std::vector<Voxel*> left = m_grid.getBorderLeft();
-	std::vector<Voxel*> right = m_grid.getBorderRight();
-	std::vector<Voxel*> front = m_grid.getBorderFront();
-	std::vector<Voxel*> back = m_grid.getBorderBack();
-	
-	for( auto it = top.cbegin(); it != top.cend(); it++)
+	unsigned int maxX = m_grid.getXMaxSize();
+	unsigned int maxY = m_grid.getYMaxSize();
+	unsigned int maxZ = m_grid.getZMaxSize();
+	for (unsigned int i = 0; i <= maxX; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->density;
+		for (unsigned int j = 0; j <= maxY; j++)
+		{
+			//near
+			m_grid.getGuaranteedVoxel(i, j, 0)->density = m_grid.getGuaranteedVoxel(i, j, 1)->density;
+			//far
+			m_grid.getGuaranteedVoxel(i, j, m_grid.getZMaxSize())->density = m_grid.getGuaranteedVoxel(i, j, maxZ - 1)->density;
+		}
 	}
-	for( auto it = bottom.cbegin(); it != bottom.end(); it++)
+	for (unsigned int i = 0; i <= maxX; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->density;
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//bottom
+			m_grid.getGuaranteedVoxel(i, 0, j)->density = m_grid.getGuaranteedVoxel(i, 1, j)->density;
+			//top
+			m_grid.getGuaranteedVoxel(i, maxY, j)->density = m_grid.getGuaranteedVoxel(i, maxY - 1, j)->density;
+		}
 	}
-	for( auto it = left.cbegin(); it != left.cend(); it++)
+	for (unsigned int i = 0; i < maxY; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->density;
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//left
+			m_grid.getGuaranteedVoxel(0, i, j)->density = m_grid.getGuaranteedVoxel(1, i, j)->density;
+			//right
+			m_grid.getGuaranteedVoxel(maxX, i, j)->density = m_grid.getGuaranteedVoxel(maxX - 1, i, j)->density;
+		}
 	}
-	for( auto it = right.cbegin(); it != right.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->density;
-	}
-	for( auto it = front.cbegin(); it != front.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::BACK_MID_CENTER]->density;
-	}
-	for( auto it = back.cbegin(); it != back.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->density = temp.voxels[CUBEPOS::FRONT_MID_CENTER]->density;
-	}
-	*/
+	//left bottom near
+	m_grid.getGuaranteedVoxel(0, 0, 0)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, 0)->density
+		+ m_grid.getGuaranteedVoxel(0, 1, 0)->density + m_grid.getGuaranteedVoxel(0, 0, 1)->density);
 
-	//then do corners properly Dunno how to do it at the moment with next grid implimentation
-	//Probably just check the corners....Just 8 special cases
+	//top-left-near
+	m_grid.getGuaranteedVoxel(0, maxY + 1, 0)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, 0)->density
+		+ m_grid.getGuaranteedVoxel(0, maxY, 0)->density + m_grid.getGuaranteedVoxel(0, maxY + 1, 1)->density);
+	//bottom-right-near
+	m_grid.getGuaranteedVoxel(maxX + 1, 0, 0)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, 0, 0)->density
+		+ m_grid.getGuaranteedVoxel(maxX + 1, 1, 0)->density + m_grid.getGuaranteedVoxel(maxX + 1, 0, 1)->density);
+	//right-top-near
+	m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, 0)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, maxY + 1, 0)->density
+		+ m_grid.getGuaranteedVoxel(maxX + 1, maxY, 0)->density + m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, 1)->density);
+	//left-bottom-far
+	m_grid.getGuaranteedVoxel(0, 0, maxZ + 1)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, maxZ + 1)->density
+		+ m_grid.getGuaranteedVoxel(0, 1, maxZ + 1)->density + m_grid.getGuaranteedVoxel(0, 0, maxZ)->density);
+	//left-top-far
+	m_grid.getGuaranteedVoxel(0, maxY + 1, maxZ + 1)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, maxZ + 1)->density
+		+ m_grid.getGuaranteedVoxel(0, maxY, maxZ + 1)->density + m_grid.getGuaranteedVoxel(0, maxY + 1, maxZ)->density);
+	//right-bottom-far
+	m_grid.getGuaranteedVoxel(maxX + 1, 0, maxZ + 1)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, 0, maxZ + 1)->density
+		+ m_grid.getGuaranteedVoxel(maxX + 1, 1, maxZ + 1)->density + m_grid.getGuaranteedVoxel(maxX + 1, 0, maxZ)->density);
+	//right-top-far
+	m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ + 1)->density = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, maxY + 1, maxZ + 1)->density
+		+ m_grid.getGuaranteedVoxel(maxX + 1, maxY, maxZ + 1)->density + m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ)->density);
+	
 }
 
 void FluidSolver::force_boundries_preassure()
 {
-	/*
-	std::vector<Voxel*> top = m_grid.getBorderTop();
-	std::vector<Voxel*> bottom = m_grid.getBorderBottom();
-	std::vector<Voxel*> left = m_grid.getBorderLeft();
-	std::vector<Voxel*> right = m_grid.getBorderRight();
-	std::vector<Voxel*> front = m_grid.getBorderFront();
-	std::vector<Voxel*> back = m_grid.getBorderBack();
+	unsigned int maxX = m_grid.getXMaxSize();
+	unsigned int maxY = m_grid.getYMaxSize();
+	unsigned int maxZ = m_grid.getZMaxSize();
+	for (unsigned int i = 0; i <= maxX; i++)
+	{
+		for (unsigned int j = 0; j <= maxY; j++)
+		{
+			//near
+			m_grid.getGuaranteedVoxel(i, j, 0)->preassure = m_grid.getGuaranteedVoxel(i, j, 1)->preassure;
+			//far
+			m_grid.getGuaranteedVoxel(i, j, m_grid.getZMaxSize())->preassure = m_grid.getGuaranteedVoxel(i, j, maxZ - 1)->preassure;
+		}
+	}
+	for (unsigned int i = 0; i <= maxX; i++)
+	{
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//bottom
+			m_grid.getGuaranteedVoxel(i, 0, j)->preassure = m_grid.getGuaranteedVoxel(i, 1, j)->preassure;
+			//top
+			m_grid.getGuaranteedVoxel(i, maxY, j)->preassure = m_grid.getGuaranteedVoxel(i, maxY - 1, j)->preassure;
+		}
+	}
+	for (unsigned int i = 0; i < maxY; i++)
+	{
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//left
+			m_grid.getGuaranteedVoxel(0, i, j)->preassure = m_grid.getGuaranteedVoxel(1, i, j)->preassure;
+			//right
+			m_grid.getGuaranteedVoxel(maxX, i, j)->preassure = m_grid.getGuaranteedVoxel(maxX - 1, i, j)->preassure;
+		}
+	}
+	//left bottom near
+	m_grid.getGuaranteedVoxel(0, 0, 0)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, 0)->preassure
+		+ m_grid.getGuaranteedVoxel(0, 1, 0)->preassure + m_grid.getGuaranteedVoxel(0, 0, 1)->preassure);
 
-	
-	for( auto it = top.cbegin(); it != top.cend(); it++)
+	//top-left-near
+	m_grid.getGuaranteedVoxel(0, maxY + 1, 0)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, 0)->preassure
+		+ m_grid.getGuaranteedVoxel(0, maxY, 0)->preassure + m_grid.getGuaranteedVoxel(0, maxY + 1, 1)->preassure);
+	//bottom-right-near
+	m_grid.getGuaranteedVoxel(maxX + 1, 0, 0)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, 0, 0)->preassure
+		+ m_grid.getGuaranteedVoxel(maxX + 1, 1, 0)->preassure + m_grid.getGuaranteedVoxel(maxX + 1, 0, 1)->preassure);
+	//right-top-near
+	m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, 0)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, maxY + 1, 0)->preassure
+		+ m_grid.getGuaranteedVoxel(maxX + 1, maxY, 0)->preassure + m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, 1)->preassure);
+	//left-bottom-far
+	m_grid.getGuaranteedVoxel(0, 0, maxZ + 1)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, maxZ + 1)->preassure
+		+ m_grid.getGuaranteedVoxel(0, 1, maxZ + 1)->preassure + m_grid.getGuaranteedVoxel(0, 0, maxZ)->preassure);
+	//left-top-far
+	m_grid.getGuaranteedVoxel(0, maxY + 1, maxZ + 1)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, maxZ + 1)->preassure
+		+ m_grid.getGuaranteedVoxel(0, maxY, maxZ + 1)->preassure + m_grid.getGuaranteedVoxel(0, maxY + 1, maxZ)->preassure);
+	//right-bottom-far
+	m_grid.getGuaranteedVoxel(maxX + 1, 0, maxZ + 1)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, 0, maxZ + 1)->preassure
+		+ m_grid.getGuaranteedVoxel(maxX + 1, 1, maxZ + 1)->preassure + m_grid.getGuaranteedVoxel(maxX + 1, 0, maxZ)->preassure);
+	//right-top-far
+	m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ + 1)->preassure = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, maxY + 1, maxZ + 1)->preassure
+		+ m_grid.getGuaranteedVoxel(maxX + 1, maxY, maxZ + 1)->preassure + m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ)->preassure);
+}
+
+void FluidSolver::force_boundries_divergence()
+{
+	unsigned int maxX = m_grid.getXMaxSize();
+	unsigned int maxY = m_grid.getYMaxSize();
+	unsigned int maxZ = m_grid.getZMaxSize();
+	for (unsigned int i = 0; i <= maxX; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure;
+		for (unsigned int j = 0; j <= maxY; j++)
+		{
+			//near
+			m_grid.getGuaranteedVoxel(i, j, 0)->divergence = m_grid.getGuaranteedVoxel(i, j, 1)->divergence;
+			//far
+			m_grid.getGuaranteedVoxel(i, j, m_grid.getZMaxSize())->divergence = m_grid.getGuaranteedVoxel(i, j, maxZ - 1)->divergence;
+		}
 	}
-	for( auto it = bottom.cbegin(); it != bottom.cend(); it++)
+	for (unsigned int i = 0; i <= maxX; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure;
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//bottom
+			m_grid.getGuaranteedVoxel(i, 0, j)->divergence = m_grid.getGuaranteedVoxel(i, 1, j)->divergence;
+			//top
+			m_grid.getGuaranteedVoxel(i, maxY, j)->divergence = m_grid.getGuaranteedVoxel(i, maxY - 1, j)->divergence;
+		}
 	}
-	for( auto it = left.cbegin(); it != left.cend(); it++)
+	for (unsigned int i = 0; i < maxY; i++)
 	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure;
+		for (unsigned int j = 0; j < maxZ; j++)
+		{
+			//left
+			m_grid.getGuaranteedVoxel(0, i, j)->divergence = m_grid.getGuaranteedVoxel(1, i, j)->divergence;
+			//right
+			m_grid.getGuaranteedVoxel(maxX, i, j)->divergence = m_grid.getGuaranteedVoxel(maxX - 1, i, j)->divergence;
+		}
 	}
-	for( auto it = right.cbegin(); it != right.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure;
-	}
-	for( auto it = front.cbegin(); it != front.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::BACK_MID_CENTER]->preassure;
-	}
-	for( auto it = back.cbegin(); it != back.cend(); it++)
-	{
-		NeighbourVoxels temp = m_grid.getNeighbour((*it));
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = temp.voxels[CUBEPOS::FRONT_MID_CENTER]->preassure;
-	}
-	*/
-	//then do corners properly Dunno how to do it at the moment with next grid implimentation
-	//Probably just check the corners....Just 8 special cases
+	//left bottom near
+	m_grid.getGuaranteedVoxel(0, 0, 0)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, 0)->divergence
+		+ m_grid.getGuaranteedVoxel(0, 1, 0)->divergence + m_grid.getGuaranteedVoxel(0, 0, 1)->divergence);
+
+	//top-left-near
+	m_grid.getGuaranteedVoxel(0, maxY + 1, 0)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, 0)->divergence
+		+ m_grid.getGuaranteedVoxel(0, maxY, 0)->divergence + m_grid.getGuaranteedVoxel(0, maxY + 1, 1)->divergence);
+	//bottom-right-near
+	m_grid.getGuaranteedVoxel(maxX + 1, 0, 0)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, 0, 0)->divergence
+		+ m_grid.getGuaranteedVoxel(maxX + 1, 1, 0)->divergence + m_grid.getGuaranteedVoxel(maxX + 1, 0, 1)->divergence);
+	//right-top-near
+	m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, 0)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, maxY + 1, 0)->divergence
+		+ m_grid.getGuaranteedVoxel(maxX + 1, maxY, 0)->divergence + m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, 1)->divergence);
+	//left-bottom-far
+	m_grid.getGuaranteedVoxel(0, 0, maxZ + 1)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, 0, maxZ + 1)->divergence
+		+ m_grid.getGuaranteedVoxel(0, 1, maxZ + 1)->divergence + m_grid.getGuaranteedVoxel(0, 0, maxZ)->divergence);
+	//left-top-far
+	m_grid.getGuaranteedVoxel(0, maxY + 1, maxZ + 1)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(1, maxY + 1, maxZ + 1)->divergence
+		+ m_grid.getGuaranteedVoxel(0, maxY, maxZ + 1)->divergence + m_grid.getGuaranteedVoxel(0, maxY + 1, maxZ)->divergence);
+	//right-bottom-far
+	m_grid.getGuaranteedVoxel(maxX + 1, 0, maxZ + 1)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, 0, maxZ + 1)->divergence
+		+ m_grid.getGuaranteedVoxel(maxX + 1, 1, maxZ + 1)->divergence + m_grid.getGuaranteedVoxel(maxX + 1, 0, maxZ)->divergence);
+	//right-top-far
+	m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ + 1)->divergence = (1.0f / 3.0f)*(
+		m_grid.getGuaranteedVoxel(maxX, maxY + 1, maxZ + 1)->divergence
+		+ m_grid.getGuaranteedVoxel(maxX + 1, maxY, maxZ + 1)->divergence + m_grid.getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ)->divergence);
 }

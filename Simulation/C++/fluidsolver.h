@@ -120,7 +120,7 @@ private:
 	void diffuse_one_velocity(float constantData, NeighbourVoxels& vox);
 	void diffuse_one_density(float constantData, NeighbourVoxels& vox);
 
-	float diffuse_one_float(float constantData, float center, float left, float right, float above, float below, float front, float back);
+	//float diffuse_one_float(float constantData, float center, float left, float right, float above, float below, float front, float back);
 
 	void advect_velocity(float dt);
 	void advect_density(float dt);
@@ -129,11 +129,11 @@ private:
 	void advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
 
 	void project_velocity(float dt);
-	void project_density(float dt);
 
 	void force_boundries_velocity();
 	void force_boundries_density();
 	void force_boundries_preassure();
+	void force_boundries_divergence();
 
 	Voxelgrid m_grid;
 };
