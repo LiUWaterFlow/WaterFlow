@@ -21,7 +21,7 @@
 #define DBOUT( s ) \
 {					\
 }					\
-#endif
+
 #endif
 
 namespace voxelTest{
@@ -102,7 +102,7 @@ namespace voxelTest{
 
 	  srand(2500);
 
-	 
+
 	  if (randomRead){
 		  startClock();
 		  for (size_t x = count; x != end; x--) {
@@ -117,7 +117,7 @@ namespace voxelTest{
 		  }
 		  endClock();
 	  }
-	 
+
 	  startClock();
 	  srand(2500);
 
@@ -136,13 +136,13 @@ namespace voxelTest{
 		endClock();
 
 		std::cout << (float)grid->numCollisions/(float)grid->numInTable << std::endl;
-		
+
 		//Read and modify the voxels
 		startClock();
 		for (size_t x = count; x != end; x--) {
 			for (size_t y = count; y != end; y--) {
 				for (size_t z = count; z != end; z--) {
-					
+
 					if (randomRead) {
 						xd = randi(count, end);
 						yd = randi(count, end);
@@ -174,7 +174,7 @@ namespace voxelTest{
 
 	}
 	else{
-		
+
     for (size_t x = count; x != end; x--) {
       for (size_t y = count; y != end; y--) {
         for (size_t z = count; z != end; z--) {
@@ -183,7 +183,7 @@ namespace voxelTest{
       }
     }
     endClock();
-	
+
     //Read and modify the voxels
     startClock();
 	for (size_t x = count; x != end; x--) {

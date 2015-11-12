@@ -5,7 +5,7 @@
 #include <iostream>
 #include "gtc/type_ptr.hpp"
 #include "GL_utilities.h"
-#include "glm.hpp" 
+#include "glm.hpp"
 
 
 void Voxelgrid::rehash(){
@@ -47,7 +47,7 @@ void Voxelgrid::rehash(){
 }
 
 int64_t Voxelgrid::hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize){
-  return abs((((73856093 * x) + (19349663 * y) + (83492791 * z)) % inHashSize));
+  return std::abs((((73856093 * x) + (19349663 * y) + (83492791 * z)) % inHashSize));
 }
 
 void Voxelgrid::hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, float b){
@@ -149,7 +149,7 @@ Voxelgrid::Voxelgrid(DataHandler* dataHandler,int64_t hashSize){
   this->height = dataHandler->getDataHeight();
   this->waterHeight = new std::vector<GLint>(width*height, -1);
 
-  int i = 0; 
+  int i = 0;
   for (size_t x = -1; x < 2; x++)
   {
 	  for (size_t y = -1; y < 2; y++)
@@ -209,9 +209,9 @@ void Voxelgrid::setVoxel(int16_t x, int16_t y, int16_t z, bool filledx, float ax
 
 	x += 10;
 	y += 10;
-	z += 10; 
+	z += 10;
 
-	
+
 
   //if x is not in table. Create y and z tables, resize x, and
   //point to children (y,z);
@@ -398,8 +398,8 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 
 		}
 	}
-	
-	
+
+
 	/*
 	for (GLuint x = 0; x < voxels->size(); x++) {
 		if ((*voxels)[x] != nullptr) {
@@ -472,7 +472,7 @@ void Voxelgrid::drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 void Voxelgrid::setHeight(int16_t x, int16_t y, int16_t z) {
 	GLint curHeight = getHeight(x, z);
 	if( y > curHeight ){
-		waterHeight->at(x + z*width) = y; 
+		waterHeight->at(x + z*width) = y;
 	}
 }
 
