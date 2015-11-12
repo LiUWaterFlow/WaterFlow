@@ -77,6 +77,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -100,22 +101,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 This is the complete list of members for <a class="el" href="class_camera.html">Camera</a>, including all inherited members.<table>
-  <tr bgcolor="#f0f0f0"><td><b>Camera</b>(int program, glm::mat4 *matrix) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>Camera</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>change_look_at_pos</b>(int xrel, int y, int width, int height) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>forward</b>(float d) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>look_at_pos</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>matrix</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>position</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>print_matrix</b>(glm::mat4 m) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>program</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>radius</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>rotate</b>(char direction, float angle) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>strafe</b>(float d) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>translate</b>(float dx, float dy, float dz) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>up</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>update</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>upload</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Camera</b>(glm::vec3 startPos, int *initScreenW, int *initScreenH) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>changeLookAtPos</b>(int xrel, int yrel) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>drawDistance</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>fi</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>forward</b>(GLfloat d) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getPos</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getRotSpeed</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getRotSpeedPtr</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getSpeed</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getSpeedPtr</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getVTP</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getWTV</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>isFrozen</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>jump</b>(GLfloat d) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>lookAtPos</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>position</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>rotate</b>(char direction, GLfloat angle) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>rotSpeed</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>screenH</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>screenW</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>speed</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>strafe</b>(GLfloat d) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>theta</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>toggleFrozen</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>translate</b>(GLfloat dx, GLfloat dy, GLfloat dz) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>up</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>updateVTP</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>updateWTV</b>() (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>uploadCamData</b>(GLuint program) (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>VTPMatrix</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>WTVMatrix</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>x</b> (defined in <a class="el" href="class_camera.html">Camera</a>)</td><td><a class="el" href="class_camera.html">Camera</a></td><td><code> [private]</code></td></tr>
 </table></div><!-- contents -->
 <!-- window showing the filter options -->
@@ -136,7 +152,7 @@ This is the complete list of members for <a class="el" href="class_camera.html">
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Tue Nov 3 2015 16:06:50 for Waterflow by
+    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

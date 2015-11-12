@@ -101,105 +101,151 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Written by Gustav Svensk, acquired from</span>
 <a name="l00002"></a>00002 <span class="comment">// https://github.com/DrDante/TSBK03Project/</span>
 <a name="l00003"></a>00003 <span class="comment">// with permission, 2015-09-24.</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;camera.h&quot;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &lt;cmath&gt;</span>
-<a name="l00006"></a>00006 <span class="preprocessor">#include &lt;iostream&gt;</span>
+<a name="l00004"></a>00004 
+<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;camera.h&quot;</span>
+<a name="l00006"></a>00006 
 <a name="l00007"></a>00007 
-<a name="l00008"></a>00008 Camera::Camera(<span class="keywordtype">int</span> program, glm::mat4 *matrix)
-<a name="l00009"></a>00009 {
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;gtc/type_ptr.hpp&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;gtx/rotate_vector.hpp&quot;</span>
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011     position = glm::vec3( 0, 500, 0 );
-<a name="l00012"></a>00012     x = 0; 
-<a name="l00013"></a>00013     look_at_pos = glm::vec3( 1, 500, 0 );
-<a name="l00014"></a>00014     up = glm::vec3(0,1,0);
-<a name="l00015"></a>00015     this-&gt;matrix = matrix;
-<a name="l00016"></a>00016     this-&gt;program = program;
-<a name="l00017"></a>00017     *matrix = glm::lookAt(position, look_at_pos, up);
-<a name="l00018"></a>00018     upload();
-<a name="l00019"></a>00019 }
-<a name="l00020"></a>00020 
-<a name="l00021"></a>00021 Camera::Camera()
-<a name="l00022"></a>00022 {}
-<a name="l00023"></a>00023 
+<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;cmath&gt;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;iostream&gt;</span>
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014 Camera::Camera(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH)
+<a name="l00015"></a>00015 {
+<a name="l00016"></a>00016     position = startPos;
+<a name="l00017"></a>00017     fi = 0.0f;
+<a name="l00018"></a>00018     theta = (GLfloat)M_PI / 2.0f;
+<a name="l00019"></a>00019     
+<a name="l00020"></a>00020     up = glm::vec3(0,1,0);
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022     screenW = initScreenW;
+<a name="l00023"></a>00023     screenH = initScreenH;
 <a name="l00024"></a>00024 
-<a name="l00025"></a>00025 <span class="keywordtype">void</span> Camera::upload()
-<a name="l00026"></a>00026 {
-<a name="l00027"></a>00027     <span class="comment">// Upload camera matrix here</span>
-<a name="l00028"></a>00028     <span class="comment">/* glUniformMatrix4fv(glGetUniformLocation(program, &quot;WTVMatrix&quot;), 1, GL_FALSE, glm::value_ptr(*matrix)); */</span>
-<a name="l00029"></a>00029     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, glm::value_ptr(position));
-<a name="l00030"></a>00030     
-<a name="l00031"></a>00031 }
-<a name="l00032"></a>00032 <span class="keywordtype">void</span> Camera::update()
-<a name="l00033"></a>00033 {
-<a name="l00034"></a>00034     *matrix = glm::lookAt(position, look_at_pos, up);
-<a name="l00035"></a>00035     upload();
-<a name="l00036"></a>00036 }
-<a name="l00037"></a>00037 
-<a name="l00038"></a>00038 <span class="keywordtype">void</span> Camera::rotate(<span class="keywordtype">char</span> direction, <span class="keywordtype">float</span> angle)
-<a name="l00039"></a>00039 {
-<a name="l00040"></a>00040     <span class="keywordflow">switch</span> (direction){
-<a name="l00041"></a>00041         <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>:
-<a name="l00042"></a>00042             look_at_pos = glm::rotate(look_at_pos, angle, glm::vec3(1,0,0));
-<a name="l00043"></a>00043             <span class="keywordflow">break</span>;
-<a name="l00044"></a>00044         <span class="keywordflow">case</span> <span class="charliteral">&#39;y&#39;</span>:
-<a name="l00045"></a>00045             look_at_pos = glm::rotate(look_at_pos, angle, glm::vec3(0,1,0));
-<a name="l00046"></a>00046             <span class="keywordflow">break</span>;
-<a name="l00047"></a>00047         <span class="keywordflow">case</span> <span class="charliteral">&#39;z&#39;</span>:
-<a name="l00048"></a>00048             look_at_pos = glm::rotate(look_at_pos, angle, glm::vec3(0,0,1));
-<a name="l00049"></a>00049             <span class="keywordflow">break</span>;
-<a name="l00050"></a>00050     }
-<a name="l00051"></a>00051     *matrix = glm::lookAt(position, look_at_pos, up);
-<a name="l00052"></a>00052     upload();
-<a name="l00053"></a>00053 }
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 <span class="keywordtype">void</span> Camera::translate(<span class="keywordtype">float</span> dx, <span class="keywordtype">float</span> dy, <span class="keywordtype">float</span> dz)
-<a name="l00056"></a>00056 {
-<a name="l00057"></a>00057     position = glm::vec3(glm::translate(glm::mat4(1.0f), glm::vec3(dx,dy,dz)) * glm::vec4(position, 1));
-<a name="l00058"></a>00058     look_at_pos = glm::vec3(glm::translate(glm::mat4(1.0f), glm::vec3(dx,dy,dz)) * glm::vec4(look_at_pos, 1));
-<a name="l00059"></a>00059     *matrix = glm::lookAt(position, look_at_pos, up);
-<a name="l00060"></a>00060     upload();
-<a name="l00061"></a>00061 }
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063 <span class="keywordtype">void</span> Camera::forward(<span class="keywordtype">float</span> d)
-<a name="l00064"></a>00064 {
-<a name="l00065"></a>00065     glm::vec3 forward_vec = look_at_pos - position;
-<a name="l00066"></a>00066     forward_vec = d * forward_vec;
-<a name="l00067"></a>00067     translate(forward_vec.x, forward_vec.y, forward_vec.z);
+<a name="l00025"></a>00025     rotSpeed = 0.01f;
+<a name="l00026"></a>00026     speed = 1.0f;
+<a name="l00027"></a>00027     drawDistance = 10000.0f;
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029     isFrozen = <span class="keyword">false</span>;
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031     changeLookAtPos(0,0);
+<a name="l00032"></a>00032     updateVTP();
+<a name="l00033"></a>00033 }
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035 glm::mat4* Camera::getWTV() {
+<a name="l00036"></a>00036     <span class="keywordflow">return</span> &amp;WTVMatrix;
+<a name="l00037"></a>00037 }
+<a name="l00038"></a>00038 glm::mat4* Camera::getVTP() {
+<a name="l00039"></a>00039     <span class="keywordflow">return</span> &amp;VTPMatrix;
+<a name="l00040"></a>00040 }
+<a name="l00041"></a>00041 glm::vec3* Camera::getPos() {
+<a name="l00042"></a>00042     <span class="keywordflow">return</span> &amp;position;
+<a name="l00043"></a>00043 }
+<a name="l00044"></a>00044 GLfloat Camera::getSpeed() {
+<a name="l00045"></a>00045     <span class="keywordflow">return</span> speed;
+<a name="l00046"></a>00046 }
+<a name="l00047"></a>00047 GLfloat* Camera::getSpeedPtr() {
+<a name="l00048"></a>00048     <span class="keywordflow">return</span> &amp;speed;
+<a name="l00049"></a>00049 }
+<a name="l00050"></a>00050 GLfloat Camera::getRotSpeed() {
+<a name="l00051"></a>00051     <span class="keywordflow">return</span> rotSpeed;
+<a name="l00052"></a>00052 }
+<a name="l00053"></a>00053 GLfloat* Camera::getRotSpeedPtr() {
+<a name="l00054"></a>00054     <span class="keywordflow">return</span> &amp;rotSpeed;
+<a name="l00055"></a>00055 }
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057 <span class="keywordtype">void</span> Camera::toggleFrozen() {
+<a name="l00058"></a>00058     isFrozen = !isFrozen;
+<a name="l00059"></a>00059 }
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 <span class="keywordtype">void</span> Camera::uploadCamData(GLuint program)
+<a name="l00062"></a>00062 {
+<a name="l00063"></a>00063     <span class="comment">// Upload camera matrix here</span>
+<a name="l00064"></a>00064     glUseProgram(program);
+<a name="l00065"></a>00065     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(VTPMatrix));
+<a name="l00066"></a>00066     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(WTVMatrix));
+<a name="l00067"></a>00067     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, glm::value_ptr(position));
 <a name="l00068"></a>00068 }
 <a name="l00069"></a>00069 
-<a name="l00070"></a>00070 <span class="keywordtype">void</span> Camera::strafe(<span class="keywordtype">float</span> d)
+<a name="l00070"></a>00070 <span class="keywordtype">void</span> Camera::updateWTV()
 <a name="l00071"></a>00071 {
-<a name="l00072"></a>00072     glm::vec3 strafe_vec = look_at_pos - position;
-<a name="l00073"></a>00073     strafe_vec = glm::cross(up, strafe_vec);
-<a name="l00074"></a>00074     strafe_vec = glm::normalize(strafe_vec);
-<a name="l00075"></a>00075     strafe_vec = d * strafe_vec;
-<a name="l00076"></a>00076     translate(strafe_vec.x, strafe_vec.y, strafe_vec.z);
-<a name="l00077"></a>00077 }
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079 <span class="keywordtype">void</span> Camera::change_look_at_pos(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height)
-<a name="l00080"></a>00080 {
-<a name="l00081"></a>00081     <span class="keywordflow">if</span>(y==0){
-<a name="l00082"></a>00082         y = 1;
-<a name="l00083"></a>00083     }
-<a name="l00084"></a>00084     x += xrel;
-<a name="l00085"></a>00085     <span class="keywordtype">float</span> fi = ((float)x) / ((float)width) * 2.0f * M_PI;
-<a name="l00086"></a>00086     <span class="keywordtype">float</span> theta = ((float)y) / ((float)height) * M_PI;
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088     look_at_pos.x = -sin(theta)*sin(fi) + position.x;
-<a name="l00089"></a>00089     look_at_pos.y = cos(theta) + position.y;
-<a name="l00090"></a>00090     look_at_pos.z = sin(theta)*cos(fi) + position.z;
-<a name="l00091"></a>00091     *matrix = glm::lookAt(position, look_at_pos, up);
-<a name="l00092"></a>00092     upload();
-<a name="l00093"></a>00093 }
-<a name="l00094"></a>00094 
-<a name="l00095"></a>00095 <span class="keywordtype">void</span> Camera::print_matrix(glm::mat4 m)
-<a name="l00096"></a>00096 {
-<a name="l00097"></a>00097     std::cout &lt;&lt; m[0][0] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>  &lt;&lt; m[0][1] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[0][2] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[0][3] &lt;&lt; std::endl;
-<a name="l00098"></a>00098     std::cout &lt;&lt; m[1][0] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>  &lt;&lt; m[1][1] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[1][2] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[1][3] &lt;&lt; std::endl;
-<a name="l00099"></a>00099     std::cout &lt;&lt; m[2][0] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>  &lt;&lt; m[2][1] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[2][2] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[2][3] &lt;&lt; std::endl;
-<a name="l00100"></a>00100     std::cout &lt;&lt; m[3][0] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>  &lt;&lt; m[3][1] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[3][2] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; m[3][3] &lt;&lt; std::endl;
-<a name="l00101"></a>00101     std::cout &lt;&lt; std::endl;
-<a name="l00102"></a>00102 }
+<a name="l00072"></a>00072     WTVMatrix = glm::lookAt(position, lookAtPos, up);
+<a name="l00073"></a>00073 }
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 <span class="keywordtype">void</span> Camera::updateVTP() {
+<a name="l00076"></a>00076     <span class="keywordtype">float</span> ratio = (GLfloat)(*screenW) / (GLfloat)(*screenH);
+<a name="l00077"></a>00077     VTPMatrix = glm::perspective((GLfloat)M_PI / 2, ratio, 1.0f, drawDistance);
+<a name="l00078"></a>00078 }
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080 <span class="keywordtype">void</span> Camera::rotate(<span class="keywordtype">char</span> direction, GLfloat angle)
+<a name="l00081"></a>00081 {
+<a name="l00082"></a>00082     <span class="keywordflow">switch</span> (direction){
+<a name="l00083"></a>00083         <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>:
+<a name="l00084"></a>00084             lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(1, 0, 0));
+<a name="l00085"></a>00085             <span class="keywordflow">break</span>;
+<a name="l00086"></a>00086         <span class="keywordflow">case</span> <span class="charliteral">&#39;y&#39;</span>:
+<a name="l00087"></a>00087             lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 1, 0));
+<a name="l00088"></a>00088             <span class="keywordflow">break</span>;
+<a name="l00089"></a>00089         <span class="keywordflow">case</span> <span class="charliteral">&#39;z&#39;</span>:
+<a name="l00090"></a>00090             lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 0, 1));
+<a name="l00091"></a>00091             <span class="keywordflow">break</span>;
+<a name="l00092"></a>00092     }
+<a name="l00093"></a>00093    
+<a name="l00094"></a>00094     updateWTV();
+<a name="l00095"></a>00095 }
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097 <span class="keywordtype">void</span> Camera::translate(GLfloat dx, GLfloat dy, GLfloat dz)
+<a name="l00098"></a>00098 {
+<a name="l00099"></a>00099     <span class="keywordflow">if</span> (!isFrozen) {
+<a name="l00100"></a>00100         position = glm::vec3(glm::translate(glm::mat4(1.0f), glm::vec3(dx, dy, dz)) * glm::vec4(position, 1));
+<a name="l00101"></a>00101         lookAtPos = glm::vec3(glm::translate(glm::mat4(1.0f), glm::vec3(dx, dy, dz)) * glm::vec4(lookAtPos, 1));
+<a name="l00102"></a>00102         updateWTV();
+<a name="l00103"></a>00103     }
+<a name="l00104"></a>00104 }
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="keywordtype">void</span> Camera::forward(GLfloat d)
+<a name="l00107"></a>00107 {
+<a name="l00108"></a>00108     glm::vec3 forward_vec = lookAtPos - position;
+<a name="l00109"></a>00109     forward_vec = speed * d * forward_vec;
+<a name="l00110"></a>00110     translate(forward_vec.x, forward_vec.y, forward_vec.z);
+<a name="l00111"></a>00111 }
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113 <span class="keywordtype">void</span> Camera::strafe(GLfloat d)
+<a name="l00114"></a>00114 {
+<a name="l00115"></a>00115     glm::vec3 strafe_vec = lookAtPos - position;
+<a name="l00116"></a>00116     strafe_vec = glm::cross(up, strafe_vec);
+<a name="l00117"></a>00117     strafe_vec = glm::normalize(strafe_vec);
+<a name="l00118"></a>00118     strafe_vec = speed * d * strafe_vec;
+<a name="l00119"></a>00119     translate(strafe_vec.x, strafe_vec.y, strafe_vec.z);
+<a name="l00120"></a>00120 }
+<a name="l00121"></a>00121 
+<a name="l00122"></a>00122 <span class="keywordtype">void</span> Camera::jump(GLfloat d) {
+<a name="l00123"></a>00123     glm::vec3 temp_vec = lookAtPos - position;
+<a name="l00124"></a>00124     glm::vec3 jump_vec = glm::cross(up, temp_vec);
+<a name="l00125"></a>00125     jump_vec = glm::cross(temp_vec, jump_vec);
+<a name="l00126"></a>00126     jump_vec = glm::normalize(jump_vec);
+<a name="l00127"></a>00127     jump_vec = speed * d * jump_vec;
+<a name="l00128"></a>00128     translate(jump_vec.x, jump_vec.y, jump_vec.z);
+<a name="l00129"></a>00129 }
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131 <span class="keywordtype">void</span> Camera::changeLookAtPos(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel)
+<a name="l00132"></a>00132 {
+<a name="l00133"></a>00133     <span class="keywordflow">if</span> (!isFrozen) {
+<a name="l00134"></a>00134         <span class="keywordtype">float</span> eps = 0.001f;
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136         fi += rotSpeed * xrel;
+<a name="l00137"></a>00137         theta += rotSpeed * yrel;
+<a name="l00138"></a>00138         
+<a name="l00139"></a>00139         fi = fmod(fi, 2.0f * (GLfloat)M_PI);
+<a name="l00140"></a>00140         theta = theta &lt; (GLfloat)M_PI - eps ? (theta &gt; eps ? theta : eps) : (GLfloat)M_PI - eps;
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142         lookAtPos.x = -sin(theta)*sin(fi) + position.x;
+<a name="l00143"></a>00143         lookAtPos.y = cos(theta) + position.y;
+<a name="l00144"></a>00144         lookAtPos.z = sin(theta)*cos(fi) + position.z;
+<a name="l00145"></a>00145 
+<a name="l00146"></a>00146         updateWTV();
+<a name="l00147"></a>00147     }
+<a name="l00148"></a>00148 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -220,7 +266,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>camera.cpp</b>      </li>
 
-    <li class="footer">Generated on Tue Nov 3 2015 16:06:50 for Waterflow by
+    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

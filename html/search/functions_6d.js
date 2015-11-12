@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main.cpp']]]
+  ['mystrtof',['myStrtof',['../_utilities_8c.html#abd9c4e46f1ccd1abff3b99b4181d9dc6',1,'myStrtof(char *strStart, char **strEnd):&#160;Utilities.c'],['../_utilities_8h.html#abd9c4e46f1ccd1abff3b99b4181d9dc6',1,'myStrtof(char *strStart, char **strEnd):&#160;Utilities.c']]]
 ];

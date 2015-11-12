@@ -9,5 +9,9 @@ var annotated =
     [ "mapdata", "structmapdata.html", "structmapdata" ],
     [ "Mesh", "struct_mesh.html", "struct_mesh" ],
     [ "Model", "struct_model.html", "struct_model" ],
+    [ "myDrawable", "classmy_drawable.html", "classmy_drawable" ],
+    [ "Program", "class_program.html", "class_program" ],
+    [ "SkyCube", "class_sky_cube.html", "class_sky_cube" ],
+    [ "Terrain", "class_terrain.html", "class_terrain" ],
     [ "TextureData", "struct_texture_data.html", "struct_texture_data" ]
 ];

@@ -77,6 +77,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -176,7 +177,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <div class="textblock"><p>Loads and modifies terrain data for easier use. </p>
 <p>Use the <a class="el" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a> class to import terrain data and generate terrain. It automatically scales the data for easier filtering, and also generates an initial terrain from the data after the data is loaded. </p>
 
-<p>Definition at line <a class="el" href="read_data_8h_source.html#l00038">38</a> of file <a class="el" href="read_data_8h_source.html">readData.h</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8h_source.html#l00036">36</a> of file <a class="el" href="read_data_8h_source.html">readData.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa3d0e08cb12b557440fd97df8a016dab"></a><!-- doxytag: member="DataHandler::DataHandler" ref="aa3d0e08cb12b557440fd97df8a016dab" args="(const char *inputfile, int sampleFactor=1, int blockSize=250)" -->
 <div class="memitem">
@@ -225,7 +226,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dd>
 <a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">GenerateTerrain()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00022">22</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00015">15</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -278,7 +279,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">GenerateTerrain()</a> </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00403">403</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00392">392</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -303,7 +304,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dd>
 <a class="el" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00302">302</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00291">291</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -343,7 +344,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>data(col,row) </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00049">49</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00056">56</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -365,7 +366,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>For uses like read all data to FBO or from GPU back to CPU. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the beginning of the mapdata data. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00077">77</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00084">84</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -386,7 +387,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the height of the data. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the number of rows. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00089">89</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00096">96</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -407,7 +408,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the width of the data. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>the number of columns. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00081">81</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00088">88</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -428,7 +429,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the number of datapoints. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>columns * rows. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00097">97</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00104">104</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -450,7 +451,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Used to get the model for drawing in the main program </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd><a class="el" href="struct_model.html">Model</a> to draw. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00105">105</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00112">112</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -471,7 +472,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the height of the terrain model. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>height of the model </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00093">93</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00100">100</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -492,7 +493,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Getter for the width of the terrain model. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>width of the model </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00085">85</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00092">92</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -513,7 +514,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Get the sampling rate of data for constructing the model. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>int value of the sample rate. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00073">73</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00080">80</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -534,7 +535,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Get the terrain scale. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Return a float of the diff between max and min sample in the data. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00101">101</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00108">108</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -579,7 +580,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dd>
 giveNormal() </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00445">445</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00429">429</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -605,7 +606,7 @@ giveNormal() </dd></dl>
 <dd>
 <a class="el" href="class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c" title="Generates terrain with the scale from terrainScale.">GenerateTerrain()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00181">181</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00182">182</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -634,7 +635,7 @@ giveNormal() </dd></dl>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Possible performance improvement using fread instead. </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00112">112</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00119">119</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -658,7 +659,7 @@ giveNormal() </dd></dl>
 <dd>
 <a class="el" href="class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9" title="Removes NODATA by normalized convolution.">performNormalizedConvolution()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00293">293</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00282">282</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -684,7 +685,7 @@ giveNormal() </dd></dl>
 <dd>
 <a class="el" href="class_data_handler.html#aa3d0e08cb12b557440fd97df8a016dab" title="Reads DEM data, scales it and generates a model.">DataHandler()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00166">166</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
+<p>Definition at line <a class="el" href="read_data_8cpp_source.html#l00167">167</a> of file <a class="el" href="read_data_8cpp_source.html">readData.cpp</a>.</p>
 
 </div>
 </div>
@@ -712,7 +713,7 @@ giveNormal() </dd></dl>
     <ul>
       <li class="navelem"><a class="el" href="class_data_handler.html">DataHandler</a>      </li>
 
-    <li class="footer">Generated on Tue Nov 3 2015 16:06:50 for Waterflow by
+    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

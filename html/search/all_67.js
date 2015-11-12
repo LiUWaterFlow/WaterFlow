@@ -1,6 +1,7 @@
 var searchData=
 [
   ['generatecanvas',['generateCanvas',['../_utilities_8c.html#a553ad688ab9cff4181348ca37bb66c02',1,'generateCanvas():&#160;Utilities.c'],['../_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02',1,'generateCanvas():&#160;Utilities.c']]],
+  ['generatecube',['generateCube',['../_utilities_8c.html#aa506b4da68622401ef54b3c2b61f61c5',1,'generateCube(GLfloat s):&#160;Utilities.c'],['../_utilities_8h.html#aa506b4da68622401ef54b3c2b61f61c5',1,'generateCube(GLfloat s):&#160;Utilities.c']]],
   ['generateterrain',['GenerateTerrain',['../class_data_handler.html#aea5187c7fba2cf4828a8cd3001665b0c',1,'DataHandler']]],
   ['getcoord',['getCoord',['../class_data_handler.html#a439774a91fe8218fe6fffe5882102608',1,'DataHandler']]],
   ['getdata',['getData',['../class_data_handler.html#af2d7f859a1cf709469623f0a8230b49b',1,'DataHandler']]],
