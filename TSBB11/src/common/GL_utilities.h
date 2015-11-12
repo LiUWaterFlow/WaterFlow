@@ -9,7 +9,16 @@ extern "C" {
 	#include <OpenGL/gl3.h>
 	#include <GLUT/glut.h>
 #else
-	#include "glew.h"
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		
+	#else
+		#include "Windows\glew.h"
+	#endif
 #endif
 
 void printError(const char *functionName);
@@ -37,6 +46,8 @@ typedef struct
 FBOstruct *initFBO(int width, int height, int int_method);
 FBOstruct *initFBO2(int width, int height, int int_method, int create_depthimage);
 FBOstruct *initFBO3(int width, int height, void* data);
+FBOstruct *initFBO4(int width, int height, void* data);
+void releaseFBO(FBOstruct* fbo);
 void useFBO(FBOstruct *out, FBOstruct *in1, FBOstruct *in2);
 void updateScreenSizeForFBOHandler(int w, int h); // Temporary workaround to inform useFBO of screen size changes
 

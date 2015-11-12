@@ -76,14 +76,11 @@ void init_SDL(const char* title, int width, int height)
 		exit_prog(1);
 	}
 
-	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
 
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-
-	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 
@@ -96,23 +93,19 @@ void init_SDL(const char* title, int width, int height)
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 
-	fprintf(stderr, "Current Version Error 1 :   %s \n", SDL_GetError());
 
 	flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 	screen = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-	fprintf(stderr, "Current Version Error 2 :   %s \n", SDL_GetError());
 
 	glcontext = SDL_GL_CreateContext(screen);
 
-	fprintf(stderr, "Current Version Error 3:   %s \n", SDL_GetError());
 
 	if(screen == 0){
 		fprintf(stderr, "Failed to set Video Mode: %s", SDL_GetError());
 		exit_prog(1);
 	}
 
-	fprintf(stderr, "Current error status:   %s \n", SDL_GetError());
 
 #ifndef __APPLE__
 	glViewport(0, 0, width, height);

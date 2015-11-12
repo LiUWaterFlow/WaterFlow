@@ -8,8 +8,15 @@ extern "C" {
 #ifdef __APPLE__
 	#include <OpenGL/gl3.h>
 #else
-	#if defined(_WIN32)
-		#include "glew.h"
+	#ifdef  __linux__
+		#define GL_GLEXT_PROTOTYPES
+		#include <GL/gl.h>
+		#include <GL/glu.h>
+		#include <GL/glx.h>
+		#include <GL/glext.h>
+		
+	#else
+		#include "Windows\glew.h"
 	#endif
 #endif
 

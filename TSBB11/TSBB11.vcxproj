@@ -94,6 +94,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Simulation\C++\fluidsolver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\common\GL_utilities.c" />
@@ -102,8 +103,12 @@
     <ClCompile Include="src\common\SDL_util.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
     <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\Voxelgrid.cpp" />
+    <ClCompile Include="src\voxelTesting.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Simulation\C++\fluidsolver.h" />
+    <ClInclude Include="fluidDataStructures.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\common\GL_utilities.h" />
     <ClInclude Include="src\common\loadobj.h" />
@@ -113,13 +118,19 @@
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
     <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\Voxelgrid.h" />
+    <ClInclude Include="src\voxelTesting.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="makefile" />
+    <None Include="resources\Doxyfile" />
+    <None Include="resources\mainpage.dox" />
     <None Include="src\shaders\combineshader.frag" />
     <None Include="src\shaders\confidenceshader.frag" />
     <None Include="src\shaders\filtershader.frag" />
     <None Include="src\shaders\main.frag" />
     <None Include="src\shaders\main.vert" />
+    <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
   </ItemGroup>
