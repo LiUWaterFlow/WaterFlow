@@ -11,7 +11,7 @@
 #include "readData.h"
 #include "glm.hpp"
 
-/// @strcut voxel
+/// @struct voxel
 /// @brief Contains information and data in each voxel.
 ///
 
@@ -19,10 +19,23 @@ struct voxel{
   bool filled;  ///<The fill state of the voxel (maybe not needed)
   float a;      ///<Float a (temporary for space measurements and testing)
   float b;      ///<Float b (temporary for space measurements and testing)
-  int16_t x;
-  int16_t y;
-  int16_t z;
+  int16_t x;    ///< x position of the voxel
+  int16_t y;    ///< y position of the voxel
+  int16_t z;    ///< z position of the voxel
 };
+
+/// @struct neighs
+/// @brief Struct used for returning a voxel and it's neighbours
+///
+/// The voxels that get returned are ordered with the input voxel as the center voxel
+/// each coordinate loops from -1 to plus 1. x is the outermost coordinate, y in the middle and
+/// z the innermost variable. example voxs[5] (i.e the sixth element) will be
+/// 6-3 = 3  (increase y to 0) 3-3 = 0, three steps in z, gives z = 1;
+/// x = -1, y = 0, z = +1; in offsets from the center pixel.
+/// @see xoff
+/// @see yoff
+/// @see zoff
+/// @see getNeighbourhood
 
 struct neighs {
 	voxel* voxs[27];
@@ -42,41 +55,51 @@ private:
   std::vector<std::vector<std::vector<voxel*>*>*>* voxels; ///< Container for the voxel lookup tables
   DataHandler* datahandler; ///< Handle to the datahandler and thus the model data.
 
-  std::vector<GLuint>* voxelPositions = nullptr;
-  GLuint numVoxels;
-  GLuint voxelShader;
-  GLuint voxelBuffer, voxelVAO;
+  std::vector<GLuint>* voxelPositions = nullptr; ///<Vector for the position where there are voxels, for drawing purposes.
+  GLuint numVoxels; ///< Number of voxels in the voxelPositions.
+  GLuint voxelShader; ///< Shader program.
+  GLuint voxelBuffer, voxelVAO; ///< Buffers and VAOs.
 
   std::vector<GLint>* waterHeight; ///< The map of height data for the topmost water voxel.
   GLuint width; ///< The width of the map, needed for saving data in linear containers.
   GLuint height; ///< The height of the map, needed for voxel extraction
 
 
-  GLfloat rehashTresh = 0.75;
+  GLfloat rehashTresh = 0.75; ///< Rehash treshhold.
 
 
-  std::vector<voxel*>* hashTable;
+  std::vector<voxel*>* hashTable; ///< Pointer to hashTable. Filled with voxel pointers.
+
+
+  ///@brief hashFunc which returns a position in the hashtable to insert the voxel
+  ///
+  /// The hashfunction multiplies each coordninate with a large prime.
+  /// then takes xor between the results, takes the absolute value and finally
+  /// returns the value modulus the hashtable size.
   int64_t hashFunc(int64_t x, int64_t y, int64_t z,int64_t inHashSize);
 
-  int xoff[27];
-  int yoff[27];
-  int zoff[27];
+  int xoff[27]; ///< xoffsets for neighbour extraction.
+  int yoff[27]; ///< xoffsets for neighbour extraction.
+  int zoff[27]; ///< xoffsets for neighbour extraction.
 
 
 public:
 
-  int64_t hashSize;
+  int64_t hashSize; ///< size of the hash table
 
-  GLuint numInTable = 0;
-  GLuint numCollisions = 0;
+  GLuint numInTable = 0; ///< How many elements there are in the hashTable.
+  GLuint numCollisions = 0; ///< How many collisions presently
 
-  /// @brief Constructs a empty voxel grids
+  /// @brief Constructs an empty voxel grid
   ///
   /// Constructs an initially empty sparse voxelgrid, which scales so that there
   /// is N number of voxels in height representing the lowest point to the heighest.
   /// Where N is ceil(DataHandler->getTerrainScale)
   /// The grid dynamically grows when voxels are added.
+  /// The grid supports values between -10 and INT_MAX-10, by offsetting input coordinates with +10.
   /// @param handle Handle to the DataHandler will be bound to the class
+  /// @param hashSize intialsize of the hashTable. Set if you plan on using the hashfunctions,
+  /// should be a power of 2 for quick calculations.
   /// @see DataHandle::getTerrainScale
   /// @see setVoxel
   /// @see getVoxel
@@ -92,9 +115,11 @@ public:
   /// Sets the values of the voxel at x,y,z and creates it in the sparse voxelgrid.
   /// if setting many voxels at the same time, loop over z first, followed by y,
   /// and from go from HIGH values towards LOW. (minimizes resizing)
-  /// @param x Coordinate of the voxel, x cannot be negative.
-  /// @param y Coordinate of the voxel, y cannot be negative.
-  /// @param z Coordinate of the voxel, z cannot be negative.
+  /// negative values supported by offsetting input by 10.
+  /// supports values in the range -10 to INT_MAX-10
+  /// @param x Coordinate of the voxel, x cannot be smaller than -10
+  /// @param y Coordinate of the voxel, y cannot be smaller than -10
+  /// @param z Coordinate of the voxel, z cannot be smaller than -10
   /// @param filled Bool determining if the voxel has been filled or not.
   /// @param a Dummy variable for initial tests of size and performance
   /// @param b Dummy variable for initial tests of size and performance
@@ -106,16 +131,24 @@ public:
   /// Sets the values of the voxel at x,y,z and creates it in the sparse voxelgrid.
   /// if setting many voxels at the same time, loop over z first, followed by y,
   /// and from go from LOW values towards HIGH. (maximizes cache hits)
-  /// @param x Coordinate of the voxel, x cannot be negative.
-  /// @param y Coordinate of the voxel, y cannot be negative.
-  /// @param z Coordinate of the voxel, z cannot be negative.
+  /// @param x Coordinate of the voxel, x cannot be smaller than -10
+  /// @param y Coordinate of the voxel, y cannot be smaller than -10
+  /// @param z Coordinate of the voxel, z cannot be smaller than -10
   /// @see setVoxel
   /// @return Returns a pointer to the voxel (i.e. changes can be made.) If no voxel exists a nullpointer is returned.
   voxel* getVoxel(int16_t x, int16_t y, int16_t z);
 
-
+  /*
   std::vector<std::array<int, 2>>* LayerFloodFill(int init_x, int init_z, int height);
+
   void LayerFloodFill_Rec(int x, int z, int height, std::vector<std::array<int, 2>>* filled_coords);
+  */
+
+  ///@brief Floodfills pixels at the specified position and height.
+  ///
+  /// Floodfills at height, stopping when hitting terrain which is heigher than
+  /// the specified flood height. Currently only fills voxels at the topmost layer
+  /// for optimization reasons.
   void FloodFill(int x, int z, int height, bool fillDown = true);
 
 
@@ -145,13 +178,41 @@ public:
   /// @see updateVoxelrender
   void drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
 
+  ///@brief Adds a pixel using the hash functions.
+  ///
+  ///@warning Please use setVoxel instead since it for most cases is much faster.
   void hashAdd(int16_t x, int16_t y, int16_t z,bool filled, float a, float b);
+  ///@brief Gets a pixel using the hash functions.
+  ///
+  ///@see setVoxel
+  ///@warning Please use the getVoxel instead, since it for most cases is much faster.
   voxel* hashGet(int16_t x, int16_t y, int16_t z);
+  ///@brief rehashes the table.
+  ///
+  ///@see getVoxel
+  ///@warning This operation is potentially very slow. Please use a sufficiently
+  /// large table from the start instead or use the setVoxel and getVoxel instead.
   void rehash();
+
+  ///@brief Returns true if the voxel contains the coordinates specified by x,y,z
+  ///
   bool isEqualPoint(voxel* vox,short int x, short int y,short int z);
+  ///@brief Initializes the hashmap to the size specified by hashSize.
+  ///
+  ///@warning Use voxelgrid instead due to speed.
+  ///@see setVoxel
+  ///@see getVoxel
   void hashInit();
 
+  ///@brief Get a voxel and the 26 neighbouring pixels.
+  ///
+  ///@see neighs
   neighs* getNeighbourhood(int16_t x, int16_t y, int16_t z);
+
+  ///@brief Get a voxel and the 26 neighbouring pixels.
+  ///
+  ///@warning Use getNeighbourhood instead.
+  ///@see getNeighbourhood
   neighs* getNeighbourhoodHash(int16_t x, int16_t y, int16_t z);
 
 
