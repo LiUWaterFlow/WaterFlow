@@ -48,7 +48,8 @@ private:
 	double objX, objZ;
 	
 	// myDrawables:
-	myDrawable *skycube, *terrain;
+	myDrawable *skycube;
+	Terrain  *terrain;
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;

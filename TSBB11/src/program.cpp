@@ -85,12 +85,26 @@ bool Program::init() {
 	// Load terrain data
 	dataHandler = new DataHandler("resources/output.min.asc", 1);
 
+	dataHandler->initCompute();
+	dataHandler->runCompute();
+
+	
+	printError("After compute: ");
+
+
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 
 	// Create drawables
-	terrain = new Terrain(terrainshader, dataHandler->getModel(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
+	//terrain = new Terrain(terrainshader, dataHandler->getModel(), dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
+
+	terrain = new Terrain(terrainshader,dataHandler->computeBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
+	
+	
+	printError("After terrain: ");
+
+
 	skycube = new SkyCube(skyshader);
 
 	/*Initialize AntTweakBar
@@ -141,6 +155,7 @@ void Program::display() {
 	glUseProgram(skyshader);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 
 	// ---Camera shader data---
 	cam->uploadCamData(skyshader);
@@ -150,11 +165,13 @@ void Program::display() {
 	glUseProgram(terrainshader);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glCullFace(GL_BACK);
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
-	terrain->draw();
+	terrain->drawCompute();
 
 	// ====================== Draw AntBar ===========================
 	TwDraw();

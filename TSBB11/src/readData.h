@@ -5,7 +5,7 @@
 #define READDATA_H
 
 #include "loadobj.h"
-
+#include "glm.hpp"
 #include <vector>
 
 /// @struct mapdata
@@ -27,24 +27,6 @@ struct mapdata {
 	std::vector<float> data;	///< The terrain data is stored in a std::vector.
 };
 
-
-struct Data
-{
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec2 texCoord;
-	
-};
-
-struct index
-{	
-	glm::vec3 indices;
-	
-};
-
-
-
-
 /// @class DataHandler
 /// @brief Loads and modifies terrain data for easier use.
 ///
@@ -57,6 +39,7 @@ private:
 	// Data containers
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
 	std::vector<Model*>* datamodel; 			///< model for the terrain data.
+	GLuint terrainTexture;		///< texture containing normals and height terrain data.
 
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
@@ -126,10 +109,15 @@ private:
 	/// @todo The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter.
 	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height);
 
-	GLuint computeShader, memoryBuffer, computeProgram;	
-	GLuint computeBuffers[2];
-
 public:
+	///@brief should not be public.
+	///@todo Make private!	
+	GLuint computeShader, memoryBuffer, computeProgram,computeVAO;	
+	GLuint computeBuffers[4];
+
+	GLuint numIndices;
+
+
 	/// @brief Reads DEM data, scales it and generates a model.
 	///
 	/// Reads the inputfile for DEM data and populates a mapdata struct,
@@ -204,6 +192,10 @@ public:
 	/// @brief Get the terrain scale.
 	/// @return Return a float of the diff between max and min sample in the data.
 	GLfloat getTerrainScale();
+
+	/// @brief Get the texture id for the terrain height and normals.
+	/// @return Returns the ID for the terrain data texture.
+	GLuint getTextureID();
 
 	/// @brief Pointer to the terrain model
 	///

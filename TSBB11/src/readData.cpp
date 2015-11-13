@@ -109,6 +109,9 @@ GLfloat DataHandler::getTerrainScale()
 {
 	return terrainScale;
 }
+GLuint DataHandler::getTextureID() {
+	return terrainTexture;
+}
 std::vector<Model*>* DataHandler::getModel()
 {
 	return datamodel;
@@ -143,7 +146,7 @@ void DataHandler::readDEM(const char* inputfile)
 		readdata->data.resize(getElem());
 
 		float incoord = 0;
-		
+
 		for (int i = 0; i < getElem(); i++) {
 			incoord = myStrtof(currentStr, &currentStr);
 
@@ -297,7 +300,7 @@ void DataHandler::GenerateTerrain()
 	preCalcVertexC = preCalcWidth*preCalcHeight;
 
 	GLfloat *preCalcVertexArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
-	GLfloat *preCalcNormalArray = (GLfloat *)malloc(sizeof(GLfloat) * 3 * preCalcVertexC);
+	GLfloat *preCalcNormalArray = (GLfloat *)malloc(sizeof(GLfloat) * 4 * preCalcVertexC);
 
 	for (GLuint x = 0; x < preCalcWidth; x++)
 	{
@@ -342,13 +345,13 @@ void DataHandler::GenerateTerrain()
 					vertexArray[(x + z * width) * 3 + 2] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 2];
 
 					// Texture coordinates.
-					texCoordArray[(x + z * width) * 2 + 0] = (float)x;
-					texCoordArray[(x + z * width) * 2 + 1] = (float)z;
+					texCoordArray[(x + z * width) * 2 + 0] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
+					texCoordArray[(x + z * width) * 2 + 1] = preCalcVertexArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 2];
 
 					//Insert normals from the precalculated normals.
-					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 0];
-					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 3 + 1];
-					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j) *preCalcWidth) * 3 + 2];
+					normalArray[(x + z * width) * 3 + 0] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 4 + 0];
+					normalArray[(x + z * width) * 3 + 1] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j)* preCalcWidth) * 4 + 1];
+					normalArray[(x + z * width) * 3 + 2] = preCalcNormalArray[((x + blockSize*i) + (z + blockSize*j) *preCalcWidth) * 4 + 2];
 
 				}
 			}
@@ -397,7 +400,7 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 
 	// Initialize the FBO's
 	FBOstruct *fbo4 = initFBO4(width, height, vertexArray);
-	FBOstruct *fbo5 = initFBO4(width, height, NULL);
+	FBOstruct *fbo5 = initFBO5(width, height, NULL);
 
 	// Filter original
 	useFBO(fbo5, fbo4, 0L);
@@ -414,7 +417,9 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	glDisable(GL_DEPTH_TEST);
 	DrawModel(squareModel, normalshader, "in_Position", NULL, "in_TexCoord");
 
-	glReadPixels(0, 0, width, height, GL_RGB, GL_FLOAT, normalArray);
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_FLOAT, normalArray);
+	
+	
 
 	// Reset to initial GL inits
 	useFBO(0L, 0L, 0L);
@@ -422,7 +427,11 @@ void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray
 	// Cleanup
 	glDeleteProgram(normalshader);
 	releaseFBO(fbo4); // Must be after useFBO reset or canvas size will get all weird
-	releaseFBO(fbo5);
+
+	// Save the texture id to the height and normal map of the terrain
+	terrainTexture = fbo5->texid;
+	releaseFBO2(fbo5, 1); // this does not delete the texture containing the terrain data.
+
 	releaseModel(squareModel);
 }
 
@@ -491,43 +500,59 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 //---------------------------------ACCESS POINT FOR COMPUTE SHADERS----------------------------------
 
 void DataHandler::initCompute(){
+	int i = 0;
+	  
 	computeProgram = glCreateProgram();	
+  
 	computeShader = glCreateShader(GL_COMPUTE_SHADER);
-	glShaderSource(computeShader,2,readFile("src/shader/computeShader.cs"),NULL);
-	glCompilerShader(computeShader);
+  
+	const char* cs = readFile((char *)"src/shaders/computeShader.cs");
+  
 
-	//get errors 
-	glGetShaderiv(cs, GL_COMPILE_STATUS, &rvalue);
-   	if (!rvalue) {
-        	fprintf(stderr, "Error in compiling the compute shader\n");
-        	GLchar log[10240];
-        	GLsizei length;
-        	glGetShaderInfoLog(cs, 10239, &length, log);
-        	fprintf(stderr, "Compiler log:\n%s\n", log);
-        	exit(40);
-    	}
+	if (cs == NULL){
+		printf("Error reading shader \n");
+	}
+
+	glShaderSource(computeShader,1,&cs,NULL);
+  
+	glCompileShader(computeShader);
 	
+	  
+	//get errors 
+	printError("init Compute Error 1" );
+	printShaderInfoLog(computeShader, "init Compute Error 2");	
 	glAttachShader(computeProgram,computeShader);
 	glLinkProgram(computeProgram);
 	//get errors from the program linking.
-	glGetProgramiv(progHandle, GL_LINK_STATUS, &rvalue);
-    	if (!rvalue) {
-        	fprintf(stderr, "Error in linking compute shader program\n");
-        	GLchar log[10240];
-        	GLsizei length;
-        	glGetProgramInfoLog(progHandle, 10239, &length, log);
-        	fprintf(stderr, "Linker log:\n%s\n", log);
-        	exit(41);
-    	}
-
-	 
-	//create buffers
- 	glGenBuffers(2,computeBuffers​);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[0]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(struct Data)*getDataWidth()*getDataHeight());
+	printError("init Compute Error 2" );
+	printShaderInfoLog(computeShader, "init Compute Error 2");
 	
+	  
+	//create buffers
+	glGenBuffers(4,computeBuffers);
+
+	GLint numData = ceil(getDataWidth()/16)*16*16*ceil(getDataHeight()/16);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[0]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
+
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[1]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(struct index)*(getDataWidth()-1)*(getDataHeight()-1)*2);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[2]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*2*numData,NULL,GL_STATIC_DRAW);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[3]);
+	numIndices = ceil((getDataWidth()-1)/16)*16*16*ceil((getDataHeight()-1)/16)*2;
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numIndices,NULL,GL_STATIC_DRAW);
+	  
+	glGenVertexArrays(1,&computeVAO);
+
+	
+	printError("init Compute Error" );
+	printProgramInfoLog(computeProgram, "compute Init", NULL,NULL,NULL,NULL);
+
+
+
 }
 
 
@@ -535,16 +560,16 @@ void DataHandler::initCompute(){
 void DataHandler::runCompute(){
 
 	glUseProgram(computeProgram);
-	glBindTexture(GL_TEXTURE_BUFFER,);
+	glBindTexture(GL_TEXTURE_BUFFER,terrainTexture);
+	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(glGetUniformLocation(computeProgram,"tex"),0);
-	
-	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER​, 0​, 2​, computeBuffers);
 
-
-		
+	glUniform2i(glGetUniformLocation(computeProgram,"size"),getDataWidth(),getDataHeight());
 	
-	
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,2,computeBuffers);
 
+	glDispatchCompute(ceil(getDataWidth()/16),ceil(getDataHeight()/16),1);
+	
 }
 
 

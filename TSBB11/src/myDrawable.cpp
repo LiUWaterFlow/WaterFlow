@@ -64,9 +64,10 @@ void SkyCube::draw() {
 	DrawModel(model, program, "in_Position", NULL, NULL);
 }
 
-Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, glm::vec3 scale)
+Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, GLuint texID, glm::vec3 scale)
 : myDrawable(program) {
 	model = initModel;
+	textureID = texID;
 	MTWMatrix = glm::scale(scale);
 	inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));
 
@@ -85,11 +86,75 @@ Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, glm::vec3 scale
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
 
+	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
+
 	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(MTWMatrix));
 	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
 }
 
+Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint texID, glm::vec3 scale)
+: myDrawable(program) {
+	
+	numIndices = inNumIndices;
+	textureID = texID;
+	MTWMatrix = glm::scale(scale);
+	inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));
+
+	// Initial one-time shader uploads.
+	// Light information:
+	glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
+	bool sunIsDirectional = 1;
+	float sunSpecularExponent = 50.0;
+	glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
+	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
+
+	glUseProgram(program);
+	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
+	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
+	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
+	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
+	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
+
+	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(MTWMatrix));
+	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
+	
+
+	GLint posAttrib = glGetAttribLocation(program, "in_Position");
+	GLint inNormAttrib = glGetAttribLocation(program, "in_Normal");
+	GLint inTexAttrib = glGetAttribLocation(program, "in_TexCoord");
+	//What about indices
+	
+	glGenVertexArrays(1,&computeVAO);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
+	glBindVertexArray(computeVAO);
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*8,0);
+	glEnableVertexAttribArray(inNormAttrib);
+	glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*8,(void*)(sizeof(GLfloat)*3));
+	glEnableVertexAttribArray(inTexAttrib);
+	glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*8,(void*)(sizeof(GLfloat)*6));
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
+	
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER,0);
+}
+
+
+void Terrain::drawCompute() {
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindVertexArray(computeVAO);
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
+	
+}
+
+
 void Terrain::draw() {
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	for (GLuint i = 0; i < model->size(); i++) {
 		DrawModel(model->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
 	}
