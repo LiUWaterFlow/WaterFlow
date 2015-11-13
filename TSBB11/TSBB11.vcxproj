@@ -108,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Simulation\C++\fluidsolver.h" />
-    <ClInclude Include="fluidDataStructures.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\common\GL_utilities.h" />
     <ClInclude Include="src\common\loadobj.h" />
@@ -117,6 +116,7 @@
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
     <ClInclude Include="src\common\Windows\wglew.h" />
+    <ClInclude Include="src\fluiddatastructures.h" />
     <ClInclude Include="src\readData.h" />
     <ClInclude Include="src\Voxelgrid.h" />
     <ClInclude Include="src\voxelTesting.h" />

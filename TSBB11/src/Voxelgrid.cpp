@@ -65,7 +65,7 @@ void Voxelgrid::makeSpaceForVoxel(int x, int y, int z)
 
 	//if x is not in table. Create y and z tables, resize x, and
 	//point to children (y,z);
-	if (voxels->size() < x + 1) {
+	if (voxels->size() < (unsigned int)(x + 1)) {
 		std::vector<Voxel*>* tempZ = new std::vector<Voxel*>(z + 1);
 		std::vector<std::vector<Voxel*>*>* tempY = new std::vector<std::vector<Voxel*>*>(y + 1);
 		voxels->resize(x + 1, nullptr);
@@ -76,7 +76,7 @@ void Voxelgrid::makeSpaceForVoxel(int x, int y, int z)
 	//if y is not in table. Create z table, resize y, and
 	//point to childtable z; Note that existence of y table is
 	//managed by the first part of the if-statement
-	else if (voxels->at(x) != nullptr && voxels->at(x)->size() < y + 1) {
+	else if (voxels->at(x) != nullptr && voxels->at(x)->size() < (unsigned int) (y + 1)) {
 
 		std::vector<Voxel*>* tempZ = new std::vector<Voxel*>(z + 1);
 		voxels->at(x)->resize(y + 1, nullptr);
@@ -85,7 +85,7 @@ void Voxelgrid::makeSpaceForVoxel(int x, int y, int z)
 	}
 	//if z is not large enough resize. Note that existence of z table is
 	//managed by the first two parts of the if-statement
-	else if (voxels->at(x) != nullptr &&  voxels->at(x)->at(y) != nullptr && voxels->at(x)->at(y)->size() < z + 1) {
+	else if (voxels->at(x) != nullptr &&  voxels->at(x)->at(y) != nullptr && voxels->at(x)->at(y)->size() < (unsigned int)(z + 1)) {
 		voxels->at(x)->at(y)->resize(z + 1, nullptr);
 
 	}
@@ -122,17 +122,17 @@ Voxel* Voxelgrid::getVoxel(int x,int y,int z){
   //std::cout << "Voxels at x is empty" << std::endl;
 
   //ensure table existance and table size, if either fails return nullptr.
-  if(voxels->size() < x+1 || voxels->at(x) == nullptr){
+  if(voxels->size() < (unsigned int)(x+1) || voxels->at(x) == nullptr){
     //std::cout << "In first if in get_Voxel" << std::endl;
     return nullptr;
   }
   //ensure table existance and table size, if either fails return nullptr.
-  else if(voxels->at(x)->size() < y+1 || voxels->at(x)->at(y) == nullptr){
+  else if(voxels->at(x)->size() < (unsigned int) (y+1) || voxels->at(x)->at(y) == nullptr){
     //std::cout << "In second if in get_Voxel" << std::endl;
     return nullptr;
   }
   //ensure table existance and table size, if either fails return nullptr.
-  else if(voxels->at(x)->at(y)->size() < z+1 || voxels->at(x)->at(y)->at(z) == nullptr){
+  else if(voxels->at(x)->at(y)->size() < (unsigned int) (z+1) || voxels->at(x)->at(y)->at(z) == nullptr){
     return nullptr;
   }
 
@@ -215,42 +215,43 @@ above land and have not yet been added to the queue. Before coordina are added t
 
 NeighbourVoxels Voxelgrid::getNeighbour(int x, int y, int z)
 {
+	assert((x - 1) > 0 && (y - 1) > 0 && (z - 1) > 0);
 	NeighbourVoxels vox;
-	vox.voxels[CUBEPOS::BACK_TOP_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z - 1);
-	vox.voxels[CUBEPOS::BACK_TOP_CENTER] = getGuaranteedVoxel(x, y - 1, z - 1);
-	vox.voxels[CUBEPOS::BACK_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z - 1);
+	vox.voxels[CUBEPOS::FAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z - 1);
+	vox.voxels[CUBEPOS::FAR_TOP_CENTER] = getGuaranteedVoxel(x , y + 1, z - 1);
+	vox.voxels[CUBEPOS::FAR_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z - 1);
 
-	vox.voxels[CUBEPOS::BACK_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z - 1);
-	vox.voxels[CUBEPOS::BACK_MID_CENTER] = getGuaranteedVoxel(x, y, z - 1);
-	vox.voxels[CUBEPOS::BACK_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z - 1);
+	vox.voxels[CUBEPOS::FAR_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z - 1);
+	vox.voxels[CUBEPOS::FAR_MID_CENTER] = getGuaranteedVoxel(x, y, z - 1);
+	vox.voxels[CUBEPOS::FAR_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z - 1);
 
-	vox.voxels[CUBEPOS::BACK_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z - 1);
-	vox.voxels[CUBEPOS::BACK_BOTTOM_CENTER] = getGuaranteedVoxel(x, y + 1, z - 1);
-	vox.voxels[CUBEPOS::BACK_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z - 1);
+	vox.voxels[CUBEPOS::FAR_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z - 1);
+	vox.voxels[CUBEPOS::FAR_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z - 1);
+	vox.voxels[CUBEPOS::FAR_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z - 1);
 
-	vox.voxels[CUBEPOS::CURRENT_TOP_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z);
-	vox.voxels[CUBEPOS::CURRENT_TOP_CENTER] = getGuaranteedVoxel(x, y - 1, z);
-	vox.voxels[CUBEPOS::CURRENT_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z);
+	vox.voxels[CUBEPOS::CURRENT_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z);
+	vox.voxels[CUBEPOS::CURRENT_TOP_CENTER] = getGuaranteedVoxel(x, y + 1, z);
+	vox.voxels[CUBEPOS::CURRENT_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z);
 
 	vox.voxels[CUBEPOS::CURRENT_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z);
 	vox.voxels[CUBEPOS::CURRENT_MID_CENTER] = getGuaranteedVoxel(x, y, z);
 	vox.voxels[CUBEPOS::CURRENT_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z);
 
-	vox.voxels[CUBEPOS::CURRENT_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z);
-	vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER] = getGuaranteedVoxel(x, y + 1, z);
-	vox.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z);
+	vox.voxels[CUBEPOS::CURRENT_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z);
+	vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z);
+	vox.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z);
 
-	vox.voxels[CUBEPOS::FRONT_TOP_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z + 1);
-	vox.voxels[CUBEPOS::FRONT_TOP_CENTER] = getGuaranteedVoxel(x, y - 1, z + 1);
-	vox.voxels[CUBEPOS::FRONT_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z + 1);
+	vox.voxels[CUBEPOS::NEAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z + 1);
+	vox.voxels[CUBEPOS::NEAR_TOP_CENTER] = getGuaranteedVoxel(x, y + 1, z + 1);
+	vox.voxels[CUBEPOS::NEAR_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z + 1);
 
-	vox.voxels[CUBEPOS::FRONT_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z + 1);
-	vox.voxels[CUBEPOS::FRONT_MID_CENTER] = getGuaranteedVoxel(x, y, z + 1);
-	vox.voxels[CUBEPOS::FRONT_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z + 1);
+	vox.voxels[CUBEPOS::NEAR_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z + 1);
+	vox.voxels[CUBEPOS::NEAR_MID_CENTER] = getGuaranteedVoxel(x, y, z + 1);
+	vox.voxels[CUBEPOS::NEAR_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z + 1);
 
-	vox.voxels[CUBEPOS::FRONT_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z + 1);
-	vox.voxels[CUBEPOS::FRONT_BOTTOM_CENTER] = getGuaranteedVoxel(x, y + 1, z + 1);
-	vox.voxels[CUBEPOS::FRONT_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z + 1);
+	vox.voxels[CUBEPOS::NEAR_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z + 1);
+	vox.voxels[CUBEPOS::NEAR_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z + 1);
+	vox.voxels[CUBEPOS::NEAR_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z + 1);
 
 	return vox;
 }

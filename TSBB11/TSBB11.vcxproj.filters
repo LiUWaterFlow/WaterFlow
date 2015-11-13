@@ -98,7 +98,7 @@
     <ClInclude Include="src\Voxelgrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fluidDataStructures.h">
+    <ClInclude Include="src\fluiddatastructures.h">
       <Filter>Simulation</Filter>
     </ClInclude>
   </ItemGroup>
