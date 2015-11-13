@@ -486,3 +486,78 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 	}
 	return yheight;
 }
+
+
+//---------------------------------ACCESS POINT FOR COMPUTE SHADERS----------------------------------
+
+void DataHandler::initCompute(){
+	computeProgram = glCreateProgram();	
+	computeShader = glCreateShader(GL_COMPUTE_SHADER);
+	glShaderSource(computeShader,2,readFile("src/shader/computeShader.cs"),NULL);
+	glCompilerShader(computeShader);
+
+	//get errors 
+	glGetShaderiv(cs, GL_COMPILE_STATUS, &rvalue);
+   	if (!rvalue) {
+        	fprintf(stderr, "Error in compiling the compute shader\n");
+        	GLchar log[10240];
+        	GLsizei length;
+        	glGetShaderInfoLog(cs, 10239, &length, log);
+        	fprintf(stderr, "Compiler log:\n%s\n", log);
+        	exit(40);
+    	}
+	
+	glAttachShader(computeProgram,computeShader);
+	glLinkProgram(computeProgram);
+	//get errors from the program linking.
+	glGetProgramiv(progHandle, GL_LINK_STATUS, &rvalue);
+    	if (!rvalue) {
+        	fprintf(stderr, "Error in linking compute shader program\n");
+        	GLchar log[10240];
+        	GLsizei length;
+        	glGetProgramInfoLog(progHandle, 10239, &length, log);
+        	fprintf(stderr, "Linker log:\n%s\n", log);
+        	exit(41);
+    	}
+
+	 
+	//create buffers
+ 	glGenBuffers(2,computeBuffers​);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[0]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(struct Data)*getDataWidth()*getDataHeight());
+	
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[1]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(struct index)*(getDataWidth()-1)*(getDataHeight()-1)*2);
+}
+
+
+
+void DataHandler::runCompute(){
+
+	glUseProgram(computeProgram);
+	glBindTexture(GL_TEXTURE_BUFFER,);
+	glUniform1i(glGetUniformLocation(computeProgram,"tex"),0);
+	
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER​, 0​, 2​, computeBuffers);
+
+
+		
+	
+	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

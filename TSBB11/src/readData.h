@@ -27,6 +27,24 @@ struct mapdata {
 	std::vector<float> data;	///< The terrain data is stored in a std::vector.
 };
 
+
+struct Data
+{
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 texCoord;
+	
+};
+
+struct index
+{	
+	glm::vec3 indices;
+	
+};
+
+
+
+
 /// @class DataHandler
 /// @brief Loads and modifies terrain data for easier use.
 ///
@@ -107,6 +125,9 @@ private:
 	/// @see GenerateTerrain()
 	/// @todo The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter.
 	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height);
+
+	GLuint computeShader, memoryBuffer, computeProgram;	
+	GLuint computeBuffers[2];
 
 public:
 	/// @brief Reads DEM data, scales it and generates a model.
@@ -189,6 +210,14 @@ public:
 	/// Used to get the model for drawing in the main program
 	/// @return Model to draw.
 	std::vector<Model*>* getModel();
+
+	
+	void initCompute();
+
+	void runCompute();
+
+
+
 };
 
 #endif // READDATA_H
