@@ -2,6 +2,7 @@
 /// @brief Implementations of functions in myDrawable.h
 
 #include "myDrawable.h"
+#include "GL_utilities.h"
 
 #include "Utilities.h"
 #include "LoadTGA.h"
@@ -130,13 +131,15 @@ Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint te
 	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
 	glBindVertexArray(computeVAO);
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*8,0);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
 	glEnableVertexAttribArray(inNormAttrib);
-	glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*8,(void*)(sizeof(GLfloat)*3));
+	glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[2]);	
 	glEnableVertexAttribArray(inTexAttrib);
-	glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*8,(void*)(sizeof(GLfloat)*6));
+	glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*2,0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
 	
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER,0);
@@ -144,11 +147,16 @@ Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint te
 
 
 void Terrain::drawCompute() {
+	glUseProgram(program);
+
+	printError("Error in drawCompute 1: @file myDrawable.cpp");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
+	printError("Error in drawCompute 2: @file myDrawable.cpp");
 	glBindVertexArray(computeVAO);
+	printError("Error in drawCompute 3: @file myDrawable.cpp");
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
-	
+	printError("Error in drawCompute 4: @file myDrawable.cpp");	
 }
 
 

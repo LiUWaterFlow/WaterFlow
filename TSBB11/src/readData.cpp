@@ -531,7 +531,7 @@ void DataHandler::initCompute(){
 	//create buffers
 	glGenBuffers(4,computeBuffers);
 
-	GLint numData = ceil(getDataWidth()/16)*16*16*ceil(getDataHeight()/16);
+	GLint numData = getDataWidth()*getDataHeight();
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[0]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
 
@@ -542,8 +542,8 @@ void DataHandler::initCompute(){
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*2*numData,NULL,GL_STATIC_DRAW);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[3]);
-	numIndices = ceil((getDataWidth()-1)/16)*16*16*ceil((getDataHeight()-1)/16)*2;
-	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numIndices,NULL,GL_STATIC_DRAW);
+	numIndices = (getDataWidth()-1)*(getDataHeight()-1)*2*3;
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLint)*numIndices,NULL,GL_STATIC_DRAW);
 	  
 	glGenVertexArrays(1,&computeVAO);
 
@@ -560,15 +560,30 @@ void DataHandler::initCompute(){
 void DataHandler::runCompute(){
 
 	glUseProgram(computeProgram);
-	glBindTexture(GL_TEXTURE_BUFFER,terrainTexture);
-	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(glGetUniformLocation(computeProgram,"tex"),0);
-
-	glUniform2i(glGetUniformLocation(computeProgram,"size"),getDataWidth(),getDataHeight());
 	
-	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,2,computeBuffers);
-
+	printError("run Compute Error UseProg" );
+	glBindTexture(GL_TEXTURE_2D,terrainTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	printError("run Compute Error Bind" );
+	glActiveTexture(GL_TEXTURE0);
+	printError("run Compute Error Active" );
+	glUniform1i(glGetUniformLocation(computeProgram,"tex"),0);
+	printError("run Compute Error 2" );
+	glUniform2i(glGetUniformLocation(computeProgram,"size"),getDataWidth(),getDataHeight()); // 16,16);//
+	printError("run Compute Error 3" );	
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,4,computeBuffers);
+	printError("run Compute Error 4" );
 	glDispatchCompute(ceil(getDataWidth()/16),ceil(getDataHeight()/16),1);
+	printError("run Compute Error 5" );
+
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[2]);
+	GLfloat* ptr = (GLfloat*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER,NULL,16*16*6*sizeof(GLfloat),GL_MAP_READ_BIT);
+	for(int i = 0; i < 16*3; i++){
+		printf("%f \n",ptr[i]);
+	}
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 	
 }
 
