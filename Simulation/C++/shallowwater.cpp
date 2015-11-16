@@ -1,11 +1,12 @@
 #include "iostream"
 //#include "fluidsolver.h"
+#include <iomanip> 
 
 //haxx så det funkar för tillfället
 //void *__gxx_personality_v0;
 
 //const int N=64;
-const int N=20;
+const int N=64;
 const int size=(N+2)*(N+2);
 
 
@@ -13,8 +14,9 @@ void set_bnd(int N, int b, float** x)
 {
 	int i;
 
-	for(i =1; i<=N; i++)
+	for(i =0; i<=(N+1); i++)
 	{
+	//goes on the rand!
 		//b = 1 means forces in x-axis
 		x[0][i] = 		(b == 1? -x[1][i] : x[1][i]);
 		x[N+1][i] = 		(b == 1? -x[N][i] : x[N][i]);
@@ -26,7 +28,7 @@ void set_bnd(int N, int b, float** x)
 	//x[0][0] = 		0.5f*(x[1][0] + x[0][1]);
 	//x[0][N+1] =	 	0.5f*(x[1][N+1] + x[0][N]);
 	//x[N+1][0] = 		0.5f*(x[N+1][1] + x[N][0]);
-	//x[N+1][N+1] = 		0.5f*(x[N][N+1] + x[N+1][N]);
+	//x[N+1][N+1] = 	0.5f*(x[N][N+1] + x[N+1][N]);
 
 }
 
@@ -35,7 +37,7 @@ void firsthalfstep(float** H,float** U,float** V,float** Hx,float** Ux,float** V
 	for (int i = 0; i <= N; i++){
 		for (int j = 0; j <= (N-1); j++){
 			Hx[i][j] = (H[i+1][j+1] + H[i][j+1])/2 - dt/(2*dx)*(U[i+1][j+1] - U[i][j+1]);
-			Ux[i][j] = (U[i+1][j+1] + U[i][j+1])/2 - dt/(2*dx)*((U[i+1][j+1]*U[i+1][j+1])/H[i+1][j+1] + g/2*(H[i+1][j+1]*H[i+1][j+1])) - (U[i][j+1]*U[i][j+1])/H[i][j+1] + g/2*(H[i][j+1]*H[i][j+1]);
+			Ux[i][j] = (U[i+1][j+1] + U[i][j+1])/2 - dt/(2*dx)*((U[i+1][j+1]*U[i+1][j+1]/H[i+1][j+1] + g/2*H[i+1][j+1]*H[i+1][j+1]) - (U[i][j+1]*U[i][j+1]/H[i][j+1] + g/2*H[i][j+1]*H[i][j+1]));
 			Vx[i][j] = (V[i+1][j+1] + V[i][j+1])/2 - dt/(2*dx)*((U[i+1][j+1]*V[i+1][j+1]/H[i+1][j+1]) - (U[i][j+1]*V[i][j+1]/H[i][j+1]));
 		}
 	}
@@ -84,7 +86,7 @@ void print(int N, float** v)
 	{
 		for(int x = 1; x <= N; x++)
 		{
-			std::cout << v[x][y] << " ";
+			std::cout << std::fixed << std::setprecision(3) << v[x][y] << " ";
 		}
 		std::cout << "\n";
 	}
@@ -119,10 +121,12 @@ void oneArray(const int N, float** x)
 	}
 
 	
-/*
+
 
 	//droppe
 
+	x[3][3]=1.5f;
+/*
 	x[8][5]=1.1f;
 	x[9][4]=1.1f;
 	x[9][5]=1.3f;
@@ -137,24 +141,26 @@ void oneArray(const int N, float** x)
 	x[11][6]=1.1f;
 	x[12][5]=1.1f;
 */
+/*
 	//dambreak
 	for(int i = 0; i <= (N-14); i++)
 	{
 		for(int j = 0; j <= (N+1); j++)
 		{
 
-			x[i][j] = 5.0f; //high value doesnt work well e.g. dam break
+			x[i][j] = 1.5f; //high value doesnt work well e.g. dam break
 			
 		}
 	}
-
+*/
 }
+
 
 int main()
 {
 
-	//int N = 64;
-	int N = 20;
+	int N = 64;
+	//int N = 20;
 	float g = 9.8f;
 	float dt = 0.01f;
 	float dx = 1.0f;
@@ -218,7 +224,7 @@ int main()
 
 	print(N,H);
 
-	for(int i=0; i<= 20; i++)
+	for(int i=0; i<= 1000; i++)
 	{
 		
 	set_bnd(N,0,H);
@@ -227,10 +233,28 @@ int main()
 
 	firsthalfstep(H,U,V,Hx,Ux,Vx,Hy,Uy,Vy,dt,dx,dy,g,N);
 	secondhalfstep(H,U,V,Hx,Ux,Vx,Hy,Uy,Vy,dt,dx,dy,g,N);
-
-	print(N,H);
-
+/*	
+	if (i==10)
+	{
+		H[10][10]=2.0f;	
 	}
+
+
+	std::cout << "Printing H:" << std::endl;
+	print(N,H);
+	std::cout << "Printing U:" << std::endl;
+	print(N,U);
+	std::cout << "Printing Ux:" << std::endl;
+	print(N,Ux);	
+	std::cout << "Printing V:" << std::endl;
+	print(N,V);	
+	std::cout << "Printing Vy:" << std::endl;
+	print(N,Vy);	
+*/
+	}
+
+	std::cout << "Printing H:" << std::endl;
+	print(N,H);
 	
 	for (int i = 0; i < (N+2); i++){
 		delete [] H[i];
