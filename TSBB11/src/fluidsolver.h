@@ -5,7 +5,7 @@
 #include <vector>
 #include <assert.h>
 #include "fluiddatastructures.h"
-#include "voxelgrid.h"
+#include "grid.h"
 
 #ifndef LIN_SOLVE
 #define LIN_SOLVE 20
