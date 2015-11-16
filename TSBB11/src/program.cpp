@@ -85,6 +85,9 @@ bool Program::init() {
 	// Load terrain data
 	dataHandler = new DataHandler("resources/output.min.asc", 1);
 
+	// Create the shallowWater simulator
+	shallow = new shallowWater(9);
+	
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
@@ -131,6 +134,10 @@ void Program::timeUpdate() {
 void Program::update() {
 	// Update the tweak bar
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
+
+	// Run simulation one step and print
+	shallow->run();
+	shallow->printH();
 }
 
 void Program::display() {

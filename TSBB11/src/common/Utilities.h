@@ -3,11 +3,11 @@
 
 #ifndef UTILITIES_H
 #define UTILITIES_H
-
+/*
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+*/
 
 #include "loadobj.h"
 
@@ -39,10 +39,17 @@ void releaseModel(Model* m);
 /// @return A float value read from the string.
 float myStrtof(char* strStart, char** strEnd);
 
+
+float sumArray(int N, float** v);
+void print(int N, float** v);
+void zeroArray(const int N, float** x);
+void oneArray(const int N, float** x);
+
+/*
 #ifdef __cplusplus
 }
 #endif
-
+*/
 
 
 #endif // UTILITIES_H

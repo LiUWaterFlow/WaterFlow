@@ -292,11 +292,12 @@
     <ClCompile Include="src\common\GL_utilities.c" />
     <ClCompile Include="src\common\loadobj.c" />
     <ClCompile Include="src\common\LoadTGA.c" />
-    <ClCompile Include="src\common\Utilities.c" />
+    <ClCompile Include="src\common\Utilities.cpp" />
     <ClCompile Include="src\common\Windows\glew.c" />
     <ClCompile Include="src\myDrawable.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\shallowWater.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -311,6 +312,7 @@
     <ClInclude Include="src\myDrawable.h" />
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\shallowWater.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />

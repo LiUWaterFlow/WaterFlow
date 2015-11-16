@@ -24,6 +24,7 @@
 #include "camera.h"
 #include "readData.h"
 #include "myDrawable.h"
+#include "shallowWater.h"
 
 #include "AntTweakBar.h"
 
@@ -52,6 +53,9 @@ private:
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;
+
+	// ShallowWater simulation
+	shallowWater* shallow;
 
 	// References to shader programs:
 	GLuint terrainshader, skyshader;
