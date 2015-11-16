@@ -93,7 +93,7 @@ namespace voxelTest{
 
 
 
-	  size_t count = 350;
+	  size_t count = 250;
 	  size_t end = 0;
 	  bool testHash = !true;
 	  bool randomRead = !true;
@@ -226,11 +226,6 @@ namespace voxelTest{
     plsWait();
     //Read some voxels that doesn't exist
 
-
-  }
-
-  void fluidTest()
-  {
 
   }
 

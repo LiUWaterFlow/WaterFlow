@@ -1,11 +1,11 @@
 #ifndef FLUIDSOLVER_H
 #define FLUIDSOLVER_H
 
-#include "../../TSBB11/src/common/glm/glm.hpp"
+#include "glm.hpp"
 #include <vector>
 #include <assert.h>
-#include "../../TSBB11/src/fluidDataStructures.h"
-#include "../../TSBB11/src/Voxelgrid.h"
+#include "fluiddatastructures.h"
+#include "voxelgrid.h"
 
 #ifndef LIN_SOLVE
 #define LIN_SOLVE 20
@@ -17,13 +17,13 @@ class Grid
 public:
 	Grid()
 	{
-		m_grid = new Voxel**[m_size+2];
+		m_grid = new voxel**[m_size+2];
 		for (unsigned int i = 0; i < m_size+2; i++)
 		{
-			m_grid[i] = new Voxel*[m_size+2];
+			m_grid[i] = new voxel*[m_size+2];
 			for (unsigned int j = 0; j < m_size+2; j++)
 			{
-				m_grid[i][j] = new Voxel[m_size+2];
+				m_grid[i][j] = new voxel[m_size+2];
 			}
 		}
 	}
@@ -40,19 +40,19 @@ public:
 		delete [] m_grid;
 	}
 
-	std::vector<Voxel*> getBorderTop() { std::vector<Voxel*> temp; return temp; }
-	std::vector<Voxel*> getBorderBottom() { std::vector<Voxel*> temp; return temp; }
-	std::vector<Voxel*> getBorderLeft() { std::vector<Voxel*> temp; return temp; }
-	std::vector<Voxel*> getBorderRight() { std::vector<Voxel*> temp; return temp; }
-	std::vector<Voxel*> getBorderFront() { std::vector<Voxel*> temp; return temp; }
-	std::vector<Voxel*> getBorderBack() { std::vector<Voxel*> temp; return temp; }
+	std::vector<voxel*> getBorderTop() { std::vector<voxel*> temp; return temp; }
+	std::vector<voxel*> getBorderBottom() { std::vector<voxel*> temp; return temp; }
+	std::vector<voxel*> getBorderLeft() { std::vector<voxel*> temp; return temp; }
+	std::vector<voxel*> getBorderRight() { std::vector<voxel*> temp; return temp; }
+	std::vector<voxel*> getBorderFront() { std::vector<voxel*> temp; return temp; }
+	std::vector<voxel*> getBorderBack() { std::vector<voxel*> temp; return temp; }
 
-	Voxel* getVoxel(unsigned int x,unsigned int y,unsigned int z)
+	voxel* getVoxel(unsigned int x,unsigned int y,unsigned int z)
 	{
 		return &m_grid[x][y][z];
 	}
 
-	Voxel* getVoxel(glm::ivec3 xyz)
+	voxel* getVoxel(glm::ivec3 xyz)
 	{
 		return &m_grid[xyz.x][xyz.y][xyz.z];
 	}
@@ -99,12 +99,12 @@ public:
 		return vox;
 	}
 
-	NeighbourVoxels getNeighbour(Voxel* it) { return NeighbourVoxels(); }
+	NeighbourVoxels getNeighbour(voxel* it) { return NeighbourVoxels(); }
 	unsigned int XLength;
 	unsigned int YLength;
 	unsigned int ZLength;
 private:
-	Voxel*** m_grid;
+	voxel*** m_grid;
 	unsigned int m_size;
 };
 */
@@ -129,8 +129,8 @@ private:
 	void advect_velocity(float dt);
 	void advect_density(float dt);
 	void advect_core_function(float someconstant, glm::ivec3 &prev_gridPosition, glm::ivec3 gridPosition, glm::vec3 &pointPosition, const glm::vec3& midVelocity);
-	void advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
-	void advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox);
+	void advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, voxel* currentVox);
+	void advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, voxel* currentVox);
 
 	template <typename T>
 	void advect_helper(glm::vec3 point_position, glm::vec3 prev_grid_position,

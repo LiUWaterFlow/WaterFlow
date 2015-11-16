@@ -9,7 +9,7 @@
 
 
 /*Linjearly solves (with the help of looping through all points and forcing boundries) the probelm Ax = b
- *Here A is c_left, c_right, c_above, c_below, c_near, c_far, That is the components we can reach from each Voxel
+ *Here A is c_left, c_right, c_above, c_below, c_near, c_far, That is the components we can reach from each voxel
  *b in this case is the previous value we have avaiable.
  *x is the current value at the center
  */
@@ -87,7 +87,7 @@ void FluidSolver::diffuse_one_velocity(float constantData, NeighbourVoxels& vox)
 			vox.voxels[CUBEPOS::NEAR_MID_CENTER]->prev_velocity)
 		) / (1 + 6 * constantData);
 		*/
-};
+}
 
 void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
 {
@@ -112,7 +112,7 @@ void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
 			vox.voxels[CUBEPOS::NEAR_MID_CENTER]->prev_density)
 		) / (1 + 6 * constantData);
 		*/
-};
+}
 
 void FluidSolver::diffuse_velocity(float dt)
 {
@@ -128,7 +128,7 @@ void FluidSolver::diffuse_velocity(float dt)
 		//set bounds for velocity
 		force_boundries_velocity();
 	} //end of Lin solver
-};
+}
 
 void FluidSolver::diffuse_density(float dt)
 {
@@ -144,13 +144,13 @@ void FluidSolver::diffuse_density(float dt)
 		//set bounds for density
 		force_boundries_density();
 	} //end of lin solver
-};
+}
 
 //Advect moves stuff around in the system
 void FluidSolver::advect_velocity(float dt)
 {
 	float someconstant = dt;
-	Voxel* temp;
+	voxel* temp;
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
 	//not including borders
@@ -159,12 +159,12 @@ void FluidSolver::advect_velocity(float dt)
 		advect_core_function(someconstant, prev_gridPosition, glm::ivec3(x, y, z), pointPosition, temp->velocity);
 		advect_one_velocity(someconstant, prev_gridPosition, pointPosition, temp);
 	END_PER_CELL	
-};
+}
 
 void FluidSolver::advect_density(float dt)
 {
 	float someconstant = dt;
-	Voxel* temp;
+	voxel* temp;
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
 	//not including borders
@@ -173,7 +173,7 @@ void FluidSolver::advect_density(float dt)
 		advect_core_function(someconstant, prev_gridPosition, glm::vec3(x, y, z), pointPosition, temp->velocity);
 		advect_one_density(someconstant, prev_gridPosition, pointPosition, temp);
 	END_PER_CELL
-};
+}
 
 void FluidSolver::advect_core_function(float someconstant, glm::ivec3 &prev_gridPosition, glm::ivec3 gridPosition, glm::vec3 &pointPosition, const glm::vec3 &midVelocity)
 {
@@ -200,9 +200,9 @@ void FluidSolver::advect_core_function(float someconstant, glm::ivec3 &prev_grid
 	}
 	//finding the previous position on the grid by clamping it to integers
 	prev_gridPosition = glm::floor(pointPosition);
-};
+}
 
-void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
+void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
 	//pick out how far away from the voxel we stand in to the point
@@ -248,9 +248,9 @@ void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_p
 				+
 				t1*origintemp.voxels[CUBEPOS::NEAR_BOTTOM_RIGHT]->prev_velocity));
 				*/
-};
+}
 
-void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
+void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
 	//pick out how far away from the voxel we stand in to the point
@@ -295,7 +295,7 @@ void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_po
 				+
 				t1*origintemp.voxels[CUBEPOS::NEAR_BOTTOM_RIGHT]->prev_density));
 				*/
-};
+}
 
 void FluidSolver::project_velocity(float dt)
 {
@@ -339,7 +339,7 @@ void FluidSolver::project_velocity(float dt)
 	END_PER_CELL
 	//force boundries for velocity
 	force_boundries_velocity();
-};
+}
 
 //need to check how we define max sizes
 void FluidSolver::force_boundries_velocity()
