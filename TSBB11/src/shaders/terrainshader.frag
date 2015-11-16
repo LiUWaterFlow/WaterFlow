@@ -1,7 +1,7 @@
 #version 150
 
 in vec3 out_Normal;
-in vec2 out_TexCoord;
+in vec2 out_TexCoord;// not currently used
 in vec3 out_ObjPos;
 
 out vec4 out_Color;
@@ -29,12 +29,6 @@ vec3 totalLight;	// Totalt ljus.
 
 void main(void)
 {
-	// --- Phong stuff ---
-	// --- FIXA ---
-	//isDirectional = 1;
-	//lightSourceColor = vec3(1.0, 1.0, 1.0);
-	//specularExponent = 25.0;
-	// ------------
 	// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.
 	s = normalize(vec3(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z) - (1 - isDirectional) * out_ObjPos);
 	r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
@@ -60,5 +54,5 @@ void main(void)
 	totalLight += diffLight;
 	totalLight += specLight;
 
-	out_Color = vec4(totalLight, 1);
+	out_Color = vec4(totalLight+0.000001*out_TexCoord.s, 1);
 }

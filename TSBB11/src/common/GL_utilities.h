@@ -21,6 +21,7 @@ extern "C" {
 	#endif
 #endif
 
+char* readFile(const char *file);
 void printError(const char *functionName);
 GLuint loadShaders(const char *vertFileName, const char *fragFileName);
 GLuint loadShadersG(const char *vertFileName, const char *fragFileName, const char *geomFileName);

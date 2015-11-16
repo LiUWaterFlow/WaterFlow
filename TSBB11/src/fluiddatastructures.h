@@ -3,7 +3,7 @@
 #define FLUIDDATASTRUCTURES
 
 #include <vector>
-#include "common\glm\vec3.hpp"
+#include "glm.hpp"
 
 enum CUBEPOS {
 	FAR_TOP_LEFT, FAR_TOP_CENTER, FAR_TOP_RIGHT,
@@ -19,10 +19,10 @@ enum CUBEPOS {
 // along x-axis: LEFT-CENTER-RIGHT along y-axis: TOP-MID-BOTTOM along z-axis: FAR-CURRENT-NEAR
 
 //the voxels
-struct Voxel
+struct voxel
 {
-	Voxel() : density(0), prev_density(0), preassure(0), velocity(glm::vec3(0)), prev_velocity(glm::vec3(0)), viscosity(1.0f), diffuse(1.0f){};
-	~Voxel() {};
+	voxel() : density(0), prev_density(0), preassure(0), velocity(glm::vec3(0)), prev_velocity(glm::vec3(0)), viscosity(1.0f), diffuse(1.0f){};
+	~voxel() {};
 
 	float density;
 	float prev_density;
@@ -31,6 +31,13 @@ struct Voxel
 	float preassure;
 	glm::vec3 velocity;
 	glm::vec3 prev_velocity;
+
+	int16_t x;
+	int16_t y;
+	int16_t z;
+	bool filled;
+	float a;
+	float b;
 
 	const float viscosity;
 	const float diffuse;
@@ -44,7 +51,7 @@ struct NeighbourVoxels
 		voxels.erase(voxels.cbegin(), voxels.cend());
 	};
 
-	std::vector<Voxel*> voxels;
+	std::vector<voxel*> voxels;
 };
 
 #endif

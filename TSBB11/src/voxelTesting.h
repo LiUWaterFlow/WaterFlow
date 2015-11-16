@@ -19,7 +19,7 @@ namespace voxelTest{
 
 
   //Public loose functions in the testing namespace.
-  void mainTest(VoxelTest*);
+  void mainTest(DataHandler* data);
 }
 
 
