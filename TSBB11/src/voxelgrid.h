@@ -75,10 +75,15 @@ private:
 
 public:
 
+	Voxelgrid() { this->voxels = new std::vector<std::vector<std::vector<voxel*>*>*>; };
   int64_t hashSize; ///< size of the hash table
 
   GLuint numInTable = 0; ///< How many elements there are in the hashTable.
   GLuint numCollisions = 0; ///< How many collisions presently
+
+  unsigned int getXMaxSize() { return 10; };
+  unsigned int getYMaxSize() { return 10; };
+  unsigned int getZMaxSize() { return 10; };
 
   /// @brief Constructs an empty voxel grid
   ///

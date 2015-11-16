@@ -9,7 +9,7 @@
 
 
 /*Linjearly solves (with the help of looping through all points and forcing boundries) the probelm Ax = b
- *Here A is c_left, c_right, c_above, c_below, c_near, c_far, That is the components we can reach from each Voxel
+ *Here A is c_left, c_right, c_above, c_below, c_near, c_far, That is the components we can reach from each voxel
  *b in this case is the previous value we have avaiable.
  *x is the current value at the center
  */
@@ -150,7 +150,7 @@ void FluidSolver::diffuse_density(float dt)
 void FluidSolver::advect_velocity(float dt)
 {
 	float someconstant = dt;
-	Voxel* temp;
+	voxel* temp;
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
 	//not including borders
@@ -164,7 +164,7 @@ void FluidSolver::advect_velocity(float dt)
 void FluidSolver::advect_density(float dt)
 {
 	float someconstant = dt;
-	Voxel* temp;
+	voxel* temp;
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
 	//not including borders
@@ -202,7 +202,7 @@ void FluidSolver::advect_core_function(float someconstant, glm::ivec3 &prev_grid
 	prev_gridPosition = glm::floor(pointPosition);
 };
 
-void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
+void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
 	//pick out how far away from the voxel we stand in to the point
@@ -250,7 +250,7 @@ void FluidSolver::advect_one_velocity(float constantData, glm::ivec3 prev_grid_p
 				*/
 };
 
-void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, Voxel* currentVox)
+void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_position, glm::vec3 point_position, voxel* currentVox)
 {
 	NeighbourVoxels origintemp = m_grid.getNeighbour(prev_grid_position.x, prev_grid_position.y, prev_grid_position.z);
 	//pick out how far away from the voxel we stand in to the point
