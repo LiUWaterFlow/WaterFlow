@@ -24,7 +24,7 @@
 #include "camera.h"
 #include "readData.h"
 #include "myDrawable.h"
-#include "voxelgrid.h"
+#include "grid.h"
 
 #include "AntTweakBar.h"
 

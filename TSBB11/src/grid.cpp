@@ -1,5 +1,5 @@
 
-#include "voxelgrid.h"
+#include "grid.h"
 #include "GL_utilities.h"
 
 #include <iostream>
