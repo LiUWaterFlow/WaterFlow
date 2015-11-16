@@ -18,10 +18,19 @@ enum CUBEPOS {
 };
 // along x-axis: LEFT-CENTER-RIGHT along y-axis: TOP-MID-BOTTOM along z-axis: FAR-CURRENT-NEAR
 
+struct Fluid
+{
+	Fluid(float visc = 1.0f, float diff = 1.0f): viscosity(visc), diffuse(diff) {};
+
+	const float viscosity;
+	const float diffuse;
+};
+
 //the voxels
 struct voxel
 {
-	voxel() : density(0), prev_density(0), preassure(0), velocity(glm::vec3(0)), prev_velocity(glm::vec3(0)), viscosity(1.0f), diffuse(1.0f){};
+	voxel() : density(0), prev_density(0), preassure(0), velocity(glm::vec3(0)), prev_velocity(glm::vec3(0)),
+		sizeX(1.0f), sizeY(1.0f), sizeZ(1.0f) {};
 	~voxel() {};
 
 	float density;
@@ -39,8 +48,9 @@ struct voxel
 	float a;
 	float b;
 
-	const float viscosity;
-	const float diffuse;
+	float sizeX;
+	float sizeY;
+	float sizeZ;
 };
 
 

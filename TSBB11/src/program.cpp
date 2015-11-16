@@ -47,7 +47,7 @@ int Program::exec() {
 int Program::runFluid(){
 	if (!init()) return -1;
 	
-	FluidSolver f = FluidSolver();
+	FluidSolver f = FluidSolver(voxs);
 	//send voxs as a pointer to FluidSolver.
 	
 	//f.dens_step(0.05);
