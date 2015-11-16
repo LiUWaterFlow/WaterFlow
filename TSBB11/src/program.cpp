@@ -7,6 +7,7 @@
 #include "voxelTesting.h"
 #include "gtc/type_ptr.hpp"
 #include <iostream>
+#include "fluidsolver.h"
 
 Program::Program() {
 	screenW = 800;
@@ -43,12 +44,24 @@ int Program::exec() {
 	return 0;
 }
 
+int Program::runFluid(){
+	if (!init()) return -1;
+	
+	FluidSolver f = FluidSolver();
+	//send voxs as a pointer to FluidSolver.
+	
+	//f.dens_step(0.05);
+	//f.velocity_step(0.02);
+	return 0;
+}
+
+
 int Program::testVoxels() {
 
 	if (!init()) return -1;
 	SDL_SetRelativeMouseMode(SDL_FALSE);
 	voxelTest::mainTest(dataHandler);
-
+	return 0;
 }
 
 bool Program::init() {

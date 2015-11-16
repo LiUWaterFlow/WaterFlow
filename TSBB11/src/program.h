@@ -67,6 +67,7 @@ public:
 	int exec();
 
 	int testVoxels();
+	int runFluid();
 
 	bool init();
 

@@ -1,11 +1,11 @@
 #ifndef FLUIDSOLVER_H
 #define FLUIDSOLVER_H
 
-#include "../../TSBB11/src/common/glm/glm.hpp"
+#include "glm.hpp"
 #include <vector>
 #include <assert.h>
-#include "../../TSBB11/src/fluidDataStructures.h"
-#include "../../TSBB11/src/Voxelgrid.h"
+#include "fluiddatastructures.h"
+#include "voxelgrid.h"
 
 #ifndef LIN_SOLVE
 #define LIN_SOLVE 20

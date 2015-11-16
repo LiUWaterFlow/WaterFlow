@@ -48,7 +48,7 @@ struct NeighbourVoxels
 {
 	NeighbourVoxels() {};
 	~NeighbourVoxels() {
-		voxels.erase(voxels.cbegin(), voxels.cend());
+		//voxels.erase(voxels.cbegin(), voxels.cend());
 	};
 
 	std::vector<voxel*> voxels;
