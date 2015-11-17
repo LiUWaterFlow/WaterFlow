@@ -1,31 +1,61 @@
 #include "heightField.h"
 #include "GL_utilities.h"
+#include <algorithm>
 
 void HeightField::initTest(){
-  for (size_t i = 1; i < 99; i++) {
-    for (size_t j = 1; j < 99; j++) {
-      u[i][j] = 0;
+  for (size_t i = 0; i < width; i++) {
+    for (size_t j = 0; j < height; j++) {
+      u[i][j] =terr->giveHeight(i*samp,j*samp)-1;
       v[i][j] = 0;
     }
   }
+  for (int j = 25; j < 75; j++){
+	for (int i = 25; i <75 ; i++) {
+	  u[i][j] = u[i][j] + 25;
+	}
+  }
+}
 
-  u[50][50] = 0.3;
+int clip(int n, int lower, int upper) {
+	return std::max(lower, std::min(n, upper));
+}
+
+GLfloat HeightField::getHeight(int i, int j,GLfloat ourHeight) {
+		i = clip(i, 0, width-1);
+		j = clip(j, 0, height-1);
+		if (abs(u[i][j] - terr->giveHeight(i*samp, j*samp)) < 1.0f) {
+			return ourHeight; 
+		}
+		return u[i][j];
+	
 }
 
 void HeightField::updateSim(){
-  GLfloat c2 = 0.99;
+//  GLfloat c2 = 0.99;
   GLfloat h2 = 4;
-  GLfloat dt = 1.0f/60.0f;
-  for (size_t i = 1; i < 99; i++) {
-    for (size_t j = 1; j < 99; j++) {
-      GLfloat f = c2 * (u[i-1][j]+u[i-1][j]+u[i][j-1]+u[i][j+1]-4*u[i][j])/h2;
-      v[i][j] = v[i][j] + f*dt;
-      unew[i][j] = u[i][j]+ v[i][j]*dt;
-    }
+  GLfloat dt = 1.0f/ 200.0f;
+  GLfloat c2 =  h2 / (dt);
+  c2 = 0.99;
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+
+		GLfloat height_east = getHeight((i+1) , j, u[i][j]);// u[std::min(i + 1, width)][j];
+		GLfloat height_west = getHeight((i-1), j, u[i][j]);// u[std::max(i-1,0)][j];
+		GLfloat height_south = getHeight(i, (j-1), u[i][j]);// u[i][std::max(j -1,0)];
+		GLfloat height_north = getHeight(i, (j+1), u[i][j]);// u[i][std::min(j + 1, height)];
+		/*
+		GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * u[i][j]) / h2;
+		v[i][j] = v[i][j] + f*dt;
+		unew[i][j] = u[i][j] + v[i][j] * dt;
+		*/
+		
+		unew[i][j] = u[i][j] + ((height_west + height_east + height_south + height_north) / 4 - u[i][j]) * c2;
+	
+	}
   }
 
-  for (size_t i = 1; i < 99; i++) {
-    for (size_t j = 1; j < 99; j++) {
+  for (size_t i = 0; i < width; i++) {
+    for (size_t j = 0; j < height; j++) {
       u[i][j] = unew[i][j];
     }
   }
@@ -38,11 +68,13 @@ void HeightField::render(){
 std::vector<GLuint> *HeightField::getVoxelPositions() {
   std::vector<GLuint> *positions = new std::vector<GLuint>;
 
-  for (size_t i = 0; i < 100; i++) {
-    for (size_t j = 0; j < 100; j++) {
-      positions->push_back(i);
-      positions->push_back(u[i][j]);
-      positions->push_back(j);
+  for (size_t i = 0; i < width; i++) {
+    for (size_t j = 0; j < height; j++) {
+		if (round(u[i][j]) > terr->giveHeight(i,j) ){
+      positions->push_back(i*samp);
+      positions->push_back(round(u[i][j]));
+      positions->push_back(j*samp);
+		}
     }
   }
   return positions;
@@ -71,6 +103,8 @@ void HeightField::initDraw() {
 }
 
 void HeightField::updateVoxelrender() {
+	voxelPositions->clear();
+	delete voxelPositions;
   voxelPositions = getVoxelPositions();
   numVoxels = voxelPositions->size() / 3;
 

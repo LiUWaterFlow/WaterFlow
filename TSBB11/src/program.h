@@ -37,6 +37,7 @@ private:
 	int screenW, screenH;
 
 	bool isRunning;
+
 	bool mouseHidden;
 
 	// Time variables
@@ -67,6 +68,7 @@ private:
 	Camera* cam;
 
 public:
+
 	int exec();
 
 	int testVoxels();

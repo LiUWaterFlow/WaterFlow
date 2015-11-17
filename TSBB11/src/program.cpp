@@ -8,6 +8,9 @@
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
+
+bool updateRender;
+
 Program::Program() {
 	screenW = 800;
 	screenH = 800;
@@ -53,6 +56,7 @@ int Program::testVoxels() {
 
 bool Program::init() {
 	// SDL, glew and OpenGL init
+	updateRender = false;
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		fprintf(stderr, "Failed to initialise SDL: %s", SDL_GetError());
@@ -99,7 +103,7 @@ bool Program::init() {
 	//voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
 	//voxs->initDraw();
 
-	hf = new HeightField();
+	hf = new HeightField(dataHandler);
 	hf->initDraw();
 	hf->initTest();
 
@@ -173,12 +177,19 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
-	//terrain->draw();
+	terrain->draw();
 
 	//Voxel draws,
+	if (updateRender) {
+		for (size_t i = 0; i < 50; i++)
+		{
 
-	hf->updateSim();
-	hf->render();
+			hf->updateSim();
+		}
+		updateRender = false;
+
+		hf->render();
+	}
 	hf->drawVoxels(*cam->getVTP(),*cam->getWTV());
 
 	// ====================== Draw AntBar ===========================
@@ -304,4 +315,7 @@ void Program::checkKeys() {
 		cam->jump(-deltaTime);
 	}else if (keystate[SDL_SCANCODE_T]) {
 		hf->initTest();}
+	else if (keystate[SDL_SCANCODE_U]) {
+		updateRender = true;
+	}
 }

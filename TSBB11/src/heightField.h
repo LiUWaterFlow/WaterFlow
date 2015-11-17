@@ -12,17 +12,19 @@ private:
   GLuint voxelShader; ///< Shader program.
   GLuint voxelBuffer, voxelVAO; ///< Buffers and VAOs.
 
-  DataHandler* dataHandler;
-  GLfloat u[100][100];
-  GLfloat unew[100][100];
-  GLfloat v[100][100];
-  int width;
-  int height;
+  const static int width = 1000;
+  const static int height = 1000;
+
+  DataHandler* terr;
+  GLfloat u[width][height];
+  GLfloat unew[width][height];
+  GLfloat v[width][height];
   std::vector<GLuint>* voxelPositions;
+  GLint samp = 1; 
 
 
 public:
-  HeightField(){};
+	HeightField(DataHandler *t) { terr = t; };
   void updateSim();
   void render();
   void initDraw();
@@ -30,6 +32,7 @@ public:
   void updateVoxelrender();
   void drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
   std::vector<GLuint>* getVoxelPositions();
+  GLfloat getHeight(int i ,int j, GLfloat ourHeight);
 };
 
 
