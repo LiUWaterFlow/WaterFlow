@@ -56,17 +56,14 @@ void FluidSolver::dens_step(float dt)
 
 void FluidSolver::velocity_step(float dt)
 {
-	diffuse_velocity(dt);
-	project_velocity(dt);
-
-	//self advect
 	advect_velocity(dt);
+	diffuse_velocity(dt);
 	project_velocity(dt);
 }
 
 void FluidSolver::diffuse_one_velocity(float constantData, NeighbourVoxels& vox)
 {
-	//constantData =  a=dt*diff*N*N*N;
+	//constantData = dt*diff*N*N*N;
 	linjear_solve_helper(constantData, vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity,
 		vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_velocity,
 		vox.voxels[CUBEPOS::CURRENT_MID_LEFT]->prev_velocity,
@@ -79,7 +76,7 @@ void FluidSolver::diffuse_one_velocity(float constantData, NeighbourVoxels& vox)
 
 void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
 {
-	//constantData =  a=dt*diff*N*N*N;
+	//constantData = dt*diff*N*N*N;
 	linjear_solve_helper(constantData, vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->density,
 		vox.voxels[CUBEPOS::CURRENT_MID_CENTER]->prev_density,
 		vox.voxels[CUBEPOS::CURRENT_MID_LEFT]->prev_density,
@@ -93,7 +90,8 @@ void FluidSolver::diffuse_one_density(float constantData, NeighbourVoxels& vox)
 
 void FluidSolver::diffuse_velocity(float dt)
 {
-	float someconstant = dt;  // 
+	float N = m_grid->getVoxelSize();
+	float someconstant = dt*diffuse*N*N*N; 
 	NeighbourVoxels temp;
 	//not including borders
 	for (unsigned int k = 0; k < LIN_SOLVE; k++)
@@ -109,7 +107,8 @@ void FluidSolver::diffuse_velocity(float dt)
 
 void FluidSolver::diffuse_density(float dt)
 {
-	float someconstant = dt;  // 
+	float N = m_grid->getVoxelSize();
+	float someconstant = dt*diffuse*N*N*N;
 	NeighbourVoxels temp;
 	//not including borders
 	for (unsigned int k = 0; k < LIN_SOLVE; k++)
@@ -126,7 +125,8 @@ void FluidSolver::diffuse_density(float dt)
 //Advect moves stuff around in the system
 void FluidSolver::advect_velocity(float dt)
 {
-	float someconstant = dt;
+	float N = m_grid->getVoxelSize();
+	float someconstant = dt*diffuse*N*N*N;
 	voxel* temp;
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
@@ -140,7 +140,7 @@ void FluidSolver::advect_velocity(float dt)
 
 void FluidSolver::advect_density(float dt)
 {
-	float someconstant = dt;
+	float someconstant = dt*m_grid->getVoxelSize();
 	voxel* temp;
 	glm::ivec3 prev_gridPosition;
 	glm::vec3 pointPosition;
@@ -218,13 +218,15 @@ void FluidSolver::advect_one_density(float constantData, glm::ivec3 prev_grid_po
 void FluidSolver::project_velocity(float dt)
 {
 	NeighbourVoxels temp;
+	float size_of_voxel = 1 / m_grid->getVoxelSize();
 	BEGIN_PER_CELL
 		temp = m_grid->getNeighbour(x, y, z);
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->divergence = -0.5f*(
-			temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->velocity.x - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->velocity.x
-			+ temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->velocity.y - temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y
-			+ temp.voxels[CUBEPOS::NEAR_MID_CENTER]->velocity.z - temp.voxels[CUBEPOS::FAR_MID_CENTER]->velocity.z); /* /N */
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = 0.0f;
+	temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->divergence = -0.5f*(
+		temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->velocity.x - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->velocity.x
+		+ temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->velocity.y - temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->velocity.y
+		+ temp.voxels[CUBEPOS::NEAR_MID_CENTER]->velocity.z - temp.voxels[CUBEPOS::FAR_MID_CENTER]->velocity.z) * size_of_voxel;
+	
+	temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->preassure = 0.0f;
 	END_PER_CELL
 	//force boundries for divergence
 	force_boundries_divergence();
@@ -248,12 +250,14 @@ void FluidSolver::project_velocity(float dt)
 
 	BEGIN_PER_CELL
 		temp = m_grid->getNeighbour(x, y, z);
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x -= 0.5f*(
-			temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure); /* /N */
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y -= 0.5f*(
-			temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure - temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure); /* /N */
-		temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z -= 0.5f*(
-			temp.voxels[CUBEPOS::FAR_MID_CENTER]->preassure - temp.voxels[CUBEPOS::NEAR_MID_CENTER]->preassure); /* /N */
+	temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.x -= 0.5f*(
+		temp.voxels[CUBEPOS::CURRENT_MID_LEFT]->preassure - temp.voxels[CUBEPOS::CURRENT_MID_RIGHT]->preassure) * size_of_voxel;
+	
+	temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.y -= 0.5f*(
+		temp.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER]->preassure - temp.voxels[CUBEPOS::CURRENT_TOP_CENTER]->preassure) * size_of_voxel;
+	
+	temp.voxels[CUBEPOS::CURRENT_MID_CENTER]->velocity.z -= 0.5f*(
+		temp.voxels[CUBEPOS::FAR_MID_CENTER]->preassure - temp.voxels[CUBEPOS::NEAR_MID_CENTER]->preassure) * size_of_voxel;
 	END_PER_CELL
 	//force boundries for velocity
 	force_boundries_velocity();
@@ -541,9 +545,30 @@ void FluidSolver::force_boundries_divergence()
 		+ m_grid->getGuaranteedVoxel(maxX + 1, maxY, maxZ + 1)->divergence + m_grid->getGuaranteedVoxel(maxX + 1, maxY + 1, maxZ)->divergence);
 }
 
-void FluidSolver::run(float dt)
+void FluidSolver::run(const float dt)
 {
+	addForce(glm::vec3(0, -9.81f, 0), dt);
+	addSource(1.0f, dt);
+	for (unsigned int i = 0; i < 5; i++)
+	{
+		velocity_step(dt);
+		dens_step(dt);
+	}
+}
 
+void FluidSolver::addForce(const glm::vec3& amount, const float dt)
+{
+	BEGIN_PER_CELL
+		voxel* temp = m_grid->getGuaranteedVoxel(x, y, z);
+		temp->velocity += dt*amount;
+	END_PER_CELL
+}
+void FluidSolver::addSource(const float amount,const float dt)
+{
+	BEGIN_PER_CELL
+		voxel* temp = m_grid->getVoxel(x, y, z);
+		temp->density += dt*amount;
+	END_PER_CELL
 }
 
 #undef BEGIN_PER_CELL

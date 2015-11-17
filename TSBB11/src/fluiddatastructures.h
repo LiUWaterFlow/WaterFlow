@@ -18,14 +18,6 @@ enum CUBEPOS {
 };
 // along x-axis: LEFT-CENTER-RIGHT along y-axis: TOP-MID-BOTTOM along z-axis: FAR-CURRENT-NEAR
 
-struct Fluid
-{
-	Fluid(float visc = 1.0f, float diff = 1.0f): viscosity(visc), diffuse(diff) {};
-
-	const float viscosity;
-	const float diffuse;
-};
-
 //the voxels
 struct voxel
 {
@@ -56,7 +48,7 @@ struct voxel
 
 struct NeighbourVoxels
 {
-	NeighbourVoxels() {};
+	NeighbourVoxels() { voxels.resize(27); };
 	~NeighbourVoxels() {
 		//voxels.erase(voxels.cbegin(), voxels.cend());
 	};

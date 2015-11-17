@@ -490,7 +490,7 @@ std::vector<GLint>* Voxelgrid::getHeightMap() {
 
 NeighbourVoxels Voxelgrid::getNeighbour(int x, int y, int z)
 {
-	assert((x - 1) > 0 && (y - 1) > 0 && (z - 1) > 0);
+	assert((x - 1) >= 0 && (y - 1) >= 0 && (z - 1) >= 0);
 	NeighbourVoxels vox;
 	vox.voxels[CUBEPOS::FAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z - 1);
 	vox.voxels[CUBEPOS::FAR_TOP_CENTER] = getGuaranteedVoxel(x , y + 1, z - 1);

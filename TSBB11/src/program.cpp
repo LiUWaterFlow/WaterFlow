@@ -50,8 +50,8 @@ int Program::runFluid(){
 	FluidSolver f = FluidSolver(voxs);
 	//send voxs as a pointer to FluidSolver.
 	
-	//f.dens_step(0.05);
-	//f.velocity_step(0.02);
+	f.run(0.5f);
+
 	return 0;
 }
 

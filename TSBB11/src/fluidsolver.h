@@ -14,10 +14,13 @@
 class FluidSolver
 {
 public:
-	FluidSolver(Voxelgrid* grid, Fluid* fluid) : m_grid(grid), m_fluid(fluid) {};
-	~FluidSolver() {};
+	FluidSolver(Voxelgrid* grid) : m_grid(grid), viscosity(1.0f), diffuse(1.0f) {};
+	~FluidSolver() {delete m_grid; };
 
-	void run(float dt);
+	void run(const float dt);
+
+	void addForce(const glm::vec3& amount, const float dt);
+	void addSource(const float amount, const float dt);
 private:
 	void dens_step(float dt);
 	void velocity_step(float dt);
@@ -50,7 +53,8 @@ private:
 	void force_boundries_divergence();
 
 	Voxelgrid* m_grid;
-	Fluid* m_fluid;
+	const float diffuse;
+	const float viscosity;
 };
 
 #endif //fluidsolver
