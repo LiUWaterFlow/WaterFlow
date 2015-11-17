@@ -7,10 +7,10 @@
 #include "GL_utilities.h"
 #include "glm.hpp"
 
-
+/*
 void Voxelgrid::rehash(){
   hashSize = hashSize*2;
-  std::vector<voxel*>* tempTable = new std::vector<voxel*>(hashSize,nullptr);
+  std::vector<struct voxel*>* tempTable = new std::vector<struct voxel*>(hashSize,nullptr);
   numCollisions = 0;
   numInTable = 0;
 
@@ -99,12 +99,12 @@ voxel* Voxelgrid::hashGet(int16_t x, int16_t y, int16_t z){
   }
 
 }
-
+*/
 bool Voxelgrid::isEqualPoint(voxel* vox,short int x, short int y,short int z){
   return (vox->x == x && vox->y == y && vox->z == z);
 }
 
-
+/*
 void Voxelgrid::hashInit() {
 	this->hashTable = new std::vector<voxel*>(hashSize, nullptr);
 }
@@ -121,7 +121,7 @@ neighs* Voxelgrid::getNeighbourhoodHash(int16_t x, int16_t y, int16_t z) {
 	return neigh;
 
 }
-
+*/
 neighs* Voxelgrid::getNeighbourhood(int16_t x, int16_t y, int16_t z) {
 
 	neighs* neigh = new neighs();
@@ -142,6 +142,11 @@ Voxelgrid - Create the initial vector strutcture.
 
 Voxelgrid::Voxelgrid(DataHandler* dataHandler,int64_t hashSize){
   this->hashSize = hashSize;
+  this->rehashTresh = 0.75;
+  this->voxelPositions =nullptr;
+  this->numInTable = 0;
+  this->numCollisions =0;
+
 
   this->voxels  = new std::vector<std::vector<std::vector<voxel*>*>*>;
   this->datahandler = dataHandler;

@@ -4,7 +4,8 @@
 
 #include <vector>
 #include "glm.hpp"
-
+#include "grid.h"
+/*
 enum CUBEPOS {
 	FAR_TOP_LEFT, FAR_TOP_CENTER, FAR_TOP_RIGHT,
 	FAR_MID_LEFT, FAR_MID_CENTER, FAR_MID_RIGHT,
@@ -45,7 +46,6 @@ struct voxel
 	float sizeZ;
 };
 
-
 struct NeighbourVoxels
 {
 	NeighbourVoxels() { voxels.resize(27); };
@@ -55,5 +55,5 @@ struct NeighbourVoxels
 
 	std::vector<voxel*> voxels;
 };
-
+*/
 #endif

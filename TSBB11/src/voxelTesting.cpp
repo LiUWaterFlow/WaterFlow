@@ -97,12 +97,12 @@ namespace voxelTest{
 	  size_t end = 0;
 	  bool testHash = !true;
 	  bool randomRead = !true;
-	  bool neighbours = true;
+	  bool neighbours = !true;
 	  int xd, yd, zd;
 
 	  srand(2500);
 
-
+	
 	  if (randomRead){
 		  startClock();
 		  for (size_t x = count; x != end; x--) {
@@ -117,11 +117,11 @@ namespace voxelTest{
 		  }
 		  endClock();
 	  }
-
+	  printf("Starting tests \n");
 	  startClock();
 	  srand(2500);
 
-	if (testHash) {
+	/*if (testHash) {
 		//plsWait();
 
 		grid->hashInit();
@@ -172,8 +172,8 @@ namespace voxelTest{
 		printf("\n");
 		endClock();
 
-	}
-	else{
+	}*/
+	if(!testHash){
 
     for (size_t x = count; x != end; x--) {
       for (size_t y = count; y != end; y--) {
@@ -221,9 +221,9 @@ namespace voxelTest{
 
 	}
     //Delete the voxels
-    plsWait();
+    //plsWait();
     delete grid;
-    plsWait();
+    //plsWait();
     //Read some voxels that doesn't exist
 
 

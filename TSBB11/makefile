@@ -32,7 +32,7 @@ ifeq ($(PLATFORM),linux)
 INC += $(shell pkg-config --cflags sdl2)
 LINKS = $(shell pkg-config --libs sdl2)
 LINKS += -lGL -lGLU -lglut -lm -lXt -lX11 -Wl,-rpath,./lib/AntTweakLinux -Llib/AntTweakLinux -lAntTweakBar  
-GCC += -std=gnu++0x
+GCC += -std=gnu++0x -D nullptr=NULL
 endif
 
 
