@@ -130,9 +130,9 @@ public:
   GLuint numInTable; ///< How many elements there are in the hashTable.
   GLuint numCollisions; ///< How many collisions presently
 
-  unsigned int getXMaxSize() const { return 100; } //250; };
-  unsigned int getYMaxSize() const { return 100; }//250; };
-  unsigned int getZMaxSize() const { return 100; }//250; };
+  unsigned int getXMaxSize() const { return 50; } //250; };
+  unsigned int getYMaxSize() const { return 50; }//250; };
+  unsigned int getZMaxSize() const { return 50; }//250; };
   float getVoxelSize() const { return 1.0f; }
 
   /// @brief Constructs an empty voxel grid

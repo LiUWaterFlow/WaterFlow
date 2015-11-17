@@ -7,7 +7,14 @@
 #include <iostream>
 #include <cstdlib>
 
+
+
+
 namespace voxelTest{
+
+void plsWait();
+void startClock();
+void endClock();
 
   class VoxelTest{
   public:

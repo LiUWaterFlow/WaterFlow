@@ -387,25 +387,30 @@ if (temp_z - 1 > 0 && datahandler->giveHeight(temp_x, temp_z - 1) < height && ge
 
 }
 
+
+
 std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 	std::vector<GLuint> *positions = new std::vector<GLuint>;
+/*
 	GLuint tempH = 0;
 	for (size_t x = 0; x < width; x++)
 	{
 		for (size_t z = 0; z < height; z++)
 		{
+			
 			tempH = getHeight(x, z);
 			if (tempH != -1) {
 				positions->push_back(x);
 				positions->push_back(tempH);
 				positions->push_back(z);
 			}
+			
 
 		}
 	}
+*/
 
-
-	/*
+	
 	for (GLuint x = 0; x < voxels->size(); x++) {
 		if ((*voxels)[x] != nullptr) {
 			for (GLuint y = 0; y < (*voxels)[x]->size(); y++) {
@@ -421,9 +426,11 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 			}
 		}
 	}
-	*/
+	
 	return positions;
 }
+
+
 
 void Voxelgrid::initDraw() {
 	voxelPositions = getVoxelPositions();
@@ -476,7 +483,7 @@ void Voxelgrid::drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 
 void Voxelgrid::setHeight(int16_t x, int16_t y, int16_t z) {
 	GLint curHeight = getHeight(x, z);
-	if( y > curHeight ){
+	if( y > curHeight){
 		waterHeight->at(x + z*width) = y;
 	}
 }
@@ -497,40 +504,49 @@ NeighbourVoxels Voxelgrid::getNeighbour(int x, int y, int z)
 {
 	assert((x - 1) >= 0 && (y - 1) >= 0 && (z - 1) >= 0);
 	NeighbourVoxels vox;
-	vox.voxels[CUBEPOS::FAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z - 1);
-	vox.voxels[CUBEPOS::FAR_TOP_CENTER] = getGuaranteedVoxel(x , y + 1, z - 1);
-	vox.voxels[CUBEPOS::FAR_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z - 1);
+	
+	vox.voxels[CUBEPOS::FAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z - 1);	
+	vox.voxels[CUBEPOS::CURRENT_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z);
+	vox.voxels[CUBEPOS::NEAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z + 1);
+
 
 	vox.voxels[CUBEPOS::FAR_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z - 1);
-	vox.voxels[CUBEPOS::FAR_MID_CENTER] = getGuaranteedVoxel(x, y, z - 1);
-	vox.voxels[CUBEPOS::FAR_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z - 1);
-
-	vox.voxels[CUBEPOS::FAR_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z - 1);
-	vox.voxels[CUBEPOS::FAR_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z - 1);
-	vox.voxels[CUBEPOS::FAR_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z - 1);
-
-	vox.voxels[CUBEPOS::CURRENT_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z);
-	vox.voxels[CUBEPOS::CURRENT_TOP_CENTER] = getGuaranteedVoxel(x, y + 1, z);
-	vox.voxels[CUBEPOS::CURRENT_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z);
-
 	vox.voxels[CUBEPOS::CURRENT_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z);
-	vox.voxels[CUBEPOS::CURRENT_MID_CENTER] = getGuaranteedVoxel(x, y, z);
-	vox.voxels[CUBEPOS::CURRENT_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z);
+	vox.voxels[CUBEPOS::NEAR_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z + 1);
 
-	vox.voxels[CUBEPOS::CURRENT_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z);
-	vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z);
-	vox.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z);
-
-	vox.voxels[CUBEPOS::NEAR_TOP_LEFT] = getGuaranteedVoxel(x - 1, y + 1, z + 1);
-	vox.voxels[CUBEPOS::NEAR_TOP_CENTER] = getGuaranteedVoxel(x, y + 1, z + 1);
+	
+	vox.voxels[CUBEPOS::FAR_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z);
 	vox.voxels[CUBEPOS::NEAR_TOP_RIGHT] = getGuaranteedVoxel(x + 1, y + 1, z + 1);
 
-	vox.voxels[CUBEPOS::NEAR_MID_LEFT] = getGuaranteedVoxel(x - 1, y, z + 1);
+
+	vox.voxels[CUBEPOS::FAR_TOP_CENTER] = getGuaranteedVoxel(x , y + 1, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_TOP_CENTER] = getGuaranteedVoxel(x, y + 1, z);
+	vox.voxels[CUBEPOS::NEAR_TOP_CENTER] = getGuaranteedVoxel(x, y + 1, z + 1);
+
+
+	vox.voxels[CUBEPOS::FAR_MID_CENTER] = getGuaranteedVoxel(x, y, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_MID_CENTER] = getGuaranteedVoxel(x, y, z);
 	vox.voxels[CUBEPOS::NEAR_MID_CENTER] = getGuaranteedVoxel(x, y, z + 1);
+
+
+	vox.voxels[CUBEPOS::FAR_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z);
 	vox.voxels[CUBEPOS::NEAR_MID_RIGHT] = getGuaranteedVoxel(x + 1, y, z + 1);
 
+
+	vox.voxels[CUBEPOS::FAR_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z);
 	vox.voxels[CUBEPOS::NEAR_BOTTOM_LEFT] = getGuaranteedVoxel(x - 1, y - 1, z + 1);
+
+
+	vox.voxels[CUBEPOS::FAR_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z);
 	vox.voxels[CUBEPOS::NEAR_BOTTOM_CENTER] = getGuaranteedVoxel(x, y - 1, z + 1);
+
+
+	vox.voxels[CUBEPOS::FAR_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z - 1);
+	vox.voxels[CUBEPOS::CURRENT_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z);
 	vox.voxels[CUBEPOS::NEAR_BOTTOM_RIGHT] = getGuaranteedVoxel(x + 1, y - 1, z + 1);
 
 	return vox;
@@ -543,5 +559,5 @@ voxel* Voxelgrid::getGuaranteedVoxel(int x, int y, int z)
 	{
 		setVoxel(x, y, z,true,0,0);
 	}
-	return getVoxel(x, y, z);
+	return getVoxel(x,y,z);
 }

@@ -1,4 +1,5 @@
 #include "fluidsolver.h"
+#include "voxelTesting.h"
 
 #include "iostream"
 
@@ -551,8 +552,14 @@ void FluidSolver::run(const float dt)
 	addSource(1.0f, dt);
 	for (unsigned int i = 0; i < 5; i++)
 	{
+		voxelTest::startClock();
 		velocity_step(dt);
+		voxelTest::endClock();
+		voxelTest::plsWait();			
+		voxelTest::startClock();
 		dens_step(dt);
+		voxelTest::endClock();
+		voxelTest::plsWait();
 	}
 }
 
