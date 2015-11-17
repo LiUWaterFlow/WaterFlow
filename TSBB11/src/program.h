@@ -25,7 +25,7 @@
 #include "readData.h"
 #include "myDrawable.h"
 #include "voxel.h"
-#include "voxel.h"
+#include "heightField.h"
 
 #include "AntTweakBar.h"
 
@@ -57,6 +57,8 @@ private:
 
 	//Voxgrid
 	Voxelgrid* voxs;
+	//HeightField
+	HeightField* hf;
 
 	// References to shader programs:
 	GLuint terrainshader, skyshader;

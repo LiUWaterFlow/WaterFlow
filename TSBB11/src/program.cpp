@@ -95,9 +95,13 @@ bool Program::init() {
 	dataHandler = new DataHandler("resources/output.min.asc",2);
 
 	//Voxels and floodfill
-	voxs = new Voxelgrid(dataHandler,27000000);
-	voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
-	voxs->initDraw();
+	//voxs = new Voxelgrid(dataHandler,27000000);
+	//voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
+	//voxs->initDraw();
+
+	hf = new HeightField();
+	hf->initDraw();
+	hf->initTest();
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
@@ -148,6 +152,7 @@ void Program::update() {
 }
 
 void Program::display() {
+
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -168,10 +173,13 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
-	terrain->draw();
+	//terrain->draw();
 
 	//Voxel draws,
-	voxs->drawVoxels(*cam->getVTP(),*cam->getWTV());
+
+	hf->updateSim();
+	hf->render();
+	hf->drawVoxels(*cam->getVTP(),*cam->getWTV());
 
 	// ====================== Draw AntBar ===========================
 	TwDraw();
@@ -294,5 +302,6 @@ void Program::checkKeys() {
 		cam->jump(deltaTime);
 	} else if (keystate[SDL_SCANCODE_E]) {
 		cam->jump(-deltaTime);
-	}
+	}else if (keystate[SDL_SCANCODE_T]) {
+		hf->initTest();}
 }
