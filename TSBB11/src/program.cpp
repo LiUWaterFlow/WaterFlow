@@ -184,7 +184,7 @@ void Program::display() {
 		for (size_t i = 0; i < 5; i++)
 		{
 
-			hf->updateSim();
+			hf->updateSim(0.01f);
 		}
 		//updateRender = false;
 
@@ -199,6 +199,10 @@ void Program::display() {
 	printError("After display: ");
 
 	SDL_GL_SwapWindow(screen);
+
+
+
+
 }
 
 void Program::clean() {

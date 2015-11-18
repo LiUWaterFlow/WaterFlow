@@ -25,7 +25,7 @@ private:
 
 public:
 	HeightField(DataHandler *t) { terr = t; };
-  void updateSim();
+  void updateSim(GLfloat);
   void render();
   void initDraw();
   void initTest();

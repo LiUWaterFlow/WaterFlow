@@ -20,6 +20,10 @@ int clip(int n, int lower, int upper) {
 	return std::max(lower, std::min(n, upper));
 }
 
+GLfloat clipf(GLfloat n, GLfloat lower, GLfloat upper) {
+	return std::max(lower, std::min(n, upper));
+}
+
 GLfloat HeightField::getHeight(int i, int j,GLfloat ourHeight) {
 		i = clip(i, 0, width-1);
 		j = clip(j, 0, height-1);
@@ -30,12 +34,16 @@ GLfloat HeightField::getHeight(int i, int j,GLfloat ourHeight) {
 	
 }
 
-void HeightField::updateSim(){
-//  GLfloat c2 = 0.99;
-  GLfloat h2 = 1;
-  GLfloat dt =  1/ 10;
-  GLfloat c2 = 0.99;
- // c2 = 4;
+void HeightField::updateSim(GLfloat dt){
+
+	GLfloat c2 = 1;
+	float max_c = (1.0 / dt);
+	if (c2 > max_c) {
+		printf("C2 too large/ dt too large.");
+	}
+
+	GLfloat h2 = 4;
+	dt = dt*4.9;
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
 
@@ -44,21 +52,21 @@ void HeightField::updateSim(){
 		GLfloat height_south = getHeight(i, (j-1), u[i][j]);// u[i][std::max(j -1,0)];
 		GLfloat height_north = getHeight(i, (j+1), u[i][j]);// u[i][std::min(j + 1, height)];
 		
-		//GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * u[i][j]) / h2;
-		//v[i][j] = v[i][j] + f*dt;
-		//unew[i][j] = u[i][j] + v[i][j] * dt;
+		GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * u[i][j]) / h2;
+		
+		f = clipf(f, -0.1, 0.1);
+		v[i][j] = v[i][j] + f*dt;
+		unew[i][j] = u[i][j] + v[i][j] * dt;
+		v[i][j] *= 0.995;
 		
 		
-		unew[i][j] = u[i][j] + ((height_west + height_east + height_south + height_north) / 4 - u[i][j]) * c2;
+		//unew[i][j] = u[i][j] + ((height_west + height_east + height_south + height_north) / 4 - u[i][j]) * c2;
 	
 	}
   }
 
-  for (size_t i = 0; i < width; i++) {
-    for (size_t j = 0; j < height; j++) {
-      u[i][j] = unew[i][j];
-    }
-  }
+  
+  memcpy(u, unew, sizeof(unew));
 }
 
 void HeightField::render(){
