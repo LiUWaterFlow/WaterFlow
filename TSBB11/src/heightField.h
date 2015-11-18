@@ -12,8 +12,8 @@ private:
   GLuint voxelShader; ///< Shader program.
   GLuint voxelBuffer, voxelVAO; ///< Buffers and VAOs.
 
-  const static int width = 1000;
-  const static int height = 1000;
+  const static int width = 100;
+  const static int height = 100;
 
   DataHandler* terr;
   GLfloat u[width][height];

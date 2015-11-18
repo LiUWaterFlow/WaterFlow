@@ -32,10 +32,10 @@ GLfloat HeightField::getHeight(int i, int j,GLfloat ourHeight) {
 
 void HeightField::updateSim(){
 //  GLfloat c2 = 0.99;
-  GLfloat h2 = 4;
-  GLfloat dt = 1.0f/ 200.0f;
-  GLfloat c2 =  h2 / (dt);
-  c2 = 0.99;
+  GLfloat h2 = 1;
+  GLfloat dt =  1/ 10;
+  GLfloat c2 = 0.99;
+ // c2 = 4;
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
 
@@ -43,11 +43,11 @@ void HeightField::updateSim(){
 		GLfloat height_west = getHeight((i-1), j, u[i][j]);// u[std::max(i-1,0)][j];
 		GLfloat height_south = getHeight(i, (j-1), u[i][j]);// u[i][std::max(j -1,0)];
 		GLfloat height_north = getHeight(i, (j+1), u[i][j]);// u[i][std::min(j + 1, height)];
-		/*
-		GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * u[i][j]) / h2;
-		v[i][j] = v[i][j] + f*dt;
-		unew[i][j] = u[i][j] + v[i][j] * dt;
-		*/
+		
+		//GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * u[i][j]) / h2;
+		//v[i][j] = v[i][j] + f*dt;
+		//unew[i][j] = u[i][j] + v[i][j] * dt;
+		
 		
 		unew[i][j] = u[i][j] + ((height_west + height_east + height_south + height_north) / 4 - u[i][j]) * c2;
 	
@@ -70,9 +70,9 @@ std::vector<GLuint> *HeightField::getVoxelPositions() {
 
   for (size_t i = 0; i < width; i++) {
     for (size_t j = 0; j < height; j++) {
-		if (round(u[i][j]) > terr->giveHeight(i,j) ){
+		if (u[i][j]-1 > terr->giveHeight(i,j) ){
       positions->push_back(i*samp);
-      positions->push_back(round(u[i][j]));
+      positions->push_back(round(u[i][j]-1));
       positions->push_back(j*samp);
 		}
     }

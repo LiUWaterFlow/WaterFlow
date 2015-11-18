@@ -181,12 +181,12 @@ void Program::display() {
 
 	//Voxel draws,
 	if (updateRender) {
-		for (size_t i = 0; i < 50; i++)
+		for (size_t i = 0; i < 5; i++)
 		{
 
 			hf->updateSim();
 		}
-		updateRender = false;
+		//updateRender = false;
 
 		hf->render();
 	}
@@ -316,6 +316,6 @@ void Program::checkKeys() {
 	}else if (keystate[SDL_SCANCODE_T]) {
 		hf->initTest();}
 	else if (keystate[SDL_SCANCODE_U]) {
-		updateRender = true;
+		updateRender = !updateRender;
 	}
 }
