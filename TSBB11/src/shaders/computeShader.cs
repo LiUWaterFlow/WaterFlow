@@ -50,7 +50,7 @@ void main(){
 		inTexCoord.texCoord[offset/3] = vec2(float(storePos.x)/float(size.x), float(storePos.y)/float(size.y));
 		//problem remaining is indices. 
 		if((storePos.x != 0 && storePos.y != 0)){
-			int vert1 = (storePos.x-1) + (storePos.y-1)*size.x;
+			int vert1 = (storePos.x-1) + (storePos.y-1)*size.x; //This row is incorrect due to size of indices matrix being not as wide as size.x. 
 			int offsetIndex = vert1*6; 
 			int vert2 = (storePos.x-1) + (storePos.y)*size.x;
 			int vert3 = (storePos.x + storePos.y*size.x);

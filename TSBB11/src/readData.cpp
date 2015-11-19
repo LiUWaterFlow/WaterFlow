@@ -542,7 +542,7 @@ void DataHandler::initCompute(){
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*2*numData,NULL,GL_STATIC_DRAW);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[3]);
-	numIndices = (getDataWidth()-1)*(getDataHeight()-1)*2*3;
+	numIndices = (getDataWidth()-2)*(getDataHeight()-2)*2*3;
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLint)*numIndices,NULL,GL_STATIC_DRAW);
 	  
 	glGenVertexArrays(1,&computeVAO);
@@ -577,14 +577,14 @@ void DataHandler::runCompute(){
 	glDispatchCompute(ceil(getDataWidth()/16),ceil(getDataHeight()/16),1);
 	printError("run Compute Error 5" );
 
-
+	/*
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[2]);
 	GLfloat* ptr = (GLfloat*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER,NULL,16*16*6*sizeof(GLfloat),GL_MAP_READ_BIT);
 	for(int i = 0; i < 16*3; i++){
 		printf("%f \n",ptr[i]);
 	}
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-	
+	*/
 }
 
 
