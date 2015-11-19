@@ -130,5 +130,8 @@
     <None Include="src\shaders\terrainshader.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="src\shaders\computeShader.comp">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

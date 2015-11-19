@@ -506,7 +506,7 @@ void DataHandler::initCompute(){
   
 	computeShader = glCreateShader(GL_COMPUTE_SHADER);
   
-	const char* cs = readFile((char *)"src/shaders/computeShader.cs");
+	const char* cs = readFile((char *)"src/shaders/computeShader.comp");
   
 
 	if (cs == NULL){
@@ -574,7 +574,7 @@ void DataHandler::runCompute(){
 	printError("run Compute Error 3" );	
 	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,4,computeBuffers);
 	printError("run Compute Error 4" );
-	glDispatchCompute(ceil(getDataWidth()/16),ceil(getDataHeight()/16),1);
+	glDispatchCompute((GLuint)ceil(getDataWidth() / 16), (GLuint)ceil(getDataHeight() / 16), 1);
 	printError("run Compute Error 5" );
 
 	/*
