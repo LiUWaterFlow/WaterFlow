@@ -38,12 +38,15 @@ endif
 
 
 all: $(OBJ_FILES_COMMON) $(OBJ_FILES_CPP)
+	mkdir -p $(CURDIR)/bin
 	$(GCC) obj/*.o $(MAIN) -o $(OUT) $(INC) $(LINKS)
 
 obj/%.o : src/common/%.c
+	mkdir -p $(CURDIR)/obj
 	$(GCC) -c -o $@ $< $(INC)
 
 obj/%.o : src/%.cpp
+	mkdir -p $(CURDIR)/obj
 	$(GCC) -c -o $@ $< $(INC)
 
 TWtest:

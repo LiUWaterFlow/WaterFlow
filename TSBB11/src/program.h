@@ -25,7 +25,7 @@
 #include "readData.h"
 #include "myDrawable.h"
 #include "voxel.h"
-#include "voxel.h"
+#include "heightField.h"
 
 #include "AntTweakBar.h"
 
@@ -37,6 +37,7 @@ private:
 	int screenW, screenH;
 
 	bool isRunning;
+
 	bool mouseHidden;
 
 	// Time variables
@@ -58,6 +59,8 @@ private:
 
 	//Voxgrid
 	Voxelgrid* voxs;
+	//HeightField
+	HeightField* hf;
 
 	// References to shader programs:
 	GLuint terrainshader, skyshader;
@@ -66,6 +69,7 @@ private:
 	Camera* cam;
 
 public:
+
 	int exec();
 
 	int testVoxels();

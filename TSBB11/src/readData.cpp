@@ -577,14 +577,14 @@ void DataHandler::runCompute(){
 	glDispatchCompute(ceil(getDataWidth()/16),ceil(getDataHeight()/16),1);
 	printError("run Compute Error 5" );
 
-
+	/*
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[2]);
 	GLfloat* ptr = (GLfloat*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER,NULL,16*16*6*sizeof(GLfloat),GL_MAP_READ_BIT);
 	for(int i = 0; i < 16*3; i++){
 		printf("%f \n",ptr[i]);
 	}
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-	
+	*/
 }
 
 

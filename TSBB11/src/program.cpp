@@ -8,6 +8,9 @@
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
+
+bool updateRender;
+
 Program::Program() {
 	screenW = 800;
 	screenH = 800;
@@ -53,6 +56,7 @@ int Program::testVoxels() {
 
 bool Program::init() {
 	// SDL, glew and OpenGL init
+	updateRender = false;
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		fprintf(stderr, "Failed to initialise SDL: %s", SDL_GetError());
@@ -93,16 +97,21 @@ bool Program::init() {
 
 	// Load terrain data
 	dataHandler = new DataHandler("resources/output.min.asc",1);
+	//int j = dataHandler->getDataWidth();
 
 	dataHandler->initCompute();
 	dataHandler->runCompute();
 
 
 	//Voxels and floodfill
-	voxs = new Voxelgrid(dataHandler,27000000);
-	voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
-	voxs->initDraw();
+	//voxs = new Voxelgrid(dataHandler,27000000);
+	//voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
+	//voxs->initDraw();
 
+	hf = new HeightField(dataHandler);
+	hf->initDraw();
+	hf->initTest();
+	hf->initGPU();
 	
 	printError("After compute: ");
 
@@ -163,6 +172,7 @@ void Program::update() {
 }
 
 void Program::display() {
+
 	// Clear the screen.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -189,7 +199,17 @@ void Program::display() {
 	terrain->drawCompute();
 
 	//Voxel draws,
-	//voxs->drawVoxels(*cam->getVTP(),*cam->getWTV());
+	if (updateRender) {
+		for (size_t i = 0; i < 5; i++)
+		{
+
+			hf->updateSim(0.01f);
+		}
+		//updateRender = false;
+
+		hf->render();
+	}
+	hf->drawVoxels(*cam->getVTP(),*cam->getWTV());
 
 	// ====================== Draw AntBar ===========================
 	TwDraw();
@@ -198,6 +218,10 @@ void Program::display() {
 	printError("After display: ");
 
 	SDL_GL_SwapWindow(screen);
+
+
+
+
 }
 
 void Program::clean() {
@@ -312,5 +336,9 @@ void Program::checkKeys() {
 		cam->jump(deltaTime);
 	} else if (keystate[SDL_SCANCODE_E]) {
 		cam->jump(-deltaTime);
+	}else if (keystate[SDL_SCANCODE_T]) {
+		hf->initTest();}
+	else if (keystate[SDL_SCANCODE_U]) {
+		updateRender = !updateRender;
 	}
 }
