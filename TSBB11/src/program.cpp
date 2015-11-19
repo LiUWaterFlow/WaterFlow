@@ -189,7 +189,7 @@ void Program::display() {
 	terrain->drawCompute();
 
 	//Voxel draws,
-	voxs->drawVoxels(*cam->getVTP(),*cam->getWTV());
+	//voxs->drawVoxels(*cam->getVTP(),*cam->getWTV());
 
 	// ====================== Draw AntBar ===========================
 	TwDraw();
