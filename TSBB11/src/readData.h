@@ -33,7 +33,7 @@ struct mapdata {
 /// Use the DataHandler class to import terrain data and generate terrain.
 /// It automatically scales the data for easier filtering, and also generates
 /// an initial terrain from the data after the data is loaded.
-class DataHandler 
+class DataHandler
 {
 private:
 	// Data containers
@@ -89,7 +89,7 @@ private:
 	/// @see scaleDataBefore()
 	/// @see performNormalizedConvolution()
 	void scaleDataAfter();
-	
+
 	/// @brief Generates terrain with the scale from terrainScale.
 	///
 	/// The output terrain is stored in the private model.
@@ -126,7 +126,7 @@ public:
 	/// terrain.
 	/// @param inputfile path to DEM data.
 	/// @param sampleFactor Downsampling factor for the terrain. Must be a power of 2. [1,2,4...]
-	/// default value is 1. (No downsampling). Note that the terrainScale will be used as 
+	/// default value is 1. (No downsampling). Note that the terrainScale will be used as
 	/// tScale/sampleFactor. So a downsampling should not change the overall proportions of the model
 	/// @param tScale sets terrainScale, default value is 500.0f
 	/// @see readDEM()
@@ -151,7 +151,7 @@ public:
 	/// For uses like read all data to FBO or from GPU back to CPU.
 	/// @return pointer to the beginning of the mapdata data.
 	float* getData();
-	
+
 	/// @brief Gives a height for a certain position in the terrain
 	///
 	/// Used if the interpolated height data for a certain point is needed

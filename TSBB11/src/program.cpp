@@ -4,7 +4,7 @@
 #include "program.h"
 
 #include "GL_utilities.h"
-
+#include "voxelTesting.h"
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
@@ -28,6 +28,7 @@ Program::~Program() {}
 int Program::exec() {
 	if (!init()) return -1;
 
+
 	SDL_Event Event;
 
 	while (isRunning) {
@@ -40,6 +41,14 @@ int Program::exec() {
 
 	clean();
 	return 0;
+}
+
+int Program::testVoxels() {
+
+	if (!init()) return -1;
+	SDL_SetRelativeMouseMode(SDL_FALSE);
+	voxelTest::mainTest(dataHandler);
+
 }
 
 bool Program::init() {
@@ -83,7 +92,12 @@ bool Program::init() {
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc", 1);
+	dataHandler = new DataHandler("resources/output.min.asc",2);
+
+	//Voxels and floodfill
+	voxs = new Voxelgrid(dataHandler,27000000);
+	voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
+	voxs->initDraw();
 
 	dataHandler->initCompute();
 	dataHandler->runCompute();
@@ -172,6 +186,9 @@ void Program::display() {
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
 	terrain->drawCompute();
+
+	//Voxel draws,
+	voxs->drawVoxels(*cam->getVTP(),*cam->getWTV());
 
 	// ====================== Draw AntBar ===========================
 	TwDraw();

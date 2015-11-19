@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Analyze|Win32">
@@ -297,6 +297,8 @@
     <ClCompile Include="src\myDrawable.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\voxel.cpp" />
+    <ClCompile Include="src\voxelTesting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -311,6 +313,8 @@
     <ClInclude Include="src\myDrawable.h" />
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\voxel.h" />
+    <ClInclude Include="src\voxelTesting.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />
@@ -323,6 +327,9 @@
     <None Include="src\shaders\terrainshader.vert" />
     <None Include="src\shaders\normalshader.frag" />
     <None Include="src\shaders\plaintextureshader.vert" />
+    <None Include="src\shaders\simplevoxels.frag" />
+    <None Include="src\shaders\simplevoxels.geom" />
+    <None Include="src\shaders\simplevoxels.vert" />
     <None Include="src\shaders\skyshader.frag" />
     <None Include="src\shaders\skyshader.vert" />
   </ItemGroup>
