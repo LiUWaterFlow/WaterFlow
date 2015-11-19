@@ -92,15 +92,16 @@ bool Program::init() {
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc",2);
+	dataHandler = new DataHandler("resources/output.min.asc",1);
+
+	dataHandler->initCompute();
+	dataHandler->runCompute();
+
 
 	//Voxels and floodfill
 	voxs = new Voxelgrid(dataHandler,27000000);
 	voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
 	voxs->initDraw();
-
-	dataHandler->initCompute();
-	dataHandler->runCompute();
 
 	
 	printError("After compute: ");
