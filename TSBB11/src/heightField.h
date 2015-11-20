@@ -17,7 +17,7 @@ private:
 
   GLuint texWidth, texHeight;
 
-  GLuint fieldBuffers[3];
+  GLuint fieldBuffers[6];
   GLuint terrTex, heightTex, speedTex;
 
   DataHandler* terr;
@@ -26,10 +26,14 @@ private:
   GLfloat v[width][height];
   std::vector<GLuint>* voxelPositions;
   const static GLint samp = 1;
+  void bindSimGPU();
+  
 
 
 
 public:
+  
+  GLuint drawBuffers[4];
   GLuint fieldProgram, fieldShader,fieldVAO;
   
   HeightField(DataHandler *t) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight();};

@@ -52,7 +52,7 @@ private:
 
 	// myDrawables:
 	myDrawable *skycube;
-	Terrain  *terrain;
+	Terrain  *terrain,*waterTerrain;
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;

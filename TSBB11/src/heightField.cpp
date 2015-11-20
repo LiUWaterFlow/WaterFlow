@@ -145,17 +145,17 @@ void HeightField::initGPU(){
 	float* u = new float[texWidth*texHeight];
 	float* v = new float[texWidth*texHeight];
 
-	int upper = 50;
+	int upper = 505;
 	int lower = 30; 
 
 	for (int j = 0; j < texHeight; ++j){
 		for(int i = 0; i < texWidth; ++i){
-			u[j*texWidth+i] = terr->giveHeight(i,j);
+			u[j*texWidth+i] = terr->getCoord(i,j);
 			v[j*texWidth+i] = 0.0f;	
 
 			//CREATE INTERESTING DATA HERE.			
 			if(i > lower && i < upper && j > lower && j < upper) {
-				u[j*texWidth +i] = 3.5;			
+				u[j*texWidth +i] += 0.05;			
 			}
 		}
 		
@@ -190,7 +190,7 @@ void HeightField::initGPU(){
 	
 	  
 	//create buffers
-	glGenBuffers(4,fieldBuffers);
+	glGenBuffers(6,fieldBuffers);
 	GLint numData = terr->getDataWidth()*terr->getDataHeight();
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[0]);
@@ -203,8 +203,19 @@ void HeightField::initGPU(){
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*1*numData,v,GL_STATIC_DRAW);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[3]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*1*numData,u,GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*1*numData,terr->getData(),GL_STATIC_DRAW);
 	
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[4]); //vertex data
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[5]); //indexes
+	GLuint numIndices = (terr->getDataWidth()-2)*(terr->getDataHeight()-2)*2*3;
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*numIndices,NULL,GL_STATIC_DRAW);
+	
+	drawBuffers[0] = fieldBuffers[4]; //vertex 
+	drawBuffers[1] = 0; //tex
+	drawBuffers[2] = fieldBuffers[5]; //indices
+	drawBuffers[3] = 0; //normals
 	printError("init Compute Error" );
 	printProgramInfoLog(fieldProgram, "field Init", NULL,NULL,NULL,NULL);
 
@@ -213,9 +224,18 @@ void HeightField::initGPU(){
 
 }
 
+void HeightField::bindSimGPU(){
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,1,&fieldBuffers[4]);
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,2,1,&fieldBuffers[5]);
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,3,1,&fieldBuffers[0]);
+	terr->runCompute();
+		
+}
 
 
 void HeightField::runSimGPU(){
+
+	int numPing = 10;
 
 	glUseProgram(fieldProgram);	
 	printError("run Compute Error UseProg" );
@@ -226,12 +246,16 @@ void HeightField::runSimGPU(){
 	//here we will do it a bit different since the first two buffers will ping-pong.	
 
 	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,4,4,fieldBuffers);
-	std::swap(fieldBuffers[0],fieldBuffers[1]);
 	
+	for(int i = 0; i < numPing ; i++){
 	printError("run Compute Error 4" );
-	glDispatchCompute(ceil(terr->getDataWidth()/16),ceil(terr->getDataHeight()/16),1);
+	glDispatchCompute((GLuint)ceil(terr->getDataWidth()/16),(GLuint)ceil(terr->getDataHeight()/16),1);
 	printError("run Compute Error 5" );
-
+	std::swap(fieldBuffers[0],fieldBuffers[1]);
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,4,4,fieldBuffers);
+	}
+	bindSimGPU();
+	
 }
 
 

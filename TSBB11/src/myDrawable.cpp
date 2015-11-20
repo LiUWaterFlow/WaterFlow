@@ -128,18 +128,22 @@ Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint te
 	//What about indices
 	
 	glGenVertexArrays(1,&computeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
+	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]); //vertexBufferID
 	glBindVertexArray(computeVAO);
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);
-	glEnableVertexAttribArray(inNormAttrib);
-	glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[2]);	
-	glEnableVertexAttribArray(inTexAttrib);
-	glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*2,0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[3]);
+	
+	if(buffers[3]){
+		glBindBuffer(GL_ARRAY_BUFFER,buffers[3]); //normalsBufferID
+		glEnableVertexAttribArray(inNormAttrib);
+		glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
+	}
+	if(buffers[1]){
+		glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);//texBufferID
+		glEnableVertexAttribArray(inTexAttrib);
+		glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*2,0);
+	}	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[2]);//indicesBufferID
 	
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER,0);

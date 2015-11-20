@@ -32,7 +32,7 @@ float getHeight(int i, int j, float ourHeight){
 	i = clamp(i,0,size.x-1);
 	j = clamp(j,0,size.y-1);
 	float outTemp = u0[i+j*size.x];
-	if(outTemp - terrHeight[i+j*size.x] < 0.3f){
+	if(outTemp - terrHeight[i+j*size.x] < 0.00003f){
 		outTemp = ourHeight;
 	}
 	return outTemp;
@@ -44,15 +44,16 @@ void main(){
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
 	int i = storePos.x;
 	int j = storePos.y;
+
+	//Change these to clamps.
 	if(i < size.x && j < size.y) {
-		
-		float dt = 0.005*4.9f;
+
+		float dt = 0.005f*4.9;
 		int offset = (i + j*size.x);
 		float c2 = 1;
-		float max_c = (1.0 / dt);
 		
 
-		float h2 = 4;
+		float h2 = 4.0f;
 
 		float ourHeight = u0[offset];
 
@@ -61,12 +62,12 @@ void main(){
 		float u_south = getHeight(i, (j-1), ourHeight);// u[i][std::max(j -1,0)];
 		float u_north = getHeight(i, (j+1), ourHeight);// u[i][std::min(j + 1, height)];
 		
-		float f = c2*(u_west + u_east + u_south + u_north - 4 * ourHeight)/h2;
+		float f = c2*(u_west + u_east + u_south + u_north - 4.0f * ourHeight)/h2;
 		
-		f = clamp(f, -0.1f, 0.1f);
+		f = clamp(f, -0.0001f, 0.0001f);
 		float vel = v[offset] + f*dt;
-		v[offset] = vel *0.995f;
+		v[offset] = vel *0.996f;
 		u1[offset] = ourHeight + vel * dt;
-		
+
 	}
 }

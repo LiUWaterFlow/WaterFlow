@@ -109,8 +109,6 @@ bool Program::init() {
 	//voxs->initDraw();
 
 	hf = new HeightField(dataHandler);
-	hf->initDraw();
-	hf->initTest();
 	hf->initGPU();
 	
 	printError("After compute: ");
@@ -124,6 +122,9 @@ bool Program::init() {
 	//terrain = new Terrain(terrainshader, dataHandler->getModel(), dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
 
 	terrain = new Terrain(terrainshader,dataHandler->computeBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
+
+	waterTerrain = new Terrain(terrainshader,hf->drawBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
+	
 	
 	
 	printError("After terrain: ");
@@ -169,6 +170,7 @@ void Program::timeUpdate() {
 void Program::update() {
 	// Update the tweak bar
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
+	hf->runSimGPU();
 }
 
 void Program::display() {
@@ -197,7 +199,8 @@ void Program::display() {
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
 	terrain->drawCompute();
-
+	waterTerrain->drawCompute();
+	/*
 	//Voxel draws,
 	if (updateRender) {
 		for (size_t i = 0; i < 5; i++)
@@ -210,7 +213,7 @@ void Program::display() {
 		hf->render();
 	}
 	hf->drawVoxels(*cam->getVTP(),*cam->getWTV());
-
+	*/
 	// ====================== Draw AntBar ===========================
 	TwDraw();
 

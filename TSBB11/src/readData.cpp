@@ -1,6 +1,6 @@
 /// @file readData.cpp
 /// @brief Implementations of functions in readData.h
-
+#include <chrono>
 #include "readData.h"
 
 #include "Utilities.h"
@@ -33,10 +33,30 @@ DataHandler::DataHandler(const char* inputfile,int sampleFactor, int blockSize)
 	std::cout << "Scaling input data to range 0.0 - 1.0...";
 	scaleDataAfter();
 	std::cout << " done!" << std::endl;
+	
 
+	//normConvCompute();
+	calculateNormalsCompute();
+	initCompute();
+	runCompute();
+	
+	/*
+	std::cout << "Scaling input data to range 0.1 - 1.0...";
+	scaleDataBefore();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Performing normalized convolution...";
+	performNormalizedConvolution();
+	std::cout << " done!" << std::endl;
+
+	std::cout << "Scaling input data to range 0.0 - 1.0...";
+	scaleDataAfter();
+	std::cout << " done!" << std::endl;
+	
 	std::cout << "Generating terrain data...";
 	GenerateTerrain();
 	std::cout << " done!" << std::endl;
+	*/
 }
 
 DataHandler::~DataHandler()
@@ -182,8 +202,101 @@ void DataHandler::scaleDataBefore()
 	}
 }
 
+
+void DataHandler::normConvCompute(){
+		  
+	GLuint normConvProgram = glCreateProgram();	
+  
+	GLuint normConvShader = glCreateShader(GL_COMPUTE_SHADER);
+  
+	const char* cs = readFile((char *)"src/shaders/normConv.comp");
+  
+
+	if (cs == NULL){
+		printf("Error reading shader \n");
+	}
+
+	glShaderSource(normConvShader,1,&cs ,NULL);
+  
+	glCompileShader(normConvShader);
+	
+	  
+	//get errors 
+	printError("init Compute Error 1" );
+	printShaderInfoLog(normConvShader, "init Compute Error 2");	
+	glAttachShader(normConvProgram,normConvShader);
+	glLinkProgram(normConvProgram);
+	//get errors from the program linking.
+	printError("init Compute Error 2" );
+	printShaderInfoLog(normConvShader, "init Compute Error 2");
+
+	GLuint normBuffers[2];
+	glGenBuffers(2,normBuffers);
+	
+	GLint numData = getDataWidth()*getDataHeight();
+	//read buffer height
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,normBuffers[0]);	    //What data? getData()
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*numData,getData(),GL_STATIC_DRAW);
+	//write buffer height
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,normBuffers[1]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*numData,NULL,GL_STATIC_DRAW);
+
+	printError("init NormConvCompute");
+	printProgramInfoLog(normConvProgram,"normConvCompute Init",NULL,NULL,NULL,NULL);
+
+	//END OF INIT
+
+	glUseProgram(normConvProgram);
+	printError("NormConvProgram Use.");
+	glUniform2i(glGetUniformLocation(normConvProgram,"size"),getDataWidth(),getDataHeight());
+	int maxIt = 25;
+	int countIt = 0;
+	GLint numPings = 10;
+	bool isNODATA = true;
+	while(isNODATA && countIt < maxIt){
+		for(int i = 0; i < numPings; i++){
+		glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,2,normBuffers);
+		glDispatchCompute((GLuint)ceil(getDataWidth()/16),(GLuint)ceil(getDataHeight()/16),1);
+		std::swap(normBuffers[0],normBuffers[1]);
+		}
+		countIt++;
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER,normBuffers[0]);
+		GLfloat* ptr = (GLfloat*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER,NULL,
+			numData*sizeof(GLfloat),GL_MAP_READ_BIT);
+	
+		isNODATA = false;
+		for (int i = 0; i < numData && !isNODATA; i++)
+		{
+			isNODATA = (ptr[i] < 0.0001f);
+		}
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+		
+		//i.e always read from normBuffers[0];
+	}
+	terrainBufferID = normBuffers[0];
+	glDeleteProgram(normConvProgram);
+
+	//Todo, put data back in getData, for legacy support. is the code below correct?
+	//Also, one write buffer still bound, but will not be used anymore.
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,normBuffers[0]);
+	GLfloat* ptr = (GLfloat*)glMapBufferRange(GL_SHADER_STORAGE_BUFFER,NULL,
+			numData*sizeof(GLfloat),GL_MAP_READ_BIT);
+	
+		for (int i = 0; i < numData; i++)
+		{
+			getData()[i] = ptr[i];
+		}
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+	glDeleteBuffers(1,&normBuffers[1]);
+	
+
+}
+
+
 void DataHandler::performNormalizedConvolution()
 {
+
 	// Create the filters
 	GLuint filtershader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/filtershader.frag");
 	GLuint confidenceshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/confidenceshader.frag");
@@ -392,6 +505,71 @@ void DataHandler::GenerateTerrain()
 	free(preCalcNormalArray);
 }
 
+void DataHandler::calculateNormalsCompute(){
+
+	GLuint normalsProgram = glCreateProgram();	
+  
+	GLuint normalsShader = glCreateShader(GL_COMPUTE_SHADER);
+  
+	const char* cs = readFile((char *)"src/shaders/normals.comp");
+  
+
+	if (cs == NULL){
+		printf("Error reading shader \n");
+	}
+
+	glShaderSource(normalsShader,1,&cs ,NULL);
+  
+	glCompileShader(normalsShader);
+	
+	  
+	//get errors 
+	printError("init Compute Error 1" );
+	printShaderInfoLog(normalsShader, "init Compute Error 2");	
+	glAttachShader(normalsProgram,normalsShader);
+	glLinkProgram(normalsProgram);
+	//get errors from the program linking.
+	printError("init Compute Error 2" );
+	printShaderInfoLog(normalsShader, "init Compute Error 2");
+
+	GLuint normalBuffers[2];
+	glGenBuffers(2,normalBuffers); //first input height (get from old bufferID), second output normals (3 times bigger).
+	
+	GLint numData = getDataWidth()*getDataHeight();
+	//read buffer height
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,normalBuffers[1]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER,normalBuffers[0]);
+	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*numData,getData(),GL_STATIC_DRAW);
+
+	printError("init NormalsCompute");
+	printProgramInfoLog(normalsProgram,"normalsCompute Init",NULL,NULL,NULL,NULL);
+
+	//END OF INIT
+
+	glUseProgram(normalsProgram);
+	printError("NormConvProgram Use.");
+	glUniform2i(glGetUniformLocation(normalsProgram,"size"),getDataWidth(),getDataHeight());
+	
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,2,normalBuffers);
+	//glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,1,1,&terrainBufferID);
+	
+	glDispatchCompute((GLuint)ceil(getDataWidth()/16),(GLuint)ceil(getDataHeight()/16),1);
+	
+	computeBuffers[3] = normalBuffers[1];
+	terrainBufferID = normalBuffers[0];	
+
+	glDeleteProgram(normalsProgram);
+	printError("End of NormalCompute");
+	printProgramInfoLog(normalsProgram,"normalsCompute Init",NULL,NULL,NULL,NULL);
+
+	
+}
+
+
+
+
 void DataHandler::calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height)
 {
 	GLuint normalshader = loadShaders("src/shaders/plaintextureshader.vert", "src/shaders/normalshader.frag");
@@ -529,7 +707,7 @@ void DataHandler::initCompute(){
 	
 	  
 	//create buffers
-	glGenBuffers(4,computeBuffers);
+	glGenBuffers(3,computeBuffers);
 
 	GLint numData = getDataWidth()*getDataHeight();
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[0]);
@@ -539,22 +717,20 @@ void DataHandler::initCompute(){
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[2]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*2*numData,NULL,GL_STATIC_DRAW);
-
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER,computeBuffers[3]);
-	numIndices = (getDataWidth()-1)*(getDataHeight()-1)*2*3;
+	numIndices = (getDataWidth()-2)*(getDataHeight()-2)*2*3;
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLint)*numIndices,NULL,GL_STATIC_DRAW);
-	  
+
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,3,computeBuffers);
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,3,1,&terrainBufferID);
+	printError("run Compute Error 4" );
+	
+  
 	glGenVertexArrays(1,&computeVAO);
 
-	
 	printError("init Compute Error" );
 	printProgramInfoLog(computeProgram, "compute Init", NULL,NULL,NULL,NULL);
 
-
-
 }
-
 
 
 void DataHandler::runCompute(){
@@ -562,19 +738,9 @@ void DataHandler::runCompute(){
 	glUseProgram(computeProgram);
 	
 	printError("run Compute Error UseProg" );
-	glBindTexture(GL_TEXTURE_2D,terrainTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	printError("run Compute Error Bind" );
-	glActiveTexture(GL_TEXTURE0);
-	printError("run Compute Error Active" );
-	glUniform1i(glGetUniformLocation(computeProgram,"tex"),0);
-	printError("run Compute Error 2" );
 	glUniform2i(glGetUniformLocation(computeProgram,"size"),getDataWidth(),getDataHeight()); // 16,16);//
 	printError("run Compute Error 3" );	
-	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,0,4,computeBuffers);
-	printError("run Compute Error 4" );
-	glDispatchCompute(ceil(getDataWidth()/16),ceil(getDataHeight()/16),1);
+	glDispatchCompute((GLuint)ceil(getDataWidth()/16),(GLuint)ceil(getDataHeight()/16),1);
 	printError("run Compute Error 5" );
 
 	/*

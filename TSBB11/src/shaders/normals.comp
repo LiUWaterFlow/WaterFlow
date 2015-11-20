@@ -1,0 +1,61 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout (shared,binding = 0) readonly buffer height0
+{
+	float terrHeight[];
+	
+};
+
+
+layout (shared,binding = 1) writeonly buffer inNormals
+{
+	float normals[];
+	
+};
+
+uniform ivec2 size;
+
+void main(void)
+{	
+
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	int x = clamp(storePos.x, 0, size.x);
+	int y = clamp(storePos.y, 0, size.y);
+
+	int xplus = clamp(x + 1, 0, size.x);
+	int xminus = clamp(x - 1, 0, size.x);
+	int yplus = clamp(y + 1, 0, size.y);
+	int yminus = clamp(y - 1, 0, size.y);
+	
+	float sobelX = 0;
+	float sobelZ = 0;
+	
+	// Sobel x
+	sobelX += 2.0 * terrHeight[xplus + y*size.x]; //  texture(texUnit, outTexCoord + vec2(+offsetX, 0)).y;
+	sobelX += 1.0 * terrHeight[xplus + yplus*size.x];
+	sobelX += 1.0 * terrHeight[xplus + yminus*size.x];
+	sobelX -= 2.0 * terrHeight[xminus + y*size.x];
+	sobelX -= 1.0 * terrHeight[xminus + yplus*size.x];
+	sobelX -= 1.0 * terrHeight[xminus + yminus*size.x];	
+	// Sobel z
+	sobelZ += 2.0 * terrHeight[x + yplus*size.x]; 
+	sobelZ += 1.0 * terrHeight[xplus + yplus*size.x];
+	sobelZ += 1.0 * terrHeight[xminus + yplus*size.x];
+	sobelZ -= 2.0 * terrHeight[x + yminus*size.x];
+	sobelZ -= 1.0 * terrHeight[xplus + yminus*size.x];
+	sobelZ -= 1.0 * terrHeight[xminus + yminus*size.x];
+
+	// Height scaling (0.005f is an  arbitrary value)
+	float heightScale = 0.005f;
+
+	// Combine to normal
+	vec3 normal = normalize(vec3(-sobelX, heightScale, -sobelZ));
+	
+	int offset = (x + y*size.x)*3;	
+
+	normals[offset +0] = normal.x;
+	normals[offset +1] = normal.y;
+	normals[offset +2] = normal.z;
+}
