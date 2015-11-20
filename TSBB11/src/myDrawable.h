@@ -41,7 +41,8 @@ public:
 	Terrain(GLuint program, GLuint* buffers,GLuint inNumIndices, GLuint texID, glm::vec3 scale);
 	Terrain(GLuint program, std::vector<Model*>*, GLuint texID, glm::vec3 scale);
 	virtual void draw();
-	void drawCompute(); 
+	void drawCompute();
+	bool blue; 
 };
 
 

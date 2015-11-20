@@ -6,6 +6,7 @@ in vec3 out_ObjPos;
 
 out vec4 out_Color;
 
+uniform int blue;
 uniform float t;
 uniform vec3 camPos;	// Kamernapositionen.
 uniform vec3 lightSourcePos;	// Ljuspositionen.
@@ -57,6 +58,11 @@ void main(void)
 
 	// Just to check that the terrain data texture is working
 	//vec4 terrainData = texture(texUnit, out_TexCoord) + 0.0000001f * totalLight.x;
-
+	if(!bool(blue)){
 	out_Color = vec4(totalLight,1);
+	}
+	else{
+	out_Color = vec4(0,0,1,1);
+	}
+
 }

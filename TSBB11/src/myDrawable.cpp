@@ -95,7 +95,7 @@ Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, GLuint texID, g
 
 Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint texID, glm::vec3 scale)
 : myDrawable(program) {
-	
+	blue = false;
 	numIndices = inNumIndices;
 	textureID = texID;
 	MTWMatrix = glm::scale(scale);
@@ -139,6 +139,7 @@ Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint te
 		glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
 	}
 	if(buffers[1]){
+		
 		glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);//texBufferID
 		glEnableVertexAttribArray(inTexAttrib);
 		glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*2,0);
@@ -152,7 +153,11 @@ Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint te
 
 void Terrain::drawCompute() {
 	glUseProgram(program);
-
+	if(blue){
+		glUniform1i(glGetUniformLocation(program,"blue"),1);
+	}else{
+		glUniform1i(glGetUniformLocation(program,"blue"),0);
+	}		
 	printError("Error in drawCompute 1: @file myDrawable.cpp");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);

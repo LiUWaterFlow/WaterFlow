@@ -145,17 +145,17 @@ void HeightField::initGPU(){
 	float* u = new float[texWidth*texHeight];
 	float* v = new float[texWidth*texHeight];
 
-	int upper = 505;
-	int lower = 30; 
+	int upper = 500;
+	int lower = 250; 
 
 	for (int j = 0; j < texHeight; ++j){
 		for(int i = 0; i < texWidth; ++i){
-			u[j*texWidth+i] = terr->getCoord(i,j);
+			u[j*texWidth+i] = terr->getData()[j*texWidth+i];
 			v[j*texWidth+i] = 0.0f;	
 
 			//CREATE INTERESTING DATA HERE.			
 			if(i > lower && i < upper && j > lower && j < upper) {
-				u[j*texWidth +i] += 0.05;			
+				u[j*texWidth +i] += 0.005;			
 			}
 		}
 		
@@ -202,6 +202,7 @@ void HeightField::initGPU(){
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[2]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*1*numData,v,GL_STATIC_DRAW);
 
+
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[3]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*1*numData,terr->getData(),GL_STATIC_DRAW);
 	
@@ -209,7 +210,7 @@ void HeightField::initGPU(){
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*3*numData,NULL,GL_STATIC_DRAW);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER,fieldBuffers[5]); //indexes
-	GLuint numIndices = (terr->getDataWidth()-2)*(terr->getDataHeight()-2)*2*3;
+	GLuint numIndices = (terr->getDataWidth()-1)*(terr->getDataHeight()-1)*2*3;
 	glBufferData(GL_SHADER_STORAGE_BUFFER,sizeof(GLfloat)*numIndices,NULL,GL_STATIC_DRAW);
 	
 	drawBuffers[0] = fieldBuffers[4]; //vertex 

@@ -124,7 +124,7 @@ bool Program::init() {
 	terrain = new Terrain(terrainshader,dataHandler->computeBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
 
 	waterTerrain = new Terrain(terrainshader,hf->drawBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
-	
+	waterTerrain->blue = true;
 	
 	
 	printError("After terrain: ");
