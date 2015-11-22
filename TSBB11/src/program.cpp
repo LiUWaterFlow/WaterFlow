@@ -31,7 +31,6 @@ Program::~Program() {}
 int Program::exec() {
 	if (!init()) return -1;
 
-
 	SDL_Event Event;
 
 	while (isRunning) {
@@ -96,12 +95,8 @@ bool Program::init() {
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc",1);
-	//int j = dataHandler->getDataWidth();
-
-	//dataHandler->initCompute();
-	//dataHandler->runCompute();
-
+	dataHandler = new DataHandler("resources/output.min.asc");
+	
 
 	//Voxels and floodfill
 	//voxs = new Voxelgrid(dataHandler,27000000);
@@ -111,16 +106,13 @@ bool Program::init() {
 	hf = new HeightField(dataHandler);
 	hf->initGPU();
 	
-	printError("After compute: ");
-
+	printError("After hf init");
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 
 	// Create drawables
-	//terrain = new Terrain(terrainshader, dataHandler->getModel(), dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
-
 	GLuint sizes[] = { dataHandler->getDataWidth(), dataHandler->getDataHeight() };
 
 	terrain = new HeightMap(terrainshader, sizes, dataHandler->getHeightBuffer());
@@ -188,6 +180,7 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(skyshader);
+	
 	skycube->draw();
 
 	// ====================== Draw Terrain ==========================
@@ -200,8 +193,10 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
+	
 	terrain->draw();
 	waterTerrain->draw();
+	
 	/*
 	//Voxel draws,
 	if (updateRender) {
@@ -216,17 +211,13 @@ void Program::display() {
 	}
 	hf->drawVoxels(*cam->getVTP(),*cam->getWTV());
 	*/
+
 	// ====================== Draw AntBar ===========================
 	TwDraw();
-
 
 	printError("After display: ");
 
 	SDL_GL_SwapWindow(screen);
-
-
-
-
 }
 
 void Program::clean() {
@@ -341,9 +332,10 @@ void Program::checkKeys() {
 		cam->jump(deltaTime);
 	} else if (keystate[SDL_SCANCODE_E]) {
 		cam->jump(-deltaTime);
-	}else if (keystate[SDL_SCANCODE_T]) {
-		hf->initTest();}
-	else if (keystate[SDL_SCANCODE_U]) {
+	} 
+	if (keystate[SDL_SCANCODE_T]) {
+		hf->initTest();
+	} else if (keystate[SDL_SCANCODE_U]) {
 		updateRender = !updateRender;
 	}
 }
