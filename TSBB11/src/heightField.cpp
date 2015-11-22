@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <stdio.h>
 #include <valarray>
+#include <inttypes.h>
 
 void HeightField::initTest() {
 	for (size_t i = 0; i < width; i++) {
@@ -147,17 +148,17 @@ void HeightField::initGPU() {
 	float* u = new float[texWidth*texHeight];
 	float* v = new float[texWidth*texHeight];
 
-	int upper = 1250;
-	int lower = 1230;
+	int upper = 500;
+	int lower = 200;
 
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
-			u[j*texWidth + i] = terr->getData()[j*texWidth + i];
+			u[j*texWidth + i] = terr->getData()[j*texWidth + i] - 1.0f;
 			v[j*texWidth + i] = 0.0f;
 
 			//CREATE INTERESTING DATA HERE.			
 			if (i > lower && i < upper && j > lower && j < upper) {
-				u[j*texWidth + i] += 20.0f;
+				u[j*texWidth + i] += 10.0f;
 			}
 		}
 
@@ -208,13 +209,7 @@ void HeightField::initGPU() {
 
 void HeightField::runSimGPU() {
 
-	int numPing = 50;
-
-	float* u = new float[texWidth*texHeight];
-
-	
-
-
+	int numPing = 40;
 
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
@@ -233,19 +228,6 @@ void HeightField::runSimGPU() {
 	}
 
 	printError("run Sim GPU");
-	/*
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
-	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-	std::valarray<float>* val = new std::valarray<float>(u, texWidth*texHeight);
-	float vol1 = val->sum();
-	
-	printf("%f \n", vol1 - vol0);
-	*/
-	//delete val;
-	delete u;
-
 }
 
 

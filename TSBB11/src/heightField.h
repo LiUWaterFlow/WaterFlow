@@ -27,7 +27,7 @@ private:
   std::vector<GLuint>* voxelPositions;
   const static GLint samp = 1;
   void bindSimGPU();
-  float vol0;
+  unsigned long long vol0;
 
 
 

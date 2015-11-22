@@ -30,13 +30,13 @@ uniform ivec2 size; //width height
 
 float getHeight(int i, int j, float ourHeight){
 	if( i < 0 || j < 0 || i > size.x -1 || j > size.y -1){
-		return ourHeight-0.0001f;
+		return ourHeight;
 	}
 
 	i = clamp(i,0,size.x-1);
 	j = clamp(j,0,size.y-1);
-	float outTemp = u0[i+j*size.x];
-	if(outTemp - terrHeight[i+j*size.x] < 0.00001f){
+	float outTemp = u0[i+j*size.x]-0.0001f;
+	if(outTemp - terrHeight[i+j*size.x] < 0.000000000000001f){
 		outTemp = ourHeight;
 	}
 	return outTemp;
@@ -52,26 +52,26 @@ void main(){
 	//Change these to clamps.
 	if(i < size.x && j < size.y) {
 
-		float dt = 1.0f/(30*15.0f);
+		float dt = 1.0f/(30.0f);
 		int offset = (i + j*size.x);
-		float c2 = 500;
+		float c2 = 1.0f;
 		
 		float h2 = 4.0f;
 
 		float ourHeight = u0[offset];
-
-		float u_east = getHeight((i+1), j, ourHeight);
-		float u_west = getHeight((i-1), j, ourHeight);
-		float u_south = getHeight(i, (j-1), ourHeight);
-		float u_north = getHeight(i, (j+1), ourHeight);
+		float clampLvl = 50.0f;
+		float u_east = clamp(getHeight((i+1), j, ourHeight)-ourHeight,-clampLvl,clampLvl);
+		float u_west = clamp(getHeight((i-1), j, ourHeight)-ourHeight,-clampLvl,clampLvl);
+		float u_south = clamp(getHeight(i, (j-1), ourHeight)-ourHeight,-clampLvl,clampLvl);
+		float u_north = clamp(getHeight(i, (j+1), ourHeight)-ourHeight,-clampLvl,clampLvl);
 		
-		float f = c2/h2*(u_west + u_east + u_south + u_north - 4.0f * ourHeight);
+		float f = c2/h2*(u_west + u_east + u_south + u_north);
 		
-		f = clamp(f, -20.0f, 20.0f);
+		//f = clamp(f, -20.0f, 20.0f);
 		
-		float vel = v[offset] + f*dt;
+		float vel = clamp(v[offset] + f*dt,-1.1,1.1);
 		
-		v[offset] = vel *0.996f;
+		v[offset] = vel *0.996f;// *0.9999995f
 		u1[offset] = max((ourHeight + vel * dt)*0.9999995f,terrHeight[i+j*size.x]);
 
 	}
