@@ -62,7 +62,7 @@ void main(void)
 	out_Color = vec4(totalLight,1);
 	}
 	else{
-	out_Color = vec4(0,0,1,1);
+	out_Color = vec4(0,0,totalLight.z,0.8);
 	}
 
 }

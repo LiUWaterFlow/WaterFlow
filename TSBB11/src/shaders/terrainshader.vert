@@ -8,17 +8,17 @@ out vec3 out_Normal;
 out vec2 out_TexCoord;// not currently used
 out vec3 out_ObjPos;
 
-uniform mat4 MTWMatrix;
+//uniform mat4 MTWMatrix;
 uniform mat4 WTVMatrix;
 uniform mat4 VTPMatrix;
 
-uniform mat3 iNormalMatrixTrans;
+//uniform mat3 iNormalMatrixTrans;
 
 void main(void)
 {
-	out_Normal = iNormalMatrixTrans*in_Normal;
+	out_Normal = in_Normal;
 	out_TexCoord = in_TexCoord; // not currently used
-	out_ObjPos = vec3(MTWMatrix * vec4(in_Position, 1));
+	out_ObjPos = in_Position;
 
-	gl_Position = VTPMatrix * WTVMatrix * MTWMatrix * vec4(in_Position, 1.0);
+	gl_Position = VTPMatrix * WTVMatrix * vec4(in_Position, 1.0);
 }

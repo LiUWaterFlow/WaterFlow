@@ -40,8 +40,7 @@ private:
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
 	std::vector<Model*>* datamodel; 			///< model for the terrain data.
 	GLuint terrainTexture;		///< texture containing normals and height terrain data.
-	GLuint terrainBufferID;		///< terrainheight calculated from the computeshaders.
-	GLuint normalsBufferID;	
+	GLuint terrainBufferID;		///< terrainheight buffer corresponding to readdata data but on GPU.
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
 	int sampleFactor;			///< Sample factor used for constructing model.
@@ -80,11 +79,6 @@ private:
 	/// @see scaleDataAfter()
 	/// @see GenerateTerrain()
 	void performNormalizedConvolution();
-	/// @brief Performes the same operation as performNormalizedConvolution but as a single computeshader.
-	///
-	/// At the end of the function terrainHeight will be a buffer ID containing the heightmap.
-	/// @see performNormalizedConvolution()
-	void normConvCompute();
 
 	/// @brief Scales data when NODATA has been removed.
 	///
@@ -115,15 +109,29 @@ private:
 	/// @todo The scaling for the y component is currently arbitrary and might need some investigation if it should scale with some parameter.
 	void calculateNormalsGPU(GLfloat *vertexArray, GLfloat *normalArray, int width, int height);
 
-	void calculateNormalsCompute();
+	
 
 public:
+	GLuint normConvProgram;
+	GLuint normBuffers[3];
+
+	GLuint normalsProgram;
+	GLuint normalsBuffer;
+
 	///@brief should not be public.
 	///@todo Make private!	
-	GLuint computeShader, memoryBuffer, computeProgram,computeVAO;	
+	GLuint computeProgram;
 	GLuint computeBuffers[4];  /// 0 is pos, 1 is texcoords, 2 is indices,3 normals.
 
 	GLuint numIndices;
+	void calculateNormalsCompute();
+
+	/// @brief Performes the same operation as performNormalizedConvolution but as a single computeshader.
+	///
+	/// At the end of the function terrainHeight will be a buffer ID containing the heightmap.
+	/// @see performNormalizedConvolution()
+	void normConvCompute();
+
 
 
 	/// @brief Reads DEM data, scales it and generates a model.
@@ -204,6 +212,8 @@ public:
 	/// @brief Get the texture id for the terrain height and normals.
 	/// @return Returns the ID for the terrain data texture.
 	GLuint getTextureID();
+
+	GLuint getHeightBuffer();
 
 	/// @brief Pointer to the terrain model
 	///

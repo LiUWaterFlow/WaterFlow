@@ -21,9 +21,13 @@
 #endif
 
 #include "Utilities.h"
+
 #include "loadobj.h"
+#include "GL_utilities.h"
+
 #include <stdlib.h>
 #include <wctype.h>
+#include <stdio.h>
 
 Model* generateCanvas()
 {
@@ -111,4 +115,29 @@ float myStrtof(char* strStart, char** strEnd) {
 	*strEnd = step;
 	retVal = sign * intPart * expTable[negExp];
 	return retVal;
+}
+
+
+GLuint compileComputeShader(const char* location) {
+	GLuint program = glCreateProgram();
+	GLuint computeShader = glCreateShader(GL_COMPUTE_SHADER);
+
+	char* cs = readFile(location);
+	if (cs == NULL) {
+		printf("Error reading shader: %s!\n", location);
+	}
+
+	glShaderSource(computeShader, 1, &cs, NULL);
+	glCompileShader(computeShader);
+	printShaderInfoLog(computeShader, location);
+	//get errors 
+
+	glAttachShader(program, computeShader);
+	glLinkProgram(program);
+	//get errors from the program linking.
+	printProgramInfoLog(program, location, NULL, NULL, NULL, NULL);
+
+	printError("Compile compute shader error!");
+
+	return program;
 }

@@ -65,42 +65,57 @@ void SkyCube::draw() {
 	DrawModel(model, program, "in_Position", NULL, NULL);
 }
 
-Terrain::Terrain(GLuint program, std::vector<Model*>* initModel, GLuint texID, glm::vec3 scale)
-: myDrawable(program) {
-	model = initModel;
-	textureID = texID;
-	MTWMatrix = glm::scale(scale);
-	inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));
+// ================================================================
 
-	// Initial one-time shader uploads.
-	// Light information:
-	glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
-	bool sunIsDirectional = 1;
-	float sunSpecularExponent = 50.0;
-	glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
-	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
+HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, bool isBlue)
+: myDrawable(drawProgram) {
 
-	glUseProgram(program);
-	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
-	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
-	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
-	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
-	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
+	blue = isBlue;
 
-	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
+	textureID = 0;
 
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(MTWMatrix));
-	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
+	dataWidth = sizes[0];
+	dataHeight = sizes[1];
+	numData = dataWidth * dataHeight;
+	numIndices = (dataWidth - 1) * (dataHeight - 1) * 2 * 3;
+
+	heightBuffer = inputHeightBuffer;
+	
+	initUpdate();
+
+	initDraw();
 }
 
-Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint texID, glm::vec3 scale)
-: myDrawable(program) {
-	blue = false;
-	numIndices = inNumIndices;
-	textureID = texID;
-	MTWMatrix = glm::scale(scale);
-	inverseNormalMatrixTrans = glm::transpose(glm::inverse(glm::mat3(MTWMatrix)));
+void HeightMap::initUpdate() {
 
+	glGenBuffers(4, drawBuffers);
+
+	normalsProgram = compileComputeShader("src/shaders/normals.comp");
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[3]); // Normals
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	printError("init normals");
+
+	heightMapProgram = compileComputeShader("src/shaders/heightMap.comp");
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[0]); // Vertex positions
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 3 * numData, NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[1]); // Texture coordinates
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 2 * numData, NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[2]); // Indices
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLint) * numIndices, NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	printError("init heightmap");
+}
+
+void HeightMap::initDraw() {
 	// Initial one-time shader uploads.
 	// Light information:
 	glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
@@ -109,70 +124,89 @@ Terrain::Terrain(GLuint program, GLuint* buffers, GLuint inNumIndices, GLuint te
 	glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
 	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
 
+	glGenVertexArrays(1, &drawVAO);
+
 	glUseProgram(program);
 	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
 	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
 	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
 	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
 	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
-
 	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
 
-	glUniformMatrix4fv(glGetUniformLocation(program, "MTWMatrix"), 1, GL_FALSE, glm::value_ptr(MTWMatrix));
-	glUniformMatrix3fv(glGetUniformLocation(program, "iNormalMatrixTrans"), 1, GL_FALSE, glm::value_ptr(inverseNormalMatrixTrans));
-	
+	printError("init draw uniforms");
 
 	GLint posAttrib = glGetAttribLocation(program, "in_Position");
 	GLint inNormAttrib = glGetAttribLocation(program, "in_Normal");
 	GLint inTexAttrib = glGetAttribLocation(program, "in_TexCoord");
-	//What about indices
-	
-	glGenVertexArrays(1,&computeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER,buffers[0]); //vertexBufferID
-	glBindVertexArray(computeVAO);
+
+	glBindVertexArray(drawVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); //vertexBufferID
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
-	
-	if(buffers[3]){
-		glBindBuffer(GL_ARRAY_BUFFER,buffers[3]); //normalsBufferID
-		glEnableVertexAttribArray(inNormAttrib);
-		glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*3,0);
-	}
-	if(buffers[1]){
-		
-		glBindBuffer(GL_ARRAY_BUFFER,buffers[1]);//texBufferID
-		glEnableVertexAttribArray(inTexAttrib);
-		glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT,GL_FALSE,sizeof(GLfloat)*2,0);
-	}	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[2]);//indicesBufferID
-	
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 3, 0);
+
+	printError("init draw1");
+
+	//glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]);//texBufferID
+	//glEnableVertexAttribArray(inTexAttrib);
+	//glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 2, 0);
+
+	printError("init draw2");
+
+	glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[3]); //normalsBufferID
+	glEnableVertexAttribArray(inNormAttrib);
+	glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 3, 0);
+
+	printError("init draw3");
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);//indicesBufferID
+
+	printError("init draw4");
+
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER,0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	printError("init draw");
 }
 
+void HeightMap::update() {
 
-void Terrain::drawCompute() {
+	glUseProgram(normalsProgram);
+
+	glUniform2i(glGetUniformLocation(normalsProgram, "size"), dataWidth, dataHeight);
+
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
+
+	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+
+	printError("Update normals");
+
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, drawBuffers);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, heightBuffer);
+
+	glUseProgram(heightMapProgram);
+	glUniform2i(glGetUniformLocation(heightMapProgram, "size"), dataWidth, dataHeight);
+	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+
+	printError("Update vertices");
+}
+
+void HeightMap::draw() {
 	glUseProgram(program);
-	if(blue){
-		glUniform1i(glGetUniformLocation(program,"blue"),1);
-	}else{
-		glUniform1i(glGetUniformLocation(program,"blue"),0);
-	}		
-	printError("Error in drawCompute 1: @file myDrawable.cpp");
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	printError("Error in drawCompute 2: @file myDrawable.cpp");
-	glBindVertexArray(computeVAO);
-	printError("Error in drawCompute 3: @file myDrawable.cpp");
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
-	printError("Error in drawCompute 4: @file myDrawable.cpp");	
-}
-
-
-void Terrain::draw() {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	for (GLuint i = 0; i < model->size(); i++) {
-		DrawModel(model->at(i), program, "in_Position", "in_Normal", "in_TexCoord");
+	if (blue) {
+		glUniform1i(glGetUniformLocation(program, "blue"), 1);
+	} else {
+		glUniform1i(glGetUniformLocation(program, "blue"), 0);
 	}
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	glBindVertexArray(drawVAO);
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
+
+	printError("Draw Heightmap");
 }

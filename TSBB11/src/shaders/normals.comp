@@ -2,17 +2,14 @@
 
 layout(local_size_x = 16, local_size_y = 16) in;
 
-layout (shared,binding = 0) readonly buffer height0
+layout (shared, binding = 0) readonly buffer height0
 {
 	float terrHeight[];
-	
 };
 
-
-layout (shared,binding = 1) writeonly buffer inNormals
+layout (shared, binding = 1) writeonly buffer inNormals
 {
 	float normals[];
-	
 };
 
 uniform ivec2 size;
@@ -21,13 +18,13 @@ void main(void)
 {	
 
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
-	int x = clamp(storePos.x, 0, size.x);
-	int y = clamp(storePos.y, 0, size.y);
 
-	int xplus = clamp(x + 1, 0, size.x);
-	int xminus = clamp(x - 1, 0, size.x);
-	int yplus = clamp(y + 1, 0, size.y);
-	int yminus = clamp(y - 1, 0, size.y);
+	int x = clamp(storePos.x, 0, size.x-1); 
+	int y = clamp(storePos.y, 0, size.y-1); 
+	int xplus = clamp(x + 1, 0, size.x-1); 
+	int xminus = clamp(x - 1, 0, size.x-1); 
+	int yplus = clamp(y + 1, 0, size.y-1); 
+	int yminus = clamp(y - 1, 0, size.y-1);  
 	
 	float sobelX = 0;
 	float sobelZ = 0;
@@ -48,7 +45,7 @@ void main(void)
 	sobelZ -= 1.0 * terrHeight[xminus + yminus*size.x];
 
 	// Height scaling (0.005f is an  arbitrary value)
-	float heightScale = 0.005f;
+	float heightScale = 5.0f;
 
 	// Combine to normal
 	vec3 normal = normalize(vec3(-sobelX, heightScale, -sobelZ));

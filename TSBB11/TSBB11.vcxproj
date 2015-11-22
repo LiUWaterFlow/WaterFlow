@@ -292,7 +292,7 @@
     <ClCompile Include="src\common\GL_utilities.c" />
     <ClCompile Include="src\common\loadobj.c" />
     <ClCompile Include="src\common\LoadTGA.c" />
-    <ClCompile Include="src\common\Utilities.c" />
+    <ClCompile Include="src\common\Utilities.cpp" />
     <ClCompile Include="src\common\Windows\glew.c" />
     <ClCompile Include="src\heightField.cpp" />
     <ClCompile Include="src\myDrawable.cpp" />
@@ -323,8 +323,12 @@
     <None Include="resources\Doxyfile" />
     <None Include="resources\mainpage.dox" />
     <None Include="src\shaders\combineshader.frag" />
+    <None Include="src\shaders\heightMap.comp" />
     <None Include="src\shaders\confidenceshader.frag" />
+    <None Include="src\shaders\fieldShader.comp" />
     <None Include="src\shaders\filtershader.frag" />
+    <None Include="src\shaders\normals.comp" />
+    <None Include="src\shaders\normConv.comp" />
     <None Include="src\shaders\terrainshader.frag" />
     <None Include="src\shaders\terrainshader.vert" />
     <None Include="src\shaders\normalshader.frag" />

@@ -17,7 +17,7 @@ private:
 
   GLuint texWidth, texHeight;
 
-  GLuint fieldBuffers[6];
+  
   GLuint terrTex, heightTex, speedTex;
 
   DataHandler* terr;
@@ -35,7 +35,8 @@ public:
   
   GLuint drawBuffers[4];
   GLuint fieldProgram, fieldShader,fieldVAO;
-  
+  GLuint fieldBuffers[6];
+
   HeightField(DataHandler *t) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight();};
   void updateSim(GLfloat);
   void setTerrainTex(GLuint t){terrTex = t;};

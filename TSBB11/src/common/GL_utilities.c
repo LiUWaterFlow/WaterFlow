@@ -27,19 +27,30 @@ char* readFile(const char *file)
 	FILE *fptr;
 	long length;
 	char *buf;
-	if (file == NULL)
-		return NULL;
-	fptr = fopen(file, "rb"); /* Open file for reading */
-	if (!fptr) /* Return NULL on failure */
-		return NULL;
-	int temp = fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
-	if (temp != 0) {
-		fprintf(stderr, "Could not allocate space for readFile buffer!\n");
+
+	if (file == NULL) {
 		return NULL;
 	}
-	length = ftell(fptr); /* Find out how many bytes into the file we are */
-	buf = (char*)malloc(length+1); /* Allocate a buffer for the entire length of the file and a null terminator */
 
+	fptr = fopen(file, "rb"); /* Open file for reading */
+	if (!fptr) {
+		fprintf(stderr, "Could not open file: %s!\n", file);
+		return NULL;/* Return NULL on failure */
+	}
+
+	int temp = fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
+	if (temp != 0) {
+		fprintf(stderr, "Could not seek to end of file!\n");
+		return NULL;
+	}
+
+	length = ftell(fptr); /* Find out how many bytes into the file we are */
+	if (length < 0) {
+		fprintf(stderr, "ftell reported negative length!\n");
+		return NULL;
+	}
+
+	buf = (char*)malloc(length + 1); /* Allocate a buffer for the entire length of the file and a null terminator */
 	if (buf == NULL) {
 		fprintf(stderr, "Could not allocate space for readFile buffer!\n");
 		return NULL;

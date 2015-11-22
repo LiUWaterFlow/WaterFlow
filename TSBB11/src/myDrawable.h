@@ -17,6 +17,7 @@ protected:
 public:
 	myDrawable(GLuint program);
 	virtual void draw() = 0;
+	virtual void update() = 0;
 };
 
 class SkyCube : public myDrawable {
@@ -26,24 +27,32 @@ private:
 
 public:
 	SkyCube(GLuint program);
+	virtual void update() {}
 	virtual void draw();
 };
 
-class Terrain : public myDrawable {
+class HeightMap : public myDrawable {
 private:
-	std::vector<Model*>* model;
-	glm::mat3 inverseNormalMatrixTrans;
-	GLuint textureID;
-	GLuint computeVAO;
-	GLuint numIndices;
+	GLuint drawBuffers[4];
+	GLuint heightBuffer;
+	GLuint drawVAO;
+	GLuint textureID; // Currently not used
+	bool blue;
+
+	GLuint dataWidth, dataHeight, numData, numIndices;
+
+	GLuint normalsProgram, heightMapProgram;
+
+	void initUpdate();
+	void initDraw();
 
 public:
-	Terrain(GLuint program, GLuint* buffers,GLuint inNumIndices, GLuint texID, glm::vec3 scale);
-	Terrain(GLuint program, std::vector<Model*>*, GLuint texID, glm::vec3 scale);
+	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, bool isBlue = false);
+
+	virtual void update();
 	virtual void draw();
-	void drawCompute();
-	bool blue; 
 };
+
 
 
 #endif // DRAWABLE_H

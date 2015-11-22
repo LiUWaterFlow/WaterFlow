@@ -30,7 +30,7 @@ uniform ivec2 size; //width height
 
 float getHeight(int i, int j, float ourHeight){
 	if( i < 0 || j < 0 || i > size.x -1 || j > size.y -1){
-		return 0;// ourHeight-0.0001;
+		return ourHeight-0.0001;
 	}
 
 	i = clamp(i,0,size.x-1);
@@ -71,10 +71,10 @@ void main(){
 		//f = clamp(f, -0.1f, 0.1f);
 		
 		float vel = v[offset] + f*dt;
-		if(i > size.x -20 || j > size.y -20){
-			vel = v[offset];
+		//if(i > size.x -20 || j > size.y -20){
+		//	vel = v[offset];
 				
-		}		
+		//}		
 		v[offset] = vel *0.998f;
 		u1[offset] = max(ourHeight + vel * dt-0.00001,terrHeight[i+j*size.x]);
 		

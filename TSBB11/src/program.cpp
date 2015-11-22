@@ -99,8 +99,8 @@ bool Program::init() {
 	dataHandler = new DataHandler("resources/output.min.asc",1);
 	//int j = dataHandler->getDataWidth();
 
-	dataHandler->initCompute();
-	dataHandler->runCompute();
+	//dataHandler->initCompute();
+	//dataHandler->runCompute();
 
 
 	//Voxels and floodfill
@@ -121,14 +121,14 @@ bool Program::init() {
 	// Create drawables
 	//terrain = new Terrain(terrainshader, dataHandler->getModel(), dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
 
-	terrain = new Terrain(terrainshader,dataHandler->computeBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
+	GLuint sizes[] = { dataHandler->getDataWidth(), dataHandler->getDataHeight() };
 
-	waterTerrain = new Terrain(terrainshader,hf->drawBuffers, dataHandler->numIndices, dataHandler->getTextureID(), glm::vec3(dataHandler->getDataWidth(), dataHandler->getTerrainScale(), dataHandler->getDataHeight()));
-	waterTerrain->blue = true;
-	
-	
-	printError("After terrain: ");
+	terrain = new HeightMap(terrainshader, sizes, dataHandler->getHeightBuffer());
+	terrain->update();
 
+	waterTerrain = new HeightMap(terrainshader, sizes, hf->fieldBuffers[0], true);	
+	
+	printError("Created Heightmaps");
 
 	skycube = new SkyCube(skyshader);
 
@@ -171,6 +171,8 @@ void Program::update() {
 	// Update the tweak bar
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
 	hf->runSimGPU();
+
+	waterTerrain->update();
 }
 
 void Program::display() {
@@ -198,8 +200,8 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
-	terrain->drawCompute();
-	waterTerrain->drawCompute();
+	terrain->draw();
+	waterTerrain->draw();
 	/*
 	//Voxel draws,
 	if (updateRender) {
