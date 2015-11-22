@@ -12,8 +12,7 @@
 
 // ===== Constructors and destructors
 
-DataHandler::DataHandler(const char* inputfile, int sampleFactor, int blockSize)
-: sampleFactor(sampleFactor), blockSize(blockSize) {
+DataHandler::DataHandler(const char* inputfile) {
 	readdata = new mapdata();
 
 	std::cout << "Reading DEM data from: " << inputfile << "...";
@@ -50,23 +49,58 @@ float DataHandler::getCoord(int col, int row) {
 
 	return retdata;
 }
-float* DataHandler::getData() {
-	return &readdata->data[0];
-}
-int DataHandler::getDataWidth() {
-	return readdata->ncols;
-}
-int DataHandler::getDataHeight() {
-	return readdata->nrows;
-}
-int DataHandler::getElem() {
-	return readdata->nelem;
-}
-GLfloat DataHandler::getTerrainScale() {
-	return terrainScale;
-}
-GLuint DataHandler::getHeightBuffer() {
-	return terrainBufferID;
+
+GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a height map.
+{
+	int width = getDataWidth();
+	int height = getDataHeight();
+
+	int vertX1 = (int)floor(x);
+	int vertZ1 = (int)floor(z);
+
+	int vertX2 = (int)floor(x) + 1;
+	int vertZ2 = (int)floor(z) + 1;
+
+	int vertX3 = 0;
+	int vertZ3 = 0;
+
+	GLfloat yheight = 0;
+
+	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 < width) && (vertZ2 < height)) {
+
+		GLfloat dist1 = vertX1 - x;
+		GLfloat dist2 = vertZ1 - z;
+
+		if (dist1 > dist2) {
+			vertX3 = vertX1;
+			vertZ3 = vertZ1 + 1;
+		} else {
+			vertX3 = vertX1 + 1;
+			vertZ3 = vertZ1;
+		}
+		GLfloat vertY1 = getData()[(vertX1 + vertZ1 * width)];
+		GLfloat vertY2 = getData()[(vertX2 + vertZ2 * width)];
+		GLfloat vertY3 = getData()[(vertX3 + vertZ3 * width)];
+
+		glm::vec3 p1 = { (float)vertX1 / (float)width, vertY1, (float)vertZ1 / (float)height };
+		glm::vec3 p2 = { (float)vertX2 / (float)width, vertY2, (float)vertZ2 / (float)height };
+		glm::vec3 p3 = { (float)vertX3 / (float)width, vertY3, (float)vertZ3 / (float)height };
+
+		glm::vec3 planeNormal = { 0, 0, 0 };
+
+		// This if/else might not be making any difference whatsoever.
+		if (dist1 > dist2) {
+			planeNormal = glm::normalize(glm::cross(p2 - p1, p3 - p1));
+		} else {
+			planeNormal = glm::normalize(glm::cross(p3 - p1, p2 - p1));
+		}
+
+		GLfloat D;
+		D = glm::dot(planeNormal, p1);
+
+		yheight = (D - planeNormal.x*x / width - planeNormal.z*z / height) / planeNormal.y;
+	}
+	return yheight;
 }
 
 // ===== Actual functions =====
@@ -130,33 +164,37 @@ void DataHandler::readDEM(const char* inputfile) {
 
 void DataHandler::normConvCompute() {
 
-	normConvProgram = compileComputeShader("src/shaders/normConv.comp");
+	GLuint normConvProgram = compileComputeShader("src/shaders/normConv.comp");
+
+	glGenBuffers(1, &terrainBufferID);
+
+	GLuint normBuffers[3];
 	glGenBuffers(3, normBuffers);
 
 	GLint numData = getElem();
 	GLuint reset = 0;
-	//read buffer height
+	// read buffer height
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, normBuffers[0]);	    //What data? getData()
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)*numData, getData(), GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	//write buffer height
+	
+	// write buffer height
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, normBuffers[1]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)*numData, NULL, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
+	// Atomic counter for isNODATA
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, normBuffers[2]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLuint), &reset, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	printError("init NormConvCompute");
-
-	//END OF INIT
-
+	
 	glUseProgram(normConvProgram);
 	glUniform2i(glGetUniformLocation(normConvProgram, "size"), getDataWidth(), getDataHeight());
 
 	GLuint isNODATA = 1;
-	while (isNODATA) {
+	while (isNODATA) { // Ping pong the normalized convolution until there are no more NODATA
 		isNODATA = 0;
 
 		glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, normBuffers);
@@ -172,65 +210,16 @@ void DataHandler::normConvCompute() {
 
 	terrainBufferID = normBuffers[0];
 	
+	// Replace the data in readdata with data from GPU
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, terrainBufferID);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*numData, getData());
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glDeleteBuffers(2, &normBuffers[1]);
+
+	printError("End NormConvCompute");
 }
 
-GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a height map.
-{
-	int width = getDataWidth();
-	int height = getDataHeight();
-
-	int vertX1 = (int)floor(x);
-	int vertZ1 = (int)floor(z);
-
-	int vertX2 = (int)floor(x) + 1;
-	int vertZ2 = (int)floor(z) + 1;
-
-	int vertX3 = 0;
-	int vertZ3 = 0;
-
-	GLfloat yheight = 0;
-
-	if ((vertX1 >= 0) && (vertZ1 >= 0) && (vertX2 < width) && (vertZ2 < height)) {
-
-		GLfloat dist1 = vertX1 - x;
-		GLfloat dist2 = vertZ1 - z;
-
-		if (dist1 > dist2) {
-			vertX3 = vertX1;
-			vertZ3 = vertZ1 + 1;
-		} else {
-			vertX3 = vertX1 + 1;
-			vertZ3 = vertZ1;
-		}
-		GLfloat vertY1 = getData()[(vertX1 + vertZ1 * width)];
-		GLfloat vertY2 = getData()[(vertX2 + vertZ2 * width)];
-		GLfloat vertY3 = getData()[(vertX3 + vertZ3 * width)];
-
-		glm::vec3 p1 = { (float)vertX1 / (float)width, vertY1, (float)vertZ1 / (float)height };
-		glm::vec3 p2 = { (float)vertX2 / (float)width, vertY2, (float)vertZ2 / (float)height };
-		glm::vec3 p3 = { (float)vertX3 / (float)width, vertY3, (float)vertZ3 / (float)height };
-
-		glm::vec3 planeNormal = { 0, 0, 0 };
-
-		// This if/else might not be making any difference whatsoever.
-		if (dist1 > dist2) {
-			planeNormal = glm::normalize(glm::cross(p2 - p1, p3 - p1));
-		} else {
-			planeNormal = glm::normalize(glm::cross(p3 - p1, p2 - p1));
-		}
-
-		GLfloat D;
-		D = glm::dot(planeNormal, p1);
-
-		yheight = (D - planeNormal.x*x / width - planeNormal.z*z / height) / planeNormal.y;
-	}
-	return yheight;
-}
 
 
 
