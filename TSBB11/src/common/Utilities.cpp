@@ -130,6 +130,7 @@ GLuint compileComputeShader(const char* location) {
 	glShaderSource(computeShader, 1, &cs, NULL);
 	glCompileShader(computeShader);
 	printShaderInfoLog(computeShader, location);
+	printProgramInfoLog(program, location, NULL, NULL, NULL, NULL);
 	//get errors 
 
 	glAttachShader(program, computeShader);

@@ -27,15 +27,15 @@ private:
   std::vector<GLuint>* voxelPositions;
   const static GLint samp = 1;
   void bindSimGPU();
-  
+  float vol0;
 
 
 
 public:
   
   GLuint drawBuffers[4];
-  GLuint fieldProgram, fieldShader,fieldVAO;
-  GLuint fieldBuffers[6];
+  GLuint fieldProgram, fieldShader,fieldVAO,pervProgram,pervShader;
+  GLuint fieldBuffers[7];
 
   HeightField(DataHandler *t) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight();};
   void updateSim(GLfloat);

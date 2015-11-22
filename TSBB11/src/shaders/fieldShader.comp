@@ -2,25 +2,25 @@
 
 layout(local_size_x = 16, local_size_y = 16) in;
 
-layout (shared,binding = 4) buffer height0
+layout (std430,binding = 4) buffer height0
 {
 	float u0[];
 	
 };
 
-layout (shared, binding = 5) buffer height1
+layout (std430, binding = 5) buffer height1
 {
 	float u1[];
 	
 };
 
-layout (shared,binding = 6) buffer velocity
+layout (std430,binding = 6) buffer velocity
 {
 	float v[];
 	
 };
 
-layout (shared,binding = 7) buffer terrainHeight
+layout (std430,binding = 7) buffer terrainHeight
 {	
 	float terrHeight[];
 	
@@ -30,7 +30,7 @@ uniform ivec2 size; //width height
 
 float getHeight(int i, int j, float ourHeight){
 	if( i < 0 || j < 0 || i > size.x -1 || j > size.y -1){
-		return ourHeight-0.0001;
+		return ourHeight-0.0001f;
 	}
 
 	i = clamp(i,0,size.x-1);
@@ -52,11 +52,10 @@ void main(){
 	//Change these to clamps.
 	if(i < size.x && j < size.y) {
 
-		float dt = 1.0f/(30.0f*2*15.0f);
+		float dt = 1.0f/(30*15.0f);
 		int offset = (i + j*size.x);
-		float c2 = 8000;
+		float c2 = 500;
 		
-
 		float h2 = 4.0f;
 
 		float ourHeight = u0[offset];
@@ -66,18 +65,14 @@ void main(){
 		float u_south = getHeight(i, (j-1), ourHeight);
 		float u_north = getHeight(i, (j+1), ourHeight);
 		
-		float f = c2*(u_west + u_east + u_south + u_north - 4.0f * ourHeight)/h2;
+		float f = c2/h2*(u_west + u_east + u_south + u_north - 4.0f * ourHeight);
 		
-		//f = clamp(f, -0.1f, 0.1f);
+		f = clamp(f, -20.0f, 20.0f);
 		
 		float vel = v[offset] + f*dt;
-		//if(i > size.x -20 || j > size.y -20){
-		//	vel = v[offset];
-				
-		//}		
-		v[offset] = vel *0.998f;
-		u1[offset] = max(ourHeight + vel * dt-0.00001,terrHeight[i+j*size.x]);
 		
+		v[offset] = vel *0.996f;
+		u1[offset] = max((ourHeight + vel * dt)*0.9999995f,terrHeight[i+j*size.x]);
 
 	}
 }

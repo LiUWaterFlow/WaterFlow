@@ -2,22 +2,22 @@
 
 layout(local_size_x = 16, local_size_y = 16) in;
 
-layout (shared, binding = 0) writeonly buffer Pos
+layout (std430, binding = 0) writeonly buffer Pos
 {
 	float position[];
 };
 	
-layout (shared, binding = 1) writeonly buffer TexCoord
+layout (std430, binding = 1) writeonly buffer TexCoord
 {
 	vec2 texCoord[];
 };
 
-layout (shared, binding = 2) writeonly buffer index
+layout (std430, binding = 2) writeonly buffer index
 {	
 	int indices[];
 };
 
-layout (shared, binding = 3) readonly buffer height
+layout (std430, binding = 3) readonly buffer height
 {	
 	float terrHeight[];
 };
