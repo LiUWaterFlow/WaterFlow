@@ -35,8 +35,8 @@ float getHeight(int i, int j, float ourHeight){
 
 	i = clamp(i,0,size.x-1);
 	j = clamp(j,0,size.y-1);
-	float outTemp = u0[i+j*size.x]-0.0001f;
-	if(outTemp - terrHeight[i+j*size.x] < 0.000000000000001f){
+	float outTemp = u0[i+j*size.x];
+	if(outTemp - terrHeight[i+j*size.x] < 0.0000000001f){
 		outTemp = ourHeight;
 	}
 	return outTemp;
@@ -59,7 +59,7 @@ void main(){
 		float h2 = 4.0f;
 
 		float ourHeight = u0[offset];
-		float clampLvl = 50.0f;
+		float clampLvl = 500.0f;
 		float u_east = clamp(getHeight((i+1), j, ourHeight)-ourHeight,-clampLvl,clampLvl);
 		float u_west = clamp(getHeight((i-1), j, ourHeight)-ourHeight,-clampLvl,clampLvl);
 		float u_south = clamp(getHeight(i, (j-1), ourHeight)-ourHeight,-clampLvl,clampLvl);
