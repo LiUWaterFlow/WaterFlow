@@ -2,34 +2,11 @@
 #include <algorithm> //for swap
 #include <vector>
 
+#include "fluidsolver.h"
 #include "../../TSBB11/src/common/glm/glm.hpp"
 
 const int N=10;
 const int size=(N+2)*(N+2)*(N+2);
-
-//static float u[size], v[size], w[size], u_prev[size], v_prev[size], w_prev[size];
-//static float dens[size], dens_prev[size];
-
-//the voxels
-class Voxel
-{
-public:
-	Voxel() {};
-	~Voxel() {};
-
-	float density;
-	glm::vec3 velocity;
-	glm::vec3 prev_velocity;
-
-	const float viscosity = 1.0f;
-	const float diffuse = 1.0f;
-	//dt should not be here because we might want to change it during runtime
-};
-
-/*voxels between corners not bounded correctly
- first and last slice not working correctly
-Works otherwise
-*/
 
 void set_bnd( int N, int b, float*** x) 
 {
@@ -83,8 +60,6 @@ void set_bnd( int N, int b, float*** x)
 
 	
 }
-
-
 
 
 void add_source (int N, float ***x, float ***s, float dt) //fungerar som den ska yey
@@ -317,7 +292,7 @@ int main()
 	int N = 10;
 	float visc = 1;
 	float dt = 0.1f;
-	const int size = (N+2)*(N+2)*(N+2);
+	//const int size = (N+2)*(N+2)*(N+2);
 	float diff = 1;
 
 	float*** dens = new float**[N+2];
@@ -388,6 +363,14 @@ int main()
 		w_prev[i] = new float*[N+2];
 		for (int j = 0; j < N+2; j++){
 			w_prev[i][j] = new float[N+2];
+		}
+	}
+
+	Voxel*** vox = new Voxel**[N+2];
+	for (int i = 0; i < N+2; i++){
+		vox[i] = new Voxel*[N+2];
+		for (int j = 0; j < N+2; j++){
+			vox[i][j] = new Voxel[N+2];
 		}
 	}
 
@@ -492,6 +475,14 @@ int main()
 		delete [] w_prev[i];
 	}
 	delete [] w_prev;
+
+for (int i = 0; i < (N+2); i++){
+		for (int j =0; j < (N+2); j++){
+			delete [] vox[i][j];
+		}
+		delete [] vox[i];
+	}
+	delete [] vox;
 
 	return 0;
 }

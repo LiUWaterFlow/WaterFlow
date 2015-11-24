@@ -1,104 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Common">
-      <UniqueIdentifier>{0c001102-f1b3-42bd-a686-41afa0df55ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shaders">
-      <UniqueIdentifier>{cd04c138-1b2e-4f0a-8674-cc619a1c4031}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Common">
-      <UniqueIdentifier>{b90cfd10-025a-471f-a396-c11a1583074b}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\common\GL_utilities.c" />
+    <ClCompile Include="src\common\loadobj.c" />
+    <ClCompile Include="src\common\LoadTGA.c" />
+    <ClCompile Include="src\common\Utilities.c" />
+    <ClCompile Include="src\common\Windows\glew.c" />
+    <ClCompile Include="src\myDrawable.cpp" />
+    <ClCompile Include="src\program.cpp" />
+    <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\voxelTesting.cpp" />
+    <ClCompile Include="src\grid.cpp" />
+    <ClCompile Include="src\fluidsolver.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\Windows\glew.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\GL_utilities.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\loadobj.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\LoadTGA.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\SDL_util.c">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\readData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\common\AntTweak\AntTweakBar.h" />
+    <ClInclude Include="src\common\GL_utilities.h" />
+    <ClInclude Include="src\common\loadobj.h" />
+    <ClInclude Include="src\common\LoadTGA.h" />
+    <ClInclude Include="src\common\Utilities.h" />
+    <ClInclude Include="src\common\Windows\glew.h" />
+    <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
+    <ClInclude Include="src\common\Windows\wglew.h" />
+    <ClInclude Include="src\fluiddatastructures.h" />
+    <ClInclude Include="src\myDrawable.h" />
+    <ClInclude Include="src\program.h" />
+    <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\voxelTesting.h" />
+    <ClInclude Include="src\grid.h" />
+    <ClInclude Include="src\fluidsolver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\common\GL_utilities.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\loadobj.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\LoadTGA.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\Windows\glew.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\Windows\wglew.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\Windows\sdl2\SDL.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\SDL_util.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\readData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\shaders\main.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\main.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\combineshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\confidenceshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\filtershader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\plaintextureshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\plaintextureshader.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
+    <None Include="makefile" />
+    <None Include="resources\Doxyfile" />
+    <None Include="resources\mainpage.dox" />
+    <None Include="src\shaders\combineshader.frag" />
+    <None Include="src\shaders\confidenceshader.frag" />
+    <None Include="src\shaders\filtershader.frag" />
+    <None Include="src\shaders\terrainshader.frag" />
+    <None Include="src\shaders\terrainshader.vert" />
+    <None Include="src\shaders\normalshader.frag" />
+    <None Include="src\shaders\plaintextureshader.vert" />
+    <None Include="src\shaders\simplevoxels.frag" />
+    <None Include="src\shaders\simplevoxels.geom" />
+    <None Include="src\shaders\simplevoxels.vert" />
+    <None Include="src\shaders\skyshader.frag" />
+    <None Include="src\shaders\skyshader.vert" />
   </ItemGroup>
 </Project>

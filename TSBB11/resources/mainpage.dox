@@ -1,0 +1,7 @@
+/// @mainpage WaterFlow
+///
+/// @section intro_sec Introduction
+///
+/// This is the project documentation for a project to simulate and visualize water
+/// using C++ and OpenGL. The project homeage is
+/// <a href="https://liuwaterflow.github.io/WaterFlow/">here</a>. 
