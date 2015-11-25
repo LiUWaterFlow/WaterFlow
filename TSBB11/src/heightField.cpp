@@ -5,6 +5,47 @@
 #include <stdio.h>
 #include <valarray>
 #include <inttypes.h>
+	
+void HeightField::floodFill(float* u, int x, int z,float height){
+
+  std::vector<std::vector<int>> queue;
+
+  if (terr->getData()[x +texWidth*z] < height) {
+    queue.push_back({x, z});
+  }
+
+
+  int temp_x, temp_z;
+
+  /* While queue is not empty, keep processing queue from back to front.
+  */
+  while(queue.size() > 0){
+
+	temp_x  = queue.back().at(0);
+	temp_z = queue.back().at(1);
+
+	queue.pop_back();
+
+	// create the four neighbours clamp to ensure we don't check outside the map.	
+	int temp_x_plus = clip(temp_x+1,0,texWidth-1);
+	int temp_x_min = clip(temp_x-1,0,texWidth-1);
+	int temp_z_plus = clip(temp_z+1,0,texHeight-1);
+	int temp_z_min = clip(temp_z-1,0,texHeight-1);
+	int offset0 = temp_x + temp_z*texWidth; 	
+	if(u[offset0] != height && terr->getData()[offset0] < height){
+		
+		//set height at offset0
+		u[offset0] = height;
+		//add the four neighbours
+		queue.push_back({temp_x_plus,temp_z_min});
+		queue.push_back({temp_x_plus,temp_z_plus});		
+		queue.push_back({temp_x_min,temp_z_min});		
+		queue.push_back({temp_x_min,temp_z_plus});
+	}
+  }
+}
+	
+
 
 void HeightField::initTest() {
 	for (size_t i = 0; i < width; i++) {
@@ -20,11 +61,11 @@ void HeightField::initTest() {
 	}
 }
 
-int clip(int n, int lower, int upper) {
+int HeightField::clip(int n, int lower, int upper) {
 	return std::max(lower, std::min(n, upper));
 }
 
-GLfloat clipf(GLfloat n, GLfloat lower, GLfloat upper) {
+GLfloat HeightField::clipf(GLfloat n, GLfloat lower, GLfloat upper) {
 	return std::max(lower, std::min(n, upper));
 }
 
@@ -147,22 +188,30 @@ void HeightField::initGPU() {
 
 	float* u = new float[texWidth*texHeight];
 	float* v = new float[texWidth*texHeight];
+	std::fill_n(v,texWidth*texHeight,0.0f);
+	memcpy(u, terr->getData(), texWidth*texHeight);
 
 	int upper = 500;
 	int lower = 200;
-
+	
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
 			u[j*texWidth + i] = terr->getData()[j*texWidth + i];
-			v[j*texWidth + i] = 0.0f;
+			//v[j*texWidth + i] = 0.0f;
 
 			//CREATE INTERESTING DATA HERE.			
+			
 			if (i > lower && i < upper && j > lower && j < upper) {
 				u[j*texWidth + i] += 10.0f;
 			}
+					
 		}
 
 	}
+	
+	//for each flood fill point
+	floodFill(u,1250,1600,terr->getData()[1250+texWidth*1600]+25.0f);
+
 
 	int i = 0;
 
@@ -209,7 +258,7 @@ void HeightField::initGPU() {
 
 void HeightField::runSimGPU() {
 
-	int numPing = 40;
+	int numPing = 20;
 
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());

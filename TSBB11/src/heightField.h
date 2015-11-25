@@ -27,6 +27,8 @@ private:
   std::vector<GLuint>* voxelPositions;
   const static GLint samp = 1;
   void bindSimGPU();
+  int clip(int n, int lower, int upper);
+  float clipf(GLfloat n, GLfloat lower, GLfloat upper);
   unsigned long long vol0;
 
 
@@ -36,6 +38,8 @@ public:
   GLuint drawBuffers[4];
   GLuint fieldProgram, fieldShader,fieldVAO,pervProgram,pervShader;
   GLuint fieldBuffers[7];
+  
+  void floodFill(float* u, int x, int z, float height);
 
   HeightField(DataHandler *t) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight();};
   void updateSim(GLfloat);
