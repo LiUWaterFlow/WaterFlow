@@ -153,7 +153,7 @@ void HeightField::initGPU() {
 
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
-			u[j*texWidth + i] = terr->getData()[j*texWidth + i] - 1.0f;
+			u[j*texWidth + i] = terr->getData()[j*texWidth + i];
 			v[j*texWidth + i] = 0.0f;
 
 			//CREATE INTERESTING DATA HERE.			
