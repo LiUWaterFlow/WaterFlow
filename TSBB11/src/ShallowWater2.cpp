@@ -19,20 +19,25 @@ int ShallowWater2::run()
 	/*Maybe print so it is as it should be*/
 	PrintWaterHeight();
 	//PrintTerrainHeight();
-	for (unsigned int i = 0; i < 5; i++) //maybe run the simulation 5 times
+	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
+		if(i%500 == 0)
+		{
 		/*Print velocity y for each iteration maybe*/
 		//PrintWaterBool(i);
 		//PrintWaterFillLevel(i);
 		PrintWaterHeight(i);
 		//PrintVelocity_X(i);
 		//PrintVelocity_Y(i);
+		PrintWaterHeightSum(i);
 		/*and pause so we see what happens*/
 		Pause();
+		}
 	}
 	/*then print again*/
 	PrintWaterHeight();
+	PrintWaterHeightSum();
 	/*maybe a pause with a message so we know WHY we paused*/
 	Pause("Last Pause before termination");
 
@@ -92,7 +97,7 @@ void ShallowWater2::Advect(std::vector<float>& array,const float dt, VELTYPE typ
 
 				//backtracing
 				float source_point_x = (float)i - u*dt; //divide by one step size
-				float source_point_y = (float)j - u*dt;
+				float source_point_y = (float)j - v*dt;
 
 				//making sure we dont go outside the bounds
 				if (source_point_x < 0.0f){ source_point_x = 0.0f; }
@@ -256,6 +261,19 @@ void ShallowWater2::ResetTemp()
 	}
 }
 
+float ShallowWater2::SumArray(std::vector<float>& arr) const
+{
+	float sum = 0.0f;
+	for (unsigned int x = 1 ; x < m_sizeX-1 ; x++)
+	{
+		for (unsigned int y = 1 ; y < m_sizeY-1 ; y++)
+		{
+			const unsigned int index = x + y * m_sizeX;
+			sum += arr[index];
+		}
+	}
+	return sum;
+}
 /*
 *=========================================================
 *Print function and helper print function
@@ -319,7 +337,15 @@ void ShallowWater2::Pause(std::string msg) const
 	std::getchar();
 }
 
-
+void ShallowWater2::PrintWaterHeightSum(int iter)
+{
+	std::cout << "Water Height Summation: " << SumArray(m_water_height);
+	if (iter != -1)
+	{
+		std::cout << " Iteration: " << iter;
+	}
+	std::cout << " \n" << std::endl;
+}
 /*
  *=========================================================
  *Print functions showing number of iterations

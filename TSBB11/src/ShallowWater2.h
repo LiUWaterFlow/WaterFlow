@@ -93,6 +93,7 @@ public:
 	/*Helper functions to pause and wait for input*/
 	void Pause() const;
 	void Pause(std::string msg) const;
+	void PrintWaterHeightSum(int iter = -1);
 
 private:
 	const unsigned int m_sizeX;
@@ -113,7 +114,10 @@ private:
 	void SetReflectBoundary();
 
 	/*functions for printing*/
-	void Print(std::vector<float> arr, std::string msg, int iter) const;	
+	void Print(std::vector<float> arr, std::string msg, int iter) const;
+	
+	float SumArray(std::vector<float>& arr) const;
+	
 	void Print(std::vector<bool> arr, std::string msg, int iter) const;
 	void PrintHelper(std::string start_end, std::string msg, int iter) const;
 	

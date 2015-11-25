@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <assert.h>
+#include <math.h>
 
 ShallowWater3::ShallowWater3(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY)
 {
