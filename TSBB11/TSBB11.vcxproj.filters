@@ -57,6 +57,9 @@
     <ClCompile Include="src\common\Utilities.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShallowWater2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\GL_utilities.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\shallowWater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShallowWater2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

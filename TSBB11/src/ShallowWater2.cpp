@@ -6,19 +6,28 @@
 #include <string>
 #include <stdbool.h> //so bools can be passed with typename in printValue
 
-ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY)
+int ShallowWater2::run()
 {
-	m_water_height.resize(sizeX*sizeY);
-	m_velocity_x.resize(sizeX*sizeY);
-	m_velocity_y.resize(sizeX*sizeY);
-	m_terrain_height.resize(sizeX*sizeY);
-	m_fillLevel.resize(sizeX*sizeY);
-	m_fluid.resize(sizeX*sizeY);
-	temp.resize(sizeX*sizeY);
-};
+	/*Start by setting data*/
+	AddTerrainHeight(10.0f);
+	AddVelocity_X(3);
+	AddWaterHeight(10, 5, 5);
+	/*Maybe print so it is as it should be*/
+	PrintWaterHeight();
+	for (unsigned int i = 0; i < 5; i++) //maybe run the simulation 5 times
+	{
+		RunSimulation(0.1f);
+		/*Print velocity y for each iteration maybe*/
+		PrintVelocity_Y(i);
+		/*and pause so we see what happens*/
+		Pause();
+	}
+	/*then print again*/
+	PrintWaterHeight();
+	/*maybe a pause with a message so we know WHY we paused*/
+	Pause("Last Pause before termination");
 
-ShallowWater2::~ShallowWater2()
-{
+	return 1; //then end it here
 }
 
 float ShallowWater2::bilinjearInterpolation(std::vector<float>& array, float point_x, float point_y)
@@ -249,7 +258,7 @@ void ShallowWater2::Print(std::vector<T> arr, std::string msg, int iter) const
 template <typename T>
 void ShallowWater2::PrintNumber(T& value) const
 {
-	std::cout << std::fixed << std::setprecision(3) << value << " ";
+	std::cout << std::fixed << std::setw(7) << std::setprecision(3) << value << " ";
 }
 void ShallowWater2::PrintHelper(std::string start_end, std::string msg, int iter) const
 {
@@ -262,6 +271,11 @@ void ShallowWater2::PrintHelper(std::string start_end, std::string msg, int iter
 }
 void ShallowWater2::Pause() const
 {
+	std::getchar();
+}
+void ShallowWater2::Pause(std::string msg) const
+{
+	std::cout << msg << std::endl;
 	std::getchar();
 }
 
@@ -766,4 +780,25 @@ void ShallowWater2::SubVelocity_X(float value, unsigned int from_x, unsigned int
 void ShallowWater2::SubVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddVelocity_Y(-value, from_x, to_x, from_y, to_y);
+}
+
+/*
+*=========================================================
+*Constructor and Destructor
+*=========================================================
+*
+*/
+ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY)
+{
+	m_water_height.resize(sizeX*sizeY);
+	m_velocity_x.resize(sizeX*sizeY);
+	m_velocity_y.resize(sizeX*sizeY);
+	m_terrain_height.resize(sizeX*sizeY);
+	m_fillLevel.resize(sizeX*sizeY);
+	m_fluid.resize(sizeX*sizeY);
+	temp.resize(sizeX*sizeY);
+};
+
+ShallowWater2::~ShallowWater2()
+{
 }

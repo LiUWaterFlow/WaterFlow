@@ -66,6 +66,8 @@ private:
 public:
 	int exec();
 
+	int runSimulation(unsigned int sizeX, unsigned int sizeY);
+
 	bool init();
 	
 	void handleEvent(SDL_Event* event);

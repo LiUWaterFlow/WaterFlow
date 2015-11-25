@@ -8,6 +8,8 @@
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
+#include "ShallowWater2.h"
+
 Program::Program() {
 	screenW = 800;
 	screenH = 800;
@@ -40,6 +42,16 @@ int Program::exec() {
 
 	clean();
 	return 0;
+}
+
+int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
+{
+	if (!init())
+	{
+		return 0;
+	}
+	ShallowWater2 simulation(sizeX, sizeY);
+	return simulation.run();
 }
 
 bool Program::init() {

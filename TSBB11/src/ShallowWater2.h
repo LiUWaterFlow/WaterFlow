@@ -2,7 +2,7 @@
 #ifndef SHALLOWWATER2_H
 #define SHALLOWWATER2_H
 
-#include "./src/common/glm/glm.hpp"
+#include "./common/glm/glm.hpp"
 #include <vector>
 
 #define GRAVITY -9.81f
@@ -11,6 +11,11 @@ class ShallowWater2
 public:
 	ShallowWater2(const unsigned int sizeX = 6, const unsigned int sizeY = 6);
 	~ShallowWater2();
+
+	/*This is a temporary function that is called from the main program
+	 *Everything except gridSize can be manipulated here. If grid size wants
+	 *to be manipulated do that in main.cpp*/
+	int run();
 
 	/*Run the simulation*/
 	void RunSimulation(const float dt);
@@ -86,6 +91,7 @@ public:
 	void PrintWaterFillLevel(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const;
 	/*Helper functions to pause and wait for input*/
 	void Pause() const;
+	void Pause(std::string msg) const;
 
 private:
 	const unsigned int m_sizeX;

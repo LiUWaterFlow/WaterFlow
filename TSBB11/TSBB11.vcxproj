@@ -298,6 +298,7 @@
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
     <ClCompile Include="src\shallowWater.cpp" />
+    <ClCompile Include="src\ShallowWater2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -313,6 +314,7 @@
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
     <ClInclude Include="src\shallowWater.h" />
+    <ClInclude Include="src\ShallowWater2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />
