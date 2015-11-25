@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-#include <string>
 #include <stdbool.h> //so bools can be passed with typename in printValue
 
 int ShallowWater2::run()
@@ -238,8 +237,7 @@ void ShallowWater2::RunSimulation(const float dt)
 *Print function and helper print function
 *=========================================================
 */
-template <typename T>
-void ShallowWater2::Print(std::vector<T> arr, std::string msg, int iter) const
+void ShallowWater2::Print(std::vector<float> arr, std::string msg, int iter) const
 {
 	PrintHelper("BEGIN", msg, iter);
 	for (unsigned int i = 0; i < m_sizeX; i++)
@@ -255,8 +253,26 @@ void ShallowWater2::Print(std::vector<T> arr, std::string msg, int iter) const
 	PrintHelper("END", msg, iter);
 	std::cout << std::flush;
 }
-template <typename T>
-void ShallowWater2::PrintNumber(T& value) const
+
+void ShallowWater2::Print(std::vector<bool> arr, std::string msg, int iter) const
+{
+	PrintHelper("BEGIN", msg, iter);
+	for (unsigned int i = 0; i < m_sizeX; i++)
+	{
+		for (unsigned int j = 0; j < m_sizeY; j++)
+		{
+			
+			const unsigned int index = i + j*m_sizeX;
+			PrintNumber(arr.at(index));
+		}
+		std::cout << "\n";
+	}
+	PrintHelper("END", msg, iter);
+	std::cout << std::flush;
+}
+
+
+void ShallowWater2::PrintNumber(float value) const
 {
 	std::cout << std::fixed << std::setw(7) << std::setprecision(3) << value << " ";
 }
@@ -797,7 +813,7 @@ ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY)
 	m_fillLevel.resize(sizeX*sizeY);
 	m_fluid.resize(sizeX*sizeY);
 	temp.resize(sizeX*sizeY);
-};
+}
 
 ShallowWater2::~ShallowWater2()
 {

@@ -4,6 +4,7 @@
 
 #include "./common/glm/glm.hpp"
 #include <vector>
+#include <string>
 
 #define GRAVITY -9.81f
 class ShallowWater2
@@ -110,11 +111,11 @@ private:
 	void SetReflectBoundary();
 
 	/*functions for printing*/
-	template <typename T>
-	void Print(std::vector<T> arr, std::string msg, int iter) const;
+	void Print(std::vector<float> arr, std::string msg, int iter) const;	
+	void Print(std::vector<bool> arr, std::string msg, int iter) const;
 	void PrintHelper(std::string start_end, std::string msg, int iter) const;
-	template <typename T>
-	void PrintNumber(T& value) const; //cant handle bool for some reason. If change change Bool as well
+	
+	void PrintNumber(float) const; //cant handle bool for some reason. If change change Bool as well
 
 	/*the arrays with data*/
 	std::vector<float> m_water_height;

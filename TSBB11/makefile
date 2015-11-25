@@ -14,7 +14,10 @@ OBJ_FILES_CPP := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
 
 C_FILES_COMMON := $(wildcard src/common/*.c)
 
+CPP_FILES_COMMON := $(wildcard src/common/*.cpp)
+
 OBJ_FILES_COMMON := $(addprefix obj/,$(notdir $(C_FILES_COMMON:.c=.o)))
+OBJ_FILES_COMMON += $(addprefix obj/,$(notdir $(CPP_FILES_COMMON:.cpp=.o)))
 
 INC = -Isrc/ -Isrc/common/ -Isrc/common/glm -Isrc/common/AntTweak
 MAIN = main.cpp
@@ -41,6 +44,10 @@ all: $(OBJ_FILES_COMMON) $(OBJ_FILES_CPP)
 	$(GCC) obj/*.o $(MAIN) -o $(OUT) $(INC) $(LINKS)
 
 obj/%.o : src/common/%.c
+	$(GCC) -c -o $@ $< $(INC)
+
+
+obj/%.o : src/common/%.cpp
 	$(GCC) -c -o $@ $< $(INC)
 
 obj/%.o : src/%.cpp
