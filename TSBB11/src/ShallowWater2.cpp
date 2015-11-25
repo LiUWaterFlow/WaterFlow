@@ -8,15 +8,25 @@
 int ShallowWater2::run()
 {
 	/*Start by setting data*/
-	AddTerrainHeight(10.0f);
-	AddVelocity_X(3);
-	AddWaterHeight(10, 5, 5);
+	AddTerrainHeight(3.0f);
+	AddVelocity_X(0);
+
+	AddWaterHeight(1, 4, 5);
+	AddWaterHeight(1, 5, 4);
+	AddWaterHeight(1, 5, 5);
+	AddWaterHeight(1, 4, 4);
+
 	/*Maybe print so it is as it should be*/
 	PrintWaterHeight();
+	//PrintTerrainHeight();
 	for (unsigned int i = 0; i < 5; i++) //maybe run the simulation 5 times
 	{
-		RunSimulation(0.1f);
+		RunSimulation(0.05f);
 		/*Print velocity y for each iteration maybe*/
+		PrintWaterBool(i);
+		PrintWaterFillLevel(i);
+		PrintWaterHeight(i);
+		PrintVelocity_X(i);
 		PrintVelocity_Y(i);
 		/*and pause so we see what happens*/
 		Pause();
@@ -118,7 +128,7 @@ void ShallowWater2::UpdateHeight(const float dt)
 void ShallowWater2::UpdateVelocity(const float dt, std::vector<float>& total_height) //this uses total height of water
 {
 	//update velocity in X
-	for (unsigned int  i = 2; i < m_sizeX -1; i++)
+	for (unsigned int  i = 2; i < m_sizeX; i++)
 	{
 		for (unsigned int j = 1; j < m_sizeY - 1; j++)
 		{
@@ -130,10 +140,10 @@ void ShallowWater2::UpdateVelocity(const float dt, std::vector<float>& total_hei
 	//update velocity in y
 	for (unsigned int i = 1; i < m_sizeX - 1; i++)
 	{
-		for (unsigned int j = 2; j < m_sizeY - 1; j++)
+		for (unsigned int j = 2; j < m_sizeY; j++)
 		{
 			const int index = i + j*m_sizeX;
-			m_velocity_y[index] += GRAVITY*dt*(m_water_height[index] - m_water_height[index - m_sizeX]); //divide by cell size as well
+			m_velocity_y[index] += GRAVITY*dt*(total_height[index] - total_height[index - m_sizeX]); //divide by cell size as well
 		}
 	}
 }
