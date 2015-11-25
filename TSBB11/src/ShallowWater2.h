@@ -101,6 +101,8 @@ private:
 
 	float bilinjearInterpolation(std::vector<float>& array, float point_x, float point_y);
 
+	void ResetTemp();
+
 	void Advect(std::vector<float>& array,const float dt, VELTYPE type);
 	void UpdateHeight(const float dt);
 	void UpdateVelocity(const float dt, std::vector<float>& total_height);
