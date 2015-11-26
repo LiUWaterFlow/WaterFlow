@@ -8,17 +8,22 @@
 int ShallowWater2::run()
 {
 	/*Start by setting data*/
-	AddTerrainHeight(3.0f);
+	AddTerrainHeight(10.0f);
 	AddVelocity_X(0);
 
-	AddWaterHeight(1, 4, 5);
-	AddWaterHeight(1, 5, 4);
-	AddWaterHeight(1, 5, 5);
-	AddWaterHeight(1, 4, 4);
+	//Add Water
+	for (unsigned int i = 3; i < 5; i++)
+	{
+		for (unsigned int j = 3; j < 5; j++)
+		{
+			AddWaterHeight(1, i, j);
+		}
+	}
 
 	/*Maybe print so it is as it should be*/
-	PrintWaterHeight();
+	//PrintWaterHeight();
 	//PrintTerrainHeight();
+	PrintWaterHeightSum();
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
@@ -27,6 +32,7 @@ int ShallowWater2::run()
 		/*Print velocity y for each iteration maybe*/
 		//PrintWaterBool(i);
 		//PrintWaterFillLevel(i);
+		//PrintTerrainHeight(i);
 		PrintWaterHeight(i);
 		//PrintVelocity_X(i);
 		//PrintVelocity_Y(i);
@@ -36,8 +42,8 @@ int ShallowWater2::run()
 		}
 	}
 	/*then print again*/
-	PrintWaterHeight();
-	PrintWaterHeightSum();
+	//PrintWaterHeight();
+	//PrintWaterHeightSum();
 	/*maybe a pause with a message so we know WHY we paused*/
 	Pause("Last Pause before termination");
 
@@ -339,12 +345,18 @@ void ShallowWater2::Pause(std::string msg) const
 
 void ShallowWater2::PrintWaterHeightSum(int iter)
 {
-	std::cout << "Water Height Summation: " << SumArray(m_water_height);
+	SumOfArray = SumArray(m_water_height);
+	SumDifference = SumOfArray/OldSumArray - 1;
+	OldSumArray = SumOfArray;
+
+	std::cout << "Water Height Summation: " << SumOfArray;
 	if (iter != -1)
 	{
 		std::cout << " Iteration: " << iter;
 	}
-	std::cout << " \n" << std::endl;
+	std::cout << " Percentage difference: " << SumDifference << " \n" << std::endl;
+
+	//oldSumArray/
 }
 /*
  *=========================================================
@@ -664,6 +676,7 @@ void ShallowWater2::AddWaterHeight(float value)
 		}
 	}
 }
+
 void ShallowWater2::AddTerrainHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
@@ -675,6 +688,26 @@ void ShallowWater2::AddTerrainHeight(float value)
 		}
 	}
 }
+
+// slope surface (topograpgy) with or without wall
+/*
+void ShallowWater2::AddTerrainHeight(float value)
+{
+	for (unsigned int x = 0; x < m_sizeX; x++)
+	{
+		for (unsigned int y = 0; y < m_sizeY; y++)
+		{
+			const unsigned int index = x + y*m_sizeX;
+			m_terrain_height.at(index) += value-0.01*x; //testing
+		}
+	}
+	//for (unsigned int y = 3; y < m_sizeY-3; y++)
+	//{
+	//	const unsigned int index = (m_sizeX-2) + y*m_sizeX;
+	//	m_terrain_height.at(index) += 3;
+	//}
+}*/
+
 void ShallowWater2::AddVelocity_X(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)

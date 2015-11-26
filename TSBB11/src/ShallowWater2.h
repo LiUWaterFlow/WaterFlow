@@ -132,6 +132,9 @@ private:
 	std::vector<bool> m_fluid;
 	std::vector<float> m_fillLevel;
 
+	float SumOfArray;
+	float SumDifference; 
+	float OldSumArray;
 };
 
 #endif
