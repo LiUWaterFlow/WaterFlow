@@ -13,5 +13,5 @@
 
 int main(int argc, char *argv[]) {
 	Program program;
-	return program.runSimulation(10,10);
+	return program.runSimulation();
 }

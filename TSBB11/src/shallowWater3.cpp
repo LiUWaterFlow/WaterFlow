@@ -19,20 +19,48 @@ int ShallowWater3::run()
 {
 	/*Start by setting data*/
 	AddTerrainHeight(10.0f);
-	AddVelocity_X(3);
-	AddWaterHeight(10, 5, 5);
+	AddVelocity_X(0);
+	for (unsigned int i = 0; i < m_sizeX; i++)
+	{
+		AddTerrainHeight(30000, i, 0);
+	}
+	for (unsigned int j = 0; j < m_sizeY; j++)
+	{
+		AddTerrainHeight(30000, 0, j);
+	}
+	//Add Water
+	AddWaterHeight(1, 3, 5, 3, 5);
+
 	/*Maybe print so it is as it should be*/
 	PrintWaterHeight();
-	for (unsigned int i = 0; i < 5; i++) //maybe run the simulation 5 times
+	//PrintTerrainHeight();
+	PrintWaterHeightSum();
+	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
-		RunSimulation(0.1f);
-		/*Print velocity y for each iteration maybe*/
-		PrintVelocity_X(i);
-		/*and pause so we see what happens*/
+		RunSimulation(0.05f);
+		/*
+		if (i % 500 == 0)
+		{
+			//Print velocity y for each iteration maybe
+			//PrintWaterBool(i);
+			//PrintWaterFillLevel(i);
+			//PrintTerrainHeight(i);
+			PrintWaterHeight(i);
+			//PrintVelocity_X(i);
+			//PrintVelocity_Y(i);
+			PrintWaterHeightSum(i);
+			//and pause so we see what happens
+			Pause();
+		}
+	*/
+		PrintWaterHeight(i);
+		//PrintMomentum_X(i);
+		//PrintMomentum_Y(i);
 		Pause();
 	}
 	/*then print again*/
-	PrintWaterHeight();
+	//PrintWaterHeight();
+	//PrintWaterHeightSum();
 	/*maybe a pause with a message so we know WHY we paused*/
 	Pause("Last Pause before termination");
 
@@ -51,6 +79,11 @@ void ShallowWater3::RunSimulation(const float timestep)
 			gridPoint south = grid(x, y + 1, m_grid);
 			gridPoint east = grid(x + 1, y, m_grid);
 
+			if (center.x > 100)
+			{
+				std::cout << "hej" << std::endl;
+			}
+
 			fixShore(west, center, east);
 			fixShore(north, center, south);
 
@@ -62,12 +95,15 @@ void ShallowWater3::RunSimulation(const float timestep)
 			gridPoint u_center = center + timestep * SlopeForce(center, north, east, south, west) - 
 							timestep* (HorizontalPotential(u_east) - HorizontalPotential(u_west)) -
 							timestep * ( VerticalPotential(u_south) - VerticalPotential(u_north));
-			u_center.x = std::max(0.0f, center.x);
+
+			u_center.x = std::max(0.0f, u_center.x);
 			
 			grid(x, y, m_temp) = u_center;
 		}
 	}
 	std::swap(m_temp, m_grid);
+	ResetTemp();
+	fixBoundry();
 }
 
 void ShallowWater3::fixShore(gridPoint& left, gridPoint& center, gridPoint& right)
@@ -79,15 +115,31 @@ void ShallowWater3::fixShore(gridPoint& left, gridPoint& center, gridPoint& righ
 		left.x = 0.0f;
 		right.x = 0.0f;
 	}
+	if (center.x > 100)
+	{
+		std::cout << "hej" << std::endl;
+	}
 	
 	float h = center.x;
 	float h4 = center.x * center.x * center.x * center.x;
 	
-	float v = sqrt(2.0f) * h * center.y / (sqrt(h4 + std::max(h4, EPSILON)));
-	float u = sqrt(2.0f) * h * center.z / (sqrt(h4 + std::max(h4, EPSILON)));
+	float u = sqrt(2.0f) * h * center.y / (sqrt(h4 + std::max(h4, EPSILON)));
+	float v = sqrt(2.0f) * h * center.z / (sqrt(h4 + std::max(h4, EPSILON)));
 	
 	center.y = u*h;
 	center.z = v*h;
+}
+
+void ShallowWater3::fixBoundry()
+{
+	for (unsigned int x = 0; x < m_sizeX; x++)
+	{
+		grid(x, 0, m_grid).x = grid(x, 1, m_grid).x;
+	}
+	for (unsigned int y = 0; y < m_sizeY; y++)
+	{
+		grid(0, y, m_grid).x = -grid(1, y, m_grid).x;
+	}
 }
 
 gridPoint ShallowWater3::SlopeForce(gridPoint& center, gridPoint& north, gridPoint& east, gridPoint& south, gridPoint& west)
@@ -141,6 +193,19 @@ gridPoint& ShallowWater3::grid(unsigned int x, unsigned int y, std::vector<gridP
 	return arr.at(x + m_sizeX*y);
 }
 
+void ShallowWater3::ResetTemp()
+{
+	for (unsigned int x = 0; x < m_sizeX; x++)
+	{
+		for (unsigned int y = 0; y < m_sizeY; y++)
+		{
+			grid(x, y, m_temp).x = 0;
+			grid(x, y, m_temp).y = 0;
+			grid(x, y, m_temp).z = 0;
+			grid(x, y, m_temp).w = 0;
+		}
+	}
+}
 
 
 /*functions for setting all values to a specific value*/
@@ -556,4 +621,51 @@ void ShallowWater3::Print(TYPE type, std::string msg, int iter)
 	}
 	PrintHelper("END", msg, iter);
 	std::cout << std::flush;
+}
+
+
+float ShallowWater3::SumArray(TYPE type)
+{
+	float sum = 0.0f;
+	for (unsigned int x = 1; x < m_sizeX - 1; x++)
+	{
+		for (unsigned int y = 1; y < m_sizeY - 1; y++)
+		{
+			const unsigned int index = x + y * m_sizeX;
+			switch (type)
+			{
+			case WATER:
+				sum += grid(x,y,m_grid).x;
+				break;
+			case TERRAIN:
+				sum += grid(x, y, m_grid).w;
+				break;
+			case MOM_X:
+				sum += grid(x, y, m_grid).y;
+				break;
+			case MOM_Y:
+				sum += grid(x, y, m_grid).z;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	return sum;
+}
+
+void ShallowWater3::PrintWaterHeightSum(int iter)
+{
+	SumOfArray = SumArray(TYPE::WATER);
+	SumDifference = SumOfArray / OldSumArray - 1;
+	OldSumArray = SumOfArray;
+
+	std::cout << "Water Height Summation: " << SumOfArray;
+	if (iter != -1)
+	{
+		std::cout << " Iteration: " << iter;
+	}
+	std::cout << " Percentage difference: " << SumDifference << " \n" << std::endl;
+
+	//oldSumArray/
 }

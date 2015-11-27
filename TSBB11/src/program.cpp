@@ -8,7 +8,9 @@
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
+#include "ShallowNewton.h"
 #include "ShallowWater2.h"
+#include "shallowWater3.h"
 
 Program::Program() {
 	screenW = 800;
@@ -50,8 +52,25 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	{
 		return 0;
 	}
-	ShallowWater2 simulation(sizeX, sizeY);
-	return simulation.run();
+	std::cout << "Which simulation do you want to run?\n";
+	std::cout << "1. Newton based shallow water simulation \n";
+	std::cout << "2. Navier-Stokes based shallow water simulation" << std::endl;
+	int choice;
+	std::cin >> choice;
+	if (choice == 1)
+	{
+		ShallowNewton newton(10, 10);
+		return newton.run();
+	}
+	else if (choice == 2)
+	{
+		ShallowWater2 navier(10, 10);
+		return navier.run();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 bool Program::init() {

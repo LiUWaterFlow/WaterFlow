@@ -297,6 +297,7 @@
     <ClCompile Include="src\myDrawable.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\ShallowNewton.cpp" />
     <ClCompile Include="src\shallowWater.cpp" />
     <ClCompile Include="src\ShallowWater2.cpp" />
     <ClCompile Include="src\shallowWater3.cpp" />
@@ -314,6 +315,7 @@
     <ClInclude Include="src\myDrawable.h" />
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\ShallowNewton.h" />
     <ClInclude Include="src\shallowWater.h" />
     <ClInclude Include="src\ShallowWater2.h" />
     <ClInclude Include="src\shallowWater3.h" />

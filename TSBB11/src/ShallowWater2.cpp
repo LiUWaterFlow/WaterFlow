@@ -12,13 +12,7 @@ int ShallowWater2::run()
 	AddVelocity_X(0);
 
 	//Add Water
-	for (unsigned int i = 3; i < 5; i++)
-	{
-		for (unsigned int j = 3; j < 5; j++)
-		{
-			AddWaterHeight(1, i, j);
-		}
-	}
+	AddWaterHeight(1, 3, 5,3,5);
 
 	/*Maybe print so it is as it should be*/
 	//PrintWaterHeight();

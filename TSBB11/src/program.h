@@ -66,7 +66,7 @@ private:
 public:
 	int exec();
 
-	int runSimulation(unsigned int sizeX, unsigned int sizeY);
+	int runSimulation(unsigned int sizeX = 10, unsigned int sizeY = 10);
 
 	bool init();
 	

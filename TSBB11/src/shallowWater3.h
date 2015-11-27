@@ -6,8 +6,8 @@
 #include <string>
 #include <iostream>
 
-#define EPSILON 0.00001f
-#define GRAVITY -9.81f
+#define EPSILON 0.01f
+#define GRAVITY 9.81f
 
 struct gridPoint{
 	float x; //water height over terrain
@@ -194,6 +194,7 @@ public:
 	void PrintWaterBool(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) { std::cout << "Not Working in ShallowWater3" << std::endl; }
 	void PrintWaterFillLevel(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) { std::cout << "Not Working in ShallowWater3" << std::endl; }
 
+	void PrintWaterHeightSum(int iter = -1);
 private:
 	const unsigned int m_sizeX;
 	const unsigned int m_sizeY;
@@ -206,12 +207,21 @@ private:
 	gridPoint HorizontalPotential(gridPoint gp);
 	gridPoint VerticalPotential(gridPoint gp);
 
+	void fixBoundry();
+
 	void Print(TYPE type, std::string msg, int iter);
 	void PrintNumber(TYPE type, gridPoint& gp);
 	void PrintHelper(std::string start_end, std::string msg, int iter);
+	float SumArray(TYPE type);
+
+	void ResetTemp();
 
 	std::vector<gridPoint> m_grid;
 	std::vector<gridPoint> m_temp;
+
+	float SumOfArray;
+	float SumDifference;
+	float OldSumArray;
 };
 
 #endif //SHALLOW_WATER_3_H
