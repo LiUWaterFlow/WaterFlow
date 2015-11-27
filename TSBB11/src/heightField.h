@@ -36,8 +36,8 @@ private:
 public:
   
   GLuint drawBuffers[4];
-  GLuint fieldProgram, fieldShader,fieldVAO,pervProgram,pervShader;
-  GLuint fieldBuffers[7];
+  GLuint fieldProgram, fieldShader,fieldVAO,addProgram,addShader;
+  GLuint fieldBuffers[8];
   
   void floodFill(float* u, int x, int z, float height);
 

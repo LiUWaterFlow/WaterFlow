@@ -188,11 +188,16 @@ void HeightField::initGPU() {
 
 	float* u = new float[texWidth*texHeight];
 	float* v = new float[texWidth*texHeight];
-	std::fill_n(v,texWidth*texHeight,0.0f);
-	memcpy(u, terr->getData(), texWidth*texHeight);
+	float* f = new float[texWidth*texHeight];
+	std::fill_n(v,texWidth*texHeight,0.0f);	
+	std::fill_n(f,texWidth*texHeight,0.0f);
+	//f[500 + 500*texWidth] = 100.0f;
+	//memcpy(u, terr->getData(), texWidth*texHeight);
 
 	int upper = 500;
-	int lower = 200;
+	int lower = 498;
+	int x = 417; 
+	int z = 383;
 	
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
@@ -200,14 +205,16 @@ void HeightField::initGPU() {
 			//v[j*texWidth + i] = 0.0f;
 
 			//CREATE INTERESTING DATA HERE.			
-			
+			/*
 			if (i > lower && i < upper && j > lower && j < upper) {
-				u[j*texWidth + i] += 10.0f;
+				f[j*texWidth + i] = 2.0f;
 			}
+			*/
 					
 		}
 
 	}
+	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
 	
 	//for each flood fill point
 	floodFill(u,1250,1600,terr->getData()[1250+texWidth*1600]+25.0f);
@@ -216,10 +223,10 @@ void HeightField::initGPU() {
 	int i = 0;
 
 	fieldProgram = compileComputeShader("src/shaders/fieldShader.comp"); // glCreateProgram();
-	pervProgram = compileComputeShader("src/shaders/perserveShader.comp");
+	addProgram = compileComputeShader("src/shaders/addFlowShader.comp");
 	
 	//create buffers
-	glGenBuffers(7, fieldBuffers);
+	glGenBuffers(5, fieldBuffers);
 	GLint numData = terr->getDataWidth()*terr->getDataHeight();
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
@@ -227,7 +234,7 @@ void HeightField::initGPU() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[1]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 1 * numData, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 1 * numData, u, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[2]);
@@ -239,18 +246,18 @@ void HeightField::initGPU() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,NULL, GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,f, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	printError("init Compute Error");
 	printProgramInfoLog(fieldProgram, "field Init", NULL, NULL, NULL, NULL);
-
+	/*
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-	std::valarray<float> myvalarray(u, texWidth*texHeight);
-	vol0 = myvalarray.sum();
+	*/
+	//std::valarray<float> myvalarray(u, texWidth*texHeight);
+	//vol0 = myvalarray.sum();
 	
 	delete u;
 	delete v;
@@ -263,16 +270,19 @@ void HeightField::runSimGPU() {
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
 
-	glUseProgram(pervProgram);
-	glUniform2i(glGetUniformLocation(pervProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
+	glUseProgram(addProgram);
+	glUniform2i(glGetUniformLocation(addProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
+
+	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,4,5,fieldBuffers);
+	glUseProgram(addProgram);
+	glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
+	
 
 	for (int i = 0; i < numPing; i++) {
 
 		glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, fieldBuffers);
 		glUseProgram(fieldProgram);
 		glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
-		//glUseProgram(pervProgram);
-		//glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
 		std::swap(fieldBuffers[0], fieldBuffers[1]);
 	}
 

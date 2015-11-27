@@ -38,12 +38,10 @@ void main(){
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
 	int i = storePos.x;
 	int j = storePos.y;
+	int offset = i+j*size.x;
 
-	//Change these to clamps.
-	//if(i < size.x && j < size.y) {
-		offset = i+j*size.x;
+	if(i < size.x && j < size.y) {
+		
 		u0[offset] +=add[offset];
-		u1[offset] +=1225.0f;
-		v[offset] = 10.0f;
-	//}
+	}
 }
