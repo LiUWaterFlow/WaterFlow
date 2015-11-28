@@ -14,7 +14,7 @@
 myDrawable::myDrawable(GLuint program) 
 : program(program) {}
 
-void myDrawable::setUniforms(GLuint terrainTex, GLuint skyTex) {
+void myDrawable::setLights() {
 	// =========== Lights information ==========
 
 	// Sun
@@ -46,26 +46,14 @@ void myDrawable::setUniforms(GLuint terrainTex, GLuint skyTex) {
 	lightParam[1].color = { 1.0f, 1.0f, 1.0f };
 	lightParam[1].specularComponent = 50.0f;
 
-	// =========== Draw information ==========
 
-	drawParam.transparency = 0.7;
-	drawParam.terrainTexture = terrainTex;
-	drawParam.skyTexture = skyTex;
+	glGenBuffers(1, &lightBuffer);
 
-	glGenBuffers(2, uniformBuffers);
-
-	glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffers[0]);
+	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams), &lightParam, GL_STREAM_DRAW);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, uniformBuffers[0]);
-
-	glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffers[1]);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(DrawParams), &drawParam, GL_STREAM_DRAW);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, uniformBuffers[1]);
-
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightBuffer);
 }
 
 SkyCube::SkyCube(GLuint program, GLuint texUnit)
@@ -114,16 +102,14 @@ SkyCube::SkyCube(GLuint program, GLuint texUnit)
 }
 
 void SkyCube::draw() {
-	glUniform1i(glGetUniformLocation(program, "cube_texture"), 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+	glUniform1i(glGetUniformLocation(program, "cube_texture"), textureUnit);
 
 	DrawModel(model, program, "in_Position", NULL, NULL);
 }
 
 // ================================================================
 
-HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer)
+HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit, GLuint texUnit)
 : myDrawable(drawProgram) {
 
 	textureID = 0;
@@ -238,8 +224,17 @@ void HeightMap::update() {
 
 void HeightMap::draw() {
 	glUseProgram(program);
+
+	glUniform1i(glGetUniformLocation(program, "terr_texUnit"), textureUnit);
+	glUniform1i(glGetUniformLocation(program, "height_texUnit"), heightTextureUnit);
+
 	glBindVertexArray(drawVAO);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
 
 	printError("Draw Heightmap");
+}
+
+Water::Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer) 
+: HeightMap(drawProgram, sizes, inputHeightBuffer) {
+
 }

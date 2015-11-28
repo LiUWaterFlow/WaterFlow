@@ -9,13 +9,6 @@ struct LightParam {
 	float specularExp;
 };
 
-struct DrawParam {
-	float transparency;
-	sampler2D terrainTexUnit;
-	samplerCube skyTexUnit;
-	uint padding3;
-};
-
 struct MapParam {
 	vec2 size;
 	sampler2D heightTexUnit;
@@ -30,13 +23,16 @@ layout(std430, binding = 1) uniform LightInfo {
 	LightParam lights[2];
 };
 
-layout(std430, binding = 2) uniform DrawInfo {
-	DrawParam draw;
-};
 
 // ===== Uniforms =====
 
 uniform vec3 camPos;				// Camera position.
+
+uniform float transparency;
+uniform sampler2D terr_texUnit;		// Terrain texture.
+uniform sampler2D height_texUnit;	// Terrain normal and height texture.
+uniform samplerCube sky_texUnit;	// Skybox texture.
+
 
 // ===== In/Out params =====
 
@@ -111,15 +107,12 @@ const vec3 up = vec3(0.0, 1.0, 0.0);
 //uniform int isDirectional;
 //uniform float specularExponent;
 //uniform vec3 lightSourceColor;
-//uniform sampler2D terr_texUnit;		// Terrain texture.
-//uniform sampler2D height_texUnit;	// Terrain normal and height texture.
-//uniform samplerCube sky_sampler;	// Skybox texture.
 
 //uniform int texCoordScaleH;			// Texture coordinate scale along x.
 //uniform int texCoordScaleW;			// Texture coordinate scale along z.
 //uniform float max_height;			// Height scale.
 //uniform float time;
-//uniform float transparency;
+
 
 void main(void)
 {

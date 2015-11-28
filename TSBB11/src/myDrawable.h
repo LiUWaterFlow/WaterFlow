@@ -9,13 +9,6 @@
 
 #include <vector>
 
-struct DrawParams {
-	GLfloat transparency;
-	GLuint terrainTexture;
-	GLuint skyTexture;
-	GLuint padding3;
-};
-
 struct LightParams {
 	glm::vec3 position;
 	bool isDirectional;
@@ -25,8 +18,7 @@ struct LightParams {
 
 class myDrawable {
 private:
-	static GLuint uniformBuffers[2];
-	static DrawParams drawParam;
+	static GLuint lightBuffer;
 	static LightParams lightParam[2];
 
 protected:
@@ -38,7 +30,7 @@ public:
 	virtual void draw() = 0;
 	virtual void update() = 0;
 
-	static void setUniforms(GLuint terrainTex, GLuint skyTex);
+	static void setLights();
 };
 
 class SkyCube : public myDrawable {
@@ -58,8 +50,10 @@ private:
 	GLuint drawBuffers[4];
 	GLuint heightBuffer;
 	GLuint drawVAO;
-	GLuint textureID; // Currently not used
-	bool blue;
+	GLuint heightTextureUnit;
+	GLuint heightTextureID;
+	GLuint textureUnit;
+	GLuint textureID; 
 
 	GLuint dataWidth, dataHeight, numData, numIndices;
 
@@ -69,7 +63,7 @@ private:
 	void initDraw();
 
 public:
-	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer);
+	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit = 3, GLuint texUnit = 1);
 
 	virtual void update();
 	virtual void draw();
@@ -77,16 +71,14 @@ public:
 
 class Water : public HeightMap {
 public:
-	Water : public HeightMap();
-	~Water : public HeightMap();
+	Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer);
 
 private:
 
 };
 
-Water : public HeightMap::Water : public HeightMap() {}
 
-Water : public HeightMap::~Water : public HeightMap() {}
+
 
 
 #endif // DRAWABLE_H

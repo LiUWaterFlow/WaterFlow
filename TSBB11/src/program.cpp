@@ -130,7 +130,7 @@ bool Program::init() {
 	terrain = new HeightMap(terrainshader, sizes, dataHandler->getHeightBuffer());
 	terrain->update();
 
-	waterTerrain = new HeightMap(terrainshader, sizes, hf->fieldBuffers[0], true);	
+	waterTerrain = new HeightMap(terrainshader, sizes, hf->fieldBuffers[0]);	
 	
 	printError("Created Heightmaps");
 
