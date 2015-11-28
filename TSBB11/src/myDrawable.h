@@ -9,7 +9,26 @@
 
 #include <vector>
 
+struct DrawParams {
+	GLfloat transparency;
+	GLuint terrainTexture;
+	GLuint skyTexture;
+	GLuint padding3;
+};
+
+struct LightParams {
+	glm::vec3 position;
+	bool isDirectional;
+	glm::vec3 color;
+	float specularComponent;
+};
+
 class myDrawable {
+private:
+	static GLuint uniformBuffers[2];
+	static DrawParams drawParam;
+	static LightParams lightParam[2];
+
 protected:
 	glm::mat4 MTWMatrix;
 	GLuint program;
@@ -18,15 +37,18 @@ public:
 	myDrawable(GLuint program);
 	virtual void draw() = 0;
 	virtual void update() = 0;
+
+	static void setUniforms(GLuint terrainTex, GLuint skyTex);
 };
 
 class SkyCube : public myDrawable {
 private:
 	Model* model;
+	GLuint textureUnit;
 	GLuint textureID;
 
 public:
-	SkyCube(GLuint program);
+	SkyCube(GLuint program, GLuint texUnit = 2);
 	virtual void update() {}
 	virtual void draw();
 };
@@ -47,12 +69,24 @@ private:
 	void initDraw();
 
 public:
-	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, bool isBlue = false);
+	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer);
 
 	virtual void update();
 	virtual void draw();
 };
 
+class Water : public HeightMap {
+public:
+	Water : public HeightMap();
+	~Water : public HeightMap();
+
+private:
+
+};
+
+Water : public HeightMap::Water : public HeightMap() {}
+
+Water : public HeightMap::~Water : public HeightMap() {}
 
 
 #endif // DRAWABLE_H

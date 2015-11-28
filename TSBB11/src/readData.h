@@ -27,6 +27,14 @@ struct mapdata {
 	std::vector<float> data;	///< The terrain data is stored in a std::vector.
 };
 
+/// @struct mapParam
+/// @brief Parameters that are useful to upload to the GPU
+struct mapParam {
+	glm::vec2 size;
+	GLuint heightTexUnit;
+	GLuint padding3;
+};
+
 /// @class DataHandler
 /// @brief Loads and modifies terrain data for easier use.
 ///
@@ -38,7 +46,10 @@ class DataHandler
 private:
 	// Data containers
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
-	GLuint terrainTexture;		///< texture containing normals and height terrain data.
+	mapParam params;			///< parameters needed on the GPU
+	GLuint paramBuffer;			///< uniform buffer for the parameters
+	GLuint textureUnit;			///< which texture unit to bind the height texture to.
+	GLuint terrainTexture;		///< texture containing height terrain data.
 	GLuint terrainBufferID;		///< terrainheight buffer corresponding to readdata data but on GPU.
 	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
@@ -53,7 +64,11 @@ private:
 	/// @brief Performs normalized convolution of the input data as a single computeshader.
 	///
 	/// At the end of the function terrainBufferID containins the buffer ID to the heightmap.
+	/// The heightmap is also stored in the terrainTexture and will be bound to texture 3
 	void normConvCompute();
+
+
+	void uploadParams();
 
 public:
 	/// @brief Reads DEM data, scales it and generates a model.
@@ -70,7 +85,7 @@ public:
 	/// @see readDEM()
 	/// @see scaleDataBefore()
 	/// @see GenerateTerrain()
-	DataHandler(const char* inputfile);
+	DataHandler(const char* inputfile, GLuint texUnit = 3);
 
 	/// @brief Handle the internal pointers.
 	~DataHandler();
@@ -97,7 +112,11 @@ public:
 	/// @return Return a float of the diff between max and min sample in the data.
 	GLfloat getTerrainScale() { return terrainScale; }
 
-	/// @brief Get the texture id for the terrain height and normals.
+	/// @brief Get the texture unit for the terrain height.
+	/// @return Returns the unit the terrain data texture is bound to.
+	GLuint getTextureUnit() { return textureUnit; }
+
+	/// @brief Get the texture id for the terrain height.
 	/// @return Returns the ID for the terrain data texture.
 	GLuint getTextureID() { return terrainTexture; }
 	
@@ -126,6 +145,9 @@ public:
 	/// @see GenerateTerrain()
 	/// @see giveNormal()
 	GLfloat giveHeight(GLfloat x, GLfloat z);
+
+	/// @brief Set a new texture unit to bind the height texture to
+	void setTextureUnit(GLuint texUnit);
 };
 
 #endif // READDATA_H

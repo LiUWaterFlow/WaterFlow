@@ -8,19 +8,75 @@
 #include "LoadTGA.h"
 
 #include "gtx/transform.hpp"
+#include "gtx/rotate_vector.hpp"
 #include "gtc/type_ptr.hpp"
 
 myDrawable::myDrawable(GLuint program) 
 : program(program) {}
 
-SkyCube::SkyCube(GLuint program)
+void myDrawable::setUniforms(GLuint terrainTex, GLuint skyTex) {
+	// =========== Lights information ==========
+
+	// Sun
+	lightParam[0].position = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
+	lightParam[0].isDirectional = true;
+	lightParam[0].color = { 1.0f, 1.0f, 1.0f };
+	lightParam[0].specularComponent = 50.0f;
+
+	// Calculating modified incoming light.
+
+	// ---This should NOT be done here when inModel is not a plane. This should at that point be moved to watershader.frag.---
+	// However, that is absolutely not trivial, since it requires information
+	// about the surface fragment where the incident light refracted. If that
+	// ends up being too complicated, this could be a decent approximation.
+	float waterRefInd = 1.34451;
+	float airRefInd = 1.0;
+	glm::vec3 up = glm::vec3(0, 1, 0);
+	glm::vec3 right = glm::cross(normalize(lightParam[0].position), up);
+	// Snell's law.
+	float theta1 = asinf(glm::length(right));
+	float theta2 = asinf(airRefInd * sinf(theta1) / waterRefInd);
+	glm::vec3 waterSunPos = glm::rotate(lightParam[0].position, theta1, right);
+	waterSunPos = glm::rotate(waterSunPos, -theta2, right);
+	// -----------------------------------------------------------------------------------------------------------------------
+
+	// Sun under the surface
+	lightParam[1].position = waterSunPos;
+	lightParam[1].isDirectional = true;
+	lightParam[1].color = { 1.0f, 1.0f, 1.0f };
+	lightParam[1].specularComponent = 50.0f;
+
+	// =========== Draw information ==========
+
+	drawParam.transparency = 0.7;
+	drawParam.terrainTexture = terrainTex;
+	drawParam.skyTexture = skyTex;
+
+	glGenBuffers(2, uniformBuffers);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffers[0]);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams), &lightParam, GL_STREAM_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, uniformBuffers[0]);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffers[1]);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(DrawParams), &drawParam, GL_STREAM_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, uniformBuffers[1]);
+
+}
+
+SkyCube::SkyCube(GLuint program, GLuint texUnit)
 : myDrawable(program) {
 	/* Initialize skycube */
 	model = generateCube(10.0f);
+	textureUnit = texUnit;
 
 	// Creating cubemap texture
 	glGenTextures(1, &textureID);
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
 	TextureData texture1;
@@ -67,10 +123,8 @@ void SkyCube::draw() {
 
 // ================================================================
 
-HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, bool isBlue)
+HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer)
 : myDrawable(drawProgram) {
-
-	blue = isBlue;
 
 	textureID = 0;
 
@@ -116,23 +170,10 @@ void HeightMap::initUpdate() {
 }
 
 void HeightMap::initDraw() {
-	// Initial one-time shader uploads.
-	// Light information:
-	glm::vec3 sunPos = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
-	bool sunIsDirectional = 1;
-	float sunSpecularExponent = 50.0;
-	glm::vec3 sunColor = { 1.0f, 1.0f, 1.0f };
-	GLfloat sun_GLf[3] = { sunPos.x, sunPos.y, sunPos.z };
-
+	
 	glGenVertexArrays(1, &drawVAO);
 
 	glUseProgram(program);
-	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
-	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
-	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);
-	GLfloat sunColor_GLf[3] = { sunColor.x, sunColor.y, sunColor.z };
-	glUniform3fv(glGetUniformLocation(program, "lightSourceColor"), 1, sunColor_GLf);
-	glUniform1i(glGetUniformLocation(program, "texUnit"), 0);
 
 	printError("init draw uniforms");
 
@@ -148,9 +189,9 @@ void HeightMap::initDraw() {
 
 	printError("init draw1");
 
-	//glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]);//texBufferID
-	//glEnableVertexAttribArray(inTexAttrib);
-	//glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 2, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); //texBufferID
+	glEnableVertexAttribArray(inTexAttrib);
+	glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 2, 0);
 
 	printError("init draw2");
 
@@ -197,14 +238,6 @@ void HeightMap::update() {
 
 void HeightMap::draw() {
 	glUseProgram(program);
-	if (blue) {
-		glUniform1i(glGetUniformLocation(program, "blue"), 1);
-	} else {
-		glUniform1i(glGetUniformLocation(program, "blue"), 0);
-	}
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
 	glBindVertexArray(drawVAO);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
 

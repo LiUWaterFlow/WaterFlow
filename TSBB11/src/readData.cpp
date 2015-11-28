@@ -12,8 +12,9 @@
 
 // ===== Constructors and destructors
 
-DataHandler::DataHandler(const char* inputfile) {
+DataHandler::DataHandler(const char* inputfile, GLuint texUnit) {
 	readdata = new mapdata();
+	textureUnit = texUnit;
 
 	std::cout << "Reading DEM data from: " << inputfile << "...";
 	readDEM(inputfile);
@@ -22,6 +23,8 @@ DataHandler::DataHandler(const char* inputfile) {
 	std::cout << "Performing normalized convolution...";
 	normConvCompute();
 	std::cout << " done!" << std::endl;
+
+	uploadParams();
 }
 
 DataHandler::~DataHandler() {
@@ -103,7 +106,33 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 	return yheight;
 }
 
+// ===== Setters =====
+
+void DataHandler::setTextureUnit(GLuint texUnit) {
+	textureUnit = texUnit;
+
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
+	glBindTexture(GL_TEXTURE_2D, terrainTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+}
+
 // ===== Actual functions =====
+
+void DataHandler::uploadParams() {
+	params.size = { getDataWidth(), getDataHeight() };
+	params.heightTexUnit = textureUnit;
+
+	glGenBuffers(1, &paramBuffer);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, paramBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(mapParam), &params, GL_STREAM_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, paramBuffer);
+}
 
 void DataHandler::readDEM(const char* inputfile) {
 	char* buffer = readFile(inputfile);
@@ -214,6 +243,16 @@ void DataHandler::normConvCompute() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, terrainBufferID);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*numData, getData());
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	// Upload the terrain height as a texture aswell for the water visualization
+	glGenTextures(1, &terrainTexture);
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
+	glBindTexture(GL_TEXTURE_2D, terrainTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, getDataWidth(), getDataHeight(), 0, GL_RED, GL_FLOAT, getData());
 
 	glDeleteBuffers(2, &normBuffers[1]);
 

@@ -110,6 +110,7 @@ bool Program::init() {
 
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
+	watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 
 	// Create drawables
@@ -180,42 +181,31 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(skyshader);
-	
 	skycube->draw();
 
 	// ====================== Draw Terrain ==========================
 	glUseProgram(terrainshader);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glCullFace(GL_BACK);
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
-	
 	terrain->draw();
+
+	// ====================== Draw Terrain ==========================
+	glUseProgram(watershader);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// ---Camera shader data---
+	cam->uploadCamData(watershader);
 	waterTerrain->draw();
 	
-	/*
-	//Voxel draws,
-	if (updateRender) {
-		for (size_t i = 0; i < 5; i++)
-		{
-
-			hf->updateSim(0.01f);
-		}
-		//updateRender = false;
-
-		hf->render();
-	}
-	hf->drawVoxels(*cam->getVTP(),*cam->getWTV());
-	*/
-
 	// ====================== Draw AntBar ===========================
 	TwDraw();
 
-	printError("After display: ");
+	printError("after display");
 
 	SDL_GL_SwapWindow(screen);
 }

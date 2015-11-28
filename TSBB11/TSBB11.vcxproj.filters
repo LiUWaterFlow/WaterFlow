@@ -22,6 +22,12 @@
     <Filter Include="Header Files\Common">
       <UniqueIdentifier>{b90cfd10-025a-471f-a396-c11a1583074b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Compute">
+      <UniqueIdentifier>{d1368469-116b-4194-900c-d5e9f3a450ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Draw">
+      <UniqueIdentifier>{8ed98c3c-943c-40a8-b30e-89e8d618fae6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,18 +118,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\combineshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\confidenceshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\filtershader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\plaintextureshader.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="resources\mainpage.dox">
       <Filter>Resource Files</Filter>
     </None>
@@ -132,9 +126,6 @@
     </None>
     <None Include="makefile">
       <Filter>Source Files</Filter>
-    </None>
-    <None Include="src\shaders\normalshader.frag">
-      <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="src\shaders\simplevoxels.frag">
       <Filter>Source Files\Shaders</Filter>
@@ -145,29 +136,38 @@
     <None Include="src\shaders\simplevoxels.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="src\shaders\skyshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\skyshader.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\terrainshader.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\terrainshader.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\normConv.comp">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="src\shaders\fieldShader.comp">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="src\shaders\normals.comp">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\Compute</Filter>
     </None>
     <None Include="src\shaders\heightMap.comp">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\normals.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\normConv.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\skyshader.frag">
+      <Filter>Source Files\Shaders\Draw</Filter>
+    </None>
+    <None Include="src\shaders\skyshader.vert">
+      <Filter>Source Files\Shaders\Draw</Filter>
+    </None>
+    <None Include="src\shaders\terrainshader.frag">
+      <Filter>Source Files\Shaders\Draw</Filter>
+    </None>
+    <None Include="src\shaders\terrainshader.vert">
+      <Filter>Source Files\Shaders\Draw</Filter>
+    </None>
+    <None Include="src\shaders\addFlowShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\preserveShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\watershader.frag">
+      <Filter>Source Files\Shaders\Draw</Filter>
     </None>
   </ItemGroup>
 </Project>

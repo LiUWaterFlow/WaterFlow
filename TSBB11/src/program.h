@@ -63,7 +63,7 @@ private:
 	HeightField* hf;
 
 	// References to shader programs:
-	GLuint terrainshader, skyshader;
+	GLuint terrainshader, skyshader, watershader;
 
 	// Camera variables:
 	Camera* cam;
