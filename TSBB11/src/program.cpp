@@ -91,11 +91,21 @@ bool Program::init() {
 
 	dumpInfo();
 
+
+/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this
+	 is then used as startdata.
+*/
+	const char* xmlfile = "src/xml/xgconsole.xml";
+
+	init_Data_struct init_data(xmlfile);
+	std::cout << "first flood x: " << init_data.FFData[0]->x << std::endl;
+	std::cout << "second flood x: " << init_data.FFData[1]->x << std::endl;
+
 	// Initial placement of camera.
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc");
+	dataHandler = new DataHandler(init_data.data_filename.c_str());
 	
 
 	//Voxels and floodfill
@@ -309,7 +319,7 @@ void Program::handleMouseButton(SDL_Event* event) {
 		SDL_GetMouseState(&x, &y);
 		glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 		GLdouble objY = 0.0;
-		gluUnProject((GLdouble)x, (GLdouble)(screenW - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
+		gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
 		heighAtClickProj = (GLfloat)objY;
 		heightAtClickData = dataHandler->giveHeight((GLfloat)objX, (GLfloat)objZ);

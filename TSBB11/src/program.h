@@ -26,6 +26,7 @@
 #include "myDrawable.h"
 #include "voxel.h"
 #include "heightField.h"
+#include "xmlParsing.h"
 
 #include "AntTweakBar.h"
 
