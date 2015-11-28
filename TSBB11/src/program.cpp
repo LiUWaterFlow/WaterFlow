@@ -10,6 +10,7 @@
 
 
 bool updateRender;
+bool sim = true;
 
 Program::Program() {
 	screenW = 800;
@@ -172,8 +173,9 @@ void Program::timeUpdate() {
 void Program::update() {
 	// Update the tweak bar
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
-	hf->runSimGPU();
-
+	if(sim){
+		hf->runSimGPU();
+	}
 	waterTerrain->update();
 }
 
@@ -296,6 +298,13 @@ void Program::handleKeypress(SDL_Event* event) {
 		} else {
 			TwDefine(" UIinfo iconified=false");
 		}
+		case SDLK_l:
+		sim = false;
+		hf->measureVolume();
+		break;
+		case SDLK_k:
+		sim = !sim;
+		break;
 		default:
 		break;
 	}

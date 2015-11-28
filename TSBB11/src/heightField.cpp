@@ -240,18 +240,18 @@ void HeightField::initGPU() {
 
 	printError("init Compute Error");
 	printProgramInfoLog(fieldProgram, "field Init", NULL, NULL, NULL, NULL);
-	/*
+	
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	*/
-	//std::valarray<float> myvalarray(u, texWidth*texHeight);
-	//vol0 = myvalarray.sum();
+	
+	
+	std::valarray<float> myvalarray(u, texWidth*texHeight);
+	vol0 = myvalarray.sum();
 	
 	delete u;
 	delete v;
-	delete f; 
-
+	delete f;
 
 }
 
@@ -291,6 +291,7 @@ void HeightField::runSimGPU(GLfloat dt) {
 	glUseProgram(addProgram);
 	glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
 	
+	addedVol += 2.0f;
 
 	for (int i = 0; i < numPing; i++) {
 
@@ -302,6 +303,30 @@ void HeightField::runSimGPU(GLfloat dt) {
 
 	printError("run Sim GPU");
 }
+
+
+void HeightField::measureVolume(){
+
+	float* u = new float[texWidth*texHeight];
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
+	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER,0,texWidth*texHeight*sizeof(float),u);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	
+	std::valarray<float> myvalarray(u, texWidth*texHeight);
+	float vol1 = myvalarray.sum();
+	
+
+	std::cout << "Volume difference is: " << vol1- vol0 - addedVol << std::endl;
+	myvalarray.resize(0); 
+	delete u;
+	
+}
+
+
+
+
+
 
 
 
