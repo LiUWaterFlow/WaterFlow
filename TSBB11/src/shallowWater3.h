@@ -6,8 +6,8 @@
 #include <string>
 #include <iostream>
 
-#define EPSILON 0.01f
-#define GRAVITY 9.81f
+#define EPSILON 0.0001f
+#define GRAVITY 9.81f*0.5f
 
 struct gridPoint{
 	float x; //water height over terrain
@@ -203,7 +203,7 @@ private:
 	void RunSimulation(const float timestep);
 
 	void fixShore(gridPoint& left, gridPoint& center, gridPoint& right);
-	gridPoint SlopeForce(gridPoint& center, gridPoint& north, gridPoint& east, gridPoint& south, gridPoint& west);
+	gridPoint SlopeForce(gridPoint center, gridPoint north, gridPoint east, gridPoint south, gridPoint west);
 	gridPoint HorizontalPotential(gridPoint gp);
 	gridPoint VerticalPotential(gridPoint gp);
 

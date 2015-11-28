@@ -75,7 +75,7 @@ public:
 	void Pause(std::string msg) const;
 	void PrintWaterHeightSum(int iter = -1);
 private:
-	float getHeight(int i, int j, float ourWater);
+	float getHeight(int i, int j, float ourWater, float ourTot);
 	void updateSim(float dt);
 
 	/*functions for printing*/

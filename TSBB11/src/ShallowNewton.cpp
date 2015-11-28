@@ -48,18 +48,18 @@ int ShallowNewton::run()
 	return 1; //then end it here
 }
 
-float ShallowNewton::getHeight(int i, int j, float ourWater) {
+float ShallowNewton::getHeight(int i, int j, float ourWater, float ourTot) {
 	if (i < 0 || j < 0 || i > m_sizeX - 1 || j > m_sizeY- 1){
 		return 0.0f;
 	}
 
-	i = glm::clamp(i, 0, (int)m_sizeX- 1);
-	j = glm::clamp(j, 0, (int)m_sizeY- 1);
+	i = glm::clamp(i, 0, (int)m_sizeX - 1);
+	j = glm::clamp(j, 0, (int)m_sizeY - 1);
+	//float theirTot = u0[i + j*size.x];
+	float theirTerr = m_terrain_height[i + j*m_sizeX];
 	float theirWater = m_water_height[i + j*m_sizeX];
-	//float theirTerr = m_terrain_height[i + j*m_sizeX];
-	//float theirWater = theirTot - theirTerr;
-	//float ourWater = ourTot - ourTerrain;
-	float diff = theirWater - ourWater;//ourTot - theirTot;
+	float theirTot = theirTerr + theirWater;
+	float diff = theirTot - ourTot;//ourTot - theirTot;
 	//
 	return glm::clamp(diff, -ourWater / 4.0f, theirWater / 4.0f);
 }
@@ -76,22 +76,22 @@ void ShallowNewton::RunSimulation(float dt) {
 			float h2 = 4.0f;
 
 			float ourWater = m_water_height[offset];
-			//float ourHeight = m_total_height[offset];
-			//float ourTerr = m_terrain_height[offset];
-			float u_east = getHeight((x + 1), y, ourWater);
-			float u_west = getHeight((x - 1), y, ourWater);
-			float u_south = getHeight(x, (y - 1), ourWater);
-			float u_north = getHeight(x, (y + 1), ourWater);
+			float ourTotal = ourWater + m_terrain_height[offset];
+			float u_east = getHeight((x + 1), y, ourWater,ourTotal);
+			float u_west = getHeight((x - 1), y, ourWater,ourTotal);
+			float u_south = getHeight(x, (y - 1), ourWater,ourTotal);
+			float u_north = getHeight(x, (y + 1), ourWater,ourTotal);
 
 			float f = c2 / h2*(u_west + u_east + u_south + u_north);
 
-			float vel = m_velocity_z[offset] + f*dt;
+			float vel = f*dt;
 
-			m_velocity_z[offset] = vel *0.996f;// *0.9999995f
+			m_velocity_z[offset] = vel;// *0.9999995f
 			temp[offset] = glm::max((ourWater + vel * dt), 0.0f);
 		}
 	}
 	std::swap(m_water_height, temp);
+
 }
 
 ///////////////////////////////////////////////////////7

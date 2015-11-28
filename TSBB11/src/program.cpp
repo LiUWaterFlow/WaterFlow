@@ -54,7 +54,8 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	}
 	std::cout << "Which simulation do you want to run?\n";
 	std::cout << "1. Newton based shallow water simulation \n";
-	std::cout << "2. Navier-Stokes based shallow water simulation" << std::endl;
+	std::cout << "2. Navier-Stokes based shallow water simulation\n";
+	std::cout << "3. (TRIAL): ShallowWater3" << std::endl;
 	int choice;
 	std::cin >> choice;
 	if (choice == 1)
@@ -66,6 +67,11 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	{
 		ShallowWater2 navier(10, 10);
 		return navier.run();
+	}
+	else if (choice == 3)
+	{
+		ShallowWater3 shallow(10, 10);
+		return shallow.run();
 	}
 	else
 	{

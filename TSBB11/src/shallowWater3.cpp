@@ -20,14 +20,6 @@ int ShallowWater3::run()
 	/*Start by setting data*/
 	AddTerrainHeight(10.0f);
 	AddVelocity_X(0);
-	for (unsigned int i = 0; i < m_sizeX; i++)
-	{
-		AddTerrainHeight(30000, i, 0);
-	}
-	for (unsigned int j = 0; j < m_sizeY; j++)
-	{
-		AddTerrainHeight(30000, 0, j);
-	}
 	//Add Water
 	AddWaterHeight(1, 3, 5, 3, 5);
 
@@ -38,7 +30,7 @@ int ShallowWater3::run()
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
-		/*
+		
 		if (i % 500 == 0)
 		{
 			//Print velocity y for each iteration maybe
@@ -52,11 +44,10 @@ int ShallowWater3::run()
 			//and pause so we see what happens
 			Pause();
 		}
-	*/
-		PrintWaterHeight(i);
+		//PrintWaterHeight(i);
 		//PrintMomentum_X(i);
 		//PrintMomentum_Y(i);
-		Pause();
+		//Pause();
 	}
 	/*then print again*/
 	//PrintWaterHeight();
@@ -79,11 +70,6 @@ void ShallowWater3::RunSimulation(const float timestep)
 			gridPoint south = grid(x, y + 1, m_grid);
 			gridPoint east = grid(x + 1, y, m_grid);
 
-			if (center.x > 100)
-			{
-				std::cout << "hej" << std::endl;
-			}
-
 			fixShore(west, center, east);
 			fixShore(north, center, south);
 
@@ -102,8 +88,8 @@ void ShallowWater3::RunSimulation(const float timestep)
 		}
 	}
 	std::swap(m_temp, m_grid);
-	ResetTemp();
-	fixBoundry();
+	//ResetTemp();
+	//fixBoundry();
 }
 
 void ShallowWater3::fixShore(gridPoint& left, gridPoint& center, gridPoint& right)
@@ -115,11 +101,7 @@ void ShallowWater3::fixShore(gridPoint& left, gridPoint& center, gridPoint& righ
 		left.x = 0.0f;
 		right.x = 0.0f;
 	}
-	if (center.x > 100)
-	{
-		std::cout << "hej" << std::endl;
-	}
-	
+
 	float h = center.x;
 	float h4 = center.x * center.x * center.x * center.x;
 	
@@ -142,14 +124,14 @@ void ShallowWater3::fixBoundry()
 	}
 }
 
-gridPoint ShallowWater3::SlopeForce(gridPoint& center, gridPoint& north, gridPoint& east, gridPoint& south, gridPoint& west)
+gridPoint ShallowWater3::SlopeForce(gridPoint center, gridPoint north, gridPoint east, gridPoint south, gridPoint west)
 {
 	float h = std::max(center.x, 0.0f);
 
 	gridPoint H;
 	H.x = 0.0f;
-	H.y = -GRAVITY* h * (east.w + west.w);
-	H.z = -GRAVITY * h * (south.w + north.w);
+	H.y = -GRAVITY* h * (east.w - west.w);
+	H.z = -GRAVITY * h * (south.w - north.w);
 	H.w = 0.0f;
 	return H;
 }
@@ -161,14 +143,14 @@ gridPoint ShallowWater3::HorizontalPotential(gridPoint gp)
 	float vh = gp.z;
 	
 	float h4 = h * h * h * h;
-	float u = sqrt(2.0f)* h * uh / sqrt(h4 + std::max(h4, EPSILON));
+	float u = sqrt(2.0f)* h * uh / (sqrt(h4 + std::max(h4, EPSILON)));
 	
-	gridPoint G;
-	G.x = h * u;
-	G.y = uh * u + GRAVITY*h*h;
-	G.z = vh *u;
-	G.w = 0.0f;
-	return G;
+	gridPoint F;
+	F.x = h * u;
+	F.y = uh * u + GRAVITY*h*h;
+	F.z = vh *u;
+	F.w = 0.0f;
+	return F;
 }
 
 gridPoint ShallowWater3::VerticalPotential(gridPoint gp)
@@ -178,7 +160,7 @@ gridPoint ShallowWater3::VerticalPotential(gridPoint gp)
 	float vh = gp.z;
 	
 	float h4 = h * h * h * h;
-	float v = sqrt(2.0f)* h * vh / sqrt(h4 + std::max(h4, EPSILON));
+	float v = sqrt(2.0f)* h * vh / (sqrt(h4 + std::max(h4, EPSILON)));
 	
 	gridPoint G;
 	G.x = h * v;
