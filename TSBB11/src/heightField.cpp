@@ -264,20 +264,22 @@ void HeightField::initFloodFill(float* u){
 void HeightField::runSimGPU(GLfloat dt) {
 	totTime += dt; 
 	int numPing = 20;	
-/*
-	if(xml->flowChange(dt)){	
-		GLfloat* f = new float[texWidth*texHeight];
-		std::fill_n(f,texWidth*texHeight,0.0f);	
-			for(int i = 0; i < xml->numFlows ; i++){
-				f[xml->getFlowX(i) + xml->getFlowY(i)*texWidth] = getFlow(i);
-			}
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,f, GL_STATIC_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	GLint numData = terr->getDataWidth()*terr->getDataHeight();
+	if(flowChange(xmlFlow, dt)){	
+	  GLfloat* f = new float[texWidth*texHeight];
+	  std::fill_n(f,texWidth*texHeight,0.0f);	
+	  for(unsigned int i = 0; i < xmlFlow.size() ; i++){
+	    std::vector<int> flowPos = xmlFlow.at(i)->getPosition();
+	    f[flowPos[0]*texHeight + flowPos[2]*texWidth] = xmlFlow.at(i)->currPres;
+	    printf("Pressure %f \n",xmlFlow.at(i)->currPres);
+	  }
+	  glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
+	  glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,f, GL_STATIC_DRAW);
+	  glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 		
-		delete f;
+	  delete f;
 	}
-*/	
+
 
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());

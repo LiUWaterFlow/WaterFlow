@@ -21,10 +21,12 @@ class FlowSource {
   int xpos, ypos, zpos; ///< The position of the source given by the parameters x, y and z/
   float totalWater; ///< The total water of the source.
   float radius; ///< The radius of the source.
-  int currTime; ///< The current internal source time, this should be linear maped to simulation time.
+  float currTime; ///< The current internal source time, this should be linear maped to simulation time.
+
 public:
+  float currPres;
   /// @brief Initializes an epty source with time set to zero, it sould be populated with data using the set* functions.
-  FlowSource() {currTime = 0;};
+  FlowSource() {currTime = 0; currPres = 0;};
   /// @brief default destructor for now.
   ~FlowSource() = default;
   /// @brief Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values in two seperates vectors with a N to N corespondence, where N is the vector position.
@@ -51,7 +53,7 @@ public:
   void setRadius(float r);
   /// @brief This function updates the source by progressing the internal source time. this should be called regularly by the simulation.
   /// @todo make this function also recalculate the total water left.
-  void update();
+  void update(float dt);
   /// @brief This function finds the curent pressure depandeing on the internal time set by the update function.
   /// @return The current pressure
   float getPressure();
@@ -67,6 +69,8 @@ public:
   /// @brief Gets the radius of the flow source.
   /// @returns Radius of the source, @warning this value never changes in current implementation   
   float getRadius();
+
+  bool getChange(float dt);
 };
 
 #endif

@@ -5,9 +5,9 @@
   </Data>
   <Sources>
     <Source Name="Hill">
-      <Position x="1" y="2" z="3"/>
-      <TimeP t="1, 2, 5, 7, 10" />
-      <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
+      <Position x="100" y="2" z="100"/>
+      <TimeP t="1, 2, 5, 10, -1" />
+      <Pressure p="1.0, 1.5, 2, 1.3, 0" />
       <TimeN t="3, -1"/>
       <Normals>
         <Normal x="6.1" y="7.2" z="9.3"/>
@@ -16,14 +16,35 @@
       <TotWater tot="20" />
       <Radius r="0.5"/>
     </Source>
-    <Source Name="Valley">
-      <Position x="4" y="5" z="6"/>
-      <TimeP t="1, 2, 5, 7, 11" />
-      <Pressure p="1.0, -3.5, 6, 8.2, 10.10" />
+
+    <Source Name="Hill">
+      <Position x="1000" y="2" z="1"/>
+      <TimeP t="1, 4, 5, 10, -1" />
+      <Pressure p="1.5, 2, 2.5, 1.8, 0" />
+      <TimeN t="3, -1"/>
+      <Normals>
+        <Normal x="6.1" y="7.2" z="9.3"/>
+        <Normal x="16" y="17.5" z="-19"/>
+      </Normals>
+      <TotWater tot="20" />
+      <Radius r="0.5"/>
+    </Source>
+
+    <Source Name="Hill">
+      <Position x="1" y="2" z="1000"/>
+      <TimeP t="1, 5, 8, 9, -1" />
+      <Pressure p="0.5, 1.0, 1.5, 0.7, 0" />
+      <TimeN t="3, -1"/>
+      <Normals>
+        <Normal x="6.1" y="7.2" z="9.3"/>
+        <Normal x="16" y="17.5" z="-19"/>
+      </Normals>
+      <TotWater tot="20" />
+      <Radius r="0.5"/>
     </Source>
   </Sources>
   <Floods>
-    <Flood x="1250" z="1600" height="200"/>
+    <Flood x="1250" z="1600" height="50"/>
     <Flood x="1316" z="1" height="410.9"/>
   </Floods>
   </Profile>

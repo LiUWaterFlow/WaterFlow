@@ -52,9 +52,9 @@ void main(){
 	//Change these to clamps.
 	if(i < size.x && j < size.y) {
 
-		float dt = 1.0f/(30.0f);
+		float dt = 1.0f/(20*30.0f);
 		int offset = (i + j*size.x);
-		float c2 = 250.0f;
+		float c2 = 25000.0f;
 		
 		float h2 = 4.0f;
 
