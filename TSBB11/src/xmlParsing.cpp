@@ -3,7 +3,7 @@
 // This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.
 
 
-Flood_Fill_data::Flood_Fill_data(int in_x, int in_z, int in_height)
+Flood_Fill_data::Flood_Fill_data(int in_x, int in_z, float in_height)
 {
   this->x = in_x;
   this->z = in_z;
@@ -131,7 +131,7 @@ std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile){
   pugi::xml_node floods = doc.child("Profile").child("Floods");
 
   for (pugi::xml_node_iterator it = floods.begin(); it != floods.end(); ++it){
-    Flood_Fill_data* Flood_Fill = new Flood_Fill_data(it->attribute("x").as_int(), it->attribute("z").as_int(), it->attribute("height").as_int());
+    Flood_Fill_data* Flood_Fill = new Flood_Fill_data(it->attribute("x").as_int(), it->attribute("z").as_int(), it->attribute("height").as_float());
 
     out_data.push_back(Flood_Fill);
   }

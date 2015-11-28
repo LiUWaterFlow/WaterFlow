@@ -10,10 +10,10 @@
 #include <string>
 
 struct Flood_Fill_data{
- Flood_Fill_data(int, int,int);
+ Flood_Fill_data(int, int, float);
  int x;
  int z;
- int height;
+ float height;
 };
 
 struct init_Data_struct {
