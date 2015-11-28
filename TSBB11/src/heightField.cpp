@@ -309,16 +309,16 @@ void HeightField::measureVolume(){
 	float* u = new float[texWidth*texHeight];
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
-	glGetSubData(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY );
-
+	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER,0,texWidth*texHeight*sizeof(float),u);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	
 	std::valarray<float> myvalarray(u, texWidth*texHeight);
 	float vol1 = myvalarray.sum();
-	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	
 
 	std::cout << "Volume difference is: " << vol1- vol0 - addedVol << std::endl;
 	myvalarray.resize(0); 
+	delete u;
 	
 }
 
