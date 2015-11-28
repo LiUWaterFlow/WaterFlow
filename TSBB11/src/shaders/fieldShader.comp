@@ -70,9 +70,13 @@ void main(){
 		//f = clamp(f, -20.0f, 20.0f);
 		
 		float vel =v[offset] + f*dt;
-		
-		v[offset] = vel *0.96f;// *0.9999995f
-		u1[offset] = max((ourHeight + vel * dt),terrHeight[offset]);
+		float height = max((ourHeight + vel * dt),ourTerr);
+		u1[offset] = height;
 
+		if(height - ourTerr <= 0.0f){
+		v[offset] = 0.0f;// *0.9999995f
+		}else{
+		v[offset] = vel *0.96f;
+		}
 	}
 }

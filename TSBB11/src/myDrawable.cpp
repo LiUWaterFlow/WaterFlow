@@ -127,6 +127,9 @@ void HeightMap::initDraw() {
 	glGenVertexArrays(1, &drawVAO);
 
 	glUseProgram(program);
+	
+	glUniform2i(glGetUniformLocation(program, "size"),dataWidth, dataHeight);
+
 	glUniform3fv(glGetUniformLocation(program, "lightSourcePos"), 1, sun_GLf);
 	glUniform1i(glGetUniformLocation(program, "isDirectional"), sunIsDirectional);
 	glUniform1fv(glGetUniformLocation(program, "specularExponent"), 1, &sunSpecularExponent);

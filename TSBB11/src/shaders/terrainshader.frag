@@ -28,6 +28,8 @@ vec3 ambLight;		// Ambient.
 vec3 diffLight;		// Diffuse.
 vec3 specLight;		// Specular.
 vec3 totalLight;	// Totalt ljus.
+in float out_Col_i;
+in float out_Col_j;
 
 void main(void)
 {
@@ -62,7 +64,8 @@ void main(void)
 	out_Color = vec4(totalLight,1);
 	}
 	else{
-	out_Color = vec4(0,0,totalLight.z,0.8);
+	//out_Color = vec4(out_Col_j + out_Col_i, 0,0,0.8);
+	out_Color = vec4(0,0,totalLight.z,0.8f);
 	}
 
 }
