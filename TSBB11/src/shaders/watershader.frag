@@ -138,7 +138,7 @@ void main(void)
 
 	// Texture lookup at approximation.
 	// Eric: "but changing W and H looks better..."
-	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.y, displacement1.z / size.x));
+	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.y));
 
 	// To minimize negative depth values, a better approximation is made.
 	// "Depth" at approximation.
@@ -151,8 +151,8 @@ void main(void)
 	displacement2 = bottomDisplacement2 * displacementDirection;
 
 	// Texture lookups at better approximation
-	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.y, displacement2.z / size.x));
-	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.y, displacement2.z / size.x));
+	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
+	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
 	// "Depth" at better approximation
 	depthAtDis2 = out_ObjPos.y - terrainDataAtBottom.r;
 
