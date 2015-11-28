@@ -95,7 +95,7 @@ void parseRadius(FlowSource* obj, pugi::xml_node node){
   obj->setRadius(r);
 }
 
-// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates. TODO: Implement a function that delets all the objects.
+// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates.
 std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   pugi::xml_document doc;
   std::vector<FlowSource*> srces;

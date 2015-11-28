@@ -202,23 +202,12 @@ void HeightField::initGPU() {
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
 			u[j*texWidth + i] = terr->getData()[j*texWidth + i];
-			//v[j*texWidth + i] = 0.0f;
-
-			//CREATE INTERESTING DATA HERE.			
-			/*
-			if (i > lower && i < upper && j > lower && j < upper) {
-				f[j*texWidth + i] = 2.0f;
-			}
-			*/
-					
 		}
-
 	}
-	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
-	
-	//for each flood fill point
-	floodFill(u,1250,1600,terr->getData()[1250+texWidth*1600]+25.0f);
 
+	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
+
+	initFloodFill(u);
 
 	int i = 0;
 
@@ -261,11 +250,34 @@ void HeightField::initGPU() {
 	
 	delete u;
 	delete v;
+	delete f; 
+
+
 }
 
-void HeightField::runSimGPU() {
+void HeightField::initFloodFill(float* u){
+	for(unsigned int i = 0; i < flood.size(); i++){
+			floodFill(u, flood.at(i)->x, flood.at(i)->z,flood.at(i)->height);
+	}
+}
 
-	int numPing = 20;
+void HeightField::runSimGPU(GLfloat dt) {
+	totTime += dt; 
+	int numPing = 20;	
+/*
+	if(xml->flowChange(dt)){	
+		GLfloat* f = new float[texWidth*texHeight];
+		std::fill_n(f,texWidth*texHeight,0.0f);	
+			for(int i = 0; i < xml->numFlows ; i++){
+				f[xml->getFlowX(i) + xml->getFlowY(i)*texWidth] = getFlow(i);
+			}
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,f, GL_STATIC_DRAW);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+		
+		delete f;
+	}
+*/	
 
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());

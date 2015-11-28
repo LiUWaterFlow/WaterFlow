@@ -4,6 +4,7 @@
 #include "glm.hpp"
 #include "gtc/type_ptr.hpp"
 #include <vector>
+#include "xmlParsing.h"
 
 class HeightField{
 private:
@@ -13,7 +14,7 @@ private:
   GLuint voxelBuffer, voxelVAO; ///< Buffers and VAOs.
 
   const static int width = 50;
-  const static int height = 50;
+  const static int height = 50; /// currently not used.
 
   GLuint texWidth, texHeight;
 
@@ -30,7 +31,9 @@ private:
   int clip(int n, int lower, int upper);
   float clipf(GLfloat n, GLfloat lower, GLfloat upper);
   unsigned long long vol0;
-
+  GLfloat totTime;
+  std::vector<Flood_Fill_data*> flood;
+  void initFloodFill(float* u);
 
 
 public:
@@ -41,7 +44,7 @@ public:
   
   void floodFill(float* u, int x, int z, float height);
 
-  HeightField(DataHandler *t) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight();};
+  HeightField(DataHandler *t,std::vector<Flood_Fill_data*> FFDataIn) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn;};
   void updateSim(GLfloat);
   void setTerrainTex(GLuint t){terrTex = t;};
   GLuint getHeightTex(){return heightTex;};
@@ -50,7 +53,7 @@ public:
   void initDraw();
   void initTest();
   void initGPU();
-  void runSimGPU();
+  void runSimGPU(GLfloat dt = 1.0f/30.0f);
   void updateVoxelrender();
   void drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
   std::vector<GLuint>* getVoxelPositions();

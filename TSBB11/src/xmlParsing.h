@@ -10,7 +10,7 @@
 #include <string>
 
 struct Flood_Fill_data{
- Flood_Fill_data(int, int, int);
+ Flood_Fill_data(int, int,int);
  int x;
  int z;
  int height;

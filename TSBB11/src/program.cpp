@@ -113,7 +113,7 @@ bool Program::init() {
 	//voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
 	//voxs->initDraw();
 
-	hf = new HeightField(dataHandler);
+	hf = new HeightField(dataHandler,init_data.FFData);
 	hf->initGPU();
 	
 	printError("After hf init");

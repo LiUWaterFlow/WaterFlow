@@ -2,16 +2,15 @@
 
 layout(local_size_x = 16, local_size_y = 16) in;
 
-layout (std430,binding = 4) buffer height0
+layout  (std430,binding = 4) readonly buffer height0
 {
 	float u0[];
 	
 };
 
-layout (std430, binding = 5) buffer height1
+layout (std430, binding = 5) writeonly buffer height1
 {
-	float u1[];
-	
+	float u1[];	
 };
 
 layout (std430,binding = 6) buffer velocity
@@ -20,7 +19,7 @@ layout (std430,binding = 6) buffer velocity
 	
 };
 
-layout (std430,binding = 7) buffer terrainHeight
+layout (std430,binding = 7) readonly buffer terrainHeight
 {	
 	float terrHeight[];
 	
@@ -55,7 +54,7 @@ void main(){
 
 		float dt = 1.0f/(30.0f);
 		int offset = (i + j*size.x);
-		float c2 = 25.0f;
+		float c2 = 250.0f;
 		
 		float h2 = 4.0f;
 
@@ -70,9 +69,9 @@ void main(){
 		
 		//f = clamp(f, -20.0f, 20.0f);
 		
-		float vel = v[offset] + f*dt;
+		float vel =v[offset] + f*dt;
 		
-		v[offset] = vel *0.996f;// *0.9999995f
+		v[offset] = vel *0.96f;// *0.9999995f
 		u1[offset] = max((ourHeight + vel * dt),terrHeight[i+j*size.x]);
 
 	}
