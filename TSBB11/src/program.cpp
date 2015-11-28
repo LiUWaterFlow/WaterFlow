@@ -99,7 +99,7 @@ bool Program::init() {
 
 	init_Data_struct init_data(xmlfile);
 	std::cout << "first flood x: " << init_data.FFData[0]->x << std::endl;
-	std::cout << "second flood x: " << init_data.FFData[1]->x << std::endl;
+	std::cout << "second flood height: " << init_data.FFData[1]->height << std::endl;
 
 	// Initial placement of camera.
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
