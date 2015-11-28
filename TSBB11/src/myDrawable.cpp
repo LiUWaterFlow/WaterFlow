@@ -163,7 +163,7 @@ void HeightMap::initUpdate() {
 }
 
 void HeightMap::initDraw() {
-	
+
 	glGenVertexArrays(1, &drawVAO);
 
 	glUseProgram(program);

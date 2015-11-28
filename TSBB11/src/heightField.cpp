@@ -270,7 +270,7 @@ void HeightField::runSimGPU(GLfloat dt) {
 	  std::fill_n(f,texWidth*texHeight,0.0f);	
 	  for(unsigned int i = 0; i < xmlFlow.size() ; i++){
 	    std::vector<int> flowPos = xmlFlow.at(i)->getPosition();
-	    f[flowPos[0]*texHeight + flowPos[2]*texWidth] = xmlFlow.at(i)->currPres;
+	    f[flowPos[0] + flowPos[2]*texWidth] = xmlFlow.at(i)->currPres;
 	    printf("Pressure %f \n",xmlFlow.at(i)->currPres);
 	  }
 	  glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
@@ -288,14 +288,19 @@ void HeightField::runSimGPU(GLfloat dt) {
 	glUniform2i(glGetUniformLocation(addProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
 
 	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,4,5,fieldBuffers);
-	glUseProgram(addProgram);
-	glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
+	
 	
 	addedVol += 2.0f;
+	
+	glUseProgram(addProgram);
+	glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
+		
 
 	for (int i = 0; i < numPing; i++) {
 
 		glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, fieldBuffers);
+		
+
 		glUseProgram(fieldProgram);
 		glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
 		std::swap(fieldBuffers[0], fieldBuffers[1]);

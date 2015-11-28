@@ -36,6 +36,8 @@ vec3 ambLight;		// Ambient.
 vec3 diffLight;		// Diffuse.
 vec3 specLight;		// Specular.
 vec3 totalLight;	// Totalt ljus.
+in float out_Col_i;
+in float out_Col_j;
 
 void main(void)
 {
@@ -66,7 +68,7 @@ void main(void)
 
 	// Just to check that the terrain data texture is working
 	vec4 terrainData = texture(terr_texUnit, out_TexCoord) * totalLight.x;
-
+	//out_Color = vec4(out_Col_j + out_Col_i, 0,0,0.8);
 	out_Color = terrainData;
 
 
