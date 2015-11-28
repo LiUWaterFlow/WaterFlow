@@ -67,6 +67,7 @@ void parseRadius(FlowSource* obj, pugi::xml_node node);
 /// @return A vector filled with pointers to flowSource objects containing data given by an XML file.
 std::vector<FlowSource*> loadFlows(const char* xmlFile);
 
+bool flowChange(std::vector<FlowSource*> flows, float dt);
 
 std::string loadMapPath(const char* xmlFile);
 

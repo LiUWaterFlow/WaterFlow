@@ -115,6 +115,16 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   return srces;
 }
 
+bool flowChange(std::vector<FlowSource*> flows, float dt){
+  bool change = false;
+  for(unsigned int i = 0; i < flows.size(); i++){
+    if(flows.at(i)->getChange(dt)){
+      change = true;
+    }
+  }
+  return change;
+}
+
 std::string loadMapPath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";

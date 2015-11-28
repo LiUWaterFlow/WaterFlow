@@ -37,8 +37,8 @@ void FlowSource::setRadius(float r){
 }
 
 // This function updates the internal time of the source idealy this should be called att constant intervals e.g. onece evry loop of simulation. It could be expanded with calculating remaining water.
-void FlowSource::update(){
-  currTime++;
+void FlowSource::update(float dt){
+  currTime = currTime + dt;
 }
 
 // This function returns the curent pressure depandeing on the internal time set by the update function.
@@ -88,4 +88,18 @@ float FlowSource::getWaterLeft(){
 
 float FlowSource::getRadius(){
   return radius;
+}
+
+
+bool FlowSource::getChange(float dt) {
+  currPres = FlowSource::getPressure();
+  FlowSource::update(dt);
+  float newPre = FlowSource::getPressure();
+  if(newPre == currPres){
+    return false;
+  }
+  else {
+    currPres = newPre;
+    return true;
+  }  
 }

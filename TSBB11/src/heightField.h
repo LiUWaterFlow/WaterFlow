@@ -5,6 +5,7 @@
 #include "gtc/type_ptr.hpp"
 #include <vector>
 #include "xmlParsing.h"
+#include "flowSource.h"
 
 class HeightField{
 private:
@@ -33,6 +34,7 @@ private:
   GLfloat totTime;
   std::vector<Flood_Fill_data*> flood;
   void initFloodFill(float* u);
+  std::vector<FlowSource*> xmlFlow;
   float vol0;
   float addedVol;
 
@@ -46,7 +48,7 @@ public:
   void floodFill(float* u, int x, int z, float height);
   void measureVolume();
 
-  HeightField(DataHandler *t,std::vector<Flood_Fill_data*> FFDataIn) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn;};
+  HeightField(DataHandler *t,std::vector<Flood_Fill_data*> FFDataIn, std::vector<FlowSource*> FlowsourcesIN) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn; xmlFlow = FlowsourcesIN;};
   void updateSim(GLfloat);
   void setTerrainTex(GLuint t){terrTex = t;};
   GLuint getHeightTex(){return heightTex;};
