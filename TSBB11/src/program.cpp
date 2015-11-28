@@ -49,7 +49,7 @@ int Program::exec() {
 int Program::testVoxels() {
 
 	if (!init()) return -1;
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_SetRelativeMouseMode(SDL_FALSE);
 	voxelTest::mainTest(dataHandler);
 
 }
@@ -81,7 +81,7 @@ bool Program::init() {
 	glcontext = SDL_GL_CreateContext(screen);
 
 
-	SDL_SetRelativeMouseMode(SDL_FALSE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
 	printError("After SDL init: ");
 
