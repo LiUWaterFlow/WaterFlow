@@ -8,6 +8,7 @@ endif
 $SOURCEDIR = src
 
 CPP_FILES := $(wildcard src/*.cpp)
+CPP_FILES += src/common/xml/pugixml.cpp
 
 OBJ_FILES_CPP := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
 
@@ -21,13 +22,13 @@ OBJ_FILES_COMMON := $(addprefix obj/,$(notdir $(C_FILES_COMMON:.c=.o)))
 OBJ_FILES_COMMON += $(addprefix obj/,$(notdir $(CPP_FILES_COMMON:.cpp=.o)))
 
 
-INC = -Isrc/ -Isrc/common/ -Isrc/common/glm -Isrc/common/AntTweak
+INC = -Isrc/ -Isrc/common/ -Isrc/common/glm -Isrc/common/AntTweak -Isrc/common/xml
 MAIN = main.cpp
 OUT = bin/WaterFlow
 
 ifeq ($(PLATFORM),mac)
 INC += -F/Library/Frameworks/
-LINKS =  -framework OpenGL -framework GLUT -framework Cocoa -framework SDL2 -L/usr/local/lib -lAntTweakBar
+LINKS =  -framework OpenGL -framework GLUT -Isrc/common/xml -framework Cocoa -framework SDL2 -L/usr/local/lib -lAntTweakBar
 endif
 
 GCC = g++ -Wall -pedantic -std=c++0x -g3
@@ -56,6 +57,9 @@ obj/%.o : src/common/%.cpp
 
 obj/%.o : src/%.cpp
 	mkdir -p $(CURDIR)/obj
+	$(GCC) -c -o $@ $< $(INC)
+
+obj/%.o : src/common/xml/%.cpp
 	$(GCC) -c -o $@ $< $(INC)
 
 TWtest:

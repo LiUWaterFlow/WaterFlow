@@ -10,6 +10,7 @@
 
 
 bool updateRender;
+bool sim = true;
 
 Program::Program() {
 	screenW = 800;
@@ -48,7 +49,7 @@ int Program::exec() {
 int Program::testVoxels() {
 
 	if (!init()) return -1;
-	SDL_SetRelativeMouseMode(SDL_FALSE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	voxelTest::mainTest(dataHandler);
 
 }
@@ -80,7 +81,7 @@ bool Program::init() {
 	glcontext = SDL_GL_CreateContext(screen);
 
 
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_SetRelativeMouseMode(SDL_FALSE);
 	glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
 	printError("After SDL init: ");
 
@@ -91,11 +92,21 @@ bool Program::init() {
 
 	dumpInfo();
 
+
+/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this
+	 is then used as startdata.
+*/
+	const char* xmlfile = "src/xml/xgconsole.xml";
+
+	init_Data_struct init_data(xmlfile);
+	std::cout << "first flood x: " << init_data.FFData[0]->x << std::endl;
+	std::cout << "second flood height: " << init_data.FFData[1]->height << std::endl;
+
 	// Initial placement of camera.
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
 
 	// Load terrain data
-	dataHandler = new DataHandler("resources/output.min.asc");
+	dataHandler = new DataHandler(init_data.data_filename.c_str());
 	
 
 	//Voxels and floodfill
@@ -103,7 +114,7 @@ bool Program::init() {
 	//voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
 	//voxs->initDraw();
 
-	hf = new HeightField(dataHandler);
+	hf = new HeightField(dataHandler,init_data.FFData);
 	hf->initGPU();
 	
 	printError("After hf init");
@@ -163,8 +174,9 @@ void Program::timeUpdate() {
 void Program::update() {
 	// Update the tweak bar
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
-	hf->runSimGPU();
-
+	if(sim){
+		hf->runSimGPU();
+	}
 	waterTerrain->update();
 }
 
@@ -276,6 +288,13 @@ void Program::handleKeypress(SDL_Event* event) {
 		} else {
 			TwDefine(" UIinfo iconified=false");
 		}
+		case SDLK_l:
+		sim = false;
+		hf->measureVolume();
+		break;
+		case SDLK_k:
+		sim = !sim;
+		break;
 		default:
 		break;
 	}
@@ -299,7 +318,7 @@ void Program::handleMouseButton(SDL_Event* event) {
 		SDL_GetMouseState(&x, &y);
 		glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 		GLdouble objY = 0.0;
-		gluUnProject((GLdouble)x, (GLdouble)(screenW - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
+		gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
 		heighAtClickProj = (GLfloat)objY;
 		heightAtClickData = dataHandler->giveHeight((GLfloat)objX, (GLfloat)objZ);

@@ -202,23 +202,12 @@ void HeightField::initGPU() {
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
 			u[j*texWidth + i] = terr->getData()[j*texWidth + i];
-			//v[j*texWidth + i] = 0.0f;
-
-			//CREATE INTERESTING DATA HERE.			
-			/*
-			if (i > lower && i < upper && j > lower && j < upper) {
-				f[j*texWidth + i] = 2.0f;
-			}
-			*/
-					
 		}
-
 	}
-	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
-	
-	//for each flood fill point
-	floodFill(u,1250,1600,terr->getData()[1250+texWidth*1600]+25.0f);
 
+	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
+
+	initFloodFill(u);
 
 	int i = 0;
 
@@ -251,22 +240,46 @@ void HeightField::initGPU() {
 
 	printError("init Compute Error");
 	printProgramInfoLog(fieldProgram, "field Init", NULL, NULL, NULL, NULL);
-	/*
+	
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	*/
-	//std::valarray<float> myvalarray(u, texWidth*texHeight);
-	//vol0 = myvalarray.sum();
+	
+	
+	std::valarray<float> myvalarray(u, texWidth*texHeight);
+	vol0 = myvalarray.sum();
 	
 	delete u;
 	delete v;
+	delete f;
+
 }
 
-void HeightField::runSimGPU() {
+void HeightField::initFloodFill(float* u){
+	for(unsigned int i = 0; i < flood.size(); i++){
+			floodFill(u, flood.at(i)->x, flood.at(i)->z,flood.at(i)->height);
+	}
+}
 
-	int numPing = 20;
-
+void HeightField::runSimGPU(GLfloat dt) {
+	totTime += dt; 
+	int numPing = 20;	
+/*
+	if(xml->flowChange(dt)){	
+		GLfloat* f = new float[texWidth*texHeight];
+		std::fill_n(f,texWidth*texHeight,0.0f);	
+			for(int i = 0; i < xml->numFlows ; i++){
+				f[xml->getFlowX(i) + xml->getFlowY(i)*texWidth] = getFlow(i);
+			}
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,f, GL_STATIC_DRAW);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+		
+		delete f;
+	}
+*/	
+	
+		
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
 
@@ -277,6 +290,7 @@ void HeightField::runSimGPU() {
 	glUseProgram(addProgram);
 	glDispatchCompute((GLuint)ceil((GLfloat)terr->getDataWidth() / 16.0f), (GLuint)ceil((GLfloat)terr->getDataHeight() / 16.0f), 1);
 	
+	addedVol += 2.0f;
 
 	for (int i = 0; i < numPing; i++) {
 
@@ -288,6 +302,30 @@ void HeightField::runSimGPU() {
 
 	printError("run Sim GPU");
 }
+
+
+void HeightField::measureVolume(){
+
+	float* u = new float[texWidth*texHeight];
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
+	glGetSubData(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY );
+
+	std::valarray<float> myvalarray(u, texWidth*texHeight);
+	float vol1 = myvalarray.sum();
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	
+
+	std::cout << "Volume difference is: " << vol1- vol0 - addedVol << std::endl;
+	myvalarray.resize(0); 
+	
+}
+
+
+
+
+
 
 
 
