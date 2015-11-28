@@ -51,7 +51,7 @@ public:
 };
 
 class HeightMap : public myDrawable {
-private:
+protected:
 	GLuint drawBuffers[4];
 	GLuint heightBuffer;
 	GLuint drawVAO;
@@ -72,6 +72,8 @@ public:
 
 	virtual void update();
 	virtual void draw();
+
+	GLuint getNormalBuffer() { return drawBuffers[3]; }
 };
 
 class Water : public HeightMap {
@@ -79,7 +81,7 @@ private:
 	GLfloat transparency;
 
 public:
-	Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer);
+	Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint terrNormalBuffer);
 
 	static void TW_CALL SetTransparencyCB(const void* value, void* clientData);
 	static void TW_CALL GetTransparencyCB(void* value, void* clientData);

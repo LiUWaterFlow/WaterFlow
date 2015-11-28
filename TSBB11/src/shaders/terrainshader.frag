@@ -14,14 +14,16 @@ layout(binding = 0) uniform LightInfo {
 };
 
 in vec3 out_Normal;
+in vec3 out_terrNormal;
 in vec2 out_TexCoord;// not currently used
 in vec3 out_ObjPos;
 
 out vec4 out_Color;
 
-uniform vec3 camPos;	// Kamernapositionen.
+uniform vec3 camPos;	// Kamerapositionen.
 
 uniform sampler2D terr_texUnit;
+uniform sampler2D height_texUnit;	// Terrain normal and height texture.
 
 vec3 r;
 vec3 s;				// Infallande ljus.
@@ -66,10 +68,15 @@ void main(void)
 	totalLight += diffLight;
 	totalLight += specLight;
 
-	// Just to check that the terrain data texture is working
-	vec4 terrainData = texture(terr_texUnit, out_TexCoord) * totalLight.x;
 	//out_Color = vec4(out_Col_j + out_Col_i, 0,0,0.8);
-	out_Color = terrainData;
+
+	// Just to check that the terrain data texture is working
+	vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight.x;
+	out_Color = vec4(terrainData, 1.0f);
+
+	// test
+	//vec3 terrainData = vec3(texture(height_texUnit, out_TexCoord).r);
+	out_Color = vec4(terrainData, 1.0f);
 
 
 }

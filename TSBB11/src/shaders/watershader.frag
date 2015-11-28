@@ -25,9 +25,12 @@ uniform samplerCube sky_texUnit;	// Skybox texture.
 
 uniform ivec2 size;
 
+uniform float time;
+
 // ===== In/Out params =====
 
 in vec3 out_Normal;
+in vec3 out_terrNormal;
 in vec2 out_TexCoord;
 in vec3 out_ObjPos;
 
@@ -89,22 +92,6 @@ const float waterRefInd = 1.34451;
 const float airRefInd = 1.0;
 const vec3 up = vec3(0.0, 1.0, 0.0);
 
-// ===== Replaced with the buffers =====
-//uniform vec3 lightSourcePosAir;		// Light source position/direction, airborne light.
-//uniform vec3 lightSourcePosWater;	// Light source position/direction, refracted light.
-									// Currently this is precalculated on the CPU. This is not possible
-									// when the water body comes from the actual simulation. This should
-									// instead be calculated here.
-//uniform int isDirectional;
-//uniform float specularExponent;
-//uniform vec3 lightSourceColor;
-
-//uniform int texCoordScaleH;			// Texture coordinate scale along x.
-//uniform int texCoordScaleW;			// Texture coordinate scale along z.
-//uniform float max_height;			// Height scale.
-//uniform float time;
-
-
 void main(void)
 {
 	// eye vector is calculated.
@@ -112,7 +99,7 @@ void main(void)
 	//float dist = length(eye);
 	eye = normalize(eye);
 
-	/*
+	
 	// Modelling surface waves.
 	float rho1 = sqrt(pow(out_ObjPos.x, 2) + pow(out_ObjPos.z, 2));
 	float rho2 = sqrt(pow((1000 - out_ObjPos.x), 2) + pow(out_ObjPos.z, 2));
@@ -125,8 +112,8 @@ void main(void)
 	// Perturbing surface normals.
 	Normal = vec3(0.1 * (0.1 * xwave + 0.1 * rhowave1 + rhowave2), out_Normal.y, 0.1 * 0.1 * ywave);
 	//Normal += vec3(1 + 0.2 * rand, 1, 1);
-	*/
-	Normal = out_Normal;
+	
+	Normal = normalize(0.5 * out_Normal + 0.5 * Normal);
 
 	// Incident and reflected light is calculated for the light source.
 	s = normalize(vec3(lights[0].pos.x, lights[0].pos.y, lights[0].pos.z) - (1 - lights[0].isDir) * out_ObjPos);
@@ -151,7 +138,7 @@ void main(void)
 
 	// Texture lookup at approximation.
 	// Eric: "but changing W and H looks better..."
-	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.y));
+	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.y, displacement1.z / size.x));
 
 	// To minimize negative depth values, a better approximation is made.
 	// "Depth" at approximation.
@@ -164,14 +151,14 @@ void main(void)
 	displacement2 = bottomDisplacement2 * displacementDirection;
 
 	// Texture lookups at better approximation
-	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
-	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
+	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.y, displacement2.z / size.x));
+	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.y, displacement2.z / size.x));
 	// "Depth" at better approximation
 	depthAtDis2 = out_ObjPos.y - terrainDataAtBottom.r;
 
 	// Coordinates and normal of seen position of bottom.
 	bottomPos = out_ObjPos + displacement2 - vec3(0, depthAtDis2, 0);
-	bottomNormal = vec3(0,1,0);// vec3(terrainDataAtBottom.x, terrainDataAtBottom.y, terrainDataAtBottom.z);
+	bottomNormal = out_terrNormal;
 
 	// Distance from surface to seen position of bottom.
 	wdist = length(bottomPos - out_ObjPos);
@@ -223,9 +210,9 @@ void main(void)
 	diffLight = vec3(0.0, 0.0, 0.0);
 	specLight = vec3(0.0, 0.0, 0.0);
 	// Diffuse light.
-	diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(bottomNormal))) * texDataAtBottom.rgb;
+	diffLight += kdiff * lights[1].color * max(0.0, dot(s, normalize(bottomNormal)));
 	// Specular light.
-	specLight += krefl * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
+	specLight += krefl * lights[1].color * max(0.0, pow(dot(r, eye), lights[1].specExp));
 
 	bottomLight = vec3(0.0, 0.0, 0.0);
 	// The light components are added to the total bottom light.
@@ -237,6 +224,6 @@ void main(void)
 	//out_Color = vec4(0.5 * (1 - ktrans) * surfaceLight + ktrans * bottomLight, 1.0);
 	// ----------------
 	// --- New code ---
-	out_Color = vec4(0.5 * surfaceLight + (1 - ktrans) * surfaceColor + ktrans * bottomLight, 1.0);
+	out_Color = vec4(0.5 * surfaceLight + (1 - ktrans) * surfaceColor + ktrans * bottomLight * texDataAtBottom.rgb, 1.0);
 	// ----------------
 }

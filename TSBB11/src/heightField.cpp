@@ -207,7 +207,7 @@ void HeightField::initGPU() {
 
 	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
 
-	//initFloodFill(u);
+	initFloodFill(u);
 
 	int i = 0;
 

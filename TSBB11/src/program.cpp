@@ -99,8 +99,6 @@ bool Program::init() {
 	const char* xmlfile = "src/xml/xgconsole.xml";
 
 	init_Data_struct init_data(xmlfile);
-	std::cout << "first flood x: " << init_data.FFData[0]->x << std::endl;
-	std::cout << "second flood height: " << init_data.FFData[1]->height << std::endl;
 
 	// Initial placement of camera.
 	cam = new Camera(glm::vec3(0.0f,500.0f,0.0f), &screenW, &screenH);
@@ -108,12 +106,7 @@ bool Program::init() {
 	// Load terrain data
 	dataHandler = new DataHandler(init_data.data_filename.c_str());
 	
-
-	//Voxels and floodfill
-	//voxs = new Voxelgrid(dataHandler,27000000);
-	//voxs->FloodFill((int)1300, (int)1600,floor((int)dataHandler->giveHeight(1300, 1600))+25,false);
-	//voxs->initDraw();
-
+	// Initialize water simulation
 	hf = new HeightField(dataHandler,init_data.FFData, init_data.Flowsources);
 	hf->initGPU();
 	
@@ -132,7 +125,7 @@ bool Program::init() {
 	terrain = new HeightMap(terrainshader, sizes, dataHandler->getHeightBuffer());
 	terrain->update();
 
-	waterTerrain = new Water(terrainshader, sizes, hf->fieldBuffers[0]);	
+	waterTerrain = new Water(watershader, sizes, hf->fieldBuffers[0], dynamic_cast<HeightMap*>(terrain)->getNormalBuffer());
 	
 	printError("Created Heightmaps");
 
@@ -216,6 +209,7 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(watershader);
+	glUniform1f(glGetUniformLocation(watershader, "time"), currentTime / 100.0f);
 	waterTerrain->draw();
 	
 	// ====================== Draw AntBar ===========================

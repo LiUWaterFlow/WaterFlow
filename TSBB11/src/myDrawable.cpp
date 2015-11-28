@@ -245,11 +245,18 @@ void HeightMap::draw() {
 	printError("Draw Heightmap");
 }
 
-Water::Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer) 
+Water::Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint terrNormalBuffer) 
 : HeightMap(drawProgram, sizes, inputHeightBuffer) {
 	transparency = 0.7f;
 
 	glUniform1f(glGetUniformLocation(program, "transparency"), transparency);
+
+	GLint terrNormAttrib = glGetAttribLocation(program, "in_terrNormal");
+	glBindVertexArray(drawVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, terrNormalBuffer); //normalsBufferID
+	glEnableVertexAttribArray(terrNormAttrib);
+	glVertexAttribPointer(terrNormAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 3, 0);
+	glBindVertexArray(0);
 }
 
 

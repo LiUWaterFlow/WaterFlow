@@ -9,8 +9,10 @@ layout (std430,binding = 6) buffer velocity
 in vec3 in_Position;
 in vec3 in_Normal;		// Vertex-normal.
 in vec2 in_TexCoord; //not currently used
+in vec3 in_terrNormal; // only used by water
 
 out vec3 out_Normal;
+out vec3 out_terrNormal;
 out vec2 out_TexCoord;// not currently used
 out vec3 out_ObjPos;
 out float out_Col_i;
@@ -47,6 +49,7 @@ void main(void)
 	
 	
 	out_Normal = in_Normal;
+	out_terrNormal = in_terrNormal;
 	out_TexCoord = in_TexCoord; // not currently used
 	out_ObjPos = in_Position;
 
