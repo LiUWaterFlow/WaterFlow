@@ -155,14 +155,14 @@ void ShallowWater2::UpdateVelocity(const float dt, std::vector<float>& total_hei
 
 void ShallowWater2::SetReflectBoundary()
 {
-	for (unsigned int i = 0; i < m_sizeX - 1; i++)
+	for (unsigned int i = 0; i < m_sizeX; i++)
 	{
 		const int index1 = i + 0 * m_sizeX;
 		const int index2 = i + (m_sizeY - 1)*m_sizeX; //this might be wrong
 		m_water_height[index1] = m_water_height[index1 + m_sizeX];
 		m_water_height[index2] = m_water_height[index2 - m_sizeX];
 	}
-	for (unsigned int j = 0; j < m_sizeY - 1; j++)
+	for (unsigned int j = 0; j < m_sizeY; j++)
 	{
 		const int index1 = 0 + j*m_sizeX;
 		const int index2 = (m_sizeX - 1) + j*m_sizeX;
