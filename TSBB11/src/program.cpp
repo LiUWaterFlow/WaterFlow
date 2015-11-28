@@ -49,7 +49,7 @@ int Program::exec() {
 int Program::testVoxels() {
 
 	if (!init()) return -1;
-	SDL_SetRelativeMouseMode(SDL_FALSE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	voxelTest::mainTest(dataHandler);
 
 }
