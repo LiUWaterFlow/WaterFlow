@@ -30,10 +30,11 @@ private:
   void bindSimGPU();
   int clip(int n, int lower, int upper);
   float clipf(GLfloat n, GLfloat lower, GLfloat upper);
-  unsigned long long vol0;
   GLfloat totTime;
   std::vector<Flood_Fill_data*> flood;
   void initFloodFill(float* u);
+  float vol0;
+  float addedVol;
 
 
 public:
@@ -43,6 +44,7 @@ public:
   GLuint fieldBuffers[8];
   
   void floodFill(float* u, int x, int z, float height);
+  void measureVolume();
 
   HeightField(DataHandler *t,std::vector<Flood_Fill_data*> FFDataIn) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn;};
   void updateSim(GLfloat);
