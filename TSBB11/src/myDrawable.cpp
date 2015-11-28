@@ -14,14 +14,17 @@
 myDrawable::myDrawable(GLuint program) 
 : program(program) {}
 
+GLuint myDrawable::lightBuffer;
+LightParams myDrawable::lightParam[2];
+
 void myDrawable::setLights() {
 	// =========== Lights information ==========
 
 	// Sun
-	lightParam[0].position = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
-	lightParam[0].isDirectional = true;
-	lightParam[0].color = { 1.0f, 1.0f, 1.0f };
-	lightParam[0].specularComponent = 50.0f;
+	myDrawable::lightParam[0].position = { 0.58f, 0.58f, 0.58f }; // Since the sun is a directional source, this is the negative direction, not the position.
+	myDrawable::lightParam[0].isDirectional = true;
+	myDrawable::lightParam[0].color = { 1.0f, 1.0f, 1.0f };
+	myDrawable::lightParam[0].specularComponent = 50.0f;
 
 	// Calculating modified incoming light.
 
@@ -29,8 +32,8 @@ void myDrawable::setLights() {
 	// However, that is absolutely not trivial, since it requires information
 	// about the surface fragment where the incident light refracted. If that
 	// ends up being too complicated, this could be a decent approximation.
-	float waterRefInd = 1.34451;
-	float airRefInd = 1.0;
+	float waterRefInd = 1.34451f;
+	float airRefInd = 1.0f;
 	glm::vec3 up = glm::vec3(0, 1, 0);
 	glm::vec3 right = glm::cross(normalize(lightParam[0].position), up);
 	// Snell's law.
@@ -41,19 +44,19 @@ void myDrawable::setLights() {
 	// -----------------------------------------------------------------------------------------------------------------------
 
 	// Sun under the surface
-	lightParam[1].position = waterSunPos;
-	lightParam[1].isDirectional = true;
-	lightParam[1].color = { 1.0f, 1.0f, 1.0f };
-	lightParam[1].specularComponent = 50.0f;
+	myDrawable::lightParam[1].position = waterSunPos;
+	myDrawable::lightParam[1].isDirectional = true;
+	myDrawable::lightParam[1].color = { 1.0f, 1.0f, 1.0f };
+	myDrawable::lightParam[1].specularComponent = 50.0f;
 
 
-	glGenBuffers(1, &lightBuffer);
+	glGenBuffers(1, &myDrawable::lightBuffer);
 
-	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams), &lightParam, GL_STREAM_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, myDrawable::lightBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams), &myDrawable::lightParam, GL_STREAM_DRAW);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, myDrawable::lightBuffer);
 }
 
 SkyCube::SkyCube(GLuint program, GLuint texUnit)
@@ -112,7 +115,11 @@ void SkyCube::draw() {
 HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit, GLuint texUnit)
 : myDrawable(drawProgram) {
 
-	textureID = 0;
+	heightTextureUnit = heightTexUnit;
+	textureUnit = texUnit;
+
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
+	LoadTGATextureSimple("resources/grass.tga", &textureID);
 
 	dataWidth = sizes[0];
 	dataHeight = sizes[1];
@@ -196,6 +203,13 @@ void HeightMap::initDraw() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	printError("init draw5");
+
+	glUniform1i(glGetUniformLocation(program, "terr_texUnit"), textureUnit);
+	glUniform1i(glGetUniformLocation(program, "height_texUnit"), heightTextureUnit);
+	glUniform1i(glGetUniformLocation(program, "sky_texUnit"), 2);
+	glUniform2i(glGetUniformLocation(program, "size"), dataWidth, dataHeight);
+
 	printError("init draw");
 }
 
@@ -225,9 +239,6 @@ void HeightMap::update() {
 void HeightMap::draw() {
 	glUseProgram(program);
 
-	glUniform1i(glGetUniformLocation(program, "terr_texUnit"), textureUnit);
-	glUniform1i(glGetUniformLocation(program, "height_texUnit"), heightTextureUnit);
-
 	glBindVertexArray(drawVAO);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
 
@@ -236,5 +247,16 @@ void HeightMap::draw() {
 
 Water::Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer) 
 : HeightMap(drawProgram, sizes, inputHeightBuffer) {
+	transparency = 0.7f;
 
+	glUniform1f(glGetUniformLocation(program, "transparency"), transparency);
+}
+
+
+void TW_CALL Water::SetTransparencyCB(const void* value, void* clientData) {
+	static_cast<Water*>(clientData)->transparency = *static_cast<const float*>(value);
+	glUniform1f(glGetUniformLocation(static_cast<Water*>(clientData)->program, "transparency"), static_cast<Water*>(clientData)->transparency);
+}
+void TW_CALL Water::GetTransparencyCB(void* value, void* clientData) {
+	*static_cast<float*>(value) = static_cast<Water*>(clientData)->transparency;
 }

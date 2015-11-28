@@ -1,4 +1,17 @@
-#version 150
+#version 430
+
+// ===== Uniform Buffers =====
+
+struct LightParam {
+	vec3 pos;
+	uint isDir;
+	vec3 color;
+	float specExp;
+};
+
+layout(binding = 0) uniform LightInfo {
+	LightParam lights[2];
+};
 
 in vec3 out_Normal;
 in vec2 out_TexCoord;// not currently used
@@ -6,14 +19,9 @@ in vec3 out_ObjPos;
 
 out vec4 out_Color;
 
-uniform int blue;
-uniform float t;
 uniform vec3 camPos;	// Kamernapositionen.
-uniform vec3 lightSourcePos;	// Ljuspositionen.
-uniform int isDirectional;
-uniform float specularExponent;
-uniform vec3 lightSourceColor;
-uniform sampler2D texUnit;
+
+uniform sampler2D terr_texUnit;
 
 vec3 r;
 vec3 s;				// Infallande ljus.
@@ -32,7 +40,7 @@ vec3 totalLight;	// Totalt ljus.
 void main(void)
 {
 	// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.
-	s = normalize(vec3(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z) - (1 - isDirectional) * out_ObjPos);
+	s = normalize(vec3(lights[0].pos.x, lights[0].pos.y, lights[0].pos.z) - (1 - lights[0].isDir) * out_ObjPos);
 	r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
 
 	// eye-vektorn ber�knas.
@@ -46,9 +54,9 @@ void main(void)
 	diffLight = vec3(0.0, 0.0, 0.0);
 	specLight = vec3(0.0, 0.0, 0.0);
 	// Diffuse-ljus ber�knas.
-	diffLight += kdiff * lightSourceColor * max(0.0, dot(s, normalize(out_Normal)));
+	diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(out_Normal)));
 	// Spekul�rt ljus.
-	specLight += kspec * lightSourceColor * max(0.0, pow(dot(r, eye), specularExponent));
+	specLight += kspec * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
 
 	totalLight = vec3(0.0, 0.0, 0.0);
 	// De olika ljuskomponenterna adderas till det totala ljuset.
@@ -57,12 +65,9 @@ void main(void)
 	totalLight += specLight;
 
 	// Just to check that the terrain data texture is working
-	//vec4 terrainData = texture(texUnit, out_TexCoord) + 0.0000001f * totalLight.x;
-	if(!bool(blue)){
-	out_Color = vec4(totalLight,1);
-	}
-	else{
-	out_Color = vec4(0,0,totalLight.z,0.8);
-	}
+	vec4 terrainData = texture(terr_texUnit, out_TexCoord) * totalLight.x;
+
+	out_Color = terrainData;
+
 
 }

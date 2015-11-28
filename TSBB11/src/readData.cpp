@@ -23,8 +23,6 @@ DataHandler::DataHandler(const char* inputfile, GLuint texUnit) {
 	std::cout << "Performing normalized convolution...";
 	normConvCompute();
 	std::cout << " done!" << std::endl;
-
-	uploadParams();
 }
 
 DataHandler::~DataHandler() {
@@ -120,19 +118,6 @@ void DataHandler::setTextureUnit(GLuint texUnit) {
 }
 
 // ===== Actual functions =====
-
-void DataHandler::uploadParams() {
-	params.size = { getDataWidth(), getDataHeight() };
-	params.heightTexUnit = textureUnit;
-
-	glGenBuffers(1, &paramBuffer);
-
-	glBindBuffer(GL_UNIFORM_BUFFER, paramBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(mapParam), &params, GL_STREAM_DRAW);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, paramBuffer);
-}
 
 void DataHandler::readDEM(const char* inputfile) {
 	char* buffer = readFile(inputfile);
@@ -252,7 +237,7 @@ void DataHandler::normConvCompute() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, getDataWidth(), getDataHeight(), 0, GL_RED, GL_FLOAT, getData());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, getDataWidth(), getDataHeight(), 0, GL_RED, GL_FLOAT, getData());
 
 	glDeleteBuffers(2, &normBuffers[1]);
 

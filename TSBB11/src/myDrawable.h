@@ -7,6 +7,8 @@
 #include "loadobj.h"
 #include "glm.hpp"
 
+#include "AntTweakBar.h"
+
 #include <vector>
 
 struct LightParams {
@@ -18,19 +20,22 @@ struct LightParams {
 
 class myDrawable {
 private:
-	static GLuint lightBuffer;
-	static LightParams lightParam[2];
+	
 
 protected:
 	glm::mat4 MTWMatrix;
 	GLuint program;
 
 public:
+	static GLuint lightBuffer;
+	static LightParams lightParam[2];
+
 	myDrawable(GLuint program);
 	virtual void draw() = 0;
 	virtual void update() = 0;
 
 	static void setLights();
+
 };
 
 class SkyCube : public myDrawable {
@@ -70,10 +75,14 @@ public:
 };
 
 class Water : public HeightMap {
+private:
+	GLfloat transparency;
+
 public:
 	Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer);
 
-private:
+	static void TW_CALL SetTransparencyCB(const void* value, void* clientData);
+	static void TW_CALL GetTransparencyCB(void* value, void* clientData);
 
 };
 

@@ -3,23 +3,13 @@
 // ===== Uniform Buffers =====
 
 struct LightParam {
-	vec3 position;
-	uint isDirectional;
+	vec3 pos;
+	uint isDir;
 	vec3 color;
-	float specularExp;
+	float specExp;
 };
 
-struct MapParam {
-	vec2 size;
-	sampler2D heightTexUnit;
-	uint padding3;
-};
-
-layout(std430, binding = 0) uniform MapInfo {
-	MapParam map;
-};
-
-layout(std430, binding = 1) uniform LightInfo {
+layout(binding = 0) uniform LightInfo {
 	LightParam lights[2];
 };
 
@@ -33,6 +23,7 @@ uniform sampler2D terr_texUnit;		// Terrain texture.
 uniform sampler2D height_texUnit;	// Terrain normal and height texture.
 uniform samplerCube sky_texUnit;	// Skybox texture.
 
+uniform ivec2 size;
 
 // ===== In/Out params =====
 
@@ -121,6 +112,7 @@ void main(void)
 	//float dist = length(eye);
 	eye = normalize(eye);
 
+	/*
 	// Modelling surface waves.
 	float rho1 = sqrt(pow(out_ObjPos.x, 2) + pow(out_ObjPos.z, 2));
 	float rho2 = sqrt(pow((1000 - out_ObjPos.x), 2) + pow(out_ObjPos.z, 2));
@@ -133,9 +125,11 @@ void main(void)
 	// Perturbing surface normals.
 	Normal = vec3(0.1 * (0.1 * xwave + 0.1 * rhowave1 + rhowave2), out_Normal.y, 0.1 * 0.1 * ywave);
 	//Normal += vec3(1 + 0.2 * rand, 1, 1);
+	*/
+	Normal = out_Normal;
 
 	// Incident and reflected light is calculated for the light source.
-	s = normalize(vec3(lightSourcePosAir.x, lightSourcePosAir.y, lightSourcePosAir.z) - (1 - isDirectional) * out_ObjPos);
+	s = normalize(vec3(lights[0].pos.x, lights[0].pos.y, lights[0].pos.z) - (1 - lights[0].isDir) * out_ObjPos);
 	r = normalize(2 * Normal * dot(normalize(s), Normal) - s);
 
 	right = cross(Normal, eye);
@@ -148,7 +142,7 @@ void main(void)
 	terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
 
 	// Depth at fragment.
-	depth = out_ObjPos.y - max_height * terrainDataUnderSurface.a;
+	depth = out_ObjPos.y - terrainDataUnderSurface.r;
 
 	// Crude displacement approximation.
 	displacementDirection = normalize(cross(up, right));
@@ -157,11 +151,11 @@ void main(void)
 
 	// Texture lookup at approximation.
 	// Eric: "but changing W and H looks better..."
-	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / texCoordScaleH, displacement1.z / texCoordScaleW));
+	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.y));
 
 	// To minimize negative depth values, a better approximation is made.
 	// "Depth" at approximation.
-	depthAtDis1 = out_ObjPos.y - max_height * terrainDataAtDis1.a;
+	depthAtDis1 = out_ObjPos.y - terrainDataAtDis1.r;
 	// Height at approximation (y distance from fragment bottom to approximation bottom).
 	h = depth - depthAtDis1;
 	// Better approximation
@@ -170,14 +164,14 @@ void main(void)
 	displacement2 = bottomDisplacement2 * displacementDirection;
 
 	// Texture lookups at better approximation
-	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / texCoordScaleH, displacement2.z / texCoordScaleW));
-	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / texCoordScaleH, displacement2.z / texCoordScaleW));
+	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
+	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
 	// "Depth" at better approximation
-	depthAtDis2 = out_ObjPos.y - max_height * terrainDataAtBottom.a;
+	depthAtDis2 = out_ObjPos.y - terrainDataAtBottom.r;
 
 	// Coordinates and normal of seen position of bottom.
 	bottomPos = out_ObjPos + displacement2 - vec3(0, depthAtDis2, 0);
-	bottomNormal = vec3(terrainDataAtBottom.x, terrainDataAtBottom.y, terrainDataAtBottom.z);
+	bottomNormal = vec3(0,1,0);// vec3(terrainDataAtBottom.x, terrainDataAtBottom.y, terrainDataAtBottom.z);
 
 	// Distance from surface to seen position of bottom.
 	wdist = length(bottomPos - out_ObjPos);
@@ -185,7 +179,7 @@ void main(void)
 	// Skybox reflection.
 	// Reflected eye vector.
 	re = 2 * dot(eye, Normal) * Normal - eye;
-	skyrefl = texture(sky_sampler, re).rgb;
+	skyrefl = texture(sky_texUnit, re).rgb;
 	// Light components, water surface.
 	kamb = 0.1;
 	krefl = 0.4;
@@ -215,7 +209,7 @@ void main(void)
 	surfaceLight += reflLight;
 
 	// Phong lighting for the bottom.
-	s = normalize(vec3(lightSourcePosWater.x, lightSourcePosWater.y, lightSourcePosWater.z) - (1 - isDirectional) * bottomPos);
+	s = normalize(vec3(lights[1].pos.x, lights[1].pos.y, lights[1].pos.z) - (1 - lights[1].isDir) * bottomPos);
 	r = normalize(2 * bottomNormal * dot(normalize(s), normalize(bottomNormal)) - s);
 
 	// eye vector is calculated (note: from bottom to surface, not to camera).
@@ -229,9 +223,9 @@ void main(void)
 	diffLight = vec3(0.0, 0.0, 0.0);
 	specLight = vec3(0.0, 0.0, 0.0);
 	// Diffuse light.
-	diffLight += kdiff * lightSourceColor * max(0.0, dot(s, normalize(bottomNormal))) * texDataAtBottom.rgb;
+	diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(bottomNormal))) * texDataAtBottom.rgb;
 	// Specular light.
-	specLight += krefl * lightSourceColor * max(0.0, pow(dot(r, eye), specularExponent));
+	specLight += krefl * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
 
 	bottomLight = vec3(0.0, 0.0, 0.0);
 	// The light components are added to the total bottom light.

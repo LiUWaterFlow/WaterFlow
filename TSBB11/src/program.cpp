@@ -127,10 +127,12 @@ bool Program::init() {
 	// Create drawables
 	GLuint sizes[] = { dataHandler->getDataWidth(), dataHandler->getDataHeight() };
 
+	myDrawable::setLights();
+
 	terrain = new HeightMap(terrainshader, sizes, dataHandler->getHeightBuffer());
 	terrain->update();
 
-	waterTerrain = new HeightMap(terrainshader, sizes, hf->fieldBuffers[0]);	
+	waterTerrain = new Water(terrainshader, sizes, hf->fieldBuffers[0]);	
 	
 	printError("Created Heightmaps");
 
@@ -158,6 +160,8 @@ bool Program::init() {
 
 	TwAddVarRW(antBar, "MovSpeed", TW_TYPE_FLOAT, cam->getSpeedPtr(), " min=0 max=10 step=0.05 group=Changables label='Movement speed' ");
 	TwAddVarRW(antBar, "RotSpeed", TW_TYPE_FLOAT, cam->getRotSpeedPtr(), " min=0 max=0.1 step=0.0005 group=Changables label='Rotation speed' ");
+
+	TwAddVarCB(antBar, "Transparency", TW_TYPE_FLOAT, Water::SetTransparencyCB, Water::GetTransparencyCB, waterTerrain, " min=0 max=1.0 step=0.05 group=Changables ");
 
 	printError("After total init: ");
 
@@ -207,8 +211,8 @@ void Program::display() {
 
 	// ====================== Draw Terrain ==========================
 	glUseProgram(watershader);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// ---Camera shader data---
 	cam->uploadCamData(watershader);
