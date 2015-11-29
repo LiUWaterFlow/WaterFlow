@@ -156,6 +156,8 @@ bool Program::init() {
 
 	TwAddVarCB(antBar, "Transparency", TW_TYPE_FLOAT, Water::SetTransparencyCB, Water::GetTransparencyCB, waterTerrain, " min=0 max=1.0 step=0.05 group=Changables ");
 
+	 TwAddVarCB(antBar, "Texture", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, terrain, " min=1 max=9 step=4 group=Changables ");
+
 	printError("After total init: ");
 
 	return true;

@@ -112,14 +112,21 @@ void SkyCube::draw() {
 
 // ================================================================
 
-HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit, GLuint texUnit)
+HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit, GLuint texUnit, GLuint texUnit1)
 : myDrawable(drawProgram) {
 
 	heightTextureUnit = heightTexUnit;
 	textureUnit = texUnit;
-
+	texnum = texUnit;
+	textureUnit1 = texUnit1;
 	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	LoadTGATextureSimple("resources/grass.tga", &textureID);
+
+	glActiveTexture(GL_TEXTURE0 + textureUnit1);
+	LoadTGATextureSimple("resources/prickig.tga", &textureID1);
+
+	glActiveTexture(GL_TEXTURE0 + 9);
+	LoadTGATextureSimple("resources/noise.tga", &textureID2);
 
 	dataWidth = sizes[0];
 	dataHeight = sizes[1];
@@ -205,7 +212,7 @@ void HeightMap::initDraw() {
 
 	printError("init draw5");
 
-	glUniform1i(glGetUniformLocation(program, "terr_texUnit"), textureUnit);
+	glUniform1i(glGetUniformLocation(program, "terr_texUnit"), texnum);
 	glUniform1i(glGetUniformLocation(program, "height_texUnit"), heightTextureUnit);
 	glUniform1i(glGetUniformLocation(program, "sky_texUnit"), 2);
 	glUniform2i(glGetUniformLocation(program, "size"), dataWidth, dataHeight);
@@ -238,7 +245,7 @@ void HeightMap::update() {
 
 void HeightMap::draw() {
 	glUseProgram(program);
-
+	glUniform1i(glGetUniformLocation(program, "terr_texUnit"), texnum);
 	glBindVertexArray(drawVAO);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
 
@@ -257,6 +264,16 @@ Water::Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint
 	glEnableVertexAttribArray(terrNormAttrib);
 	glVertexAttribPointer(terrNormAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 3, 0);
 	glBindVertexArray(0);
+
+
+	glActiveTexture(GL_TEXTURE0 + 1);
+	LoadTGATextureSimple("resources/grass.tga", &textureID);
+
+	glActiveTexture(GL_TEXTURE0 + 4);
+	LoadTGATextureSimple("resources/prickig.tga", &textureID1);
+
+	glActiveTexture(GL_TEXTURE0 + 9);
+	LoadTGATextureSimple("resources/noise.tga", &textureID2);
 }
 
 
@@ -264,6 +281,16 @@ void TW_CALL Water::SetTransparencyCB(const void* value, void* clientData) {
 	static_cast<Water*>(clientData)->transparency = *static_cast<const float*>(value);
 	glUniform1f(glGetUniformLocation(static_cast<Water*>(clientData)->program, "transparency"), static_cast<Water*>(clientData)->transparency);
 }
+
+ void TW_CALL HeightMap::SetTextureCB(const void* value, void* clientData) {
+ 	static_cast<Water*>(clientData)->texnum = *static_cast<const GLuint*>(value);
+ }
+
+
 void TW_CALL Water::GetTransparencyCB(void* value, void* clientData) {
 	*static_cast<float*>(value) = static_cast<Water*>(clientData)->transparency;
 }
+
+ void TW_CALL HeightMap::GetTextureCB(void* value, void* clientData) {
+        *static_cast<int*>(value) = static_cast<Water*>(clientData)->texnum;
+ }

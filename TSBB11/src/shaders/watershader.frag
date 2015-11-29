@@ -105,8 +105,8 @@ void main(void)
 	float rho2 = sqrt(pow((1000 - out_ObjPos.x), 2) + pow(out_ObjPos.z, 2));
 	float xwave = sin(0.1 * time + out_ObjPos.x) + sin(-0.01 * time + out_ObjPos.x);
 	float ywave = sin(0.2 * time + out_ObjPos.z) + sin(-0.3 * time + out_ObjPos.z);
-	float rhowave1 = sin(0.5 * time + 0.5 + rho1) + 0.2 * sin(-0.1 * time + rho1);
-	float rhowave2 = sin(-0.5 * time + 0.5 + rho2/10) + 0.2 * sin(-0.1 * time + rho2 / 10);
+	float rhowave1 = sin(0.05 * time + 0.5 + rho1) + 0.2 * sin(-0.01 * time + rho1);
+	float rhowave2 = sin(-0.05 * time + 0.5 + rho2/10) + 0.2 * sin(-0.01 * time + rho2 / 10);
  	float rand = 1;
 	rand = fract(sin(dot(vec2(out_ObjPos.x + time, out_ObjPos.z), vec2(12.9898, 78.233))) * 43758.5453);
 	// Perturbing surface normals.
@@ -186,7 +186,7 @@ void main(void)
 	float maxDepthColor = 200 * transparency;
 	ktrans = clamp(length(bottomPos - out_ObjPos), 0, maxDepthColor);
 	ktrans = 1 - 1 / maxDepthColor * ktrans;
-	surfaceColor = vec3(0.1, 0.2, 0.4);
+	surfaceColor = vec3(0.01, 0.02, 0.1);
 	// ----------------
 
 	surfaceLight = vec3(0.0, 0.0, 0.0);

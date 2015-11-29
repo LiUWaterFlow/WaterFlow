@@ -51,14 +51,17 @@ public:
 };
 
 class HeightMap : public myDrawable {
-protected:
+ protected:
 	GLuint drawBuffers[4];
 	GLuint heightBuffer;
 	GLuint drawVAO;
 	GLuint heightTextureUnit;
 	GLuint heightTextureID;
 	GLuint textureUnit;
-	GLuint textureID; 
+	GLuint textureUnit1;
+	GLuint textureID;
+	GLuint textureID1;
+	GLuint textureID2;
 
 	GLuint dataWidth, dataHeight, numData, numIndices;
 
@@ -68,11 +71,13 @@ protected:
 	void initDraw();
 
 public:
-	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit = 3, GLuint texUnit = 1);
 
+	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit = 3, GLuint texUnit = 1 , GLuint texUnit1 = 5);
+	GLuint texnum;
 	virtual void update();
 	virtual void draw();
-
+	static void TW_CALL SetTextureCB(const void* value, void* clientData);
+	static void TW_CALL GetTextureCB(void* value, void* clientData);
 	GLuint getNormalBuffer() { return drawBuffers[3]; }
 };
 
