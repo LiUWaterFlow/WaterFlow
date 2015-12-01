@@ -18,6 +18,8 @@ int ShallowWater2::run()
 	//PrintWaterHeight();
 	//PrintTerrainHeight();
 	//PrintWaterHeightSum();
+	//Pause(); //first pause is ignored because reasons (probably because we use a cin << getChar() from Program.cpp and the enter key carries through or something)
+	Pause("Running Shallow Water 2");
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
@@ -233,35 +235,55 @@ void ShallowWater2::ComputeFluidFlags(std::vector<float>& ground_height, std::ve
 
 void ShallowWater2::RunSimulation(const float dt)
 {
+	std::vector<float> advect_water = m_water_height;
+	std::vector<float> advect_velocity_x = m_velocity_x;
+	std::vector<float> advect_velocity_y = m_velocity_y;
+
+
 	//ComputeFluidFlags(m_terrain_height, m_water_height);
+	std::string msg = "RunSimulation for iteration: ";
+	msg += std::to_string(iter);
+	Pause(msg);
+	PrintWaterHeightSum(iter);
 
 	PrintWaterHeight(iter);
 	PrintVelocity_X(iter);
 	PrintVelocity_Y(iter);
 	Pause("Before Advect Height");
-	Advect(m_water_height,dt,VELTYPE::HEIGHT);
+	//Advect water using previous data
+	Advect(advect_water,dt,VELTYPE::HEIGHT);
 
+	Print(advect_water, "Advected Height", iter);
 	PrintWaterHeight(iter);
 	PrintVelocity_X(iter);
 	PrintVelocity_Y(iter);
 	Pause("After Advect Height, Before Advect Vel X");
 
-
-	Advect(m_velocity_x, dt, VELTYPE::X_VEL);
-
+	//advect velocity x using previous data
+	Advect(advect_velocity_x, dt, VELTYPE::X_VEL);
+	
+	Print(advect_water, "Advected Height", iter);
 	PrintWaterHeight(iter);
+	Print(advect_velocity_x, "Advected Velocity_X",iter);
 	PrintVelocity_X(iter);
 	PrintVelocity_Y(iter);
 	Pause("After Advect Vel X, Before Advect Vel Y");
 
+	//advect velocity y using previous data
+	Advect(advect_velocity_y, dt, VELTYPE::Y_VEL);
 
-	Advect(m_velocity_y, dt, VELTYPE::Y_VEL);
-
+	Print(advect_water, "Advected Height", iter);
 	PrintWaterHeight(iter);
+	Print(advect_velocity_x, "Advected Velocity_X", iter);
 	PrintVelocity_X(iter);
+	Print(advect_velocity_y, "Advected Velocity_Y", iter);
 	PrintVelocity_Y(iter);
 	Pause("After Advect Vel Y, Before Update Height ");
 
+	//write over previous data with new data
+	m_water_height = advect_water;
+	m_velocity_x = advect_velocity_x;
+	m_velocity_y = advect_velocity_y;
 	UpdateHeight(dt);
 
 
@@ -284,6 +306,7 @@ void ShallowWater2::RunSimulation(const float dt)
 
 	iter++;
 
+	PrintWaterHeightSum();
 	//SetReflectBoundary();
 	ResetTemp();
 }
@@ -369,12 +392,15 @@ void ShallowWater2::PrintHelper(std::string start_end, std::string msg, int iter
 }
 void ShallowWater2::Pause() const
 {
-	std::getchar();
+	std::string dummy;
+	std::getline(std::cin, dummy);
+	//std::getchar();
 }
 void ShallowWater2::Pause(std::string msg) const
 {
 	std::cout << msg << std::endl;
-	std::getchar();
+	Pause();
+	//std::getchar();
 }
 
 void ShallowWater2::PrintWaterHeightSum(int iter)
