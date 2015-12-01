@@ -65,7 +65,7 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	}
 	else if (choice == 2)
 	{
-		ShallowWater2 navier(10, 10);
+		ShallowWater2 navier(20, 20);
 		return navier.run();
 	}
 	else if (choice == 3)
@@ -105,7 +105,7 @@ bool Program::init() {
 	glcontext = SDL_GL_CreateContext(screen);
 
 
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_SetRelativeMouseMode(SDL_FALSE);
 	glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
 	printError("After SDL init: ");
 
@@ -124,7 +124,7 @@ bool Program::init() {
 
 	// Create the shallowWater simulator
 	shallow = new shallowWater(9);
-	
+
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");

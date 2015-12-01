@@ -17,6 +17,7 @@ public:
 	 *Everything except gridSize can be manipulated here. If grid size wants
 	 *to be manipulated do that in main.cpp*/
 	int run();
+	int iter = 0;
 
 	/*Run the simulation*/
 	void RunSimulation(const float dt);
@@ -115,12 +116,12 @@ private:
 
 	/*functions for printing*/
 	void Print(std::vector<float> arr, std::string msg, int iter) const;
-	
+
 	float SumArray(std::vector<float>& arr) const;
-	
+
 	void Print(std::vector<bool> arr, std::string msg, int iter) const;
 	void PrintHelper(std::string start_end, std::string msg, int iter) const;
-	
+
 	void PrintNumber(float) const; //cant handle bool for some reason. If change change Bool as well
 
 	/*the arrays with data*/
@@ -133,7 +134,7 @@ private:
 	std::vector<float> m_fillLevel;
 
 	float SumOfArray;
-	float SumDifference; 
+	float SumDifference;
 	float OldSumArray;
 };
 

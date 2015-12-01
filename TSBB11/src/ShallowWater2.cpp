@@ -8,32 +8,31 @@
 int ShallowWater2::run()
 {
 	/*Start by setting data*/
-	AddTerrainHeight(10.0f);
+	AddTerrainHeight(0.0f);
 	AddVelocity_X(0);
 
 	//Add Water
-	AddWaterHeight(1, 3, 5,3,5);
+	AddWaterHeight(5, 10, 10);
 
 	/*Maybe print so it is as it should be*/
 	//PrintWaterHeight();
 	//PrintTerrainHeight();
-	PrintWaterHeightSum();
+	//PrintWaterHeightSum();
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
-		if(i%500 == 0)
-		{
+		//if(i%500 == 0)
+		//{
 		/*Print velocity y for each iteration maybe*/
 		//PrintWaterBool(i);
 		//PrintWaterFillLevel(i);
 		//PrintTerrainHeight(i);
-		PrintWaterHeight(i);
 		//PrintVelocity_X(i);
 		//PrintVelocity_Y(i);
-		PrintWaterHeightSum(i);
+		//PrintWaterHeightSum(i);
 		/*and pause so we see what happens*/
-		Pause();
-		}
+		//Pause();
+		//}
 	}
 	/*then print again*/
 	//PrintWaterHeight();
@@ -59,7 +58,7 @@ float ShallowWater2::bilinjearInterpolation(std::vector<float>& array, float poi
 
 	return s0*(t0*array[X + m_sizeX*Y] + t1*array[X + m_sizeX*(Y + 1)]) +
 		s1*(t0*array[(X + 1) + m_sizeX*Y] + t1*array[(X + 1) + m_sizeX*(Y + 1)]);
-	
+
 }
 
 //update the current height by looking backwards
@@ -72,8 +71,8 @@ void ShallowWater2::Advect(std::vector<float>& array,const float dt, VELTYPE typ
 			const int index = i + j*m_sizeX;
 
 			//only do following calculations if water is present
-			if (m_fluid[index])
-			{
+			//if (m_fluid[index])
+			//{
 				float u = 0; //speed x
 				float v = 0; //speed y
 				switch (type)
@@ -107,7 +106,7 @@ void ShallowWater2::Advect(std::vector<float>& array,const float dt, VELTYPE typ
 				if (source_point_y > m_sizeY){ source_point_y = (float)m_sizeY - 1; }
 
 				temp[index] = bilinjearInterpolation(array, source_point_x, source_point_y);
-			}
+			//}
 		}
 	}
 	std::swap(temp, array);
@@ -234,17 +233,58 @@ void ShallowWater2::ComputeFluidFlags(std::vector<float>& ground_height, std::ve
 
 void ShallowWater2::RunSimulation(const float dt)
 {
-	ComputeFluidFlags(m_terrain_height, m_water_height);
+	//ComputeFluidFlags(m_terrain_height, m_water_height);
 
+	PrintWaterHeight(iter);
+	PrintVelocity_X(iter);
+	PrintVelocity_Y(iter);
+	Pause("Before Advect Height");
 	Advect(m_water_height,dt,VELTYPE::HEIGHT);
+
+	PrintWaterHeight(iter);
+	PrintVelocity_X(iter);
+	PrintVelocity_Y(iter);
+	Pause("After Advect Height, Before Advect Vel X");
+
+
 	Advect(m_velocity_x, dt, VELTYPE::X_VEL);
+
+	PrintWaterHeight(iter);
+	PrintVelocity_X(iter);
+	PrintVelocity_Y(iter);
+	Pause("After Advect Vel X, Before Advect Vel Y");
+
+
 	Advect(m_velocity_y, dt, VELTYPE::Y_VEL);
 
+	PrintWaterHeight(iter);
+	PrintVelocity_X(iter);
+	PrintVelocity_Y(iter);
+	Pause("After Advect Vel Y, Before Update Height ");
+
 	UpdateHeight(dt);
+
+
+	PrintWaterHeight(iter);
+	PrintVelocity_X(iter);
+	PrintVelocity_Y(iter);
+	Pause("After Update Height, Before Update Velocity");
+
+
+
 	AddTerrainHeight(temp); //make temp total height
 	UpdateVelocity(dt, temp);
 
-	SetReflectBoundary();
+
+
+	PrintWaterHeight(iter);
+	PrintVelocity_X(iter);
+	PrintVelocity_Y(iter);
+	Pause("After Update UpdateVelocity,Before next it.");
+
+	iter++;
+
+	//SetReflectBoundary();
 	ResetTemp();
 }
 
@@ -282,11 +322,11 @@ float ShallowWater2::SumArray(std::vector<float>& arr) const
 void ShallowWater2::Print(std::vector<float> arr, std::string msg, int iter) const
 {
 	PrintHelper("BEGIN", msg, iter);
-	for (unsigned int i = 0; i < m_sizeX; i++)
+	for (unsigned int j = 0; j < m_sizeY; j++)
 	{
-		for (unsigned int j = 0; j < m_sizeY; j++)
+		for (unsigned int i = 0; i < m_sizeX; i++)
 		{
-			
+
 			const unsigned int index = i + j*m_sizeX;
 			PrintNumber(arr.at(index));
 		}
@@ -303,7 +343,7 @@ void ShallowWater2::Print(std::vector<bool> arr, std::string msg, int iter) cons
 	{
 		for (unsigned int j = 0; j < m_sizeY; j++)
 		{
-			
+
 			const unsigned int index = i + j*m_sizeX;
 			PrintNumber(arr.at(index));
 		}
