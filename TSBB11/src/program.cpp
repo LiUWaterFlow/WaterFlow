@@ -138,7 +138,7 @@ bool Program::init() {
 	antBar = TwNewBar("UIinfo");
 	TwDefine(" UIinfo refresh=0.1 ");
 	TwDefine(" UIinfo valueswidth=fit ");
-	TwDefine(" UIinfo size='280 250' ");
+	TwDefine(" UIinfo size='280 270' ");
 	TwAddVarRO(antBar, "FPS", TW_TYPE_FLOAT, &FPS, "group=Info");
 	TwAddVarRO(antBar, "CameraX", TW_TYPE_FLOAT, &cam->getPos()->x, "group=Info");
 	TwAddVarRO(antBar, "CameraZ", TW_TYPE_FLOAT, &cam->getPos()->z, "group=Info");
@@ -156,7 +156,8 @@ bool Program::init() {
 
 	TwAddVarCB(antBar, "Transparency", TW_TYPE_FLOAT, Water::SetTransparencyCB, Water::GetTransparencyCB, waterTerrain, " min=0 max=1.0 step=0.05 group=Changables ");
 
-	 TwAddVarCB(antBar, "Texture", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, terrain, " min=1 max=9 step=4 group=Changables ");
+	TwAddVarCB(antBar, "Texture", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, terrain, " min=1 max=9 step=4 group=Changables ");
+	TwAddVarCB(antBar, "Texture2", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, waterTerrain, " min=1 max=9 step=4 group=Changables ");
 
 	printError("After total init: ");
 
