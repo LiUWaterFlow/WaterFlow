@@ -17,7 +17,6 @@ public:
 	 *Everything except gridSize can be manipulated here. If grid size wants
 	 *to be manipulated do that in main.cpp*/
 	int run();
-	int iter = 0;
 
 	/*Run the simulation*/
 	void RunSimulation(const float dt);
@@ -136,6 +135,7 @@ private:
 	float SumOfArray;
 	float SumDifference;
 	float OldSumArray;
+	unsigned long long iter; //to_string is stupid
 };
 
 #endif

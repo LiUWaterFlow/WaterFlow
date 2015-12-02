@@ -12,32 +12,33 @@
 int ShallowNewton::run()
 {
 	/*Start by setting data*/
-	AddTerrainHeight(10.0f);
+	AddTerrainHeight(0.0f);
 	AddVelocity_X(0);
 
 	//Add Water
-	AddWaterHeight(1, 3, 5, 3, 5);
+	AddWaterHeight(5, 10, 10);
 
 	/*Maybe print so it is as it should be*/
 	//PrintWaterHeight();
 	//PrintTerrainHeight();
-	PrintWaterHeightSum();
+	//PrintWaterHeightSum();
+	//Pause(); //first pause is ignored because reasons (probably because we use a cin << getChar() from Program.cpp and the enter key carries through or something)
+	Pause("Running Shallow Water 2");
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
-		if (i % 500 == 0)
-		{
-			/*Print velocity y for each iteration maybe*/
-			//PrintWaterBool(i);
-			//PrintWaterFillLevel(i);
-			//PrintTerrainHeight(i);
-			PrintWaterHeight(i);
-			//PrintVelocity_X(i);
-			//PrintVelocity_Y(i);
-			PrintWaterHeightSum(i);
-			/*and pause so we see what happens*/
-			Pause();
-		}
+		//if(i%500 == 0)
+		//{
+		/*Print velocity y for each iteration maybe*/
+		//PrintWaterBool(i);
+		//PrintWaterFillLevel(i);
+		//PrintTerrainHeight(i);
+		//PrintVelocity_X(i);
+		//PrintVelocity_Y(i);
+		//PrintWaterHeightSum(i);
+		/*and pause so we see what happens*/
+		//Pause();
+		//}
 	}
 	/*then print again*/
 	//PrintWaterHeight();

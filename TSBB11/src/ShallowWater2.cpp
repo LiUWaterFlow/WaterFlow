@@ -947,7 +947,7 @@ void ShallowWater2::SubVelocity_Y(float value, unsigned int from_x, unsigned int
 *=========================================================
 *
 */
-ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY)
+ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY), iter(0u)
 {
 	m_water_height.resize(sizeX*sizeY);
 	m_velocity_x.resize(sizeX*sizeY);
