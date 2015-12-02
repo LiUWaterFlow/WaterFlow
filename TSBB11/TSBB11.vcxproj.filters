@@ -78,6 +78,9 @@
     <ClCompile Include="src\common\xml\pugixml.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="src\sdlTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\GL_utilities.h">
@@ -136,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="src\flowSource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sdlTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\SDL_image.h">
+      <Filter>Source Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

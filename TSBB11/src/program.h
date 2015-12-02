@@ -18,8 +18,8 @@
 #	else
 #		include "glew.h"
 #		include "Windows/sdl2/SDL.h"
-//#		include "SDL_image.h"
-//#		include "sdlTexture.h"
+#		include "SDL_image.h"
+#		include "sdlTexture.h"
 #	endif
 #endif
 

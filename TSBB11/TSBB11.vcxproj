@@ -142,17 +142,17 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AntTweakBar.lib;glu32.lib;opengl32.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\x86;lib\AntTweak</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AntTweakBar.lib;glu32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\x86;lib\AntTweak;lib\SDL2_image\x86</AdditionalLibraryDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ShowProgress>NotSet</ShowProgress>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)"lib\x86\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar.DLL "$(TargetDir)" /D /K /Y</Command>
+      <Command>XCOPY "$(SolutionDir)"lib\x86\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\SDL2_image\x86\*.DLL "$(TargetDir)" /D /K /Y</Command>
     </PostBuildEvent>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -202,8 +202,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AntTweakBar64.lib;glu32.lib;opengl32.lib;SDL2.lib;SDL2main.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\x64;lib\AntTweak</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AntTweakBar64.lib;glu32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\x64;lib\AntTweak;lib\SDL2_image\x64</AdditionalLibraryDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -211,7 +211,7 @@
       <Profile>false</Profile>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)"lib\x64\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar64.DLL "$(TargetDir)" /D /K /Y</Command>
+      <Command>XCOPY "$(SolutionDir)"lib\x64\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar64.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\SDL2_image\x64\*.DLL "$(TargetDir)" /D /K /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Analyze|x64'">
@@ -278,12 +278,12 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>lib\x64;lib\AntTweak</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AntTweakBar64.lib;SDL2.lib;SDL2main.lib;glu32.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\x64;lib\AntTweak;lib\SDL2_image\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AntTweakBar64.lib;SDL2.lib;SDL2main.lib;glu32.lib;opengl32.lib;SDL2_image.lib</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)"lib\x64\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar64.DLL "$(TargetDir)" /D /K /Y</Command>
+      <Command>XCOPY "$(SolutionDir)"lib\x64\*.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\AntTweak\AntTweakBar64.DLL "$(TargetDir)" /D /K /Y &amp; XCOPY "$(SolutionDir)"lib\SDL2_image\x64\*.DLL "$(TargetDir)" /D /K /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -300,6 +300,7 @@
     <ClCompile Include="src\myDrawable.cpp" />
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
+    <ClCompile Include="src\sdlTexture.cpp" />
     <ClCompile Include="src\voxel.cpp" />
     <ClCompile Include="src\voxelTesting.cpp" />
     <ClCompile Include="src\xmlParsing.cpp" />
@@ -310,6 +311,7 @@
     <ClInclude Include="src\common\GL_utilities.h" />
     <ClInclude Include="src\common\loadobj.h" />
     <ClInclude Include="src\common\LoadTGA.h" />
+    <ClInclude Include="src\common\SDL_image.h" />
     <ClInclude Include="src\common\Utilities.h" />
     <ClInclude Include="src\common\Windows\glew.h" />
     <ClInclude Include="src\common\Windows\sdl2\SDL.h" />
@@ -321,6 +323,7 @@
     <ClInclude Include="src\myDrawable.h" />
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
+    <ClInclude Include="src\sdlTexture.h" />
     <ClInclude Include="src\voxel.h" />
     <ClInclude Include="src\voxelTesting.h" />
     <ClInclude Include="src\xmlParsing.h" />
