@@ -18,6 +18,8 @@
 #	else
 #		include "glew.h"
 #		include "Windows/sdl2/SDL.h"
+//#		include "SDL_image.h"
+//#		include "sdlTexture.h"
 #	endif
 #endif
 
@@ -38,8 +40,8 @@ private:
 	int screenW, screenH;
 
 	bool isRunning;
-
 	bool mouseHidden;
+	bool depthWater;
 
 	// Time variables
 	GLfloat currentTime;
@@ -62,19 +64,15 @@ private:
 	Voxelgrid* voxs;
 	//HeightField
 	HeightField* hf;
-
 	// References to shader programs:
-	GLuint terrainshader, skyshader, watershader;
+	GLuint terrainshader, skyshader, watershader, depthshader;
 
 	// Camera variables:
 	Camera* cam;
 
 public:
-
 	int exec();
-
 	int testVoxels();
-
 	bool init();
 
 	void handleEvent(SDL_Event* event);

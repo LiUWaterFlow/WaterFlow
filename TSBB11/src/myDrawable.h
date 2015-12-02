@@ -88,13 +88,24 @@ public:
 class Water : public HeightMap {
 private:
 	GLfloat transparency;
+	GLfloat maxDepth;
+	GLuint programs[2];
+	GLint programToDraw;
+	GLuint vaos[2];
+	
+	void initDepthProgram();
 
 public:
-	Water(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer);
+	Water(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer);
 
 	static void TW_CALL SetTransparencyCB(const void* value, void* clientData);
 	static void TW_CALL GetTransparencyCB(void* value, void* clientData);
 
+	static void TW_CALL SetDrawProgramCB(const void* value, void* clientData);
+	static void TW_CALL GetDrawProgramCB(void* value, void* clientData);
+
+	static void TW_CALL SetMaxDepthCB(const void* value, void* clientData);
+	static void TW_CALL GetMaxDepthCB(void* value, void* clientData);
 };
 
 

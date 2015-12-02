@@ -193,6 +193,9 @@
     <None Include="src\shaders\textureData.comp">
       <Filter>Source Files\Shaders\Compute</Filter>
     </None>
+    <None Include="src\shaders\depthshader.frag">
+      <Filter>Source Files\Shaders\Draw</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="src\xml\xgconsole.xml">

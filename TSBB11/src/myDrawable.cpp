@@ -11,7 +11,7 @@
 #include "gtx/rotate_vector.hpp"
 #include "gtc/type_ptr.hpp"
 
-myDrawable::myDrawable(GLuint program) 
+myDrawable::myDrawable(GLuint program)
 : program(program) {}
 
 GLuint myDrawable::lightBuffer;
@@ -54,7 +54,7 @@ void myDrawable::setLights() {
 	glGenBuffers(1, &myDrawable::lightBuffer);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, myDrawable::lightBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams) * 2, &myDrawable::lightParam, GL_STREAM_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams)* 2, &myDrawable::lightParam, GL_STREAM_DRAW);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, myDrawable::lightBuffer);
@@ -63,15 +63,15 @@ void myDrawable::setLights() {
 }
 
 void myDrawable::setTextures(GLuint* size) {
-	glGenTextures(TOTAL_TEXTURES, texIDs);
+	glGenTextures(5, texIDs);
+
+	TextureData tempTex;
+	memset(&tempTex, 0, sizeof(tempTex));
 
 	// ===== Skybox Texture =====
 
 	glActiveTexture(GL_TEXTURE0 + SKYBOX_TEXUNIT);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texIDs[SKYBOX_TEXUNIT]);
-
-	TextureData tempTex;
-	memset(&tempTex, 0, sizeof(tempTex));
 
 	GLuint cubeSide[] = { GL_TEXTURE_CUBE_MAP_NEGATIVE_X, GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, GL_TEXTURE_CUBE_MAP_POSITIVE_Z };
 	char *cubeImage[] = { "resources/Skycube/Xn.tga", "resources/Skycube/Xp.tga", "resources/Skycube/Yn.tga", "resources/Skycube/Yp.tga", "resources/Skycube/Zn.tga", "resources/Skycube/Zp.tga" };
@@ -97,21 +97,42 @@ void myDrawable::setTextures(GLuint* size) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, size[0], size[1]);
-	printError("Create textures1!");
+
 	// ===== Grass Texture =====
 
 	glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
-	LoadTGATextureSimple("resources/grass.tga", &texIDs[GRASS_TEXUNIT]);
-	printError("Create textures2!");
+	glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	LoadTGATextureData("resources/grass.tga", &tempTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+
 	// ===== Dotted Texture =====
 
 	glActiveTexture(GL_TEXTURE0 + DOTTED_TEXUNIT);
-	LoadTGATextureSimple("resources/prickig.tga", &texIDs[DOTTED_TEXUNIT]);
-	printError("Create textures3!");
+	glBindTexture(GL_TEXTURE_2D, texIDs[DOTTED_TEXUNIT]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	LoadTGATextureData("resources/prickig.tga", &tempTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+
 	// ===== Noise Texture =====
 
 	glActiveTexture(GL_TEXTURE0 + NOISE_TEXUNIT);
-	LoadTGATextureSimple("resources/noise.tga", &texIDs[NOISE_TEXUNIT]);
+	glBindTexture(GL_TEXTURE_2D, texIDs[NOISE_TEXUNIT]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	LoadTGATextureData("resources/noise.tga", &tempTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+
+	// Just set this to not interfere (possible bug to look into)
+	glActiveTexture(GL_TEXTURE0 + TOTAL_TEXTURES);
 
 	printError("Create textures!");
 }
@@ -141,7 +162,7 @@ HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuin
 	numIndices = (dataWidth - 1) * (dataHeight - 1) * 2 * 3;
 
 	heightBuffer = inputHeightBuffer;
-	
+
 	texnum = 0;
 
 	initUpdate();
@@ -164,15 +185,15 @@ void HeightMap::initUpdate() {
 	heightMapProgram = compileComputeShader("src/shaders/heightMap.comp");
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[0]); // Vertex positions
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 3 * numData, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[1]); // Texture coordinates
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 2 * numData, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 2 * numData, NULL, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[2]); // Indices
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLint) * numIndices, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLint)* numIndices, NULL, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	printError("init heightmap");
@@ -239,30 +260,15 @@ void HeightMap::genereteHeightTexture() {
 
 	glBindImageTexture(0, myDrawable::texIDs[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
 
-	printError("Generate terrain texture data1");
-
 	glUniform2i(glGetUniformLocation(textureProgram, "size"), dataWidth, dataHeight);
 	glUniform1f(glGetUniformLocation(textureProgram, "maxHeight"), dataTerrainHeight);
 
-	printError("Generate terrain texture data3");
-
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
-	
+
 	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
-	
+
 	printError("Generate terrain texture data");
-	/*
-	GLfloat* imagedata = new GLfloat[numData * 4];
-
-	glActiveTexture(GL_TEXTURE0 + TERRAINDATA_TEXUNIT);
-	glBindTexture(GL_TEXTURE_2D, myDrawable::texIDs[TERRAINDATA_TEXUNIT]);
-	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_FLOAT, imagedata);
-
-	for (size_t i = 0; i < 10 * 4; i+=4) {
-		printf("Normal: %f, %f, %f  Height: %f\n", imagedata[i], imagedata[i + 1], imagedata[i + 2], imagedata[i + 3]);
-	}
-	*/
 }
 
 void HeightMap::update() {
@@ -280,7 +286,7 @@ void HeightMap::update() {
 
 	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, drawBuffers);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, heightBuffer);
-	
+
 	glUseProgram(heightMapProgram);
 	glUniform2i(glGetUniformLocation(heightMapProgram, "size"), dataWidth, dataHeight);
 	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
@@ -297,29 +303,107 @@ void HeightMap::draw() {
 	printError("Draw Heightmap");
 }
 
-Water::Water(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
-: HeightMap(drawProgram, sizes, maxHeight, inputHeightBuffer) {
-	transparency = 0.7f;
+void TW_CALL HeightMap::SetTextureCB(const void* value, void* clientData) {
+	static_cast<HeightMap*>(clientData)->texnum = *static_cast<const GLuint*>(value);
+}
+void TW_CALL HeightMap::GetTextureCB(void* value, void* clientData) {
+	*static_cast<int*>(value) = static_cast<Water*>(clientData)->texnum;
+}
 
-	glUniform1f(glGetUniformLocation(program, "transparency"), transparency);
+
+Water::Water(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
+: HeightMap(drawPrograms[0], sizes, maxHeight, inputHeightBuffer) {
+	transparency = 0.7f;
+	maxDepth = 50.0f;
+
+	programToDraw = 0;
+	programs[0] = drawPrograms[0];
+	programs[1] = drawPrograms[1];
+
+	vaos[0] = drawVAO;
+
+	glUseProgram(programs[0]);
+	glUniform1f(glGetUniformLocation(programs[0], "transparency"), transparency);
+	glUseProgram(programs[1]);
+	glUniform1f(glGetUniformLocation(programs[1], "maxDepth"), maxDepth);
+
+	initDepthProgram();
+}
+
+void Water::initDepthProgram() {
+	GLuint tempVAO;
+	glGenVertexArrays(1, &tempVAO);
+	vaos[1] = tempVAO;
+
+	glUseProgram(programs[1]);
+
+	printError("init draw uniforms");
+
+	GLint posAttrib = glGetAttribLocation(programs[1], "in_Position");
+	GLint inTexAttrib = glGetAttribLocation(programs[1], "in_TexCoord");
+
+	glBindVertexArray(vaos[1]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); //vertexBufferID
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 3, 0);
+
+	printError("init draw1");
+
+	glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); //texBufferID
+	glEnableVertexAttribArray(inTexAttrib);
+	glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)* 2, 0);
+
+	printError("init draw3");
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);//indicesBufferID
+
+	printError("init draw4");
+
+	glBindVertexArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	printError("init draw5");
+
+	glUniform1i(glGetUniformLocation(programs[1], "height_texUnit"), TERRAINDATA_TEXUNIT);
+	glUniform3f(glGetUniformLocation(programs[1], "size"), (float)dataWidth, dataTerrainHeight, (float)dataHeight);
+
+	printError("init draw");
 }
 
 
 void TW_CALL Water::SetTransparencyCB(const void* value, void* clientData) {
-	auto obj = static_cast<Water*>(clientData);
+	Water* obj = static_cast<Water*>(clientData);
 	obj->transparency = *static_cast<const float*>(value);
-	glUniform1f(glGetUniformLocation(obj->program, "transparency"), obj->transparency);
+	glUseProgram(obj->programs[0]);
+	glUniform1f(glGetUniformLocation(obj->programs[0], "transparency"), obj->transparency);
 }
 
- void TW_CALL HeightMap::SetTextureCB(const void* value, void* clientData) {
-	static_cast<HeightMap*>(clientData)->texnum = *static_cast<const GLuint*>(value);
- }
+void TW_CALL Water::SetDrawProgramCB(const void* value, void* clientData) {
+	Water* obj = static_cast<Water*>(clientData);
+	obj->programToDraw = *static_cast<const int*>(value);
+	obj->program = obj->programs[obj->programToDraw];
+	obj->drawVAO = obj->vaos[obj->programToDraw];
+}
+
+void TW_CALL Water::SetMaxDepthCB(const void* value, void* clientData) {
+	Water* obj = static_cast<Water*>(clientData);
+	obj->maxDepth = *static_cast<const float*>(value);
+	glUseProgram(obj->programs[1]);
+	glUniform1f(glGetUniformLocation(obj->programs[1], "maxDepth"), obj->maxDepth);
+}
 
 
 void TW_CALL Water::GetTransparencyCB(void* value, void* clientData) {
 	*static_cast<float*>(value) = static_cast<Water*>(clientData)->transparency;
 }
 
- void TW_CALL HeightMap::GetTextureCB(void* value, void* clientData) {
-	*static_cast<int*>(value) = static_cast<Water*>(clientData)->texnum;
- }
+void TW_CALL Water::GetDrawProgramCB(void* value, void* clientData) {
+	*static_cast<int*>(value) = static_cast<Water*>(clientData)->programToDraw;
+}
+
+void TW_CALL Water::GetMaxDepthCB(void* value, void* clientData) {
+	*static_cast<float*>(value) = static_cast<Water*>(clientData)->maxDepth;
+}

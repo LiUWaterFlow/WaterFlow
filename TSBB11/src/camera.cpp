@@ -11,16 +11,23 @@
 #include <cmath>
 #include <iostream>
 
-Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH)
+Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler* terr)
 {
 	position = startPos;
 	fi = 0.0f;
 	theta = (GLfloat)M_PI / 2.0f;
-
+	
     up = glm::vec3(0,1,0);
 
 	screenW = initScreenW;
 	screenH = initScreenH;
+
+	terrH = tH;
+	terrW = tW;
+	xzLim = xzL;
+	yLimLo = yLL;
+	yLimHi = yLH;
+	terrain = terr;
 
 	rotSpeed = 0.01f;
 	speed = 1.0f;
@@ -90,15 +97,35 @@ void Camera::rotate(char direction, GLfloat angle)
 			lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 0, 1));
             break;
     }
-
+   
     updateWTV();
 }
 
 void Camera::translate(GLfloat dx, GLfloat dy, GLfloat dz)
 {
 	if (!isFrozen) {
-		position = glm::vec3(glm::translate(glm::mat4(1.0f), glm::vec3(dx, dy, dz)) * glm::vec4(position, 1));
-		lookAtPos = glm::vec3(glm::translate(glm::mat4(1.0f), glm::vec3(dx, dy, dz)) * glm::vec4(lookAtPos, 1));
+		glm::vec3 testVec = glm::vec3(dx, dy, dz);
+		if (!isInCollisionBox(glm::vec3(0, dy, 0), false))
+		{
+			if (dy > 0)
+			{
+				testVec.y = 0;
+			}
+			else
+			{
+				testVec.y = terrain->giveHeight(position.x, position.z) + yLimLo - position.y;
+			}
+		}
+		if (!isInCollisionBox(glm::vec3(dx, 0, 0), true))
+		{
+			testVec.x = 0;
+		}
+		if (!isInCollisionBox(glm::vec3(0, 0, dz), true))
+		{
+			testVec.z = 0;
+		}
+		position = glm::vec3(glm::translate(glm::mat4(1.0f), testVec) * glm::vec4(position, 1));
+		lookAtPos = glm::vec3(glm::translate(glm::mat4(1.0f), testVec) * glm::vec4(lookAtPos, 1));
 		updateWTV();
 	}
 }
@@ -135,7 +162,7 @@ void Camera::changeLookAtPos(int xrel, int yrel)
 
 		fi += rotSpeed * xrel;
 		theta += rotSpeed * yrel;
-
+		
 		fi = fmod(fi, 2.0f * (GLfloat)M_PI);
 		theta = theta < (GLfloat)M_PI - eps ? (theta > eps ? theta : eps) : (GLfloat)M_PI - eps;
 
@@ -145,4 +172,20 @@ void Camera::changeLookAtPos(int xrel, int yrel)
 
 		updateWTV();
 	}
+}
+
+bool Camera::isInCollisionBox(glm::vec3 transVec, bool xz)
+{
+	glm::vec3 testVec = glm::vec3(glm::translate(glm::mat4(1.0f), transVec) * glm::vec4(position, 1));
+	bool okToMove = true;
+	if (xz)
+	{
+		okToMove = okToMove && testVec.x > -xzLim && testVec.x < terrH + xzLim; // Check x
+		okToMove = okToMove && testVec.z > -xzLim && testVec.z < terrW + xzLim; // Check z
+	}
+	else
+	{
+		okToMove = okToMove && testVec.y >= terrain->giveHeight(testVec.x, testVec.z) + yLimLo && testVec.y < terrain->getTerrainScale() + yLimHi; // Check y
+	}
+	return okToMove;
 }

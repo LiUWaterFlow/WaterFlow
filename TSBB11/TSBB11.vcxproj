@@ -330,6 +330,7 @@
     <None Include="resources\Doxyfile" />
     <None Include="resources\mainpage.dox" />
     <None Include="src\shaders\addFlowShader.comp" />
+    <None Include="src\shaders\depthshader.frag" />
     <None Include="src\shaders\heightMap.comp" />
     <None Include="src\shaders\fieldShader.comp" />
     <None Include="src\shaders\normals.comp" />

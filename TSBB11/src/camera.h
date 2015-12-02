@@ -23,6 +23,7 @@
 #endif
 
 #include "glm.hpp"
+#include "readData.h"
 
 class Camera {
 private:
@@ -33,6 +34,8 @@ private:
 	int *screenW, *screenH;
 	GLfloat speed, drawDistance;
 	bool isFrozen;
+	int terrW, terrH, xzLim, yLimLo, yLimHi;
+	DataHandler* terrain;
 
 	glm::vec3 position;
 	glm::vec3 lookAtPos;
@@ -40,8 +43,10 @@ private:
 
 	glm::mat4 WTVMatrix;
 	glm::mat4 VTPMatrix;
+
+	bool isInCollisionBox(glm::vec3 transVec, bool xz);
 public:
-	Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH);
+	Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler* terr);
 
 	void rotate(char direction, GLfloat angle);
 	void translate(GLfloat dx, GLfloat dy, GLfloat dz);
