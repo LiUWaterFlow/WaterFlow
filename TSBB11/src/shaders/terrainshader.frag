@@ -4,23 +4,24 @@
 
 struct LightParam {
 	vec3 pos;
-	uint isDir;
+	float isDir;
 	vec3 color;
 	float specExp;
 };
 
-layout(binding = 0) uniform LightInfo {
+layout(std140, binding = 0) uniform LightInfo {
 	LightParam lights[2];
 };
 
 in vec3 out_Normal;
-in vec3 out_terrNormal;
 in vec2 out_TexCoord;// not currently used
 in vec3 out_ObjPos;
 
 out vec4 out_Color;
 
 uniform vec3 camPos;	// Kamerapositionen.
+
+uniform vec3 size;
 
 uniform sampler2D terr_texUnit;
 uniform sampler2D height_texUnit;	// Terrain normal and height texture.
@@ -38,13 +39,14 @@ vec3 ambLight;		// Ambient.
 vec3 diffLight;		// Diffuse.
 vec3 specLight;		// Specular.
 vec3 totalLight;	// Totalt ljus.
-in float out_Col_i;
-in float out_Col_j;
+
+//in float out_Col_i;
+//in float out_Col_j;
 
 void main(void)
 {
 	// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.
-	s = normalize(vec3(lights[0].pos.x, lights[0].pos.y, lights[0].pos.z) - (1 - lights[0].isDir) * out_ObjPos);
+	s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
 	r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
 
 	// eye-vektorn ber�knas.
@@ -71,12 +73,12 @@ void main(void)
 	//out_Color = vec4(out_Col_j + out_Col_i, 0,0,0.8);
 
 	// Just to check that the terrain data texture is working
-	vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight.x;
+	vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight;
 	out_Color = vec4(terrainData, 1.0f);
 
 	// test
-	//vec3 terrainData = vec3(texture(height_texUnit, out_TexCoord).r);
-	out_Color = vec4(terrainData, 1.0f);
+	//out_Color = vec4(vec3(texture(height_texUnit, out_TexCoord).a), 1.0f);
 
-
+	// test 2
+	//out_Color = vec4(lights[1].color, 1.0f);
 }

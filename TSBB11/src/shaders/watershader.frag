@@ -4,12 +4,12 @@
 
 struct LightParam {
 	vec3 pos;
-	uint isDir;
+	float isDir;
 	vec3 color;
 	float specExp;
 };
 
-layout(binding = 0) uniform LightInfo {
+layout(std140, binding = 0) uniform LightInfo {
 	LightParam lights[2];
 };
 
@@ -23,7 +23,7 @@ uniform sampler2D terr_texUnit;		// Terrain texture.
 uniform sampler2D height_texUnit;	// Terrain normal and height texture.
 uniform samplerCube sky_texUnit;	// Skybox texture.
 
-uniform ivec2 size;
+uniform vec3 size;
 
 uniform float time;
 
@@ -115,8 +115,10 @@ void main(void)
 	
 	Normal = normalize(0.5 * out_Normal + 0.5 * Normal);
 
+	Normal = out_Normal;
+
 	// Incident and reflected light is calculated for the light source.
-	s = normalize(vec3(lights[0].pos.x, lights[0].pos.y, lights[0].pos.z) - (1 - lights[0].isDir) * out_ObjPos);
+	s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
 	r = normalize(2 * Normal * dot(normalize(s), Normal) - s);
 
 	right = cross(Normal, eye);
@@ -129,7 +131,7 @@ void main(void)
 	terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
 
 	// Depth at fragment.
-	depth = out_ObjPos.y - terrainDataUnderSurface.r;
+	depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
 
 	// Crude displacement approximation.
 	displacementDirection = normalize(cross(up, right));
@@ -138,11 +140,11 @@ void main(void)
 
 	// Texture lookup at approximation.
 	// Eric: "but changing W and H looks better..."
-	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.y));
+	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.z));
 
 	// To minimize negative depth values, a better approximation is made.
 	// "Depth" at approximation.
-	depthAtDis1 = out_ObjPos.y - terrainDataAtDis1.r;
+	depthAtDis1 = out_ObjPos.y - size.y * terrainDataAtDis1.a;
 	// Height at approximation (y distance from fragment bottom to approximation bottom).
 	h = depth - depthAtDis1;
 	// Better approximation
@@ -151,14 +153,14 @@ void main(void)
 	displacement2 = bottomDisplacement2 * displacementDirection;
 
 	// Texture lookups at better approximation
-	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
-	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.y));
+	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
+	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
 	// "Depth" at better approximation
-	depthAtDis2 = out_ObjPos.y - terrainDataAtBottom.r;
+	depthAtDis2 = out_ObjPos.y - size.y * terrainDataAtBottom.a;
 
 	// Coordinates and normal of seen position of bottom.
 	bottomPos = out_ObjPos + displacement2 - vec3(0, depthAtDis2, 0);
-	bottomNormal = out_terrNormal;
+	bottomNormal = terrainDataAtBottom.rgb;
 
 	// Distance from surface to seen position of bottom.
 	wdist = length(bottomPos - out_ObjPos);
@@ -183,8 +185,8 @@ void main(void)
 	//surfaceColor = (0.5 + kblue) * vec3(0.1, 0.2, 0.4);
 	// ----------------
 	// --- New code ---
-	float maxDepthColor = 200 * transparency;
-	ktrans = clamp(length(bottomPos - out_ObjPos), 0, maxDepthColor);
+	float maxDepthColor = clamp(size.y * transparency, 1.0, size.y * transparency);
+	ktrans = clamp(wdist, 0, maxDepthColor);
 	ktrans = 1 - 1 / maxDepthColor * ktrans;
 	surfaceColor = vec3(0.01, 0.02, 0.1);
 	// ----------------
@@ -196,7 +198,7 @@ void main(void)
 	surfaceLight += reflLight;
 
 	// Phong lighting for the bottom.
-	s = normalize(vec3(lights[1].pos.x, lights[1].pos.y, lights[1].pos.z) - (1 - lights[1].isDir) * bottomPos);
+	s = normalize(lights[1].pos - (1 - lights[1].isDir) * bottomPos);
 	r = normalize(2 * bottomNormal * dot(normalize(s), normalize(bottomNormal)) - s);
 
 	// eye vector is calculated (note: from bottom to surface, not to camera).
@@ -219,11 +221,15 @@ void main(void)
 	bottomLight += ambLight;
 	bottomLight += diffLight;
 	bottomLight += specLight;
-	
+	bottomLight *= texDataAtBottom.rgb;
+
 	// --- Old code ---
 	//out_Color = vec4(0.5 * (1 - ktrans) * surfaceLight + ktrans * bottomLight, 1.0);
 	// ----------------
 	// --- New code ---
-	out_Color = vec4(0.5 * surfaceLight + (1 - ktrans) * surfaceColor + ktrans * bottomLight * texDataAtBottom.rgb, 1.0);
+	out_Color = vec4(0.4 * surfaceLight + (1 - ktrans) * surfaceColor + ktrans * bottomLight, 1.0);
 	// ----------------
+
+	// test
+	//out_Color = vec4(diffLight, 1.0f);
 }

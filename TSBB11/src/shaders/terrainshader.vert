@@ -9,26 +9,25 @@ layout (std430,binding = 6) buffer velocity
 in vec3 in_Position;
 in vec3 in_Normal;		// Vertex-normal.
 in vec2 in_TexCoord; //not currently used
-in vec3 in_terrNormal; // only used by water
 
 out vec3 out_Normal;
-out vec3 out_terrNormal;
 out vec2 out_TexCoord;// not currently used
 out vec3 out_ObjPos;
-out float out_Col_i;
-out float out_Col_j;
 
-//uniform mat4 MTWMatrix;
 uniform mat4 WTVMatrix;
 uniform mat4 VTPMatrix;
-uniform ivec2 size;
 
+//out float out_Col_i;
+//out float out_Col_j;
 
+//uniform mat4 MTWMatrix;
 //uniform mat3 iNormalMatrixTrans;
+
+//uniform ivec2 size;
 
 void main(void)
 {
-
+	/*
 	int i = int(in_Position.x);
 	int j = int(in_Position.z);
 	 
@@ -46,10 +45,9 @@ void main(void)
 	
 	out_Col_i = (v[off0]-v[off1]) + (v[off0] -v[off2]); 
 	out_Col_j = (v[off0]-v[off3]) + (v[off0] -v[off4]); 
-	
+	*/
 	
 	out_Normal = in_Normal;
-	out_terrNormal = in_terrNormal;
 	out_TexCoord = in_TexCoord; // not currently used
 	out_ObjPos = in_Position;
 

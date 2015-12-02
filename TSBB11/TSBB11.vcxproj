@@ -342,7 +342,11 @@
     <None Include="src\shaders\simplevoxels.vert" />
     <None Include="src\shaders\skyshader.frag" />
     <None Include="src\shaders\skyshader.vert" />
+    <None Include="src\shaders\textureData.comp" />
     <None Include="src\shaders\watershader.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="src\xml\xgconsole.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

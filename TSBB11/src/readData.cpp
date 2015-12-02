@@ -12,9 +12,8 @@
 
 // ===== Constructors and destructors
 
-DataHandler::DataHandler(const char* inputfile, GLuint texUnit) {
+DataHandler::DataHandler(const char* inputfile) {
 	readdata = new mapdata();
-	textureUnit = texUnit;
 
 	std::cout << "Reading DEM data from: " << inputfile << "...";
 	readDEM(inputfile);
@@ -102,19 +101,6 @@ GLfloat DataHandler::giveHeight(GLfloat x, GLfloat z) // Returns the height of a
 		yheight = (D - planeNormal.x*x / width - planeNormal.z*z / height) / planeNormal.y;
 	}
 	return yheight;
-}
-
-// ===== Setters =====
-
-void DataHandler::setTextureUnit(GLuint texUnit) {
-	textureUnit = texUnit;
-
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_2D, terrainTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
 // ===== Actual functions =====
@@ -228,16 +214,6 @@ void DataHandler::normConvCompute() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, terrainBufferID);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*numData, getData());
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-	// Upload the terrain height as a texture aswell for the water visualization
-	glGenTextures(1, &terrainTexture);
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_2D, terrainTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, getDataWidth(), getDataHeight(), 0, GL_RED, GL_FLOAT, getData());
 
 	glDeleteBuffers(2, &normBuffers[1]);
 

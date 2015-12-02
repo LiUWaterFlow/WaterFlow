@@ -190,5 +190,13 @@
     <None Include="src\shaders\watershader.frag">
       <Filter>Source Files\Shaders\Draw</Filter>
     </None>
+    <None Include="src\shaders\textureData.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="src\xml\xgconsole.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

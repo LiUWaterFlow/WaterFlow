@@ -121,13 +121,17 @@ bool Program::init() {
 	GLuint sizes[] = { dataHandler->getDataWidth(), dataHandler->getDataHeight() };
 
 	myDrawable::setLights();
+	myDrawable::setTextures(sizes);
 
-	terrain = new HeightMap(terrainshader, sizes, dataHandler->getHeightBuffer());
+	terrain = new HeightMap(terrainshader, sizes, dataHandler->getTerrainScale(), dataHandler->getHeightBuffer());
 	terrain->update();
+	dynamic_cast<HeightMap*>(terrain)->genereteHeightTexture();
 
-	waterTerrain = new Water(watershader, sizes, hf->fieldBuffers[0], dynamic_cast<HeightMap*>(terrain)->getNormalBuffer());
+	printError("Created Terrain");
+
+	waterTerrain = new Water(watershader, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
 	
-	printError("Created Heightmaps");
+	printError("Created Water");
 
 	skycube = new SkyCube(skyshader);
 
@@ -138,7 +142,7 @@ bool Program::init() {
 	antBar = TwNewBar("UIinfo");
 	TwDefine(" UIinfo refresh=0.1 ");
 	TwDefine(" UIinfo valueswidth=fit ");
-	TwDefine(" UIinfo size='280 270' ");
+	TwDefine(" UIinfo size='280 290' ");
 	TwAddVarRO(antBar, "FPS", TW_TYPE_FLOAT, &FPS, "group=Info");
 	TwAddVarRO(antBar, "CameraX", TW_TYPE_FLOAT, &cam->getPos()->x, "group=Info");
 	TwAddVarRO(antBar, "CameraZ", TW_TYPE_FLOAT, &cam->getPos()->z, "group=Info");
@@ -156,8 +160,8 @@ bool Program::init() {
 
 	TwAddVarCB(antBar, "Transparency", TW_TYPE_FLOAT, Water::SetTransparencyCB, Water::GetTransparencyCB, waterTerrain, " min=0 max=1.0 step=0.05 group=Changables ");
 
-	TwAddVarCB(antBar, "Texture", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, terrain, " min=1 max=9 step=4 group=Changables ");
-	TwAddVarCB(antBar, "Texture2", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, waterTerrain, " min=1 max=9 step=4 group=Changables ");
+	TwAddVarCB(antBar, "Texture", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, terrain, " min=0 max=2 step=1 group=Changables ");
+	TwAddVarCB(antBar, "Texture2", TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, waterTerrain, " min=0 max=2 step=1 group=Changables ");
 
 	printError("After total init: ");
 

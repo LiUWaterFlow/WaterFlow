@@ -13,39 +13,45 @@
 
 struct LightParams {
 	glm::vec3 position;
-	bool isDirectional;
+	GLfloat isDirectional;
 	glm::vec3 color;
-	float specularComponent;
+	GLfloat specularComponent;
 };
 
-class myDrawable {
-private:
-	
+enum textureUnits {
+	SKYBOX_TEXUNIT,
+	TERRAINDATA_TEXUNIT,
+	TERRAIN_FIRST_TEXUNIT,
+	GRASS_TEXUNIT = TERRAIN_FIRST_TEXUNIT,
+	DOTTED_TEXUNIT,
+	NOISE_TEXUNIT,
+	TOTAL_TEXTURES
+};
 
+
+class myDrawable {
 protected:
-	glm::mat4 MTWMatrix;
 	GLuint program;
 
-public:
 	static GLuint lightBuffer;
 	static LightParams lightParam[2];
+	static GLuint texIDs[TOTAL_TEXTURES];
 
+public:
 	myDrawable(GLuint program);
 	virtual void draw() = 0;
 	virtual void update() = 0;
 
 	static void setLights();
-
+	static void setTextures(GLuint* size);
 };
 
 class SkyCube : public myDrawable {
 private:
 	Model* model;
-	GLuint textureUnit;
-	GLuint textureID;
 
 public:
-	SkyCube(GLuint program, GLuint texUnit = 2);
+	SkyCube(GLuint program);
 	virtual void update() {}
 	virtual void draw();
 };
@@ -55,30 +61,28 @@ class HeightMap : public myDrawable {
 	GLuint drawBuffers[4];
 	GLuint heightBuffer;
 	GLuint drawVAO;
-	GLuint heightTextureUnit;
-	GLuint heightTextureID;
-	GLuint textureUnit;
-	GLuint textureUnit1;
-	GLuint textureID;
-	GLuint textureID1;
-	GLuint textureID2;
+	GLuint texnum;
 
 	GLuint dataWidth, dataHeight, numData, numIndices;
+	GLfloat dataTerrainHeight;
 
-	GLuint normalsProgram, heightMapProgram;
+	GLuint normalsProgram, heightMapProgram, textureProgram;
 
 	void initUpdate();
 	void initDraw();
 
 public:
 
-	HeightMap(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint heightTexUnit = 3, GLuint texUnit = 1 , GLuint texUnit1 = 5);
-	GLuint texnum;
+	HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer);
+	
 	virtual void update();
 	virtual void draw();
+
 	static void TW_CALL SetTextureCB(const void* value, void* clientData);
 	static void TW_CALL GetTextureCB(void* value, void* clientData);
-	GLuint getNormalBuffer() { return drawBuffers[3]; }
+
+	void genereteHeightTexture();
+
 };
 
 class Water : public HeightMap {
@@ -86,7 +90,7 @@ private:
 	GLfloat transparency;
 
 public:
-	Water(GLuint drawProgram, GLuint* sizes, GLuint inputHeightBuffer, GLuint terrNormalBuffer);
+	Water(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer);
 
 	static void TW_CALL SetTransparencyCB(const void* value, void* clientData);
 	static void TW_CALL GetTransparencyCB(void* value, void* clientData);
