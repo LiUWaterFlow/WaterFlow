@@ -7,7 +7,7 @@
 #include <iostream>
 
 #define EPSILON 0.0001f
-#define GRAVITY 9.81f*0.5f
+
 
 struct gridPoint{
 	float x; //water height over terrain
@@ -40,10 +40,10 @@ inline
 gridPoint operator*(const gridPoint& lhs, const gridPoint& rhs)
 {
 	gridPoint temp;
-	temp.x = lhs.x*rhs.x;
-	temp.y = lhs.y*rhs.y;
-	temp.z = lhs.z*rhs.z;
-	temp.w = lhs.w*rhs.w;
+	temp.x = rhs.x*lhs.x;
+	temp.y = rhs.y*lhs.y;
+	temp.z = rhs.z*lhs.z;
+	temp.w = rhs.w*lhs.w;
 	return temp;
 }
 inline
@@ -59,17 +59,13 @@ gridPoint operator*(const gridPoint& lhs, const float& rhs)
 inline
 gridPoint operator*(const float& lhs, const gridPoint& rhs)
 {
-	gridPoint temp;
-	temp.x = lhs*rhs.x;
-	temp.y = lhs*rhs.y;
-	temp.z = lhs*rhs.z;
-	temp.w = lhs*rhs.w;
-	return temp;
+	return rhs*lhs;
 }
 enum TYPE { WATER, TERRAIN, MOM_X, MOM_Y };
 class ShallowWater3
 {
 public:
+	const float GRAV  = 9.81f*0.5f;
 	ShallowWater3(const unsigned int sizeX = 6, const unsigned int sizeY = 6);
 	~ShallowWater3();
 
