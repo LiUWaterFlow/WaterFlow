@@ -58,19 +58,21 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	std::cout << "3. (TRIAL): ShallowWater3" << std::endl;
 	int choice;
 	std::cin >> choice;
+	const unsigned int size_x = 20;
+	const unsigned int size_y = 20;
 	if (choice == 1)
 	{
-		ShallowNewton newton(10, 10);
+		ShallowNewton newton(size_x, size_y);
 		return newton.run();
 	}
 	else if (choice == 2)
 	{
-		ShallowWater2 navier(20, 20);
+		ShallowWater2 navier(size_x, size_y);
 		return navier.run();
 	}
 	else if (choice == 3)
 	{
-		ShallowWater3 shallow(10, 10);
+		ShallowWater3 shallow(size_x, size_y);
 		return shallow.run();
 	}
 	else
