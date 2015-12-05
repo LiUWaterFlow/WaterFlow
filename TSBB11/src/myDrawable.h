@@ -11,6 +11,10 @@
 
 #include <vector>
 
+#ifdef _WINDOWS
+	#include "sdlTexture.h"
+#endif
+
 struct LightParams {
 	glm::vec3 position;
 	GLfloat isDirectional;

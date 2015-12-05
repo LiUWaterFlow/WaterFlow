@@ -27,10 +27,11 @@ public:
 	/// tPath must be a valid path to an image file. After initialization,
 	/// the texture ID can then be accessed using getTexID().
 	/// @param tPath path to image file.
+	/// @param gTexID texture ID. Can be initialized as 0 if ut's not pre-initialized ahead of time.
 	/// @see getTexID()
 	/// @todo Currently not properly handling incorrect files and/or file paths.
 	/// @todo Currently only designed to work on Windows.
-	sdlTexture(std::string tPath);
+	sdlTexture(std::string tPath, GLuint gTexID);
 
 	/// @brief Getter for the texture ID bound to the loaded image.
 	/// @return texture ID bound to the image.
