@@ -136,7 +136,7 @@ void main(void)
 	// Crude displacement approximation.
 	//displacementDirection = normalize(cross(up, right));
 	vec3 s2 = airRefInd / waterRefInd * cross(Normal, cross(Normal, eye)) - Normal * sqrt(1 - pow(airRefInd / waterRefInd, 2) * dot(cross(Normal, eye), cross(Normal, eye)));
-	displacementDirection = normalize(dot(s2, -Normal) * -Normal);
+	displacementDirection = normalize(s2 - dot(s2, -Normal) * -Normal);
 	bottomDisplacement1 = tan(theta2) * depth;
 	displacement1 = bottomDisplacement1 * displacementDirection;
 
