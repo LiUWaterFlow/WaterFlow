@@ -6,7 +6,7 @@
   <Sources>
     <Source Name="Hill">
       <Position x="100" y="2" z="100"/>
-      <TimeP t="1, 2, 5, 10, -1" />
+      <TimeP t="0, 2, 5, 10, -1" />
       <Pressure p="2.0, 1.5, 5, 5, 0" />
       <TimeN t="3, -1"/>
       <Normals>

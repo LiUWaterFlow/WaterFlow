@@ -340,9 +340,4 @@ void Program::checkKeys() {
 	} else if (keystate[SDL_SCANCODE_E]) {
 		cam->jump(-deltaTime);
 	}
-	if (keystate[SDL_SCANCODE_T]) {
-		hf->initTest();
-	} else if (keystate[SDL_SCANCODE_U]) {
-		updateRender = !updateRender;
-	}
 }
