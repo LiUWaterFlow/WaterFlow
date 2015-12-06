@@ -23,6 +23,7 @@ Program::Program() {
 	// Time init
 	currentTime = (GLfloat)SDL_GetTicks();
 	deltaTime = 0;
+	dtSim = 1.0f / (20.0f*30.0f);
 }
 
 Program::~Program() {}
@@ -157,6 +158,7 @@ bool Program::init() {
 	TwAddVarCB(antBar, "Draw Program", TW_TYPE_INT32, Water::SetDrawProgramCB, Water::GetDrawProgramCB, waterTerrain, " min=0 max=1 step=1 group=Changables ");
 	TwAddVarCB(antBar, "Transparency", TW_TYPE_FLOAT, Water::SetTransparencyCB, Water::GetTransparencyCB, waterTerrain, " min=0 max=1.0 step=0.05 group=Changables ");
 	TwAddVarCB(antBar, "MaxDepth", TW_TYPE_FLOAT, Water::SetMaxDepthCB, Water::GetMaxDepthCB, waterTerrain, " min=0 max=500.0 step=10.0 group=Changables ");
+	TwAddVarRW(antBar, "Simulation dt", TW_TYPE_FLOAT, &dtSim, "min=0.00005 max=0.0025 step=0.00005 group=Changables label='Simulation dt' ");
 	
 	printError("After total init: ");
 
@@ -174,7 +176,7 @@ void Program::update() {
 	// Update the tweak bar.
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
 	if (sim) {
-		hf->runSimGPU();
+		hf->runSimGPU(dtSim);
 	}
 	waterTerrain->update();
 }
@@ -282,11 +284,8 @@ void Program::handleKeypress(SDL_Event* event) {
 		} else {
 			TwDefine(" UIinfo iconified=false");
 		}
-	case SDLK_l:
-		sim = false;
-		hf->measureVolume();
 		break;
-	case SDLK_k:
+	case SDLK_p:
 		sim = !sim;
 		break;
 	case SDLK_n:

@@ -6,6 +6,15 @@
 #include <valarray>
 #include <inttypes.h>
 	
+HeightField::HeightField(DataHandler *t, std::vector<Flood_Fill_data*> FFDataIn, std::vector<FlowSource*> FlowsourcesIN) { 
+	terr = t; 
+	texWidth = t->getDataWidth(); 
+	texHeight = t->getDataHeight(); 
+	totTime = 0.0f; flood = FFDataIn; 
+	xmlFlow = FlowsourcesIN; 
+
+}
+
 void HeightField::floodFill(float* u, int x, int z,float height){
 
   std::vector<std::vector<int>> queue;
@@ -191,8 +200,6 @@ void HeightField::initGPU() {
 	float* f = new float[texWidth*texHeight];
 	std::fill_n(v,texWidth*texHeight,0.0f);	
 	std::fill_n(f,texWidth*texHeight,0.0f);
-	//f[500 + 500*texWidth] = 100.0f;
-	//memcpy(u, terr->getData(), texWidth*texHeight);
 
 	int upper = 500;
 	int lower = 498;
@@ -207,7 +214,7 @@ void HeightField::initGPU() {
 
 	f[x + z*texWidth] = 2.0f; // 2.0f in a point is quite a strong flow. 
 
-	//initFloodFill(u);
+	initFloodFill(u);
 
 	int i = 0;
 
@@ -265,6 +272,7 @@ void HeightField::runSimGPU(GLfloat dt) {
 	totTime += dt; 
 	int numPing = 20;	
 	GLint numData = terr->getDataWidth()*terr->getDataHeight();
+
 	if(flowChange(xmlFlow, dt)){	
 	  GLfloat* f = new float[texWidth*texHeight];
 	  std::fill_n(f,texWidth*texHeight,0.0f);	
@@ -283,6 +291,7 @@ void HeightField::runSimGPU(GLfloat dt) {
 
 	glUseProgram(fieldProgram);
 	glUniform2i(glGetUniformLocation(fieldProgram, "size"), terr->getDataWidth(), terr->getDataHeight());
+	glUniform1f(glGetUniformLocation(fieldProgram, "dt"),dt);
 
 	glUseProgram(addProgram);
 	glUniform2i(glGetUniformLocation(addProgram, "size"), terr->getDataWidth(), terr->getDataHeight());

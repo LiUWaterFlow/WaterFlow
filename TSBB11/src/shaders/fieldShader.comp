@@ -26,7 +26,7 @@ layout (std430,binding = 7) readonly buffer terrainHeight
 };
 
 uniform ivec2 size; //width height
-
+uniform float dt;
 float getHeight(int i, int j, float ourTot, float ourTerr){
 	if( i < 0 || j < 0 || i > size.x -1 || j > size.y -1){
 		return 0.0f;
@@ -51,8 +51,6 @@ void main(){
 
 	//Change these to clamps.
 	if(i < size.x && j < size.y) {
-
-		float dt = 1.0f/(20.0f*30.0f);
 		int offset = (i + j*size.x);
 		float c2 = 25000.0f;
 		

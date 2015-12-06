@@ -138,7 +138,7 @@ void myDrawable::setTextures(GLuint* size) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
 
 	// Just set this to not interfere (possible bug to look into)
-	glActiveTexture(GL_TEXTURE0 + TOTAL_TEXTURES);
+	glActiveTexture(GL_TEXTURE0  + TOTAL_TEXTURES);
 
 	printError("Create textures!");
 }
@@ -169,7 +169,7 @@ HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuin
 
 	heightBuffer = inputHeightBuffer;
 
-	texnum = 0;
+	texnum = 2;
 
 	initUpdate();
 

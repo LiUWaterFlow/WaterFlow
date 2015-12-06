@@ -9,7 +9,6 @@
 
 class HeightField{
 private:
-
   GLuint numVoxels; ///< Number of voxels in the voxelPositions.
   GLuint voxelShader; ///< Shader program.
   GLuint voxelBuffer, voxelVAO; ///< Buffers and VAOs.
@@ -48,7 +47,7 @@ public:
   void floodFill(float* u, int x, int z, float height);
   void measureVolume();
 
-  HeightField(DataHandler *t,std::vector<Flood_Fill_data*> FFDataIn, std::vector<FlowSource*> FlowsourcesIN) { terr = t; texWidth = t->getDataWidth(); texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn; xmlFlow = FlowsourcesIN;};
+  HeightField(DataHandler *t, std::vector<Flood_Fill_data*> FFDataIn, std::vector<FlowSource*> FlowsourcesIN);
   void updateSim(GLfloat);
   void setTerrainTex(GLuint t){terrTex = t;};
   GLuint getHeightTex(){return heightTex;};
