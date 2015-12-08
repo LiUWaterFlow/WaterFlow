@@ -134,12 +134,13 @@ void main(void)
 	depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
 
 	// Crude displacement approximation.
-	displacementDirection = normalize(cross(up, right));
+	//displacementDirection = normalize(cross(up, right));
+	vec3 s2 = airRefInd / waterRefInd * cross(Normal, cross(Normal, eye)) - Normal * sqrt(1 - pow(airRefInd / waterRefInd, 2) * dot(cross(Normal, eye), cross(Normal, eye)));
+	displacementDirection = normalize(s2 - dot(s2, -up) * -up);
 	bottomDisplacement1 = tan(theta2) * depth;
 	displacement1 = bottomDisplacement1 * displacementDirection;
 
 	// Texture lookup at approximation.
-	// Eric: "but changing W and H looks better..."
 	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.z));
 
 	// To minimize negative depth values, a better approximation is made.

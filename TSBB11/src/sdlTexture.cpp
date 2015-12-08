@@ -5,10 +5,9 @@
 
 // ===== Constructor
 
-sdlTexture::sdlTexture(std::string tPath)
+sdlTexture::sdlTexture(std::string tPath, GLuint gTexID)
 {
-	// Initialization of texture ID.
-	gTextureID = 0;
+	gTextureID = gTexID;
 	texPath = tPath;
 	// The ifdef below breaks this class for non-Windows, but is as of now needed in order to run branch on Linux.
 #ifdef _WINDOWS
@@ -25,9 +24,6 @@ sdlTexture::sdlTexture(std::string tPath)
 	}
 	// Bind image to the texture.
 	glTexImage2D(GL_TEXTURE_2D, 0, Mode, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Surface->pixels);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 // ===== Getter =====

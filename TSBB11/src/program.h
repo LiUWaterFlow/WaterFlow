@@ -34,6 +34,8 @@
 
 class Program {
 private:
+	GLfloat dtSim;
+
 	SDL_Window *screen;
 	SDL_GLContext glcontext;
 
