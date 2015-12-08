@@ -200,9 +200,9 @@ void main(void)
 	surfaceLight += reflLight;
 	//surfaceLight *= clamp(pow((1 + wdist), -0.1*transparency), 0.0, 1.0);
 
-	ktransr = clamp((1-reflLight)*pow((1 + wdist), -1.8*transparency), 0.0, 0.5);
-	ktransg = clamp((1-reflLight)*pow((1 + wdist), -1.7*transparency), 0.0, 0.5);
-	ktransb = clamp((1-reflLight)*pow((1 + wdist), -1.5*transparency), 0.0, 0.5);
+	ktransr = clamp((1-reflLight.r)*pow((1 + wdist), -1.8*transparency), 0.0, 0.5);
+	ktransg = clamp((1-reflLight.g)*pow((1 + wdist), -1.7*transparency), 0.0, 0.5);
+	ktransb = clamp((1-reflLight.b)*pow((1 + wdist), -1.5*transparency), 0.0, 0.5);
 	kblue = 1 - eye.y;
 
 	//--- Calculating bottomLight
