@@ -271,7 +271,7 @@ void HeightMap::initDraw() {
 	printError("init draw");
 }
 
-void HeightMap::genereteHeightTexture() {
+void HeightMap::generateHeightTexture() {
 
 	glUseProgram(textureProgram);
 

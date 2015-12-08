@@ -85,7 +85,7 @@ public:
 	static void TW_CALL SetTextureCB(const void* value, void* clientData);
 	static void TW_CALL GetTextureCB(void* value, void* clientData);
 
-	void genereteHeightTexture();
+	void generateHeightTexture();
 
 };
 

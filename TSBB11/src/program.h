@@ -66,14 +66,19 @@ private:
 	Voxelgrid* voxs;
 	//HeightField
 	HeightField* hf;
+	//ShallowWater
+	//ShallowGPU sgpu;
 	// References to shader programs:
 	GLuint terrainshader, skyshader, watershader, depthshader;
 
 	// Camera variables:
 	Camera* cam;
 
+	GLuint simCase; ///< Which simulation is to be run.
+
 public:
-	int exec();
+	int exec1();
+	int exec2();
 	int testVoxels();
 	bool init();
 
@@ -92,7 +97,8 @@ public:
 	void checkKeys();
 
 	void timeUpdate();
-	void update();
+	void update1();
+	void update2();
 	void display();
 
 	void clean();

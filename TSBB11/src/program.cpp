@@ -28,22 +28,46 @@ Program::Program() {
 
 Program::~Program() {}
 
-int Program::exec() {
+int Program::exec1() {
+	simCase = 1;
+	
 	if (!init()) return -1;
 
 	SDL_Event Event;
-
+	
 	while (isRunning) {
 		timeUpdate();
 		while (SDL_PollEvent(&Event)) handleEvent(&Event);
 		checkKeys();
-		update();
+		update1();
 		display();
 	}
 
 	clean();
 	return 0;
 }
+
+
+int Program::exec2() {
+	simCase = 2;
+	
+	if (!init()) return -1;
+
+	SDL_Event Event;
+	
+
+	while (isRunning) {
+		timeUpdate();
+		while (SDL_PollEvent(&Event)) handleEvent(&Event);
+		checkKeys();
+		update2();
+		display();
+	}
+
+	clean();
+	return 0;
+}
+
 int Program::testVoxels() {
 
 	if (!init()) return -1;
@@ -109,6 +133,7 @@ bool Program::init() {
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 	watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
+	//shallowwatershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	depthshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/depthshader.frag");
 
 	// Create drawables
@@ -120,12 +145,22 @@ bool Program::init() {
 
 	terrain = new HeightMap(terrainshader, sizes, dataHandler->getTerrainScale(), dataHandler->getHeightBuffer());
 	terrain->update();
-	dynamic_cast<HeightMap*>(terrain)->genereteHeightTexture();
-
-	printError("Created Terrain");
+	dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
+	
 	GLuint shaders[2] = { watershader, depthshader };
-	waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
+	
+	printError("Created Terrain");
 
+	if (simCase == 1)
+	{
+		//GLuint shaders[2] = { watershader, depthshader };
+		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
+	}else if(simCase == 2)
+	{
+		//GLuint shaders[2] = { shallowwatershader, depthshader };
+		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
+	}
+		
 	printError("Created Water");
 	skycube = new SkyCube(skyshader);
 
@@ -172,7 +207,17 @@ void Program::timeUpdate() {
 	FPS = 1000.0f / deltaTime;
 }
 
-void Program::update() {
+void Program::update1() {
+	// Update the tweak bar.
+	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
+	if (sim) {
+		hf->runSimGPU(dtSim);
+	}
+	waterTerrain->update();
+}
+
+
+void Program::update2() {
 	// Update the tweak bar.
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
 	if (sim) {
