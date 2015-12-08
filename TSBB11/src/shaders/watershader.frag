@@ -105,11 +105,11 @@ void main(void)
 	
 	// Modelling surface waves.
 	float rho1 = sqrt(pow(out_ObjPos.x, 2) + pow(out_ObjPos.z, 2));
-	float rho2 = sqrt(pow((1000 - out_ObjPos.x), 2) + pow(out_ObjPos.z, 2));
+	float rho2 = sqrt(pow((size.x - float(out_ObjPos.x)), 2) + pow(out_ObjPos.z, 2));
 	float xwave = sin(0.1 * time + out_ObjPos.x) + sin(-0.01 * time + out_ObjPos.x);
 	float ywave = sin(0.2 * time + out_ObjPos.z) + sin(-0.3 * time + out_ObjPos.z);
 	float rhowave1 = sin(0.05 * time + 0.5 + rho1) + 0.2 * sin(-0.01 * time + rho1);
-	float rhowave2 = sin(-0.05 * time + 0.5 + rho2/10) + 0.2 * sin(-0.01 * time + rho2 / 10);
+	float rhowave2 = sin(-0.05 * time + 0.5 + rho2/10.0f) + 0.2 * sin(-0.01 * time + rho2 / 10.0f);
  	float rand = 1;
 	rand = fract(sin(dot(vec2(out_ObjPos.x + time, out_ObjPos.z), vec2(12.9898, 78.233))) * 43758.5453);
 	// Perturbing surface normals.
@@ -117,6 +117,9 @@ void main(void)
 	//Normal += vec3(1 + 0.2 * rand, 1, 1);
 	
 	Normal = normalize(0.5 * out_Normal + 0.5 * Normal);
+
+
+
 
 	//Normal = out_Normal;
 
@@ -128,6 +131,8 @@ void main(void)
 	// Snell's law
 	// Since asin is not that cheap, approximations could be made here.
 	theta1 = asin(length(right));
+
+
 	theta2 = asin(airRefInd * sin(theta1) / waterRefInd);
 
 	// Texture lookup at fragment.
@@ -143,6 +148,8 @@ void main(void)
 	bottomDisplacement1 = tan(theta2) * depth;
 	displacement1 = bottomDisplacement1 * displacementDirection;
 
+
+
 	// Texture lookup at approximation.
 	terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.z));
 
@@ -156,8 +163,13 @@ void main(void)
 	bottomDisplacement2 = cos(alpha) * depth * sin(theta2) / cos(alpha - theta2);
 	displacement2 = bottomDisplacement2 * displacementDirection;
 
+
 	// Texture lookups at better approximation
 	terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
+
+
+
+
 	texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
 	// "Depth" at better approximation
 	depthAtDis2 = out_ObjPos.y - size.y * terrainDataAtBottom.a;
@@ -231,6 +243,7 @@ void main(void)
 	bottomLight += ambLight;
 	bottomLight += diffLight;
 	bottomLight += specLight;
+	
 	bottomLight *= texDataAtBottom.rgb;
 	bottomLight = vec3(bottomLight.r * ktransr, bottomLight.g * ktransg, bottomLight.b * ktransb); //Color dependant attenuation
 
@@ -238,9 +251,10 @@ void main(void)
 	//out_Color = vec4(0.5 * (1 - ktrans) * surfaceLight + ktrans * bottomLight, 1.0);
 	// ----------------
 	// --- New code ---
-	out_Color = vec4(surfaceLight + bottomLight, 1.0);
+
 	// ----------------
 
+	out_Color = vec4(bottomLight + surfaceLight, 1.0);
 	// test
 	//out_Color = vec4(diffLight, 1.0f);
 }

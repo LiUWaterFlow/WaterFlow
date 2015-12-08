@@ -54,7 +54,7 @@ void myDrawable::setLights() {
 	glGenBuffers(1, &myDrawable::lightBuffer);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, myDrawable::lightBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams)* 2, &myDrawable::lightParam, GL_STREAM_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(LightParams)* 2, &myDrawable::lightParam, GL_STATIC_DRAW);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, myDrawable::lightBuffer);
