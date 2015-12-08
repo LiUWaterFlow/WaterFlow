@@ -203,9 +203,9 @@ void Program::display() {
 	// ======================== Draw water body ========================
 	glDisable(GL_CULL_FACE);
 
-	cam->uploadCamData(watershader);
 	cam->uploadCamData(depthshader);
-	glUniform1f(glGetUniformLocation(watershader, "time"), currentTime / 100.0f);
+	cam->uploadCamData(watershader);
+	glUniform1f(glGetUniformLocation(watershader, "time"), currentTime / 20.0f);
 	waterTerrain->draw();
 
 	// ========================== Draw AntBar ==========================

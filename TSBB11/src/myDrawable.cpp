@@ -98,17 +98,6 @@ void myDrawable::setTextures(GLuint* size) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F, size[0], size[1]);
 
-	// ===== Grass Texture =====
-
-	glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
-	glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	LoadTGATextureData("resources/grass.tga", &tempTex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
-
 	// ===== Dotted Texture =====
 
 	glActiveTexture(GL_TEXTURE0 + DOTTED_TEXUNIT);
@@ -129,6 +118,17 @@ void myDrawable::setTextures(GLuint* size) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	LoadTGATextureData("resources/noise.tga", &tempTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+
+	// ===== Grass Texture =====
+
+	glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
+	glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	LoadTGATextureData("resources/grass.tga", &tempTex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
 
 	// Just set this to not interfere (possible bug to look into)

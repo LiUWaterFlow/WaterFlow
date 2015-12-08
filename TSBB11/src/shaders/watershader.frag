@@ -115,7 +115,7 @@ void main(void)
 	
 	Normal = normalize(0.5 * out_Normal + 0.5 * Normal);
 
-	Normal = out_Normal;
+	//Normal = out_Normal;
 
 	// Incident and reflected light is calculated for the light source.
 	s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
@@ -180,15 +180,15 @@ void main(void)
 	// Transmitted light coefficient.
 	// --- Old code ---
 	//float transexp = transparency;	// -----Not sure why this is needed.-----
-	//ktrans = clamp(pow((1 + wdist), -transexp), 0, 0.3);
-	//kblue = 1 - eye.y;
-	//surfaceColor = (0.5 + kblue) * vec3(0.1, 0.2, 0.4);
+	ktrans = clamp(pow((1 + wdist), -transparency), 0.0f, 1.0f);
+	kblue = 1 - eye.y;
+	surfaceColor = (0.25 + kblue) * vec3(0.1, 0.2, 0.3);
 	// ----------------
 	// --- New code ---
-	float maxDepthColor = clamp(size.y * transparency, 1.0, size.y * transparency);
-	ktrans = clamp(wdist, 0, maxDepthColor);
-	ktrans = 1 - 1 / maxDepthColor * ktrans;
-	surfaceColor = vec3(0.01, 0.02, 0.1);
+	//float maxDepthColor = clamp(size.y * transparency, 1.0, size.y * transparency);
+	//ktrans = clamp(wdist, 0, maxDepthColor);
+	//ktrans = 1 - 1 / maxDepthColor * ktrans;
+	//surfaceColor = vec3(0.01, 0.02, 0.1);
 	// ----------------
 
 	surfaceLight = vec3(0.0, 0.0, 0.0);
