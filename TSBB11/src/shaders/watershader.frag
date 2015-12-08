@@ -50,6 +50,9 @@ vec3 right;			// Vector to the right (camera position dependent).
 float kamb;
 float kdiff;
 float ktrans;
+float ktransr;
+float ktransg;
+float ktransb;
 float krefl;
 float kblue;
 vec3 ambLight;		// Ambient.
@@ -172,7 +175,7 @@ void main(void)
 	skyrefl = texture(sky_texUnit, re).rgb;
 	// Light components, water surface.
 	kamb = 0.1;
-	krefl = 0.4;
+	krefl = clamp((1 - eye.y), 0.2, 0.7);
 	// Ambient light.
 	ambLight = kamb * vec3(1.0, 1.0, 1.0);
 	reflLight = vec3(0.0, 0.0, 0.0);
@@ -181,9 +184,8 @@ void main(void)
 	// Transmitted light coefficient.
 	// --- Old code ---
 	//float transexp = transparency;	// -----Not sure why this is needed.-----
-	ktrans = clamp(pow((1 + wdist), -transparency), 0.0f, 1.0f);
-	kblue = 1 - eye.y;
-	surfaceColor = (0.25 + kblue) * vec3(0.1, 0.2, 0.3);
+	//ktrans = clamp(pow((1 + wdist), -transparency), 0.0f, 1.0f);
+	
 	// ----------------
 	// --- New code ---
 	//float maxDepthColor = clamp(size.y * transparency, 1.0, size.y * transparency);
@@ -191,12 +193,19 @@ void main(void)
 	//ktrans = 1 - 1 / maxDepthColor * ktrans;
 	//surfaceColor = vec3(0.01, 0.02, 0.1);
 	// ----------------
-
 	surfaceLight = vec3(0.0, 0.0, 0.0);
 	// The light components are added to the total surface light.
 	surfaceLight += ambLight;
 	//surfaceLight += surfaceColor;
 	surfaceLight += reflLight;
+	//surfaceLight *= clamp(pow((1 + wdist), -0.1*transparency), 0.0, 1.0);
+
+	ktransr = clamp((1-reflLight)*pow((1 + wdist), -1.8*transparency), 0.0, 0.5);
+	ktransg = clamp((1-reflLight)*pow((1 + wdist), -1.7*transparency), 0.0, 0.5);
+	ktransb = clamp((1-reflLight)*pow((1 + wdist), -1.5*transparency), 0.0, 0.5);
+	kblue = 1 - eye.y;
+
+	//--- Calculating bottomLight
 
 	// Phong lighting for the bottom.
 	s = normalize(lights[1].pos - (1 - lights[1].isDir) * bottomPos);
@@ -223,12 +232,13 @@ void main(void)
 	bottomLight += diffLight;
 	bottomLight += specLight;
 	bottomLight *= texDataAtBottom.rgb;
+	bottomLight = vec3(bottomLight.r * ktransr, bottomLight.g * ktransg, bottomLight.b * ktransb); //Color dependant attenuation
 
 	// --- Old code ---
 	//out_Color = vec4(0.5 * (1 - ktrans) * surfaceLight + ktrans * bottomLight, 1.0);
 	// ----------------
 	// --- New code ---
-	out_Color = vec4(0.4 * surfaceLight + (1 - ktrans) * surfaceColor + ktrans * bottomLight, 1.0);
+	out_Color = vec4(surfaceLight + bottomLight, 1.0);
 	// ----------------
 
 	// test
