@@ -51,7 +51,7 @@ std::vector<int> iStrToVector(std::string str){
 void parsePressure(FlowSource* obj, pugi::xml_node pres, pugi::xml_node time){
   std::string timestr = time.attribute("t").value();
   std::string pstr = pres.attribute("p").value();
-  std::vector<int> timevec = iStrToVector(timestr);
+  std::vector<float> timevec = fStrToVector(timestr);
   std::vector<float> pvec = fStrToVector(pstr);
   obj->setPressure(pvec, timevec);
 }

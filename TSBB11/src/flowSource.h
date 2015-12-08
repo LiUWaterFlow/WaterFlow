@@ -15,7 +15,7 @@ class FlowSource {
   std::vector<std::vector<float>> normal; ///< Vector of vectors containing normal direction as xyz
   std::vector<int> normalTime; ///< Vector containing time instances specifying change of normal.
   ///< "-1" specifies an infinite source.
-  std::vector<int> pressureTime; ///<  Vector containing time instances specifying change of pressure, "-1" is the only negativ vaslue allowed and must be at the end.
+  std::vector<float> pressureTime; ///<  Vector containing time instances specifying change of pressure, "-1" is the only negativ vaslue allowed and must be at the end.
   ///< "-1" specifies an infinite source.
   std::vector<float> pressure; ///< Vector containing pressure values
   int xpos, ypos, zpos; ///< The position of the source given by the parameters x, y and z/
@@ -33,7 +33,7 @@ public:
   /// For example P = [1.5 , 2.1, 1.7] time = [1, 3, 8] gives that the pressure is 2.1 between the time 1 and 3.
   /// @param P the pressure vector containing floats to be set.
   /// @param t the time vector containing ints to be set, this must be sorted from smallest to largest and only using values larger thamn 0 with the exception of "-1" that must be at the end if included.
-  void setPressure(std::vector<float> P, std::vector<int> t);
+  void setPressure(std::vector<float> P, std::vector<float> t);
   /// @brief This function expects a vector filled with vectors that hold 3 values, xyz, and a time vector that specifies when to change the Normal direction. this time vector can be independent from the one used for pressure. For vector correspondences and time vetor specifications see setPressure()
   /// @param N is a vector of vectors containig the xyz values.
   /// @param t time vector see getPressure().
