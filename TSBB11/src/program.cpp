@@ -7,6 +7,7 @@
 #include "voxelTesting.h"
 #include "gtc/type_ptr.hpp"
 #include <iostream>
+
 bool updateRender;
 bool sim = true;
 Program::Program() {

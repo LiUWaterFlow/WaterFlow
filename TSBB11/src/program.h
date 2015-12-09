@@ -23,13 +23,13 @@
 #	endif
 #endif
 
+#include "shallowGPU.h"
 #include "camera.h"
 #include "readData.h"
 #include "myDrawable.h"
 #include "voxel.h"
 #include "heightField.h"
 #include "xmlParsing.h"
-#include "ShallowGPU.h"
 
 #include "AntTweakBar.h"
 
