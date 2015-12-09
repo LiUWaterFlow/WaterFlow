@@ -301,6 +301,7 @@
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\readData.cpp" />
     <ClCompile Include="src\sdlTexture.cpp" />
+    <ClCompile Include="src\shallowGPU.cpp" />
     <ClCompile Include="src\voxel.cpp" />
     <ClCompile Include="src\voxelTesting.cpp" />
     <ClCompile Include="src\xmlParsing.cpp" />
@@ -324,6 +325,7 @@
     <ClInclude Include="src\program.h" />
     <ClInclude Include="src\readData.h" />
     <ClInclude Include="src\sdlTexture.h" />
+    <ClInclude Include="src\shallowGPU.h" />
     <ClInclude Include="src\voxel.h" />
     <ClInclude Include="src\voxelTesting.h" />
     <ClInclude Include="src\xmlParsing.h" />
@@ -333,12 +335,17 @@
     <None Include="resources\Doxyfile" />
     <None Include="resources\mainpage.dox" />
     <None Include="src\shaders\addFlowShader.comp" />
+    <None Include="src\shaders\addHeightShader.comp" />
+    <None Include="src\shaders\advectVelocityXShader.comp" />
+    <None Include="src\shaders\advectVelocityYShader.comp" />
+    <None Include="src\shaders\advectWaterShader.comp" />
     <None Include="src\shaders\depthshader.frag" />
     <None Include="src\shaders\heightMap.comp" />
     <None Include="src\shaders\fieldShader.comp" />
     <None Include="src\shaders\normals.comp" />
     <None Include="src\shaders\normConv.comp" />
     <None Include="src\shaders\preserveShader.comp" />
+    <None Include="src\shaders\shallowwatershader.frag" />
     <None Include="src\shaders\terrainshader.frag" />
     <None Include="src\shaders\terrainshader.vert" />
     <None Include="src\shaders\simplevoxels.frag" />
@@ -347,6 +354,8 @@
     <None Include="src\shaders\skyshader.frag" />
     <None Include="src\shaders\skyshader.vert" />
     <None Include="src\shaders\textureData.comp" />
+    <None Include="src\shaders\updateHeightShader.comp" />
+    <None Include="src\shaders\updateVelocityShader.comp" />
     <None Include="src\shaders\watershader.frag" />
   </ItemGroup>
   <ItemGroup>

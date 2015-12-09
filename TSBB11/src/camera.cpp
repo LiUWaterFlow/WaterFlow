@@ -13,6 +13,7 @@
 
 Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler* terr)
 {
+	unlocked = false; 
 	position = startPos;
 	fi = 0.0f;
 	theta = (GLfloat)M_PI / 2.0f;
@@ -174,8 +175,15 @@ void Camera::changeLookAtPos(int xrel, int yrel)
 	}
 }
 
+void Camera::unlock(){
+	unlocked = true;
+}
+
 bool Camera::isInCollisionBox(glm::vec3 transVec, bool xz)
 {
+	if (unlocked) {
+		return true;
+	}
 	glm::vec3 testVec = glm::vec3(glm::translate(glm::mat4(1.0f), transVec) * glm::vec4(position, 1));
 	bool okToMove = true;
 	if (xz)

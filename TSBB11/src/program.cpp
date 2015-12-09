@@ -124,15 +124,12 @@ bool Program::init() {
 	int yLimLo = 100; // Minimal distance (y) between camera and terrain
 	int yLimHi = 500; // yLimHi + dataHandler->getTerrainScale() = maximal distance (y) between camera and terrain
 	cam = new Camera(glm::vec3(0.0f, 500.0f, 0.0f), &screenW, &screenH, dataHandler->getDataWidth(), dataHandler->getDataHeight(), xzLim, yLimLo, yLimHi, dataHandler);
-	// Initialize water simulation
-	hf = new HeightField(dataHandler, init_data.FFData, init_data.Flowsources);
-	hf->initGPU();
+	
 
 	printError("After hf init");
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
-	watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	//shallowwatershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	depthshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/depthshader.frag");
 
@@ -147,18 +144,31 @@ bool Program::init() {
 	terrain->update();
 	dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
 	
-	GLuint shaders[2] = { watershader, depthshader };
 	
 	printError("Created Terrain");
 
 	if (simCase == 1)
 	{
-		//GLuint shaders[2] = { watershader, depthshader };
+
+		watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
+		// Initialize water simulation
+		hf = new HeightField(dataHandler, init_data.FFData, init_data.Flowsources);
+		hf->initGPU();
+
+		GLuint shaders[2] = { watershader, depthshader };
 		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
 	}else if(simCase == 2)
 	{
-		//GLuint shaders[2] = { shallowwatershader, depthshader };
-		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
+
+
+		watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/shallowwatershader.frag");
+		cam->unlock();
+		// Initialize water simulation
+		sgpu = new ShallowGPU(dataHandler, init_data.FFData);
+		sgpu->initGPU();
+
+		GLuint shaders[2] = { watershader, depthshader };
+		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), sgpu->shallowBuffers[7]);
 	}
 		
 	printError("Created Water");
@@ -221,7 +231,7 @@ void Program::update2() {
 	// Update the tweak bar.
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
 	if (sim) {
-		hf->runSimGPU(dtSim);
+		sgpu->runSimGPU();
 	}
 	waterTerrain->update();
 }
@@ -245,7 +255,9 @@ void Program::display() {
 
 	// ---Camera shader data---
 	cam->uploadCamData(terrainshader);
-	terrain->draw();
+	if(simCase != 2){
+		terrain->draw();
+	}
 
 	// ======================== Draw water body ========================
 	glDisable(GL_CULL_FACE);
@@ -332,6 +344,11 @@ void Program::handleKeypress(SDL_Event* event) {
 		break;
 	case SDLK_p:
 		sim = !sim;
+		break;
+	case SDLK_c:
+		if (simCase != 2)
+			break;
+		sgpu->cycleBuffer();
 		break;
 	case SDLK_n:
 		depthWater = false;

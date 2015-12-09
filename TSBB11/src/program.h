@@ -29,6 +29,7 @@
 #include "voxel.h"
 #include "heightField.h"
 #include "xmlParsing.h"
+#include "ShallowGPU.h"
 
 #include "AntTweakBar.h"
 
@@ -67,9 +68,9 @@ private:
 	//HeightField
 	HeightField* hf;
 	//ShallowWater
-	//ShallowGPU sgpu;
+	ShallowGPU* sgpu;
 	// References to shader programs:
-	GLuint terrainshader, skyshader, watershader, depthshader;
+	GLuint terrainshader, skyshader, watershader, depthshader, shallowwatershader;
 
 	// Camera variables:
 	Camera* cam;

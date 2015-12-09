@@ -81,6 +81,9 @@
     <ClCompile Include="src\sdlTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\shallowGPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\GL_utilities.h">
@@ -146,6 +149,9 @@
     <ClInclude Include="src\common\SDL_image.h">
       <Filter>Source Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="src\shallowGPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\mainpage.dox">
@@ -203,6 +209,27 @@
       <Filter>Source Files\Shaders\Compute</Filter>
     </None>
     <None Include="src\shaders\depthshader.frag">
+      <Filter>Source Files\Shaders\Draw</Filter>
+    </None>
+    <None Include="src\shaders\addHeightShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\advectWaterShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\advectVelocityXShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\advectVelocityYShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\updateHeightShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\updateVelocityShader.comp">
+      <Filter>Source Files\Shaders\Compute</Filter>
+    </None>
+    <None Include="src\shaders\shallowwatershader.frag">
       <Filter>Source Files\Shaders\Draw</Filter>
     </None>
   </ItemGroup>

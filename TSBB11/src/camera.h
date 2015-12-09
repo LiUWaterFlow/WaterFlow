@@ -44,10 +44,13 @@ private:
 	glm::mat4 WTVMatrix;
 	glm::mat4 VTPMatrix;
 
+	bool unlocked;
+
 	bool isInCollisionBox(glm::vec3 transVec, bool xz);
 public:
 	Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler* terr);
 
+	void unlock();
 	void rotate(char direction, GLfloat angle);
 	void translate(GLfloat dx, GLfloat dy, GLfloat dz);
 	void forward(GLfloat d);
