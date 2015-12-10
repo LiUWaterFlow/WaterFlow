@@ -7,7 +7,7 @@
 // where N is the vector position.
 // For example P = [1.5 , 2.1, 1.7] time = [1, 3, 8] gives that the pressure is 2.1 between the time 1 and 3.
 // The time vector most be sorted from smalest element to largest.
-void FlowSource::setPressure(std::vector<float> P, std::vector<int> time){
+void FlowSource::setPressure(std::vector<float> P, std::vector<float> time){
   pressure = P;
   pressureTime = time;
 }
@@ -37,15 +37,15 @@ void FlowSource::setRadius(float r){
 }
 
 // This function updates the internal time of the source idealy this should be called att constant intervals e.g. onece evry loop of simulation. It could be expanded with calculating remaining water.
-void FlowSource::update(){
-  currTime++;
+void FlowSource::update(float dt){
+  currTime = currTime + dt;
 }
 
-// This function returns the curent pressure depandeing on the internal time set by the update function.
+// This function returns the curent pressure depending on the internal time set by the update function.
 float FlowSource::getPressure(){
-  int currItr = 0;
+ unsigned int currItr = 0;
   for(auto i = pressureTime.begin(); i !=pressureTime.end(); ++i){
-    if( *i <= currTime) currItr++;
+    if( *i < currTime) currItr++;
     else break;
   }
   if (currItr < pressureTime.size())
@@ -58,7 +58,7 @@ float FlowSource::getPressure(){
 
 // This function returns a thee valued vector with xyz defining the Normal direction at the internal time specified by the update function.
 std::vector<float> FlowSource::getNormal(){  
-  int currItr = 0;
+  unsigned int currItr = 0;
   std::vector<float> err = {0, 0, 0};
   for(auto i = normalTime.begin(); i !=normalTime.end(); ++i){
     if( *i <= currTime) currItr++;
@@ -88,4 +88,18 @@ float FlowSource::getWaterLeft(){
 
 float FlowSource::getRadius(){
   return radius;
+}
+
+
+bool FlowSource::getChange(float dt) {
+  //currPres = FlowSource::getPressure();
+  FlowSource::update(dt);
+  float newPre = FlowSource::getPressure();
+  if(newPre == currPres){
+    return false;
+  }
+  else {
+    currPres = newPre;
+    return true;
+  }  
 }

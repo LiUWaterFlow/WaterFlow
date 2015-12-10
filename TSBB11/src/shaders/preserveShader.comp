@@ -1,0 +1,49 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout (std430,binding = 4) buffer height0
+{
+	float u0[];
+	
+};
+
+layout (std430, binding = 5) buffer height1
+{
+	float u1[];
+	
+};
+
+layout (std430,binding = 6) buffer velocity
+{
+	float v[];
+	
+};
+
+layout (std430,binding = 7) buffer terrainHeight
+{	
+	float terrHeight[];
+	
+};
+
+layout (std430,binding = 8) buffer addition
+{
+	float add[];
+};
+
+uniform ivec2 size; //width height
+
+void main(){
+	//determine where to sample
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	int i = storePos.x;
+	int j = storePos.y;
+
+	//Change these to clamps.
+	//if(i < size.x && j < size.y) {
+		offset = i+j*size.x;
+		u0[offset] +=add[offset];
+		u1[offset] +=1225.0f;
+		v[offset] = 10.0f;
+	//}
+}

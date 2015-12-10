@@ -1,0 +1,76 @@
+#version 430  
+
+layout(local_size_x = 16, local_size_y = 16) in;  
+
+layout (std430, binding = 0) readonly buffer height0 
+{ 
+	float terrHeightIn[];  
+};   
+
+layout (std430, binding = 1) writeonly buffer height1 
+{ 
+	float terrHeightOut[];  
+};  
+
+layout (std430, binding = 2) buffer NoDataCheck 
+{ 
+	uint isNODATA; 
+};  
+
+uniform ivec2 size;  
+
+void main(void){ 
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);  
+
+	int x = clamp(storePos.x, 0, size.x-1); 
+	int y = clamp(storePos.y, 0, size.y-1); 
+	int xplus = clamp(x + 1, 0, size.x-1); 
+	int xminus = clamp(x - 1, 0, size.x-1); 
+	int yplus = clamp(y + 1, 0, size.y-1); 
+	int yminus = clamp(y - 1, 0, size.y-1);  
+	
+	float filtered_color;
+
+	float conf[9];
+	float confSum;
+	conf[0] = float(terrHeightIn[x + y * size.x] > -0.5f);
+	conf[1] = float(terrHeightIn[xplus + y * size.x] > -0.5f);
+	conf[2] = float(terrHeightIn[xminus + y * size.x] > -0.5f);
+	conf[3] = float(terrHeightIn[x + yplus * size.x] > -0.5f);
+	conf[4] = float(terrHeightIn[x + yminus * size.x] > -0.5f);
+	conf[5] = float(terrHeightIn[xplus + yplus * size.x] > -0.5f);
+	conf[6] = float(terrHeightIn[xplus + yminus * size.x] > -0.5f); 
+	conf[7] = float(terrHeightIn[xminus + yplus * size.x] > -0.5f); 
+	conf[8] = float(terrHeightIn[xminus + yminus * size.x] > -0.5f); 
+
+	confSum  = 4 * conf[0]; 
+	confSum += 2 * conf[1]; 
+	confSum += 2 * conf[2]; 
+	confSum += 2 * conf[3]; 
+	confSum += 2 * conf[4]; 
+	confSum += 1 * conf[5]; 
+	confSum += 1 * conf[6]; 
+	confSum += 1 * conf[7]; 
+	confSum += 1 * conf[8]; 
+
+	filtered_color =  4.0 * conf[0] * terrHeightIn[x + y * size.x]; 
+	filtered_color += 2.0 * conf[1] * terrHeightIn[xplus + y * size.x];
+	filtered_color += 2.0 * conf[2] * terrHeightIn[xminus + y * size.x]; 
+	filtered_color += 2.0 * conf[3] * terrHeightIn[x + yplus * size.x]; 
+	filtered_color += 2.0 * conf[4] * terrHeightIn[x + yminus * size.x]; 
+	filtered_color += 1.0 * conf[5] * terrHeightIn[xplus + yplus * size.x]; 
+	filtered_color += 1.0 * conf[6] * terrHeightIn[xplus + yminus * size.x]; 
+	filtered_color += 1.0 * conf[7] * terrHeightIn[xminus + yplus * size.x]; 
+	filtered_color += 1.0 * conf[8] * terrHeightIn[xminus + yminus * size.x]; 
+	filtered_color = filtered_color / confSum;  
+  
+	terrHeightOut[x + y * size.x] = terrHeightIn[x + y * size.x];
+
+	if(confSum > 0.5f && conf[0] < 0.5f)
+	{
+		terrHeightOut[x + y * size.x] =filtered_color;  
+	} else if (confSum < 0.5f && conf[0] < 0.5f) 
+	{
+		atomicAdd(isNODATA, 1); 
+	}
+}  

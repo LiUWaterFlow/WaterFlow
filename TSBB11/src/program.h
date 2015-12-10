@@ -18,17 +18,25 @@
 #	else
 #		include "glew.h"
 #		include "Windows/sdl2/SDL.h"
+#		include "SDL_image.h"
+#		include "sdlTexture.h"
 #	endif
 #endif
 
+#include "shallowGPU.h"
 #include "camera.h"
 #include "readData.h"
 #include "myDrawable.h"
+#include "voxel.h"
+#include "heightField.h"
+#include "xmlParsing.h"
 
 #include "AntTweakBar.h"
 
 class Program {
 private:
+	GLfloat dtSim;
+
 	SDL_Window *screen;
 	SDL_GLContext glcontext;
 
@@ -36,6 +44,7 @@ private:
 
 	bool isRunning;
 	bool mouseHidden;
+	bool depthWater;
 
 	// Time variables
 	GLfloat currentTime;
@@ -46,24 +55,33 @@ private:
 	TwBar *antBar;
 	float heightAtPos, heightAtClickData, heighAtClickProj;
 	double objX, objZ;
-	
+
 	// myDrawables:
-	myDrawable *skycube, *terrain;
+	myDrawable *skycube;
+	myDrawable *terrain, *waterTerrain;
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;
 
+	//Voxgrid
+	Voxelgrid* voxs;
+	//HeightField
+	HeightField* hf;
+	//ShallowWater
+	ShallowGPU* sgpu;
 	// References to shader programs:
-	GLuint terrainshader, skyshader;
+	GLuint terrainshader, skyshader, watershader, depthshader, shallowwatershader;
 
 	// Camera variables:
 	Camera* cam;
 
+	GLuint simCase; ///< Which simulation is to be run.
+
 public:
 	int exec();
-
+	int testVoxels();
 	bool init();
-	
+
 	void handleEvent(SDL_Event* event);
 	void handleKeypress(SDL_Event* event);
 	void handleMouseMove(SDL_Event* event);
@@ -84,7 +102,7 @@ public:
 
 	void clean();
 
-	Program();
+	Program(GLuint simCase);
 	~Program();
 };
 

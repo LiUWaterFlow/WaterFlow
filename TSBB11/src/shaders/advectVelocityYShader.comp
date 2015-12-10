@@ -1,0 +1,148 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout  (std430,binding = 4) readonly buffer height0
+{
+	float water0[];
+	
+};
+
+layout (std430, binding = 5) readonly buffer height1
+{
+	float water1[];	
+};
+
+layout (std430,binding = 6) readonly buffer velocityX
+{
+	float vxin[];
+	
+};
+
+layout (std430,binding = 7) writeonly buffer velocityXout
+{
+	float vxout[];
+	
+};
+
+
+
+layout (std430,binding = 8) readonly buffer velocityY
+{	
+	float vyin[];
+	
+};
+
+
+layout (std430,binding = 9) writeonly buffer velocityYout
+{	
+	float vyout[];
+	
+};
+
+layout (std430,binding = 10) readonly buffer Terrain
+{	
+	float terr[];
+	
+};
+
+
+uniform ivec2 size; //width height
+uniform float dt;
+
+float average(int i, int j){ 
+	i = clamp(i,0,size.x-1);
+	j = clamp(j,0,size.y-1);
+	int ipos = clamp(i+1,0,size.x-1);
+	int jpos = clamp(j+1,0,size.y-1);
+	int imin = clamp(i-1,0,size.x-1);
+	int jmin = clamp(j-1,0,size.y-1);
+		
+	int offset = i+ j*size.x;
+	int offsete = ipos+j*size.x;
+	int offsetw = imin+j*size.x;
+	int offsetn = i+jpos*size.x;
+	int offsets = i+jmin*size.x;
+
+	return 0.2f*(vyin[offset] +vyin[offsete] +vyin[offsetw] +vyin[offsetn] +vyin[offsets]); 
+
+}
+
+
+float bilinjearInterpolation(float point_x, float point_y)
+{
+	//picking out the nearby points
+	int x = int(point_x);
+	int y = int(point_y);
+
+	//picking out the distances to the point from nearby points
+	float s1 = point_x - float(x);
+	float s0 = 1.0f - s1;
+
+	float t1 = point_y - float(y);
+	float t0 = 1.0f - t1;
+	
+
+
+	//Jens hittar på. 	
+	int ypos = clamp(y+1,0,size.y-1);
+	int xpos = clamp(x+1,0,size.x-1);
+	
+	
+	int offset0 = x +y*size.x;
+	int offset1 = x +(ypos)*size.x;
+	int offset2 = xpos +y*size.x;
+	int offset3 = xpos +(ypos)*size.x;
+
+
+	return s0*(t0*vyin[offset0] + t1*vyin[offset1]) +
+		s1*(t0*vyin[offset2] + t1*vyin[offset3]);
+	
+}
+
+
+void main(){
+	//determine where to sample
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	int i = storePos.x;
+	int j = storePos.y;
+	int offset = (i + j*size.x);
+
+	//Change these to clamps.
+	if(i < size.x && j < size.y) {
+		int ipos = clamp(i+1,0,size.x-1);
+		int jpos = clamp(j+1,0,size.y-1);
+		int imin = clamp(i-1,0,size.x-1);
+		int jmin = clamp(j-1,0,size.y-1);
+		
+		float u = 0.0f; // Temporary velocity in x
+		float v = 0.0f; // Temporary velocity in y 
+
+		//Coordinate system HERE! <  is to the right and up.
+
+		int offsetright = ipos+j*size.x;
+		int offsetleft = imin+j*size.x;
+		int offsetup = i+jpos*size.x;
+		int offsetdown = i+jmin*size.x;
+		int offsettopright = ipos+jpos*size.x;
+		int sampX,sampY;
+		
+		
+		
+		u = (vxin[offset] + vxin[offsetright] + vxin[offsetup] +vxin[offsettopright])*0.25f;
+		//u = (vxin[offset] + vxin[offsetright] + vxin[offsetup] + vxin[offsetleft] +vxin[offsetdown])*0.2f;
+		v = vyin[offset];
+		
+		float source_point_x = clamp(float(i)-u*dt,0.0f,float(size.x)-1.0f);//   clamp(float(i)-u*dt, float(i)-1.0f,float(i)+1.0f); // 
+		float source_point_y = clamp(float(j)-v*dt,0.0f,float(size.y)-1.0f); // clamp(float(j)-v*dt, float(j)-1.0f,float(j)+1.0f); //
+		vyout[offset] =bilinjearInterpolation(source_point_x, source_point_y);
+			
+	}
+	
+	if(i < 2 || i ==size.x -1){
+		vyout[offset] = 0.0f;
+	}
+	
+	
+	
+}

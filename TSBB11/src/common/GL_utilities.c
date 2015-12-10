@@ -27,19 +27,30 @@ char* readFile(const char *file)
 	FILE *fptr;
 	long length;
 	char *buf;
-	if (file == NULL)
-		return NULL;
-	fptr = fopen(file, "rb"); /* Open file for reading */
-	if (!fptr) /* Return NULL on failure */
-		return NULL;
-	int temp = fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
-	if (temp != 0) {
-		fprintf(stderr, "Could not allocate space for readFile buffer!\n");
+
+	if (file == NULL) {
 		return NULL;
 	}
-	length = ftell(fptr); /* Find out how many bytes into the file we are */
-	buf = (char*)malloc(length+1); /* Allocate a buffer for the entire length of the file and a null terminator */
 
+	fptr = fopen(file, "rb"); /* Open file for reading */
+	if (!fptr) {
+		fprintf(stderr, "Could not open file: %s!\n", file);
+		return NULL;/* Return NULL on failure */
+	}
+
+	int temp = fseek(fptr, 0, SEEK_END); /* Seek to the end of the file */
+	if (temp != 0) {
+		fprintf(stderr, "Could not seek to end of file!\n");
+		return NULL;
+	}
+
+	length = ftell(fptr); /* Find out how many bytes into the file we are */
+	if (length < 0) {
+		fprintf(stderr, "ftell reported negative length!\n");
+		return NULL;
+	}
+
+	buf = (char*)malloc(length + 1); /* Allocate a buffer for the entire length of the file and a null terminator */
 	if (buf == NULL) {
 		fprintf(stderr, "Could not allocate space for readFile buffer!\n");
 		return NULL;
@@ -452,9 +463,50 @@ FBOstruct *initFBO4(int width, int height, void* data)
 	return fbo;
 }
 
+FBOstruct *initFBO5(int width, int height, void* data) {
+	FBOstruct *fbo = (FBOstruct*)malloc(sizeof(FBOstruct));
+
+	if (fbo == NULL) {
+		fprintf(stderr, "initFBO could not allocate memory for FBO!\n");
+		return NULL;
+	}
+
+	fbo->width = width;
+	fbo->height = height;
+
+	// create objects
+	glGenFramebuffers(1, &fbo->fb); // frame buffer id
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo->fb);
+	glGenTextures(1, &fbo->texid);
+	//fprintf(stderr, "%i \n", fbo->texid);
+	glBindTexture(GL_TEXTURE_2D, fbo->texid);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, data);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->texid, 0);
+
+	CHECK_FRAMEBUFFER_STATUS();
+
+	//fprintf(stderr, "Framebuffer object %d\n", fbo->fb);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	return fbo;
+}
+
 void releaseFBO(FBOstruct *fbo)
 {
 	glDeleteTextures(1, &fbo->texid);
+	glDeleteFramebuffers(1, &fbo->fb);
+	free(fbo); // Allocated using malloc
+}
+
+void releaseFBO2(FBOstruct *fbo, int keepTexture) {
+	if (keepTexture == 0) {
+		glDeleteTextures(1, &fbo->texid);
+	}
 	glDeleteFramebuffers(1, &fbo->fb);
 	free(fbo); // Allocated using malloc
 }

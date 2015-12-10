@@ -4,11 +4,6 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 #include "loadobj.h"
 
 /// @brief Generates a square canvas for FBO drawing
@@ -39,10 +34,10 @@ void releaseModel(Model* m);
 /// @return A float value read from the string.
 float myStrtof(char* strStart, char** strEnd);
 
-#ifdef __cplusplus
-}
-#endif
 
+
+
+GLuint compileComputeShader(const char* location);
 
 
 #endif // UTILITIES_H

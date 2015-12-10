@@ -12,6 +12,21 @@
 #include "program.h"
 
 int main(int argc, char *argv[]) {
-	Program program;
+
+	std::cout << "Which simulation do you want to run?\n";
+	std::cout << "1. Heightfield based water simulation (with xml specified data) \n";
+	std::cout << "2. Navier-Stokes based shallow water simulation on a predefined testcase. (showcase demo). \n";
+	int choice;
+	
+	std::cin >> choice;
+
+	if(choice != 1 && choice != 2)
+	{
+		std::cout << "Invalid option" << std::endl;
+		return -1;
+	}
+	
+	Program program(choice);
+	
 	return program.exec();
 }

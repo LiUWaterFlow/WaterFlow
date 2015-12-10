@@ -1,0 +1,74 @@
+#version 430
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+
+//Since in previous step, (advectWater) we used this as inbuffer and height1 as out. Now we are interested in the new data and want to save it to a out buffer. height0 cotains nothing of value anymore. use it as out data. DO NOT SWAP IN CPP.
+
+layout  (std430,binding = 4) writeonly buffer height0
+{
+	float water0[];
+	
+};
+
+layout (std430, binding = 5) readonly buffer height1
+{
+	float water1[];	
+};
+
+
+layout (std430,binding = 7) readonly buffer velocityXout
+{
+	float vxout[];
+	
+};
+
+
+layout (std430,binding = 9) readonly buffer velocityYout
+{	
+	float vyout[];
+	
+};
+
+layout (std430,binding = 10) readonly buffer Terrain
+{	
+	float terr[];
+	
+};
+
+
+uniform ivec2 size; //width height
+uniform float dt;
+
+void main(){
+	//determine where to sample
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	int i = storePos.x;
+	int j = storePos.y;
+	int offset = (i + j*size.x);
+
+	//Change these to clamps.
+	if(i < size.x && j < size.y) {
+		int ipos = clamp(i+1,0,size.x-1);
+		int jpos = clamp(j+1,0,size.y-1);
+		int imin = clamp(i-1,0,size.x-1);
+		int jmin = clamp(j-1,0,size.y-1);
+		
+		int offsetXPlus = ipos+j*size.x;
+		int offsetXMinus = imin+j*size.x;
+		int offsetYMinus = i+jmin*size.x;
+		int offsetYPlus = i+jpos*size.x;
+		
+		int xOrigin = i - int((vxout[offsetXPlus]- vxout[offset])*dt);
+		int yOrigin = j - int((vyout[offsetYPlus] - vyout[offset])*dt);
+		
+		float deltaHeight = -0.5f*water1[offset]*((vxout[offsetXPlus]- vxout[offset])+(vyout[offsetYPlus] - vyout[offset]));
+		/* For terrain some sort of clamp for water availability should be used.
+		deltaHeight = clamp(deltaHeight, -water1[offset]*1000.0f,water1[xOrigin+yOrigin*size.x]);
+		*/
+		
+		
+		water0[offset] = water1[offset]+deltaHeight*dt;
+			
+	}
+}
