@@ -199,11 +199,15 @@ void HeightField::initGPU() {
 	float* u = new float[texWidth*texHeight];
 	float* v = new float[texWidth*texHeight];
 	float* f = new float[texWidth*texHeight];
+	std::fill_n(u, texWidth*texHeight, 0.0f);
 	std::fill_n(v, texWidth*texHeight, 0.0f);
 	std::fill_n(f, texWidth*texHeight, 0.0f);
 
 	initFloodFill(u);
-
+	
+	std::valarray<float> fvalarray(terr->getData(), texWidth*texHeight);
+	fvalarray = fvalarray - 0.0001f;
+	
 	fieldProgram = compileComputeShader("src/shaders/fieldShader.comp"); 
 	addProgram = compileComputeShader("src/shaders/addFlowShader.comp");
 
@@ -224,7 +228,7 @@ void HeightField::initGPU() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[3]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData, terr->getData(), GL_STATIC_DRAW);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData, &fvalarray[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[4]);
@@ -238,9 +242,6 @@ void HeightField::initGPU() {
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-
-	std::valarray<float> myvalarray(u, texWidth*texHeight);
-	vol0 = myvalarray.sum();
 
 	delete u;
 	delete v;

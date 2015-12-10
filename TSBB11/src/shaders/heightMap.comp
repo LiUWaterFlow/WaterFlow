@@ -23,7 +23,8 @@ layout (std430, binding = 3) readonly buffer height
 };
 
 uniform ivec2 size; //width height
-
+uniform float scale; //height scale for terrain
+layout (rgba32f, binding = 0) readonly uniform image2D textureOut;
 void main() {
 	//determine where to sample
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
@@ -36,10 +37,11 @@ void main() {
 	int yminus = clamp(y - 1, 0, size.y-1);  
 
 	int offset = (x + y * size.x) * 3;
-
+	float terr = imageLoad(textureOut,ivec2(x,y)).w;
+	float ourTerr = terrHeight[x+y*size.x];
 	//write to position (x,z) from where we read, y is data we read.
 	position[offset + 0] = float(x);
-	position[offset + 1] = terrHeight[x + y * size.x];
+	position[offset + 1] = (ourTerr < terr*scale) ? ourTerr-100.0f  : ourTerr;
 	position[offset + 2] = float(y);
 
 	//texCoord = x/width, z/height (typ)

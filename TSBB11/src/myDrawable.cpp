@@ -303,8 +303,12 @@ void HeightMap::update() {
 
 	glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, drawBuffers);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, heightBuffer);
-
+	
+	glBindImageTexture(0, myDrawable::texIDs[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+	
 	glUseProgram(heightMapProgram);
+	
+	glUniform1f(glGetUniformLocation(heightMapProgram, "scale"), dataTerrainHeight);
 	glUniform2i(glGetUniformLocation(heightMapProgram, "size"), dataWidth, dataHeight);
 	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
 
