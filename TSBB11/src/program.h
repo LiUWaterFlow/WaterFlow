@@ -76,6 +76,8 @@ private:
 	Camera* cam;
 
 	GLuint simCase; ///< Which simulation is to be run.
+	
+	bool sim; ///<Determines if the simulation is paused or not.
 
 public:
 	int exec();

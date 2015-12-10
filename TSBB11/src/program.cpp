@@ -8,12 +8,13 @@
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
-bool updateRender;
-bool sim = true;
+
 Program::Program(GLuint simCaseIn) {
 	simCase = simCaseIn;
 	screenW = 800;
 	screenH = 800;
+	
+	sim = true;
 
 	isRunning = true;
 	mouseHidden = true;
@@ -25,7 +26,7 @@ Program::Program(GLuint simCaseIn) {
 	// Time init
 	currentTime = (GLfloat)SDL_GetTicks();
 	deltaTime = 0;
-	dtSim = 1.0f / (20.0f*30.0f);
+	dtSim = 1.0f / (2.0f*20.0f*30.0f);
 }
 
 Program::~Program() {}
