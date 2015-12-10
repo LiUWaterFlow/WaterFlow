@@ -101,8 +101,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 This is the complete list of members for <a class="el" href="class_flow_source.html">FlowSource</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="class_flow_source.html#a71880ec0344823f84534e3d922a478ed">currTime</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>currPres</b> (defined in <a class="el" href="class_flow_source.html">FlowSource</a>)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb">currTime</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#abd2a071fb63ddec10639f2b6d31d1222">FlowSource</a>()</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [inline]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getChange</b>(float dt) (defined in <a class="el" href="class_flow_source.html">FlowSource</a>)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801">getNormal</a>()</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a3cf14642f55c4d082a1ba91d2948fa92">getPosition</a>()</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393">getPressure</a>()</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
@@ -111,15 +113,15 @@ This is the complete list of members for <a class="el" href="class_flow_source.h
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a3b2c09672dc3ff5acd79cdf1c5cd034c">normal</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a7881befa051a1e5c2238a65ecec851f4">normalTime</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a2d84b034ba95f365e185cf25b5ebd6cb">pressure</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_flow_source.html#a494f7b25c8e5e68ce84f8dad0f5e5eae">pressureTime</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b">pressureTime</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a0fa7b53fc621d46afbe53125fec56ab7">radius</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a5bad4132d2adcd6c0661bf7d06f71b28">setNormal</a>(std::vector&lt; std::vector&lt; float &gt; &gt; N, std::vector&lt; int &gt; t)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#aecc7891570af30b5fc70dfe8bfd4637b">setPosition</a>(int x, int y, int z)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_flow_source.html#ad1836570f70f250f53f5fc320ba2e564">setPressure</a>(std::vector&lt; float &gt; P, std::vector&lt; int &gt; t)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_flow_source.html#a52620b99484ff3d28cab045b9c3e831a">setPressure</a>(std::vector&lt; float &gt; P, std::vector&lt; float &gt; t)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09">setRadius</a>(float r)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716">setTotalWater</a>(float tot)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a">totalWater</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_flow_source.html#ad5d82305b5dd80f43882bda69f3c6111">update</a>()</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d">update</a>(float dt)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>xpos</b> (defined in <a class="el" href="class_flow_source.html">FlowSource</a>)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>ypos</b> (defined in <a class="el" href="class_flow_source.html">FlowSource</a>)</td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_flow_source.html#a9635d50a05d0cb2f89f3380bb59fc6a5">zpos</a></td><td><a class="el" href="class_flow_source.html">FlowSource</a></td><td><code> [private]</code></td></tr>
@@ -143,7 +145,7 @@ This is the complete list of members for <a class="el" href="class_flow_source.h
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>Waterflow: src/xml/flowSource.cpp Source File</title>
+<title>Waterflow: src/flowSource.cpp Source File</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -95,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">src/xml/flowSource.cpp</div>  </div>
+<div class="title">src/flowSource.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;flowSource.h&quot;</span>
@@ -107,9 +107,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00007"></a>00007 <span class="comment">// where N is the vector position.</span>
 <a name="l00008"></a>00008 <span class="comment">// For example P = [1.5 , 2.1, 1.7] time = [1, 3, 8] gives that the pressure is 2.1 between the time 1 and 3.</span>
 <a name="l00009"></a>00009 <span class="comment">// The time vector most be sorted from smalest element to largest.</span>
-<a name="l00010"></a><a class="code" href="class_flow_source.html#ad1836570f70f250f53f5fc320ba2e564">00010</a> <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#ad1836570f70f250f53f5fc320ba2e564" title="Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values...">FlowSource::setPressure</a>(std::vector&lt;float&gt; P, std::vector&lt;int&gt; time){
+<a name="l00010"></a><a class="code" href="class_flow_source.html#a52620b99484ff3d28cab045b9c3e831a">00010</a> <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a52620b99484ff3d28cab045b9c3e831a" title="Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values...">FlowSource::setPressure</a>(std::vector&lt;float&gt; P, std::vector&lt;float&gt; time){
 <a name="l00011"></a>00011   <a class="code" href="class_flow_source.html#a2d84b034ba95f365e185cf25b5ebd6cb" title="Vector containing pressure values.">pressure</a> = P;
-<a name="l00012"></a>00012   <a class="code" href="class_flow_source.html#a494f7b25c8e5e68ce84f8dad0f5e5eae" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a> = time;
+<a name="l00012"></a>00012   <a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a> = time;
 <a name="l00013"></a>00013 }
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015 
@@ -137,20 +137,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00037"></a>00037 }
 <a name="l00038"></a>00038 
 <a name="l00039"></a>00039 <span class="comment">// This function updates the internal time of the source idealy this should be called att constant intervals e.g. onece evry loop of simulation. It could be expanded with calculating remaining water.</span>
-<a name="l00040"></a><a class="code" href="class_flow_source.html#ad5d82305b5dd80f43882bda69f3c6111">00040</a> <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#ad5d82305b5dd80f43882bda69f3c6111" title="This function updates the source by progressing the internal source time. this should be called regul...">FlowSource::update</a>(){
-<a name="l00041"></a>00041   <a class="code" href="class_flow_source.html#a71880ec0344823f84534e3d922a478ed" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>++;
+<a name="l00040"></a><a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d">00040</a> <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">FlowSource::update</a>(<span class="keywordtype">float</span> dt){
+<a name="l00041"></a>00041   <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> = <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> + dt;
 <a name="l00042"></a>00042 }
 <a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="comment">// This function returns the curent pressure depandeing on the internal time set by the update function.</span>
+<a name="l00044"></a>00044 <span class="comment">// This function returns the curent pressure depending on the internal time set by the update function.</span>
 <a name="l00045"></a><a class="code" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393">00045</a> <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393" title="This function finds the curent pressure depandeing on the internal time set by the update function...">FlowSource::getPressure</a>(){
-<a name="l00046"></a>00046   <span class="keywordtype">int</span> currItr = 0;
-<a name="l00047"></a>00047   <span class="keywordflow">for</span>(<span class="keyword">auto</span> i = <a class="code" href="class_flow_source.html#a494f7b25c8e5e68ce84f8dad0f5e5eae" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.begin(); i !=<a class="code" href="class_flow_source.html#a494f7b25c8e5e68ce84f8dad0f5e5eae" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.end(); ++i){
-<a name="l00048"></a>00048     <span class="keywordflow">if</span>( *i &lt;= <a class="code" href="class_flow_source.html#a71880ec0344823f84534e3d922a478ed" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>) currItr++;
+<a name="l00046"></a>00046  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> currItr = 0;
+<a name="l00047"></a>00047   <span class="keywordflow">for</span>(<span class="keyword">auto</span> i = <a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.begin(); i !=<a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.end(); ++i){
+<a name="l00048"></a>00048     <span class="keywordflow">if</span>( *i &lt; <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>) currItr++;
 <a name="l00049"></a>00049     <span class="keywordflow">else</span> <span class="keywordflow">break</span>;
 <a name="l00050"></a>00050   }
-<a name="l00051"></a>00051   <span class="keywordflow">if</span> (currItr &lt; <a class="code" href="class_flow_source.html#a494f7b25c8e5e68ce84f8dad0f5e5eae" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.size())
+<a name="l00051"></a>00051   <span class="keywordflow">if</span> (currItr &lt; <a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.size())
 <a name="l00052"></a>00052     <span class="keywordflow">return</span> <a class="code" href="class_flow_source.html#a2d84b034ba95f365e185cf25b5ebd6cb" title="Vector containing pressure values.">pressure</a>.at(currItr);
-<a name="l00053"></a>00053   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="class_flow_source.html#a494f7b25c8e5e68ce84f8dad0f5e5eae" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.back() == -1)
+<a name="l00053"></a>00053   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>.back() == -1)
 <a name="l00054"></a>00054     <span class="keywordflow">return</span> <a class="code" href="class_flow_source.html#a2d84b034ba95f365e185cf25b5ebd6cb" title="Vector containing pressure values.">pressure</a>.back();
 <a name="l00055"></a>00055   <span class="keywordflow">else</span>
 <a name="l00056"></a>00056     <span class="keywordflow">return</span> 0;
@@ -158,10 +158,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059 <span class="comment">// This function returns a thee valued vector with xyz defining the Normal direction at the internal time specified by the update function.</span>
 <a name="l00060"></a><a class="code" href="class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801">00060</a> std::vector&lt;float&gt; <a class="code" href="class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801" title="This function finds a thee valued vector with xyz defining the Normal direction at the internal time ...">FlowSource::getNormal</a>(){  
-<a name="l00061"></a>00061   <span class="keywordtype">int</span> currItr = 0;
+<a name="l00061"></a>00061   <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> currItr = 0;
 <a name="l00062"></a>00062   std::vector&lt;float&gt; err = {0, 0, 0};
 <a name="l00063"></a>00063   <span class="keywordflow">for</span>(<span class="keyword">auto</span> i = <a class="code" href="class_flow_source.html#a7881befa051a1e5c2238a65ecec851f4" title="&quot;-1&quot; specifies an infinite source.">normalTime</a>.begin(); i !=<a class="code" href="class_flow_source.html#a7881befa051a1e5c2238a65ecec851f4" title="&quot;-1&quot; specifies an infinite source.">normalTime</a>.end(); ++i){
-<a name="l00064"></a>00064     <span class="keywordflow">if</span>( *i &lt;= <a class="code" href="class_flow_source.html#a71880ec0344823f84534e3d922a478ed" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>) currItr++;
+<a name="l00064"></a>00064     <span class="keywordflow">if</span>( *i &lt;= <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>) currItr++;
 <a name="l00065"></a>00065     <span class="keywordflow">else</span> <span class="keywordflow">break</span>;
 <a name="l00066"></a>00066   }
 <a name="l00067"></a>00067   <span class="keywordflow">if</span> (currItr &lt; <a class="code" href="class_flow_source.html#a7881befa051a1e5c2238a65ecec851f4" title="&quot;-1&quot; specifies an infinite source.">normalTime</a>.size())
@@ -189,6 +189,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00089"></a><a class="code" href="class_flow_source.html#ac3563fd62ddc0068eaf86035654ea721">00089</a> <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#ac3563fd62ddc0068eaf86035654ea721" title="Gets the radius of the flow source.">FlowSource::getRadius</a>(){
 <a name="l00090"></a>00090   <span class="keywordflow">return</span> <a class="code" href="class_flow_source.html#a0fa7b53fc621d46afbe53125fec56ab7" title="The radius of the source.">radius</a>;
 <a name="l00091"></a>00091 }
+<a name="l00092"></a>00092 
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 <span class="keywordtype">bool</span> FlowSource::getChange(<span class="keywordtype">float</span> dt) {
+<a name="l00095"></a>00095   <span class="comment">//currPres = FlowSource::getPressure();</span>
+<a name="l00096"></a>00096   <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">FlowSource::update</a>(dt);
+<a name="l00097"></a>00097   <span class="keywordtype">float</span> newPre = <a class="code" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393" title="This function finds the curent pressure depandeing on the internal time set by the update function...">FlowSource::getPressure</a>();
+<a name="l00098"></a>00098   <span class="keywordflow">if</span>(newPre == currPres){
+<a name="l00099"></a>00099     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00100"></a>00100   }
+<a name="l00101"></a>00101   <span class="keywordflow">else</span> {
+<a name="l00102"></a>00102     currPres = newPre;
+<a name="l00103"></a>00103     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00104"></a>00104   }  
+<a name="l00105"></a>00105 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -209,7 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>flowSource.cpp</b>      </li>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

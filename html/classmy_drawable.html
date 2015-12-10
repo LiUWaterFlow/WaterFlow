@@ -98,13 +98,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">myDrawable Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="myDrawable" -->
-<p>Inherited by <a class="el" href="class_sky_cube.html">SkyCube</a>, and <a class="el" href="class_terrain.html">Terrain</a>.</p>
+<p>Inherited by <a class="el" href="class_height_map.html">HeightMap</a>, and <a class="el" href="class_sky_cube.html">SkyCube</a>.</p>
 
 <p><a href="classmy_drawable-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -114,16 +116,30 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>myDrawable</b> (GLuint program)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fee23ede2291e4d8ceecc4e6056cfd6"></a><!-- doxytag: member="myDrawable::draw" ref="a7fee23ede2291e4d8ceecc4e6056cfd6" args="()=0" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>draw</b> ()=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a120ae902ac9ce680b8f87418e5228ec1"></a><!-- doxytag: member="myDrawable::update" ref="a120ae902ac9ce680b8f87418e5228ec1" args="()=0" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()=0</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5e3db716441b09e8cfd227a5dec73d4"></a><!-- doxytag: member="myDrawable::setLights" ref="ac5e3db716441b09e8cfd227a5dec73d4" args="()" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>setLights</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1e4f3c0f76c8dd25db03301f2498e7c"></a><!-- doxytag: member="myDrawable::setTextures" ref="ac1e4f3c0f76c8dd25db03301f2498e7c" args="(GLuint *size)" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>setTextures</b> (GLuint *size)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a757e966a474ba6bbb521213b8ea9a7d4"></a><!-- doxytag: member="myDrawable::MTWMatrix" ref="a757e966a474ba6bbb521213b8ea9a7d4" args="" -->
-glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>MTWMatrix</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09112938b41875f269a5b70381b2a0e0"></a><!-- doxytag: member="myDrawable::program" ref="a09112938b41875f269a5b70381b2a0e0" args="" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>program</b></td></tr>
+<tr><td colspan="2"><h2><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd00d2d3c625490d9ec0d5bf7a194a5f"></a><!-- doxytag: member="myDrawable::lightBuffer" ref="abd00d2d3c625490d9ec0d5bf7a194a5f" args="" -->
+static GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>lightBuffer</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac323ac4af8a3c0963f0ff6160bfac4c1"></a><!-- doxytag: member="myDrawable::lightParam" ref="ac323ac4af8a3c0963f0ff6160bfac4c1" args="[2]" -->
+static <a class="el" href="struct_light_params.html">LightParams</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lightParam</b> [2]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b79c2bb61f34db6e0bd14d8c2b66108"></a><!-- doxytag: member="myDrawable::texIDs" ref="a3b79c2bb61f34db6e0bd14d8c2b66108" args="[TOTAL_TEXTURES]" -->
+static GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>texIDs</b> [TOTAL_TEXTURES]</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00012">12</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
+<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00036">36</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a></li>
 <li>src/<a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a></li>
@@ -148,7 +164,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>program</b></td></t
     <ul>
       <li class="navelem"><a class="el" href="classmy_drawable.html">myDrawable</a>      </li>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

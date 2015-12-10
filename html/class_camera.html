@@ -98,6 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Camera Class Reference</div>  </div>
@@ -108,8 +109,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a77314746d2714b3c9d3f89973b2280"></a><!-- doxytag: member="Camera::Camera" ref="a8a77314746d2714b3c9d3f89973b2280" args="(glm::vec3 startPos, int *initScreenW, int *initScreenH)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (glm::vec3 startPos, int *initScreenW, int *initScreenH)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2951080d072c5aeeb309e96bba7b850c"></a><!-- doxytag: member="Camera::Camera" ref="a2951080d072c5aeeb309e96bba7b850c" args="(glm::vec3 startPos, int *initScreenW, int *initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler *terr)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (glm::vec3 startPos, int *initScreenW, int *initScreenH, int tH, int tW, int xzL, int yLL, int yLH, <a class="el" href="class_data_handler.html">DataHandler</a> *terr)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad15c730764446cd3f7018a84d2a60cbc"></a><!-- doxytag: member="Camera::changeLookAtPos" ref="ad15c730764446cd3f7018a84d2a60cbc" args="(int xrel, int yrel)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>changeLookAtPos</b> (int xrel, int yrel)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5bb4027c7c7cf9b621066ce854ba2903"></a><!-- doxytag: member="Camera::forward" ref="a5bb4027c7c7cf9b621066ce854ba2903" args="(GLfloat d)" -->
@@ -138,12 +139,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>strafe</b> (GLfloat d
 void&#160;</td><td class="memItemRight" valign="bottom"><b>toggleFrozen</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41b4ad5284c4441cb7db25a26a708a1e"></a><!-- doxytag: member="Camera::translate" ref="a41b4ad5284c4441cb7db25a26a708a1e" args="(GLfloat dx, GLfloat dy, GLfloat dz)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>translate</b> (GLfloat dx, GLfloat dy, GLfloat dz)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99f935c628b80d7dcbd77ac124a612b9"></a><!-- doxytag: member="Camera::unlock" ref="a99f935c628b80d7dcbd77ac124a612b9" args="()" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>unlock</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46444dace430a4bda10b839055cf7555"></a><!-- doxytag: member="Camera::updateVTP" ref="a46444dace430a4bda10b839055cf7555" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateVTP</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ca14384985f1896f2bfc53cc0cb9fd1"></a><!-- doxytag: member="Camera::updateWTV" ref="a1ca14384985f1896f2bfc53cc0cb9fd1" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateWTV</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22c3e0d7dd4f7c44d6a33f01cd88e397"></a><!-- doxytag: member="Camera::uploadCamData" ref="a22c3e0d7dd4f7c44d6a33f01cd88e397" args="(GLuint program)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>uploadCamData</b> (GLuint program)</td></tr>
+<tr><td colspan="2"><h2><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae574bf2e47b09e9b2eff62a43492e29c"></a><!-- doxytag: member="Camera::isInCollisionBox" ref="ae574bf2e47b09e9b2eff62a43492e29c" args="(glm::vec3 transVec, bool xz)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isInCollisionBox</b> (glm::vec3 transVec, bool xz)</td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85ac2037f87011d6a5e886c0885d8a12"></a><!-- doxytag: member="Camera::drawDistance" ref="a85ac2037f87011d6a5e886c0885d8a12" args="" -->
@@ -164,8 +171,16 @@ int *&#160;</td><td class="memItemRight" valign="bottom"><b>screenH</b></td></tr
 int *&#160;</td><td class="memItemRight" valign="bottom"><b>screenW</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a308e92b5d3ef0eea5cac7745df6e28f4"></a><!-- doxytag: member="Camera::speed" ref="a308e92b5d3ef0eea5cac7745df6e28f4" args="" -->
 GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>speed</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d29631b17e1a26aed28079d2aae00fe"></a><!-- doxytag: member="Camera::terrain" ref="a6d29631b17e1a26aed28079d2aae00fe" args="" -->
+<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>terrain</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac617dc2d15e59a6706958983b69d6d42"></a><!-- doxytag: member="Camera::terrH" ref="ac617dc2d15e59a6706958983b69d6d42" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>terrH</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae138a1cf2cb3a0f36a8f9c266cab459b"></a><!-- doxytag: member="Camera::terrW" ref="ae138a1cf2cb3a0f36a8f9c266cab459b" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>terrW</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96ca8cb9022eaa79ed126224976e7934"></a><!-- doxytag: member="Camera::theta" ref="a96ca8cb9022eaa79ed126224976e7934" args="" -->
 float&#160;</td><td class="memItemRight" valign="bottom"><b>theta</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53c3290dae594a53daa86ae013eef783"></a><!-- doxytag: member="Camera::unlocked" ref="a53c3290dae594a53daa86ae013eef783" args="" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>unlocked</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fe5f351380fb118ffc600591769f049"></a><!-- doxytag: member="Camera::up" ref="a3fe5f351380fb118ffc600591769f049" args="" -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>up</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6394b194025e356c79b753506d8ed256"></a><!-- doxytag: member="Camera::VTPMatrix" ref="a6394b194025e356c79b753506d8ed256" args="" -->
@@ -174,10 +189,16 @@ glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>VTPMatrix</b></t
 glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>WTVMatrix</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4142ba6c032bb34f4febeab8abae3ea"></a><!-- doxytag: member="Camera::x" ref="af4142ba6c032bb34f4febeab8abae3ea" args="" -->
 int&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f8ac1c7414439ff508c5d7efb3db70a"></a><!-- doxytag: member="Camera::xzLim" ref="a7f8ac1c7414439ff508c5d7efb3db70a" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>xzLim</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0652c54aa165cc8c16e126855686666"></a><!-- doxytag: member="Camera::yLimHi" ref="ab0652c54aa165cc8c16e126855686666" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>yLimHi</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd7ef4f134330d58d44247f2279a5bd4"></a><!-- doxytag: member="Camera::yLimLo" ref="abd7ef4f134330d58d44247f2279a5bd4" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>yLimLo</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="camera_8h_source.html#l00027">27</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
+<p>Definition at line <a class="el" href="camera_8h_source.html#l00028">28</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="camera_8h_source.html">camera.h</a></li>
 <li>src/<a class="el" href="camera_8cpp_source.html">camera.cpp</a></li>
@@ -202,7 +223,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="class_camera.html">Camera</a>      </li>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

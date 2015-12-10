@@ -1,6 +1,6 @@
 var class_camera =
 [
-    [ "Camera", "class_camera.html#a8a77314746d2714b3c9d3f89973b2280", null ],
+    [ "Camera", "class_camera.html#a2951080d072c5aeeb309e96bba7b850c", null ],
     [ "changeLookAtPos", "class_camera.html#ad15c730764446cd3f7018a84d2a60cbc", null ],
     [ "forward", "class_camera.html#a5bb4027c7c7cf9b621066ce854ba2903", null ],
     [ "getPos", "class_camera.html#ae16078a9e30e106ae99679d1d652f3e9", null ],
@@ -10,11 +10,13 @@ var class_camera =
     [ "getSpeedPtr", "class_camera.html#a32aa8f4d574cabd4be1094abb03bb35b", null ],
     [ "getVTP", "class_camera.html#a47e3bbb880512849a52370cbeb91e102", null ],
     [ "getWTV", "class_camera.html#ac91eeb059f63900686a3916b516c38c8", null ],
+    [ "isInCollisionBox", "class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c", null ],
     [ "jump", "class_camera.html#a2c3fec1b1517f85faf6e91f1f8967da6", null ],
     [ "rotate", "class_camera.html#a8476d85cb5c6f33cf8efadc75d749131", null ],
     [ "strafe", "class_camera.html#a80bb311de03118d65633fc3e147da16b", null ],
     [ "toggleFrozen", "class_camera.html#a0fea244394e759a726b1c98b9d2ce9dc", null ],
     [ "translate", "class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e", null ],
+    [ "unlock", "class_camera.html#a99f935c628b80d7dcbd77ac124a612b9", null ],
     [ "updateVTP", "class_camera.html#a46444dace430a4bda10b839055cf7555", null ],
     [ "updateWTV", "class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1", null ],
     [ "uploadCamData", "class_camera.html#a22c3e0d7dd4f7c44d6a33f01cd88e397", null ],
@@ -27,9 +29,16 @@ var class_camera =
     [ "screenH", "class_camera.html#a171ba4cc38bb347365027677163f8c1d", null ],
     [ "screenW", "class_camera.html#a05d97743204fc0e843dc20b223e56529", null ],
     [ "speed", "class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4", null ],
+    [ "terrain", "class_camera.html#a6d29631b17e1a26aed28079d2aae00fe", null ],
+    [ "terrH", "class_camera.html#ac617dc2d15e59a6706958983b69d6d42", null ],
+    [ "terrW", "class_camera.html#ae138a1cf2cb3a0f36a8f9c266cab459b", null ],
     [ "theta", "class_camera.html#a96ca8cb9022eaa79ed126224976e7934", null ],
+    [ "unlocked", "class_camera.html#a53c3290dae594a53daa86ae013eef783", null ],
     [ "up", "class_camera.html#a3fe5f351380fb118ffc600591769f049", null ],
     [ "VTPMatrix", "class_camera.html#a6394b194025e356c79b753506d8ed256", null ],
     [ "WTVMatrix", "class_camera.html#aebec47ff550163b0fd4516c8ae8d328f", null ],
-    [ "x", "class_camera.html#af4142ba6c032bb34f4febeab8abae3ea", null ]
+    [ "x", "class_camera.html#af4142ba6c032bb34f4febeab8abae3ea", null ],
+    [ "xzLim", "class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a", null ],
+    [ "yLimHi", "class_camera.html#ab0652c54aa165cc8c16e126855686666", null ],
+    [ "yLimLo", "class_camera.html#abd7ef4f134330d58d44247f2279a5bd4", null ]
 ];

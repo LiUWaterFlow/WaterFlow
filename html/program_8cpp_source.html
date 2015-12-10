@@ -104,281 +104,388 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00004"></a>00004 <span class="preprocessor">#include &quot;<a class="code" href="program_8h.html" title="Contains the main structure fuctions.">program.h</a>&quot;</span>
 <a name="l00005"></a>00005 
 <a name="l00006"></a>00006 <span class="preprocessor">#include &quot;GL_utilities.h&quot;</span>
-<a name="l00007"></a>00007 
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;voxelTesting.h&quot;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &quot;gtc/type_ptr.hpp&quot;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 Program::Program() {
-<a name="l00012"></a>00012     screenW = 800;
-<a name="l00013"></a>00013     screenH = 800;
-<a name="l00014"></a>00014 
-<a name="l00015"></a>00015     isRunning = <span class="keyword">true</span>;
-<a name="l00016"></a>00016     mouseHidden = <span class="keyword">true</span>;
+<a name="l00011"></a>00011 <span class="keywordtype">bool</span> updateRender;
+<a name="l00012"></a>00012 <span class="keywordtype">bool</span> sim = <span class="keyword">true</span>;
+<a name="l00013"></a>00013 Program::Program(GLuint simCaseIn) {
+<a name="l00014"></a>00014     <a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> = simCaseIn;
+<a name="l00015"></a>00015     screenW = 800;
+<a name="l00016"></a>00016     screenH = 800;
 <a name="l00017"></a>00017 
-<a name="l00018"></a>00018     heightAtClickData = 0.0f;
-<a name="l00019"></a>00019     heighAtClickProj = 0.0f;
-<a name="l00020"></a>00020 
-<a name="l00021"></a>00021     <span class="comment">// Time init</span>
-<a name="l00022"></a>00022     currentTime = (GLfloat)SDL_GetTicks();
-<a name="l00023"></a>00023     deltaTime = 0;
-<a name="l00024"></a>00024 }
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 Program::~Program() {}
-<a name="l00027"></a>00027 
-<a name="l00028"></a>00028 <span class="keywordtype">int</span> Program::exec() {
-<a name="l00029"></a>00029     <span class="keywordflow">if</span> (!init()) <span class="keywordflow">return</span> -1;
+<a name="l00018"></a>00018     isRunning = <span class="keyword">true</span>;
+<a name="l00019"></a>00019     mouseHidden = <span class="keyword">true</span>;
+<a name="l00020"></a>00020     depthWater = <span class="keyword">false</span>;
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022     heightAtClickData = 0.0f;
+<a name="l00023"></a>00023     heighAtClickProj = 0.0f;
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025     <span class="comment">// Time init</span>
+<a name="l00026"></a>00026     currentTime = (GLfloat)SDL_GetTicks();
+<a name="l00027"></a>00027     deltaTime = 0;
+<a name="l00028"></a>00028     dtSim = 1.0f / (20.0f*30.0f);
+<a name="l00029"></a>00029 }
 <a name="l00030"></a>00030 
-<a name="l00031"></a>00031     SDL_Event Event;
+<a name="l00031"></a>00031 Program::~Program() {}
 <a name="l00032"></a>00032 
-<a name="l00033"></a>00033     <span class="keywordflow">while</span> (isRunning) {
-<a name="l00034"></a>00034         timeUpdate();
-<a name="l00035"></a>00035         <span class="keywordflow">while</span> (SDL_PollEvent(&amp;Event)) handleEvent(&amp;Event);
-<a name="l00036"></a>00036         checkKeys();
-<a name="l00037"></a>00037         update();
-<a name="l00038"></a>00038         display();
-<a name="l00039"></a>00039     }
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041     clean();
-<a name="l00042"></a>00042     <span class="keywordflow">return</span> 0;
-<a name="l00043"></a>00043 }
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 <span class="keywordtype">bool</span> Program::init() {
-<a name="l00046"></a>00046     <span class="comment">// SDL, glew and OpenGL init</span>
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048     <span class="keywordflow">if</span> (SDL_Init(SDL_INIT_VIDEO) != 0) {
-<a name="l00049"></a>00049         fprintf(stderr, <span class="stringliteral">&quot;Failed to initialise SDL: %s&quot;</span>, SDL_GetError());
-<a name="l00050"></a>00050         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00051"></a>00051     }
+<a name="l00033"></a>00033 <span class="keywordtype">int</span> Program::exec() {
+<a name="l00034"></a>00034     
+<a name="l00035"></a>00035     <span class="keywordflow">if</span> (!init()) <span class="keywordflow">return</span> -1;
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037     SDL_Event Event;
+<a name="l00038"></a>00038     
+<a name="l00039"></a>00039     <span class="keywordflow">while</span> (isRunning) {
+<a name="l00040"></a>00040         timeUpdate();
+<a name="l00041"></a>00041         <span class="keywordflow">while</span> (SDL_PollEvent(&amp;Event)) handleEvent(&amp;Event);
+<a name="l00042"></a>00042         checkKeys();
+<a name="l00043"></a>00043         update();
+<a name="l00044"></a>00044         display();
+<a name="l00045"></a>00045     }
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047     clean();
+<a name="l00048"></a>00048     <span class="keywordflow">return</span> 0;
+<a name="l00049"></a>00049 }
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051 <span class="keywordtype">int</span> Program::testVoxels() {
 <a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="preprocessor">    #ifdef __APPLE__</span>
-<a name="l00054"></a>00054 <span class="preprocessor"></span>    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-<a name="l00055"></a>00055     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+<a name="l00053"></a>00053     <span class="keywordflow">if</span> (!init()) <span class="keywordflow">return</span> -1;
+<a name="l00054"></a>00054     SDL_SetRelativeMouseMode(SDL_FALSE);
+<a name="l00055"></a>00055     voxelTest::mainTest(dataHandler);
 <a name="l00056"></a>00056 
-<a name="l00057"></a>00057     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-<a name="l00058"></a>00058 <span class="preprocessor">    #endif</span>
-<a name="l00059"></a>00059 <span class="preprocessor"></span>
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061     screen = SDL_CreateWindow(<span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenW, screenH, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-<a name="l00062"></a>00062     <span class="keywordflow">if</span> (screen == 0) {
-<a name="l00063"></a>00063         fprintf(stderr, <span class="stringliteral">&quot;Failed to set Video Mode: %s&quot;</span>, SDL_GetError());
-<a name="l00064"></a>00064         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00065"></a>00065     }
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068     glcontext = SDL_GL_CreateContext(screen);
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071     SDL_SetRelativeMouseMode(SDL_TRUE);
-<a name="l00072"></a>00072     glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
-<a name="l00073"></a>00073     printError(<span class="stringliteral">&quot;After SDL init: &quot;</span>);
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076 <span class="preprocessor">    #ifdef _WINDOWS</span>
-<a name="l00077"></a>00077 <span class="preprocessor"></span>    glewInit();
-<a name="l00078"></a>00078 <span class="preprocessor">    #endif</span>
-<a name="l00079"></a>00079 <span class="preprocessor"></span>
-<a name="l00080"></a>00080     dumpInfo();
+<a name="l00057"></a>00057 }
+<a name="l00058"></a>00058 <span class="keywordtype">bool</span> Program::init() {
+<a name="l00059"></a>00059     <span class="comment">// SDL, glew and OpenGL init</span>
+<a name="l00060"></a>00060     <span class="keywordflow">if</span> (SDL_Init(SDL_INIT_VIDEO) != 0) {
+<a name="l00061"></a>00061         fprintf(stderr, <span class="stringliteral">&quot;Failed to initialise SDL: %s&quot;</span>, SDL_GetError());
+<a name="l00062"></a>00062         <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00063"></a>00063     }
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065 <span class="preprocessor">#ifdef __APPLE__</span>
+<a name="l00066"></a>00066 <span class="preprocessor"></span>    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+<a name="l00067"></a>00067     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+<a name="l00070"></a>00070 <span class="preprocessor">#endif</span>
+<a name="l00071"></a>00071 <span class="preprocessor"></span>
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073     screen = SDL_CreateWindow(<span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenW, screenH, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+<a name="l00074"></a>00074     <span class="keywordflow">if</span> (screen == 0) {
+<a name="l00075"></a>00075         fprintf(stderr, <span class="stringliteral">&quot;Failed to set Video Mode: %s&quot;</span>, SDL_GetError());
+<a name="l00076"></a>00076         <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00077"></a>00077     }
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080     glcontext = SDL_GL_CreateContext(screen);
 <a name="l00081"></a>00081 
-<a name="l00082"></a>00082     <span class="comment">// Initial placement of camera.</span>
-<a name="l00083"></a>00083     cam = <span class="keyword">new</span> <a class="code" href="class_camera.html">Camera</a>(glm::vec3(0.0f,500.0f,0.0f), &amp;screenW, &amp;screenH);
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085     <span class="comment">// Load terrain data</span>
-<a name="l00086"></a>00086     dataHandler = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(<span class="stringliteral">&quot;resources/output.min.asc&quot;</span>, 1);
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083     SDL_SetRelativeMouseMode(SDL_TRUE);
+<a name="l00084"></a>00084     glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
+<a name="l00085"></a>00085     printError(<span class="stringliteral">&quot;After SDL init: &quot;</span>);
+<a name="l00086"></a>00086 
 <a name="l00087"></a>00087 
-<a name="l00088"></a>00088     <span class="comment">// Load and compile shaders.</span>
-<a name="l00089"></a>00089     terrainshader = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/terrainshader.frag&quot;</span>);
-<a name="l00090"></a>00090     skyshader = loadShaders(<span class="stringliteral">&quot;src/shaders/skyshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/skyshader.frag&quot;</span>);
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092     <span class="comment">// Create drawables</span>
-<a name="l00093"></a>00093     terrain = <span class="keyword">new</span> <a class="code" href="class_terrain.html">Terrain</a>(terrainshader, dataHandler-&gt;<a class="code" href="class_data_handler.html#a0f9751c37a90dcf458e4814a5d0a3447" title="Pointer to the terrain model.">getModel</a>(), glm::vec3(dataHandler-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), dataHandler-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), dataHandler-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>()));
-<a name="l00094"></a>00094     skycube = <span class="keyword">new</span> <a class="code" href="class_sky_cube.html">SkyCube</a>(skyshader);
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096     <span class="comment">/*Initialize AntTweakBar</span>
-<a name="l00097"></a>00097 <span class="comment">    */</span>
-<a name="l00098"></a>00098     TwInit(TW_OPENGL_CORE, NULL);
-<a name="l00099"></a>00099     TwWindowSize(screenW, screenH);
-<a name="l00100"></a>00100     antBar = TwNewBar(<span class="stringliteral">&quot;UIinfo&quot;</span>);
-<a name="l00101"></a>00101     TwDefine(<span class="stringliteral">&quot; UIinfo refresh=0.1 &quot;</span>);
-<a name="l00102"></a>00102     TwDefine(<span class="stringliteral">&quot; UIinfo valueswidth=fit &quot;</span>);
-<a name="l00103"></a>00103     TwDefine(<span class="stringliteral">&quot; UIinfo size=&#39;280 250&#39; &quot;</span>);
-<a name="l00104"></a>00104     TwAddVarRO(antBar, <span class="stringliteral">&quot;FPS&quot;</span>, TW_TYPE_FLOAT, &amp;FPS, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00105"></a>00105     TwAddVarRO(antBar, <span class="stringliteral">&quot;CameraX&quot;</span>, TW_TYPE_FLOAT, &amp;cam-&gt;getPos()-&gt;x, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00106"></a>00106     TwAddVarRO(antBar, <span class="stringliteral">&quot;CameraZ&quot;</span>, TW_TYPE_FLOAT, &amp;cam-&gt;getPos()-&gt;z, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108     TwAddVarRO(antBar, <span class="stringliteral">&quot;Camera Height&quot;</span>, TW_TYPE_FLOAT, &amp;cam-&gt;getPos()-&gt;y, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00109"></a>00109     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Height&quot;</span>, TW_TYPE_FLOAT, &amp;heightAtPos, <span class="stringliteral">&quot;help= &#39;Shows terrain height at camera position&#39; group=Info&quot;</span>);
-<a name="l00110"></a>00110 
-<a name="l00111"></a>00111     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Height (Proj)&quot;</span>, TW_TYPE_FLOAT, &amp;heighAtClickProj, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using inverse projection&#39; &quot;</span>);
-<a name="l00112"></a>00112     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Height (Data)&quot;</span>, TW_TYPE_FLOAT, &amp;heightAtClickData, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using terrain data for height&#39; &quot;</span>);
-<a name="l00113"></a>00113     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain X&quot;</span>, TW_TYPE_DOUBLE, &amp;objX, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain x at click&#39; &quot;</span>);
-<a name="l00114"></a>00114     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Z&quot;</span>, TW_TYPE_DOUBLE, &amp;objZ, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain z at click&#39; &quot;</span>);
+<a name="l00088"></a>00088 <span class="preprocessor">#ifdef _WINDOWS</span>
+<a name="l00089"></a>00089 <span class="preprocessor"></span>    glewInit();
+<a name="l00090"></a>00090 <span class="preprocessor">#endif</span>
+<a name="l00091"></a>00091 <span class="preprocessor"></span>
+<a name="l00092"></a>00092     dumpInfo();
+<a name="l00093"></a>00093     <span class="comment">/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this</span>
+<a name="l00094"></a>00094 <span class="comment">    is then used as startdata.</span>
+<a name="l00095"></a>00095 <span class="comment">    */</span>
+<a name="l00096"></a>00096     <span class="keyword">const</span> <span class="keywordtype">char</span>* xmlfile = <span class="stringliteral">&quot;src/xml/xgconsole.xml&quot;</span>;
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098     <a class="code" href="structinit___data__struct.html">init_Data_struct</a> init_data(xmlfile);
+<a name="l00099"></a>00099     <span class="comment">// Load terrain data.</span>
+<a name="l00100"></a>00100     dataHandler = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(init_data.data_filename.c_str());
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102     <span class="comment">// Initial placement of camera.</span>
+<a name="l00103"></a>00103     <span class="keywordtype">int</span> xzLim = 250; <span class="comment">// Maximal distance (x and z) between terrain and camera</span>
+<a name="l00104"></a>00104     <span class="keywordtype">int</span> yLimLo = 100; <span class="comment">// Minimal distance (y) between camera and terrain</span>
+<a name="l00105"></a>00105     <span class="keywordtype">int</span> yLimHi = 500; <span class="comment">// yLimHi + dataHandler-&gt;getTerrainScale() = maximal distance (y) between camera and terrain</span>
+<a name="l00106"></a>00106     cam = <span class="keyword">new</span> <a class="code" href="class_camera.html">Camera</a>(glm::vec3(0.0f, 500.0f, 0.0f), &amp;screenW, &amp;screenH, dataHandler-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), dataHandler-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>(), xzLim, yLimLo, yLimHi, dataHandler);
+<a name="l00107"></a>00107     
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109     printError(<span class="stringliteral">&quot;After hf init&quot;</span>);
+<a name="l00110"></a>00110     <span class="comment">// Load and compile shaders.</span>
+<a name="l00111"></a>00111     terrainshader = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/terrainshader.frag&quot;</span>);
+<a name="l00112"></a>00112     skyshader = loadShaders(<span class="stringliteral">&quot;src/shaders/skyshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/skyshader.frag&quot;</span>);
+<a name="l00113"></a>00113     <span class="comment">//shallowwatershader = loadShaders(&quot;src/shaders/terrainshader.vert&quot;, &quot;src/shaders/watershader.frag&quot;);</span>
+<a name="l00114"></a>00114     depthshader = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/depthshader.frag&quot;</span>);
 <a name="l00115"></a>00115 
-<a name="l00116"></a>00116     TwAddVarRW(antBar, <span class="stringliteral">&quot;MovSpeed&quot;</span>, TW_TYPE_FLOAT, cam-&gt;getSpeedPtr(), <span class="stringliteral">&quot; min=0 max=10 step=0.05 group=Changables label=&#39;Movement speed&#39; &quot;</span>);
-<a name="l00117"></a>00117     TwAddVarRW(antBar, <span class="stringliteral">&quot;RotSpeed&quot;</span>, TW_TYPE_FLOAT, cam-&gt;getRotSpeedPtr(), <span class="stringliteral">&quot; min=0 max=0.1 step=0.0005 group=Changables label=&#39;Rotation speed&#39; &quot;</span>);
+<a name="l00116"></a>00116     <span class="comment">// Create drawables</span>
+<a name="l00117"></a>00117     GLuint sizes[] = { dataHandler-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), dataHandler-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() };
 <a name="l00118"></a>00118 
-<a name="l00119"></a>00119     printError(<span class="stringliteral">&quot;After total init: &quot;</span>);
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00122"></a>00122 }
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124 <span class="keywordtype">void</span> Program::timeUpdate() {
-<a name="l00125"></a>00125     GLfloat t = (GLfloat)SDL_GetTicks();
-<a name="l00126"></a>00126     deltaTime = t - currentTime;
-<a name="l00127"></a>00127     currentTime = t;
-<a name="l00128"></a>00128     FPS = 1000.0f / deltaTime;
-<a name="l00129"></a>00129 }
-<a name="l00130"></a>00130 
-<a name="l00131"></a>00131 <span class="keywordtype">void</span> Program::update() {
-<a name="l00132"></a>00132     <span class="comment">// Update the tweak bar</span>
-<a name="l00133"></a>00133     heightAtPos = dataHandler-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(cam-&gt;getPos()-&gt;x, cam-&gt;getPos()-&gt;z);
-<a name="l00134"></a>00134 }
-<a name="l00135"></a>00135 
-<a name="l00136"></a>00136 <span class="keywordtype">void</span> Program::display() {
-<a name="l00137"></a>00137     <span class="comment">// Clear the screen.</span>
-<a name="l00138"></a>00138     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-<a name="l00139"></a>00139 
-<a name="l00140"></a>00140     <span class="comment">// ====================== Draw skybox ===========================</span>
-<a name="l00141"></a>00141     glUseProgram(skyshader);
-<a name="l00142"></a>00142     glDisable(GL_CULL_FACE);
-<a name="l00143"></a>00143     glDisable(GL_DEPTH_TEST);
-<a name="l00144"></a>00144 
-<a name="l00145"></a>00145     <span class="comment">// ---Camera shader data---</span>
-<a name="l00146"></a>00146     cam-&gt;uploadCamData(skyshader);
-<a name="l00147"></a>00147     skycube-&gt;draw();
-<a name="l00148"></a>00148 
-<a name="l00149"></a>00149     <span class="comment">// ====================== Draw Terrain ==========================</span>
-<a name="l00150"></a>00150     glUseProgram(terrainshader);
-<a name="l00151"></a>00151     glEnable(GL_DEPTH_TEST);
-<a name="l00152"></a>00152     glEnable(GL_CULL_FACE);
-<a name="l00153"></a>00153     glCullFace(GL_BACK);
-<a name="l00154"></a>00154 
-<a name="l00155"></a>00155     <span class="comment">// ---Camera shader data---</span>
-<a name="l00156"></a>00156     cam-&gt;uploadCamData(terrainshader);
-<a name="l00157"></a>00157     terrain-&gt;draw();
-<a name="l00158"></a>00158 
-<a name="l00159"></a>00159     <span class="comment">// ====================== Draw AntBar ===========================</span>
-<a name="l00160"></a>00160     TwDraw();
-<a name="l00161"></a>00161 
-<a name="l00162"></a>00162 
-<a name="l00163"></a>00163     printError(<span class="stringliteral">&quot;After display: &quot;</span>);
-<a name="l00164"></a>00164 
-<a name="l00165"></a>00165     SDL_GL_SwapWindow(screen);
-<a name="l00166"></a>00166 }
-<a name="l00167"></a>00167 
-<a name="l00168"></a>00168 <span class="keywordtype">void</span> Program::clean() {
-<a name="l00169"></a>00169     TwTerminate();
-<a name="l00170"></a>00170     SDL_GL_DeleteContext(glcontext);
-<a name="l00171"></a>00171     SDL_Quit();
-<a name="l00172"></a>00172 }
-<a name="l00173"></a>00173 
-<a name="l00174"></a>00174 
-<a name="l00175"></a>00175 <span class="comment">// Handle events.</span>
-<a name="l00176"></a>00176 <span class="keywordtype">void</span> Program::handleEvent(SDL_Event* event) {
-<a name="l00177"></a>00177     <span class="keywordflow">switch</span> (event-&gt;type) {
-<a name="l00178"></a>00178         <span class="keywordflow">case</span> SDL_QUIT:
-<a name="l00179"></a>00179         isRunning = <span class="keyword">false</span>;
-<a name="l00180"></a>00180         <span class="keywordflow">break</span>;
-<a name="l00181"></a>00181         <span class="keywordflow">case</span> SDL_KEYDOWN:
-<a name="l00182"></a>00182         handleKeypress(event);
-<a name="l00183"></a>00183         <span class="keywordflow">break</span>;
-<a name="l00184"></a>00184         <span class="keywordflow">case</span> SDL_WINDOWEVENT:
-<a name="l00185"></a>00185         <span class="keywordflow">switch</span> (event-&gt;window.event) {
-<a name="l00186"></a>00186             <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
-<a name="l00187"></a>00187             SDL_SetWindowSize(screen, event-&gt;window.data1, event-&gt;window.data2);
-<a name="l00188"></a>00188             SDL_GetWindowSize(screen, &amp;screenW, &amp;screenH);
-<a name="l00189"></a>00189             glViewport(0, 0, screenW, screenH);
-<a name="l00190"></a>00190             TwWindowSize(screenW, screenH);
-<a name="l00191"></a>00191             cam-&gt;updateVTP();
-<a name="l00192"></a>00192             <span class="keywordflow">break</span>;
-<a name="l00193"></a>00193         }
-<a name="l00194"></a>00194         <span class="keywordflow">break</span>;
-<a name="l00195"></a>00195         <span class="keywordflow">case</span> SDL_MOUSEMOTION:
-<a name="l00196"></a>00196         handleMouseMove(event);
-<a name="l00197"></a>00197         <span class="keywordflow">break</span>;
-<a name="l00198"></a>00198         <span class="keywordflow">case</span> SDL_MOUSEBUTTONDOWN:
-<a name="l00199"></a>00199         TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
-<a name="l00200"></a>00200         <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">handleMouseButton</a>(event);
-<a name="l00201"></a>00201         <span class="keywordflow">break</span>;
-<a name="l00202"></a>00202         <span class="keywordflow">case</span> SDL_MOUSEBUTTONUP:
-<a name="l00203"></a>00203         TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
-<a name="l00204"></a>00204         <span class="keywordflow">break</span>;
-<a name="l00205"></a>00205         <span class="keywordflow">default</span>:
-<a name="l00206"></a>00206         <span class="keywordflow">break</span>;
-<a name="l00207"></a>00207     }
-<a name="l00208"></a>00208 }
-<a name="l00209"></a>00209 
-<a name="l00210"></a>00210 <span class="comment">// Handle keys</span>
-<a name="l00211"></a>00211 <span class="keywordtype">void</span> Program::handleKeypress(SDL_Event* event) {
-<a name="l00212"></a>00212     TwKeyPressed(event-&gt;key.keysym.sym, TW_KMOD_NONE);
-<a name="l00213"></a>00213     <span class="keywordflow">switch</span> (event-&gt;key.keysym.sym) {
-<a name="l00214"></a>00214         <span class="keywordflow">case</span> SDLK_ESCAPE:
-<a name="l00215"></a>00215         isRunning = <span class="keyword">false</span>;
-<a name="l00216"></a>00216         <span class="keywordflow">break</span>;
-<a name="l00217"></a>00217         <span class="keywordflow">case</span> SDLK_h:
-<a name="l00218"></a>00218         cam-&gt;toggleFrozen();
-<a name="l00219"></a>00219         mouseHidden = !mouseHidden;
-<a name="l00220"></a>00220         <span class="keywordflow">if</span> (!mouseHidden) {
-<a name="l00221"></a>00221             SDL_SetRelativeMouseMode(SDL_FALSE);
-<a name="l00222"></a>00222         } <span class="keywordflow">else</span> {
-<a name="l00223"></a>00223             SDL_SetRelativeMouseMode(SDL_TRUE);
-<a name="l00224"></a>00224         }
-<a name="l00225"></a>00225         <span class="keywordflow">break</span>;
-<a name="l00226"></a>00226         <span class="keywordflow">case</span> SDLK_r:
-<a name="l00227"></a>00227         <span class="keywordtype">int</span> isBarHidden;
-<a name="l00228"></a>00228         TwGetParam(antBar, NULL, <span class="stringliteral">&quot;iconified&quot;</span>, TW_PARAM_INT32, 1, &amp;isBarHidden);
-<a name="l00229"></a>00229         <span class="keywordflow">if</span> (!isBarHidden) {
-<a name="l00230"></a>00230             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=true&quot;</span>);
-<a name="l00231"></a>00231         } <span class="keywordflow">else</span> {
-<a name="l00232"></a>00232             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=false&quot;</span>);
-<a name="l00233"></a>00233         }
-<a name="l00234"></a>00234         <span class="keywordflow">default</span>:
-<a name="l00235"></a>00235         <span class="keywordflow">break</span>;
-<a name="l00236"></a>00236     }
-<a name="l00237"></a>00237 }
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     myDrawable::setLights();
+<a name="l00121"></a>00121     myDrawable::setTextures(sizes);
+<a name="l00122"></a>00122 
+<a name="l00123"></a>00123     terrain = <span class="keyword">new</span> <a class="code" href="class_height_map.html">HeightMap</a>(terrainshader, sizes, dataHandler-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), dataHandler-&gt;<a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>());
+<a name="l00124"></a>00124     terrain-&gt;update();
+<a name="l00125"></a>00125     <span class="keyword">dynamic_cast&lt;</span><a class="code" href="class_height_map.html">HeightMap</a>*<span class="keyword">&gt;</span>(terrain)-&gt;generateHeightTexture();
+<a name="l00126"></a>00126     
+<a name="l00127"></a>00127     
+<a name="l00128"></a>00128     printError(<span class="stringliteral">&quot;Created Terrain&quot;</span>);
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 1)
+<a name="l00131"></a>00131     {
+<a name="l00132"></a>00132 
+<a name="l00133"></a>00133         watershader = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/watershader.frag&quot;</span>);
+<a name="l00134"></a>00134         <span class="comment">// Initialize water simulation</span>
+<a name="l00135"></a>00135         hf = <span class="keyword">new</span> <a class="code" href="class_height_field.html">HeightField</a>(dataHandler, init_data.FFData, init_data.Flowsources);
+<a name="l00136"></a>00136         hf-&gt;<a class="code" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a>();
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138         GLuint shaders[2] = { watershader, depthshader };
+<a name="l00139"></a>00139         waterTerrain = <span class="keyword">new</span> <a class="code" href="class_water.html">Water</a>(shaders, sizes, dataHandler-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), hf-&gt;<a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
+<a name="l00140"></a>00140     }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 2)
+<a name="l00141"></a>00141     {
+<a name="l00142"></a>00142 
+<a name="l00143"></a>00143 
+<a name="l00144"></a>00144         watershader = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/shallowwatershader.frag&quot;</span>);
+<a name="l00145"></a>00145         cam-&gt;unlock();
+<a name="l00146"></a>00146         <span class="comment">// Initialize water simulation</span>
+<a name="l00147"></a>00147         sgpu = <span class="keyword">new</span> <a class="code" href="class_shallow_g_p_u.html">ShallowGPU</a>(dataHandler, init_data.FFData);
+<a name="l00148"></a>00148         sgpu-&gt;initGPU();
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150         GLuint shaders[2] = { watershader, depthshader };
+<a name="l00151"></a>00151         waterTerrain = <span class="keyword">new</span> <a class="code" href="class_water.html">Water</a>(shaders, sizes, dataHandler-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), sgpu-&gt;shallowBuffers[7]);
+<a name="l00152"></a>00152     }
+<a name="l00153"></a>00153         
+<a name="l00154"></a>00154     printError(<span class="stringliteral">&quot;Created Water&quot;</span>);
+<a name="l00155"></a>00155     skycube = <span class="keyword">new</span> <a class="code" href="class_sky_cube.html">SkyCube</a>(skyshader);
+<a name="l00156"></a>00156 
+<a name="l00157"></a>00157 
+<a name="l00158"></a>00158     <span class="comment">/* Initialize AntTweakBar */</span>
+<a name="l00159"></a>00159     TwInit(TW_OPENGL_CORE, NULL);
+<a name="l00160"></a>00160     TwWindowSize(screenW, screenH);
+<a name="l00161"></a>00161     antBar = TwNewBar(<span class="stringliteral">&quot;UIinfo&quot;</span>);
+<a name="l00162"></a>00162     TwDefine(<span class="stringliteral">&quot; UIinfo refresh=0.1 &quot;</span>);
+<a name="l00163"></a>00163     TwDefine(<span class="stringliteral">&quot; UIinfo valueswidth=fit &quot;</span>);
+<a name="l00164"></a>00164     TwDefine(<span class="stringliteral">&quot; UIinfo size=&#39;280 350&#39; &quot;</span>);
+<a name="l00165"></a>00165     TwAddVarRO(antBar, <span class="stringliteral">&quot;FPS&quot;</span>, TW_TYPE_FLOAT, &amp;FPS, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00166"></a>00166     TwAddVarRO(antBar, <span class="stringliteral">&quot;CameraX&quot;</span>, TW_TYPE_FLOAT, &amp;cam-&gt;getPos()-&gt;x, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00167"></a>00167     TwAddVarRO(antBar, <span class="stringliteral">&quot;CameraZ&quot;</span>, TW_TYPE_FLOAT, &amp;cam-&gt;getPos()-&gt;z, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00168"></a>00168 
+<a name="l00169"></a>00169     TwAddVarRO(antBar, <span class="stringliteral">&quot;Camera Height&quot;</span>, TW_TYPE_FLOAT, &amp;cam-&gt;getPos()-&gt;y, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00170"></a>00170     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Height&quot;</span>, TW_TYPE_FLOAT, &amp;heightAtPos, <span class="stringliteral">&quot;help= &#39;Shows terrain height at camera position&#39; group=Info&quot;</span>);
+<a name="l00171"></a>00171 
+<a name="l00172"></a>00172     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Height (Proj)&quot;</span>, TW_TYPE_FLOAT, &amp;heighAtClickProj, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using inverse projection&#39; &quot;</span>);
+<a name="l00173"></a>00173     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Height (Data)&quot;</span>, TW_TYPE_FLOAT, &amp;heightAtClickData, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using terrain data for height&#39; &quot;</span>);
+<a name="l00174"></a>00174     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain X&quot;</span>, TW_TYPE_DOUBLE, &amp;objX, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain x at click&#39; &quot;</span>);
+<a name="l00175"></a>00175     TwAddVarRO(antBar, <span class="stringliteral">&quot;Terrain Z&quot;</span>, TW_TYPE_DOUBLE, &amp;objZ, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain z at click&#39; &quot;</span>);
+<a name="l00176"></a>00176 
+<a name="l00177"></a>00177     TwAddVarRW(antBar, <span class="stringliteral">&quot;MovSpeed&quot;</span>, TW_TYPE_FLOAT, cam-&gt;getSpeedPtr(), <span class="stringliteral">&quot; min=0 max=10 step=0.05 group=Changables label=&#39;Movement speed&#39; &quot;</span>);
+<a name="l00178"></a>00178     TwAddVarRW(antBar, <span class="stringliteral">&quot;RotSpeed&quot;</span>, TW_TYPE_FLOAT, cam-&gt;getRotSpeedPtr(), <span class="stringliteral">&quot; min=0 max=0.1 step=0.0005 group=Changables label=&#39;Rotation speed&#39; &quot;</span>);
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180     TwAddVarCB(antBar, <span class="stringliteral">&quot;Terrain Texture&quot;</span>, TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, terrain, <span class="stringliteral">&quot; min=0 max=2 step=1 group=Changables &quot;</span>);
+<a name="l00181"></a>00181     TwAddVarCB(antBar, <span class="stringliteral">&quot;Bottom Texture&quot;</span>, TW_TYPE_INT32, HeightMap::SetTextureCB, HeightMap::GetTextureCB, waterTerrain, <span class="stringliteral">&quot; min=0 max=2 step=1 group=Changables &quot;</span>);
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183     TwAddVarCB(antBar, <span class="stringliteral">&quot;Draw Program&quot;</span>, TW_TYPE_INT32, Water::SetDrawProgramCB, Water::GetDrawProgramCB, waterTerrain, <span class="stringliteral">&quot; min=0 max=1 step=1 group=Changables &quot;</span>);
+<a name="l00184"></a>00184     TwAddVarCB(antBar, <span class="stringliteral">&quot;Transparency&quot;</span>, TW_TYPE_FLOAT, Water::SetTransparencyCB, Water::GetTransparencyCB, waterTerrain, <span class="stringliteral">&quot; min=0 max=1.0 step=0.05 group=Changables &quot;</span>);
+<a name="l00185"></a>00185     TwAddVarCB(antBar, <span class="stringliteral">&quot;MaxDepth&quot;</span>, TW_TYPE_FLOAT, Water::SetMaxDepthCB, Water::GetMaxDepthCB, waterTerrain, <span class="stringliteral">&quot; min=0 max=500.0 step=10.0 group=Changables &quot;</span>);
+<a name="l00186"></a>00186     TwAddVarRW(antBar, <span class="stringliteral">&quot;Simulation dt&quot;</span>, TW_TYPE_FLOAT, &amp;dtSim, <span class="stringliteral">&quot;min=0.00005 max=0.0025 step=0.00005 group=Changables label=&#39;Simulation dt&#39; &quot;</span>);
+<a name="l00187"></a>00187     
+<a name="l00188"></a>00188     printError(<span class="stringliteral">&quot;After total init: &quot;</span>);
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00191"></a>00191 }
+<a name="l00192"></a>00192 
+<a name="l00193"></a>00193 <span class="keywordtype">void</span> Program::timeUpdate() {
+<a name="l00194"></a>00194     GLfloat t = (GLfloat)SDL_GetTicks();
+<a name="l00195"></a>00195     deltaTime = t - currentTime;
+<a name="l00196"></a>00196     currentTime = t;
+<a name="l00197"></a>00197     FPS = 1000.0f / deltaTime;
+<a name="l00198"></a>00198 }
+<a name="l00199"></a>00199 
+<a name="l00200"></a>00200 <span class="keywordtype">void</span> Program::update() {
+<a name="l00201"></a>00201     <span class="comment">// Update the tweak bar.</span>
+<a name="l00202"></a>00202     heightAtPos = dataHandler-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(cam-&gt;getPos()-&gt;x, cam-&gt;getPos()-&gt;z);
+<a name="l00203"></a>00203         
+<a name="l00204"></a>00204     
+<a name="l00205"></a>00205     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 1)
+<a name="l00206"></a>00206     {
+<a name="l00207"></a>00207         
+<a name="l00208"></a>00208         <span class="keywordflow">if</span> (sim) {
+<a name="l00209"></a>00209             hf-&gt;<a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">runSimGPU</a>(dtSim);
+<a name="l00210"></a>00210         }
+<a name="l00211"></a>00211     
+<a name="l00212"></a>00212     
+<a name="l00213"></a>00213     
+<a name="l00214"></a>00214     }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 2)
+<a name="l00215"></a>00215     {
+<a name="l00216"></a>00216         <span class="keywordflow">if</span> (sim) {
+<a name="l00217"></a>00217             sgpu-&gt;runSimGPU();
+<a name="l00218"></a>00218         }
+<a name="l00219"></a>00219     }
+<a name="l00220"></a>00220     
+<a name="l00221"></a>00221     
+<a name="l00222"></a>00222     waterTerrain-&gt;update();
+<a name="l00223"></a>00223 
+<a name="l00224"></a>00224 }
+<a name="l00225"></a>00225 
+<a name="l00226"></a>00226 
+<a name="l00227"></a>00227 <span class="keywordtype">void</span> Program::display() {
+<a name="l00228"></a>00228     <span class="comment">// Clear the screen.</span>
+<a name="l00229"></a>00229     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00230"></a>00230 
+<a name="l00231"></a>00231     <span class="comment">// ========================== Draw skybox ==========================</span>
+<a name="l00232"></a>00232     glDisable(GL_CULL_FACE);
+<a name="l00233"></a>00233     glDisable(GL_DEPTH_TEST);
+<a name="l00234"></a>00234 
+<a name="l00235"></a>00235     <span class="comment">// ---Camera shader data---</span>
+<a name="l00236"></a>00236     cam-&gt;uploadCamData(skyshader);
+<a name="l00237"></a>00237     skycube-&gt;draw();
 <a name="l00238"></a>00238 
-<a name="l00239"></a>00239 <span class="keywordtype">void</span> Program::handleMouseMove(SDL_Event* event) {
-<a name="l00240"></a>00240     <span class="keywordflow">if</span> (!mouseHidden) {
-<a name="l00241"></a>00241         TwMouseMotion(event-&gt;motion.x, event-&gt;motion.y);
-<a name="l00242"></a>00242     }
-<a name="l00243"></a>00243     cam-&gt;changeLookAtPos(event-&gt;motion.xrel, event-&gt;motion.yrel);
-<a name="l00244"></a>00244 }
-<a name="l00245"></a>00245 
-<a name="l00246"></a><a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185">00246</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">Program::handleMouseButton</a>(SDL_Event* event) {
-<a name="l00247"></a>00247     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
-<a name="l00248"></a>00248     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_LSHIFT] &amp;&amp; !mouseHidden) {
-<a name="l00249"></a>00249         <span class="keywordtype">float</span> depth;
-<a name="l00250"></a>00250         <span class="keywordtype">int</span> x;
-<a name="l00251"></a>00251         <span class="keywordtype">int</span> y;
-<a name="l00252"></a>00252         GLint viewport[4] = { 0, 0, 0, 0 };
-<a name="l00253"></a>00253         glGetIntegerv(GL_VIEWPORT, viewport);
-<a name="l00254"></a>00254         SDL_GetMouseState(&amp;x, &amp;y);
-<a name="l00255"></a>00255         glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &amp;depth);
-<a name="l00256"></a>00256         GLdouble objY = 0.0;
-<a name="l00257"></a>00257         gluUnProject((GLdouble)x, (GLdouble)(screenW - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam-&gt;getWTV()), glm::value_ptr((glm::dmat4)*cam-&gt;getVTP()), viewport, &amp;objX, &amp;objY, &amp;objZ);
-<a name="l00258"></a>00258 
-<a name="l00259"></a>00259         heighAtClickProj = (GLfloat)objY;
-<a name="l00260"></a>00260         heightAtClickData = dataHandler-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)objX, (GLfloat)objZ);
-<a name="l00261"></a>00261     }
-<a name="l00262"></a>00262 }
-<a name="l00263"></a>00263 
-<a name="l00264"></a>00264 <span class="keywordtype">void</span> Program::checkKeys() {
-<a name="l00265"></a>00265     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
-<a name="l00266"></a>00266     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
-<a name="l00267"></a>00267         cam-&gt;forward(deltaTime);
-<a name="l00268"></a>00268     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
-<a name="l00269"></a>00269         cam-&gt;forward(-deltaTime);
-<a name="l00270"></a>00270     }
-<a name="l00271"></a>00271     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
-<a name="l00272"></a>00272         cam-&gt;strafe(deltaTime);
-<a name="l00273"></a>00273     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
-<a name="l00274"></a>00274         cam-&gt;strafe(-deltaTime);
-<a name="l00275"></a>00275     }
-<a name="l00276"></a>00276     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_Q]) {
-<a name="l00277"></a>00277         cam-&gt;jump(deltaTime);
-<a name="l00278"></a>00278     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_E]) {
-<a name="l00279"></a>00279         cam-&gt;jump(-deltaTime);
-<a name="l00280"></a>00280     }
-<a name="l00281"></a>00281 }
+<a name="l00239"></a>00239     <span class="comment">// ========================== Draw Terrain =========================</span>
+<a name="l00240"></a>00240     glEnable(GL_DEPTH_TEST);
+<a name="l00241"></a>00241     glEnable(GL_CULL_FACE);
+<a name="l00242"></a>00242     glCullFace(GL_BACK);
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244     <span class="comment">// ---Camera shader data---</span>
+<a name="l00245"></a>00245     cam-&gt;uploadCamData(terrainshader);
+<a name="l00246"></a>00246     <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> != 2){
+<a name="l00247"></a>00247         terrain-&gt;draw();
+<a name="l00248"></a>00248     }
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250     <span class="comment">// ======================== Draw water body ========================</span>
+<a name="l00251"></a>00251     glDisable(GL_CULL_FACE);
+<a name="l00252"></a>00252 
+<a name="l00253"></a>00253     cam-&gt;uploadCamData(depthshader);
+<a name="l00254"></a>00254     cam-&gt;uploadCamData(watershader);
+<a name="l00255"></a>00255     glUniform1f(glGetUniformLocation(watershader, <span class="stringliteral">&quot;time&quot;</span>), currentTime / 20.0f);
+<a name="l00256"></a>00256     waterTerrain-&gt;draw();
+<a name="l00257"></a>00257 
+<a name="l00258"></a>00258     <span class="comment">// ========================== Draw AntBar ==========================</span>
+<a name="l00259"></a>00259     TwDraw();
+<a name="l00260"></a>00260 
+<a name="l00261"></a>00261     printError(<span class="stringliteral">&quot;after display&quot;</span>);
+<a name="l00262"></a>00262 
+<a name="l00263"></a>00263     SDL_GL_SwapWindow(screen);
+<a name="l00264"></a>00264 }
+<a name="l00265"></a>00265 
+<a name="l00266"></a>00266 <span class="keywordtype">void</span> Program::clean() {
+<a name="l00267"></a>00267     TwTerminate();
+<a name="l00268"></a>00268     SDL_GL_DeleteContext(glcontext);
+<a name="l00269"></a>00269     SDL_Quit();
+<a name="l00270"></a>00270 }
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272 
+<a name="l00273"></a>00273 <span class="comment">// Handle events.</span>
+<a name="l00274"></a>00274 <span class="keywordtype">void</span> Program::handleEvent(SDL_Event* event) {
+<a name="l00275"></a>00275     <span class="keywordflow">switch</span> (event-&gt;type) {
+<a name="l00276"></a>00276     <span class="keywordflow">case</span> SDL_QUIT:
+<a name="l00277"></a>00277         isRunning = <span class="keyword">false</span>;
+<a name="l00278"></a>00278         <span class="keywordflow">break</span>;
+<a name="l00279"></a>00279     <span class="keywordflow">case</span> SDL_KEYDOWN:
+<a name="l00280"></a>00280         handleKeypress(event);
+<a name="l00281"></a>00281         <span class="keywordflow">break</span>;
+<a name="l00282"></a>00282     <span class="keywordflow">case</span> SDL_WINDOWEVENT:
+<a name="l00283"></a>00283         <span class="keywordflow">switch</span> (event-&gt;window.event) {
+<a name="l00284"></a>00284         <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
+<a name="l00285"></a>00285             SDL_SetWindowSize(screen, event-&gt;window.data1, event-&gt;window.data2);
+<a name="l00286"></a>00286             SDL_GetWindowSize(screen, &amp;screenW, &amp;screenH);
+<a name="l00287"></a>00287             glViewport(0, 0, screenW, screenH);
+<a name="l00288"></a>00288             TwWindowSize(screenW, screenH);
+<a name="l00289"></a>00289             cam-&gt;updateVTP();
+<a name="l00290"></a>00290             <span class="keywordflow">break</span>;
+<a name="l00291"></a>00291         }
+<a name="l00292"></a>00292         <span class="keywordflow">break</span>;
+<a name="l00293"></a>00293     <span class="keywordflow">case</span> SDL_MOUSEMOTION:
+<a name="l00294"></a>00294         handleMouseMove(event);
+<a name="l00295"></a>00295         <span class="keywordflow">break</span>;
+<a name="l00296"></a>00296     <span class="keywordflow">case</span> SDL_MOUSEBUTTONDOWN:
+<a name="l00297"></a>00297         TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
+<a name="l00298"></a>00298         <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">handleMouseButton</a>(event);
+<a name="l00299"></a>00299         <span class="keywordflow">break</span>;
+<a name="l00300"></a>00300     <span class="keywordflow">case</span> SDL_MOUSEBUTTONUP:
+<a name="l00301"></a>00301         TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
+<a name="l00302"></a>00302         <span class="keywordflow">break</span>;
+<a name="l00303"></a>00303     <span class="keywordflow">default</span>:
+<a name="l00304"></a>00304         <span class="keywordflow">break</span>;
+<a name="l00305"></a>00305     }
+<a name="l00306"></a>00306 }
+<a name="l00307"></a>00307 
+<a name="l00308"></a>00308 <span class="comment">// Handle keys.</span>
+<a name="l00309"></a>00309 <span class="keywordtype">void</span> Program::handleKeypress(SDL_Event* event) {
+<a name="l00310"></a>00310     TwKeyPressed(event-&gt;key.keysym.sym, TW_KMOD_NONE);
+<a name="l00311"></a>00311     <span class="keywordflow">switch</span> (event-&gt;key.keysym.sym) {
+<a name="l00312"></a>00312     <span class="keywordflow">case</span> SDLK_ESCAPE:
+<a name="l00313"></a>00313         isRunning = <span class="keyword">false</span>;
+<a name="l00314"></a>00314         <span class="keywordflow">break</span>;
+<a name="l00315"></a>00315     <span class="keywordflow">case</span> SDLK_h:
+<a name="l00316"></a>00316         cam-&gt;toggleFrozen();
+<a name="l00317"></a>00317         mouseHidden = !mouseHidden;
+<a name="l00318"></a>00318         <span class="keywordflow">if</span> (!mouseHidden) {
+<a name="l00319"></a>00319             SDL_SetRelativeMouseMode(SDL_FALSE);
+<a name="l00320"></a>00320         } <span class="keywordflow">else</span> {
+<a name="l00321"></a>00321             SDL_SetRelativeMouseMode(SDL_TRUE);
+<a name="l00322"></a>00322         }
+<a name="l00323"></a>00323         <span class="keywordflow">break</span>;
+<a name="l00324"></a>00324     <span class="keywordflow">case</span> SDLK_r:
+<a name="l00325"></a>00325         <span class="keywordtype">int</span> isBarHidden;
+<a name="l00326"></a>00326         TwGetParam(antBar, NULL, <span class="stringliteral">&quot;iconified&quot;</span>, TW_PARAM_INT32, 1, &amp;isBarHidden);
+<a name="l00327"></a>00327         <span class="keywordflow">if</span> (!isBarHidden) {
+<a name="l00328"></a>00328             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=true&quot;</span>);
+<a name="l00329"></a>00329         } <span class="keywordflow">else</span> {
+<a name="l00330"></a>00330             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=false&quot;</span>);
+<a name="l00331"></a>00331         }
+<a name="l00332"></a>00332         <span class="keywordflow">break</span>;
+<a name="l00333"></a>00333     <span class="keywordflow">case</span> SDLK_p:
+<a name="l00334"></a>00334         sim = !sim;
+<a name="l00335"></a>00335         <span class="keywordflow">break</span>;
+<a name="l00336"></a>00336     <span class="keywordflow">case</span> SDLK_c:
+<a name="l00337"></a>00337         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> != 2)
+<a name="l00338"></a>00338             <span class="keywordflow">break</span>;
+<a name="l00339"></a>00339         sgpu-&gt;cycleBuffer();
+<a name="l00340"></a>00340         <span class="keywordflow">break</span>;
+<a name="l00341"></a>00341     <span class="keywordflow">default</span>:
+<a name="l00342"></a>00342         <span class="keywordflow">break</span>;
+<a name="l00343"></a>00343     }
+<a name="l00344"></a>00344 }
+<a name="l00345"></a>00345 
+<a name="l00346"></a>00346 <span class="keywordtype">void</span> Program::handleMouseMove(SDL_Event* event) {
+<a name="l00347"></a>00347     <span class="keywordflow">if</span> (!mouseHidden) {
+<a name="l00348"></a>00348         TwMouseMotion(event-&gt;motion.x, event-&gt;motion.y);
+<a name="l00349"></a>00349     }
+<a name="l00350"></a>00350     cam-&gt;changeLookAtPos(event-&gt;motion.xrel, event-&gt;motion.yrel);
+<a name="l00351"></a>00351 }
+<a name="l00352"></a>00352 
+<a name="l00353"></a><a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185">00353</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">Program::handleMouseButton</a>(SDL_Event* event) {
+<a name="l00354"></a>00354     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
+<a name="l00355"></a>00355     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_LSHIFT] &amp;&amp; !mouseHidden) {
+<a name="l00356"></a>00356         <span class="keywordtype">float</span> depth;
+<a name="l00357"></a>00357         <span class="keywordtype">int</span> x;
+<a name="l00358"></a>00358         <span class="keywordtype">int</span> y;
+<a name="l00359"></a>00359         GLint viewport[4] = { 0, 0, 0, 0 };
+<a name="l00360"></a>00360         glGetIntegerv(GL_VIEWPORT, viewport);
+<a name="l00361"></a>00361         SDL_GetMouseState(&amp;x, &amp;y);
+<a name="l00362"></a>00362         glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &amp;depth);
+<a name="l00363"></a>00363         GLdouble objY = 0.0;
+<a name="l00364"></a>00364         gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam-&gt;getWTV()), glm::value_ptr((glm::dmat4)*cam-&gt;getVTP()), viewport, &amp;objX, &amp;objY, &amp;objZ);
+<a name="l00365"></a>00365 
+<a name="l00366"></a>00366         heighAtClickProj = (GLfloat)objY;
+<a name="l00367"></a>00367         heightAtClickData = dataHandler-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)objX, (GLfloat)objZ);
+<a name="l00368"></a>00368     }
+<a name="l00369"></a>00369 }
+<a name="l00370"></a>00370 
+<a name="l00371"></a>00371 <span class="keywordtype">void</span> Program::checkKeys() {
+<a name="l00372"></a>00372     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
+<a name="l00373"></a>00373     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
+<a name="l00374"></a>00374         cam-&gt;forward(deltaTime);
+<a name="l00375"></a>00375     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
+<a name="l00376"></a>00376         cam-&gt;forward(-deltaTime);
+<a name="l00377"></a>00377     }
+<a name="l00378"></a>00378     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
+<a name="l00379"></a>00379         cam-&gt;strafe(deltaTime);
+<a name="l00380"></a>00380     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
+<a name="l00381"></a>00381         cam-&gt;strafe(-deltaTime);
+<a name="l00382"></a>00382     }
+<a name="l00383"></a>00383     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_Q]) {
+<a name="l00384"></a>00384         cam-&gt;jump(deltaTime);
+<a name="l00385"></a>00385     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_E]) {
+<a name="l00386"></a>00386         cam-&gt;jump(-deltaTime);
+<a name="l00387"></a>00387     }
+<a name="l00388"></a>00388 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -399,7 +506,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="program_8cpp.html">program.cpp</a>      </li>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

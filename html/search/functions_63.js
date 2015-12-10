@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['calculatenormalsgpu',['calculateNormalsGPU',['../class_data_handler.html#a90bd32bd79aeace98e9faec378e5bf22',1,'DataHandler']]]
+  ['clip',['clip',['../class_height_field.html#ab0d5db208e2e2a46b675a25862a9ad1a',1,'HeightField']]],
+  ['clipf',['clipf',['../class_height_field.html#acb7b5ae6061bf9611ddb0ed1e8286744',1,'HeightField']]]
 ];

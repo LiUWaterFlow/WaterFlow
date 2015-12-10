@@ -123,55 +123,63 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00024"></a>00024 <span class="preprocessor"></span>
 <a name="l00025"></a>00025 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
-<a name="l00026"></a>00026 
-<a name="l00027"></a><a class="code" href="class_camera.html">00027</a> <span class="keyword">class </span><a class="code" href="class_camera.html">Camera</a> {
-<a name="l00028"></a>00028 <span class="keyword">private</span>:
-<a name="l00029"></a>00029     <span class="comment">// x används för att musen inte ska fastna i kanterna på</span>
-<a name="l00030"></a>00030     <span class="comment">// fönstret</span>
-<a name="l00031"></a>00031     <span class="keywordtype">int</span> x;
-<a name="l00032"></a>00032     <span class="keywordtype">float</span> fi, theta, rotSpeed;
-<a name="l00033"></a>00033     <span class="keywordtype">int</span> *screenW, *screenH;
-<a name="l00034"></a>00034     GLfloat speed, drawDistance;
-<a name="l00035"></a>00035     <span class="keywordtype">bool</span> isFrozen;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037     glm::vec3 position;
-<a name="l00038"></a>00038     glm::vec3 lookAtPos;
-<a name="l00039"></a>00039     glm::vec3 up;
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041     glm::mat4 WTVMatrix;
-<a name="l00042"></a>00042     glm::mat4 VTPMatrix;
-<a name="l00043"></a>00043 <span class="keyword">public</span>:
-<a name="l00044"></a>00044     <a class="code" href="class_camera.html">Camera</a>(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH);
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046     <span class="keywordtype">void</span> rotate(<span class="keywordtype">char</span> direction, GLfloat angle);
-<a name="l00047"></a>00047     <span class="keywordtype">void</span> translate(GLfloat dx, GLfloat dy, GLfloat dz);
-<a name="l00048"></a>00048     <span class="keywordtype">void</span> forward(GLfloat d);
-<a name="l00049"></a>00049     <span class="keywordtype">void</span> strafe(GLfloat d);
-<a name="l00050"></a>00050     <span class="keywordtype">void</span> jump(GLfloat d);
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052     <span class="keywordtype">void</span> updateWTV();
-<a name="l00053"></a>00053     <span class="keywordtype">void</span> updateVTP();
-<a name="l00054"></a>00054     <span class="keywordtype">void</span> uploadCamData(GLuint program);
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056     glm::mat4* getWTV(); 
-<a name="l00057"></a>00057     glm::mat4* getVTP();
-<a name="l00058"></a>00058     glm::vec3* getPos();
-<a name="l00059"></a>00059     GLfloat getSpeed();
-<a name="l00060"></a>00060     GLfloat* getSpeedPtr();
-<a name="l00061"></a>00061     GLfloat getRotSpeed();
-<a name="l00062"></a>00062     GLfloat* getRotSpeedPtr();
-<a name="l00063"></a>00063     <span class="keywordtype">void</span> toggleFrozen();
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065     <span class="comment">/*************************************************************</span>
-<a name="l00066"></a>00066 <span class="comment">     * change_look_at_pos:</span>
-<a name="l00067"></a>00067 <span class="comment">     * Tar xrel från MouseMotionEvent och y som absolut koordinat</span>
-<a name="l00068"></a>00068 <span class="comment">     * width, height är storlek på nuvarande fönster</span>
-<a name="l00069"></a>00069 <span class="comment">     * Sätter look_at_pos därefter</span>
-<a name="l00070"></a>00070 <span class="comment">     * **********************************************************/</span>
-<a name="l00071"></a>00071     <span class="keywordtype">void</span> changeLookAtPos(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel);
-<a name="l00072"></a>00072 };
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074 <span class="preprocessor">#endif</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html" title="Contains datatypes and functions to handle input terrain.">readData.h</a>&quot;</span>
+<a name="l00027"></a>00027 
+<a name="l00028"></a><a class="code" href="class_camera.html">00028</a> <span class="keyword">class </span><a class="code" href="class_camera.html">Camera</a> {
+<a name="l00029"></a>00029 <span class="keyword">private</span>:
+<a name="l00030"></a>00030     <span class="comment">// x används för att musen inte ska fastna i kanterna på</span>
+<a name="l00031"></a>00031     <span class="comment">// fönstret</span>
+<a name="l00032"></a>00032     <span class="keywordtype">int</span> x;
+<a name="l00033"></a>00033     <span class="keywordtype">float</span> fi, theta, rotSpeed;
+<a name="l00034"></a>00034     <span class="keywordtype">int</span> *screenW, *screenH;
+<a name="l00035"></a>00035     GLfloat speed, drawDistance;
+<a name="l00036"></a>00036     <span class="keywordtype">bool</span> isFrozen;
+<a name="l00037"></a>00037     <span class="keywordtype">int</span> terrW, terrH, xzLim, yLimLo, yLimHi;
+<a name="l00038"></a>00038     <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terrain;
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040     glm::vec3 position;
+<a name="l00041"></a>00041     glm::vec3 lookAtPos;
+<a name="l00042"></a>00042     glm::vec3 up;
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044     glm::mat4 WTVMatrix;
+<a name="l00045"></a>00045     glm::mat4 VTPMatrix;
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047     <span class="keywordtype">bool</span> unlocked;
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049     <span class="keywordtype">bool</span> isInCollisionBox(glm::vec3 transVec, <span class="keywordtype">bool</span> xz);
+<a name="l00050"></a>00050 <span class="keyword">public</span>:
+<a name="l00051"></a>00051     <a class="code" href="class_camera.html">Camera</a>(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH, <span class="keywordtype">int</span> tH, <span class="keywordtype">int</span> tW, <span class="keywordtype">int</span> xzL, <span class="keywordtype">int</span> yLL, <span class="keywordtype">int</span> yLH, <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terr);
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053     <span class="keywordtype">void</span> unlock();
+<a name="l00054"></a>00054     <span class="keywordtype">void</span> rotate(<span class="keywordtype">char</span> direction, GLfloat angle);
+<a name="l00055"></a>00055     <span class="keywordtype">void</span> translate(GLfloat dx, GLfloat dy, GLfloat dz);
+<a name="l00056"></a>00056     <span class="keywordtype">void</span> forward(GLfloat d);
+<a name="l00057"></a>00057     <span class="keywordtype">void</span> strafe(GLfloat d);
+<a name="l00058"></a>00058     <span class="keywordtype">void</span> jump(GLfloat d);
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     <span class="keywordtype">void</span> updateWTV();
+<a name="l00061"></a>00061     <span class="keywordtype">void</span> updateVTP();
+<a name="l00062"></a>00062     <span class="keywordtype">void</span> uploadCamData(GLuint program);
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     glm::mat4* getWTV(); 
+<a name="l00065"></a>00065     glm::mat4* getVTP();
+<a name="l00066"></a>00066     glm::vec3* getPos();
+<a name="l00067"></a>00067     GLfloat getSpeed();
+<a name="l00068"></a>00068     GLfloat* getSpeedPtr();
+<a name="l00069"></a>00069     GLfloat getRotSpeed();
+<a name="l00070"></a>00070     GLfloat* getRotSpeedPtr();
+<a name="l00071"></a>00071     <span class="keywordtype">void</span> toggleFrozen();
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073     <span class="comment">/*************************************************************</span>
+<a name="l00074"></a>00074 <span class="comment">     * change_look_at_pos:</span>
+<a name="l00075"></a>00075 <span class="comment">     * Tar xrel från MouseMotionEvent och y som absolut koordinat</span>
+<a name="l00076"></a>00076 <span class="comment">     * width, height är storlek på nuvarande fönster</span>
+<a name="l00077"></a>00077 <span class="comment">     * Sätter look_at_pos därefter</span>
+<a name="l00078"></a>00078 <span class="comment">     * **********************************************************/</span>
+<a name="l00079"></a>00079     <span class="keywordtype">void</span> changeLookAtPos(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel);
+<a name="l00080"></a>00080 };
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -192,7 +200,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>camera.h</b>      </li>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

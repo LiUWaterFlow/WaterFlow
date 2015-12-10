@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>Waterflow: src/xml/xmlParsing.cpp Source File</title>
+<title>Waterflow: src/xmlParsing.cpp Source File</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -95,118 +95,166 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">src/xml/xmlParsing.cpp</div>  </div>
+<div class="title">src/xmlParsing.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;xmlParsing.h&quot;</span>
 <a name="l00002"></a>00002 
 <a name="l00003"></a>00003 <span class="comment">// This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.</span>
 <a name="l00004"></a>00004 
-<a name="l00005"></a>00005 <span class="comment">// Converts a string with CSV to a vector with floats.</span>
-<a name="l00006"></a>00006 std::vector&lt;float&gt; fStrToVector(std::string str){
-<a name="l00007"></a>00007   std::vector&lt;float&gt; valueVector;
-<a name="l00008"></a>00008   std::stringstream ss(str);
-<a name="l00009"></a>00009   std::string fValue;
-<a name="l00010"></a>00010   
-<a name="l00011"></a>00011   <span class="keywordflow">while</span>(std::getline(ss, fValue, <span class="charliteral">&#39;,&#39;</span>)){
-<a name="l00012"></a>00012     std::stringstream fs(fValue);
-<a name="l00013"></a>00013     <span class="keywordtype">float</span> f = 0.0; 
-<a name="l00014"></a>00014     fs &gt;&gt; f;
-<a name="l00015"></a>00015     valueVector.push_back(f);
-<a name="l00016"></a>00016   }
-<a name="l00017"></a>00017   <span class="keywordflow">return</span> valueVector;
+<a name="l00005"></a>00005 
+<a name="l00006"></a>00006 Flood_Fill_data::Flood_Fill_data(<span class="keywordtype">int</span> in_x, <span class="keywordtype">int</span> in_z, <span class="keywordtype">float</span> in_height)
+<a name="l00007"></a>00007 {
+<a name="l00008"></a>00008   this-&gt;x = in_x;
+<a name="l00009"></a>00009   this-&gt;z = in_z;
+<a name="l00010"></a>00010   this-&gt;height = in_height;
+<a name="l00011"></a>00011 }
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 init_Data_struct::init_Data_struct(<span class="keyword">const</span> <span class="keywordtype">char</span>* XMLfile)
+<a name="l00014"></a>00014 {
+<a name="l00015"></a>00015   this-&gt;data_filename = loadMapPath(XMLfile);
+<a name="l00016"></a>00016   this-&gt;Flowsources = loadFlows(XMLfile);
+<a name="l00017"></a>00017   this-&gt;FFData = loadFFData(XMLfile);
 <a name="l00018"></a>00018 }
 <a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <span class="comment">//Converts a string with CSV to a vector with ints.</span>
-<a name="l00021"></a>00021 std::vector&lt;int&gt; iStrToVector(std::string str){
-<a name="l00022"></a>00022   std::vector&lt;int&gt; valueVector;
+<a name="l00020"></a>00020 <span class="comment">// Converts a string with CSV to a vector with floats.</span>
+<a name="l00021"></a>00021 std::vector&lt;float&gt; fStrToVector(std::string str){
+<a name="l00022"></a>00022   std::vector&lt;float&gt; valueVector;
 <a name="l00023"></a>00023   std::stringstream ss(str);
-<a name="l00024"></a>00024   std::string iValue;
-<a name="l00025"></a>00025   
-<a name="l00026"></a>00026   <span class="keywordflow">while</span>(std::getline(ss, iValue, <span class="charliteral">&#39;,&#39;</span>)){
-<a name="l00027"></a>00027     std::stringstream is(iValue);
-<a name="l00028"></a>00028     <span class="keywordtype">int</span> i = 0; 
-<a name="l00029"></a>00029     is &gt;&gt; i;
-<a name="l00030"></a>00030     valueVector.push_back(i);
+<a name="l00024"></a>00024   std::string fValue;
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026   <span class="keywordflow">while</span>(std::getline(ss, fValue, <span class="charliteral">&#39;,&#39;</span>)){
+<a name="l00027"></a>00027     std::stringstream fs(fValue);
+<a name="l00028"></a>00028     <span class="keywordtype">float</span> f = 0.0;
+<a name="l00029"></a>00029     fs &gt;&gt; f;
+<a name="l00030"></a>00030     valueVector.push_back(f);
 <a name="l00031"></a>00031   }
 <a name="l00032"></a>00032   <span class="keywordflow">return</span> valueVector;
 <a name="l00033"></a>00033 }
 <a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="comment">// This function parses the pressure values from the XML file by takeing the Pressure node, the PressureTime node and a pointer to a FlowSource object as input and adding the contents to the provided Object.</span>
-<a name="l00036"></a>00036 <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time){
-<a name="l00037"></a>00037   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
-<a name="l00038"></a>00038   std::string pstr = pres.attribute(<span class="stringliteral">&quot;p&quot;</span>).value();
-<a name="l00039"></a>00039   std::vector&lt;int&gt; timevec = iStrToVector(timestr);
-<a name="l00040"></a>00040   std::vector&lt;float&gt; pvec = fStrToVector(pstr);
-<a name="l00041"></a>00041   obj-&gt;<a class="code" href="class_flow_source.html#ad1836570f70f250f53f5fc320ba2e564" title="Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values...">setPressure</a>(pvec, timevec); 
-<a name="l00042"></a>00042 }
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044 <span class="comment">// This function parses the Position node and adds it to by pointer provided FlowSource Object.</span>
-<a name="l00045"></a>00045 <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
-<a name="l00046"></a>00046   <span class="keywordtype">int</span> x, y, z;
-<a name="l00047"></a>00047   x = node.attribute(<span class="stringliteral">&quot;x&quot;</span>).as_int();
-<a name="l00048"></a>00048   y = node.attribute(<span class="stringliteral">&quot;y&quot;</span>).as_int();
-<a name="l00049"></a>00049   z = node.attribute(<span class="stringliteral">&quot;z&quot;</span>).as_int();
-<a name="l00050"></a>00050   obj-&gt;<a class="code" href="class_flow_source.html#aecc7891570af30b5fc70dfe8bfd4637b" title="This function expects three ints symbolizing the 3D space cordinates of the source expressed in voxel...">setPosition</a>(x,y,z);
-<a name="l00051"></a>00051 }
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="comment">// This function parses the xyz direction of A Normal node and the time of a NormalTime node, then adds the result to an FlowSource Object given by pointer.</span>
-<a name="l00054"></a>00054 <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time){
-<a name="l00055"></a>00055   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
-<a name="l00056"></a>00056   std::vector&lt;float&gt; ndir;
-<a name="l00057"></a>00057   std::vector&lt;std::vector&lt;float&gt; &gt; nvec;
-<a name="l00058"></a>00058   <span class="keywordtype">float</span> x, y, z;
-<a name="l00059"></a>00059   <span class="keywordflow">for</span> (pugi::xml_node_iterator it = norm.begin(); it != norm.end(); ++it){
-<a name="l00060"></a>00060   x = it-&gt;attribute(<span class="stringliteral">&quot;x&quot;</span>).as_float();
-<a name="l00061"></a>00061   y = it-&gt;attribute(<span class="stringliteral">&quot;y&quot;</span>).as_float();
-<a name="l00062"></a>00062   z = it-&gt;attribute(<span class="stringliteral">&quot;z&quot;</span>).as_float();
-<a name="l00063"></a>00063   ndir = {x, y, z};
-<a name="l00064"></a>00064   nvec.push_back(ndir);
-<a name="l00065"></a>00065   }
-<a name="l00066"></a>00066   std::vector&lt;int&gt; timevec = iStrToVector(timestr);
-<a name="l00067"></a>00067   obj-&gt;<a class="code" href="class_flow_source.html#a5bad4132d2adcd6c0661bf7d06f71b28" title="This function expects a vector filled with vectors that hold 3 values, xyz, and a time vector that sp...">setNormal</a>(nvec, timevec); 
-<a name="l00068"></a>00068 }
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
-<a name="l00072"></a>00072   <span class="keywordtype">float</span> tot; 
-<a name="l00073"></a>00073   tot = node.attribute(<span class="stringliteral">&quot;tot&quot;</span>).as_float();
-<a name="l00074"></a>00074   obj-&gt;<a class="code" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716" title="This sets a float symbolising the total water in a source.">setTotalWater</a>(tot);
-<a name="l00075"></a>00075 }
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
-<a name="l00078"></a>00078   <span class="keywordtype">float</span> r; 
-<a name="l00079"></a>00079   r = node.attribute(<span class="stringliteral">&quot;r&quot;</span>).as_float();
-<a name="l00080"></a>00080   obj-&gt;<a class="code" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09" title="Sets the radius of the source.">setRadius</a>(r);
-<a name="l00081"></a>00081 }
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 <span class="comment">// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates. TODO: Implement a function that delets all the objects. </span>
-<a name="l00084"></a>00084 std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile) {
-<a name="l00085"></a>00085   pugi::xml_document doc;
-<a name="l00086"></a>00086   std::vector&lt;FlowSource*&gt; srces;
-<a name="l00087"></a>00087   <span class="keywordflow">if</span> (!doc.load_file(xmlFile)) <span class="keywordflow">return</span> srces;
-<a name="l00088"></a>00088   std::cout &lt;&lt; <span class="stringliteral">&quot;Load success&quot;</span> &lt;&lt; std::endl;
-<a name="l00089"></a>00089   pugi::xml_node sources = doc.child(<span class="stringliteral">&quot;Profile&quot;</span>).child(<span class="stringliteral">&quot;Sources&quot;</span>);
-<a name="l00090"></a>00090   <span class="keywordflow">for</span> (pugi::xml_node_iterator it = sources.begin(); it != sources.end(); ++it){
-<a name="l00091"></a>00091       <a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* fsp;
-<a name="l00092"></a>00092       fsp = <span class="keyword">new</span> <a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>;
-<a name="l00093"></a>00093       parsePressure(fsp, it-&gt;child(<span class="stringliteral">&quot;Pressure&quot;</span>), it-&gt;child(<span class="stringliteral">&quot;TimeP&quot;</span>));
-<a name="l00094"></a>00094       parsePosition(fsp, it-&gt;child(<span class="stringliteral">&quot;Position&quot;</span>));
-<a name="l00095"></a>00095       parseNormal(fsp, it-&gt;child(<span class="stringliteral">&quot;Normals&quot;</span>), it-&gt;child(<span class="stringliteral">&quot;TimeN&quot;</span>));
-<a name="l00096"></a>00096       parseTotalWater(fsp, it-&gt;child(<span class="stringliteral">&quot;TotWater&quot;</span>));
-<a name="l00097"></a>00097       parseRadius(fsp, it-&gt;child(<span class="stringliteral">&quot;Radius&quot;</span>));
-<a name="l00098"></a>00098       srces.push_back(fsp);
-<a name="l00099"></a>00099   }
-<a name="l00100"></a>00100   <span class="keywordflow">return</span> srces;
-<a name="l00101"></a>00101 }
-<a name="l00102"></a>00102 
-<a name="l00103"></a>00103 <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces){
-<a name="l00104"></a>00104   <span class="keywordflow">for</span>(<span class="keyword">auto</span> it = srces.begin(); it != srces.end(); ++it){
-<a name="l00105"></a>00105     <span class="keyword">delete</span> *it;
-<a name="l00106"></a>00106   }
-<a name="l00107"></a>00107 }
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109 <span class="comment">// vim:et</span>
+<a name="l00035"></a>00035 <span class="comment">//Converts a string with CSV to a vector with ints.</span>
+<a name="l00036"></a>00036 std::vector&lt;int&gt; iStrToVector(std::string str){
+<a name="l00037"></a>00037   std::vector&lt;int&gt; valueVector;
+<a name="l00038"></a>00038   std::stringstream ss(str);
+<a name="l00039"></a>00039   std::string iValue;
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041   <span class="keywordflow">while</span>(std::getline(ss, iValue, <span class="charliteral">&#39;,&#39;</span>)){
+<a name="l00042"></a>00042     std::stringstream is(iValue);
+<a name="l00043"></a>00043     <span class="keywordtype">int</span> i = 0;
+<a name="l00044"></a>00044     is &gt;&gt; i;
+<a name="l00045"></a>00045     valueVector.push_back(i);
+<a name="l00046"></a>00046   }
+<a name="l00047"></a>00047   <span class="keywordflow">return</span> valueVector;
+<a name="l00048"></a>00048 }
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="comment">// This function parses the pressure values from the XML file by takeing the Pressure node, the PressureTime node and a pointer to a FlowSource object as input and adding the contents to the provided Object.</span>
+<a name="l00051"></a>00051 <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time){
+<a name="l00052"></a>00052   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
+<a name="l00053"></a>00053   std::string pstr = pres.attribute(<span class="stringliteral">&quot;p&quot;</span>).value();
+<a name="l00054"></a>00054   std::vector&lt;float&gt; timevec = fStrToVector(timestr);
+<a name="l00055"></a>00055   std::vector&lt;float&gt; pvec = fStrToVector(pstr);
+<a name="l00056"></a>00056   obj-&gt;<a class="code" href="class_flow_source.html#a52620b99484ff3d28cab045b9c3e831a" title="Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values...">setPressure</a>(pvec, timevec);
+<a name="l00057"></a>00057 }
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="comment">// This function parses the Position node and adds it to by pointer provided FlowSource Object.</span>
+<a name="l00060"></a>00060 <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
+<a name="l00061"></a>00061   <span class="keywordtype">int</span> x, y, z;
+<a name="l00062"></a>00062   x = node.attribute(<span class="stringliteral">&quot;x&quot;</span>).as_int();
+<a name="l00063"></a>00063   y = node.attribute(<span class="stringliteral">&quot;y&quot;</span>).as_int();
+<a name="l00064"></a>00064   z = node.attribute(<span class="stringliteral">&quot;z&quot;</span>).as_int();
+<a name="l00065"></a>00065   obj-&gt;<a class="code" href="class_flow_source.html#aecc7891570af30b5fc70dfe8bfd4637b" title="This function expects three ints symbolizing the 3D space cordinates of the source expressed in voxel...">setPosition</a>(x,y,z);
+<a name="l00066"></a>00066 }
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068 <span class="comment">// This function parses the xyz direction of A Normal node and the time of a NormalTime node, then adds the result to an FlowSource Object given by pointer.</span>
+<a name="l00069"></a>00069 <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time){
+<a name="l00070"></a>00070   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
+<a name="l00071"></a>00071   std::vector&lt;float&gt; ndir;
+<a name="l00072"></a>00072   std::vector&lt;std::vector&lt;float&gt; &gt; nvec;
+<a name="l00073"></a>00073   <span class="keywordtype">float</span> x, y, z;
+<a name="l00074"></a>00074   <span class="keywordflow">for</span> (pugi::xml_node_iterator it = norm.begin(); it != norm.end(); ++it){
+<a name="l00075"></a>00075   x = it-&gt;attribute(<span class="stringliteral">&quot;x&quot;</span>).as_float();
+<a name="l00076"></a>00076   y = it-&gt;attribute(<span class="stringliteral">&quot;y&quot;</span>).as_float();
+<a name="l00077"></a>00077   z = it-&gt;attribute(<span class="stringliteral">&quot;z&quot;</span>).as_float();
+<a name="l00078"></a>00078   ndir = {x, y, z};
+<a name="l00079"></a>00079   nvec.push_back(ndir);
+<a name="l00080"></a>00080   }
+<a name="l00081"></a>00081   std::vector&lt;int&gt; timevec = iStrToVector(timestr);
+<a name="l00082"></a>00082   obj-&gt;<a class="code" href="class_flow_source.html#a5bad4132d2adcd6c0661bf7d06f71b28" title="This function expects a vector filled with vectors that hold 3 values, xyz, and a time vector that sp...">setNormal</a>(nvec, timevec);
+<a name="l00083"></a>00083 }
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
+<a name="l00087"></a>00087   <span class="keywordtype">float</span> tot;
+<a name="l00088"></a>00088   tot = node.attribute(<span class="stringliteral">&quot;tot&quot;</span>).as_float();
+<a name="l00089"></a>00089   obj-&gt;<a class="code" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716" title="This sets a float symbolising the total water in a source.">setTotalWater</a>(tot);
+<a name="l00090"></a>00090 }
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
+<a name="l00093"></a>00093   <span class="keywordtype">float</span> r;
+<a name="l00094"></a>00094   r = node.attribute(<span class="stringliteral">&quot;r&quot;</span>).as_float();
+<a name="l00095"></a>00095   obj-&gt;<a class="code" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09" title="Sets the radius of the source.">setRadius</a>(r);
+<a name="l00096"></a>00096 }
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098 <span class="comment">// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates.</span>
+<a name="l00099"></a>00099 std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile) {
+<a name="l00100"></a>00100   pugi::xml_document doc;
+<a name="l00101"></a>00101   std::vector&lt;FlowSource*&gt; srces;
+<a name="l00102"></a>00102   <span class="keywordflow">if</span> (!doc.load_file(xmlFile)) <span class="keywordflow">return</span> srces;
+<a name="l00103"></a>00103   std::cout &lt;&lt; <span class="stringliteral">&quot;Load success&quot;</span> &lt;&lt; std::endl;
+<a name="l00104"></a>00104   pugi::xml_node sources = doc.child(<span class="stringliteral">&quot;Profile&quot;</span>).child(<span class="stringliteral">&quot;Sources&quot;</span>);
+<a name="l00105"></a>00105   <span class="keywordflow">for</span> (pugi::xml_node_iterator it = sources.begin(); it != sources.end(); ++it){
+<a name="l00106"></a>00106       <a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* fsp;
+<a name="l00107"></a>00107       fsp = <span class="keyword">new</span> <a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>;
+<a name="l00108"></a>00108       parsePressure(fsp, it-&gt;child(<span class="stringliteral">&quot;Pressure&quot;</span>), it-&gt;child(<span class="stringliteral">&quot;TimeP&quot;</span>));
+<a name="l00109"></a>00109       parsePosition(fsp, it-&gt;child(<span class="stringliteral">&quot;Position&quot;</span>));
+<a name="l00110"></a>00110       parseNormal(fsp, it-&gt;child(<span class="stringliteral">&quot;Normals&quot;</span>), it-&gt;child(<span class="stringliteral">&quot;TimeN&quot;</span>));
+<a name="l00111"></a>00111       parseTotalWater(fsp, it-&gt;child(<span class="stringliteral">&quot;TotWater&quot;</span>));
+<a name="l00112"></a>00112       parseRadius(fsp, it-&gt;child(<span class="stringliteral">&quot;Radius&quot;</span>));
+<a name="l00113"></a>00113       srces.push_back(fsp);
+<a name="l00114"></a>00114   }
+<a name="l00115"></a>00115   <span class="keywordflow">return</span> srces;
+<a name="l00116"></a>00116 }
+<a name="l00117"></a>00117 
+<a name="l00118"></a>00118 <span class="keywordtype">bool</span> flowChange(std::vector&lt;FlowSource*&gt; flows, <span class="keywordtype">float</span> dt){
+<a name="l00119"></a>00119   <span class="keywordtype">bool</span> change = <span class="keyword">false</span>;
+<a name="l00120"></a>00120   <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; flows.size(); i++){
+<a name="l00121"></a>00121     <span class="keywordflow">if</span>(flows.at(i)-&gt;getChange(dt)){
+<a name="l00122"></a>00122       change = <span class="keyword">true</span>;
+<a name="l00123"></a>00123     }
+<a name="l00124"></a>00124   }
+<a name="l00125"></a>00125   <span class="keywordflow">return</span> change;
+<a name="l00126"></a>00126 }
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128 std::string loadMapPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile){
+<a name="l00129"></a>00129   pugi::xml_document doc;
+<a name="l00130"></a>00130   <span class="keywordflow">if</span>(!doc.load_file(xmlFile)) <span class="keywordflow">return</span> <span class="stringliteral">&quot;No XML file&quot;</span>;
+<a name="l00131"></a>00131   std::cout &lt;&lt; <span class="stringliteral">&quot;Load success&quot;</span> &lt;&lt; std::endl;
+<a name="l00132"></a>00132   std::string path = doc.child(<span class="stringliteral">&quot;Profile&quot;</span>).child(<span class="stringliteral">&quot;Data&quot;</span>).child(<span class="stringliteral">&quot;MapName&quot;</span>).attribute(<span class="stringliteral">&quot;path&quot;</span>).value();
+<a name="l00133"></a>00133   <span class="keywordflow">return</span> path;
+<a name="l00134"></a>00134 }
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136 std::vector&lt;Flood_Fill_data*&gt; loadFFData(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile){
+<a name="l00137"></a>00137   pugi::xml_document doc;
+<a name="l00138"></a>00138   doc.load_file(xmlFile);
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140   std::vector&lt;Flood_Fill_data*&gt; out_data;
+<a name="l00141"></a>00141   pugi::xml_node floods = doc.child(<span class="stringliteral">&quot;Profile&quot;</span>).child(<span class="stringliteral">&quot;Floods&quot;</span>);
+<a name="l00142"></a>00142 
+<a name="l00143"></a>00143   <span class="keywordflow">for</span> (pugi::xml_node_iterator it = floods.begin(); it != floods.end(); ++it){
+<a name="l00144"></a>00144     <a class="code" href="struct_flood___fill__data.html">Flood_Fill_data</a>* Flood_Fill = <span class="keyword">new</span> <a class="code" href="struct_flood___fill__data.html">Flood_Fill_data</a>(it-&gt;attribute(<span class="stringliteral">&quot;x&quot;</span>).as_int(), it-&gt;attribute(<span class="stringliteral">&quot;z&quot;</span>).as_int(), it-&gt;attribute(<span class="stringliteral">&quot;height&quot;</span>).as_float());
+<a name="l00145"></a>00145 
+<a name="l00146"></a>00146     out_data.push_back(Flood_Fill);
+<a name="l00147"></a>00147   }
+<a name="l00148"></a>00148   <span class="keywordflow">return</span> out_data;
+<a name="l00149"></a>00149 }
+<a name="l00150"></a>00150 
+<a name="l00151"></a>00151 
+<a name="l00152"></a>00152 <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces){
+<a name="l00153"></a>00153   <span class="keywordflow">for</span>(<span class="keyword">auto</span> it = srces.begin(); it != srces.end(); ++it){
+<a name="l00154"></a>00154     <span class="keyword">delete</span> *it;
+<a name="l00155"></a>00155   }
+<a name="l00156"></a>00156 }
+<a name="l00157"></a>00157 
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -227,7 +275,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>xmlParsing.cpp</b>      </li>
 
-    <li class="footer">Generated on Thu Nov 12 2015 14:14:24 for Waterflow by
+    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
