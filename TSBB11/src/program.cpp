@@ -113,24 +113,31 @@ bool Program::init() {
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
 	//shallowwatershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	depthshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/depthshader.frag");
-
-	// Create drawables
+	
 	GLuint sizes[] = { dataHandler->getDataWidth(), dataHandler->getDataHeight() };
-
-
+    
+	// Create drawables
+	
 	myDrawable::setLights();
 	myDrawable::setTextures(sizes);
-
-	terrain = new HeightMap(terrainshader, sizes, dataHandler->getTerrainScale(), dataHandler->getHeightBuffer());
-	terrain->update();
-	dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
 	
 	
-	printError("Created Terrain");
+	
+	
 
+	
+	
+	
 	if (simCase == 1)
 	{
-
+		terrain = new HeightMap(terrainshader, sizes, dataHandler->getTerrainScale(), dataHandler->getHeightBuffer());
+		terrain->update();
+		dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
+		
+		printError("Created Terrain");
+	
+		
+		
 		watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 		// Initialize water simulation
 		hf = new HeightField(dataHandler, init_data.FFData, init_data.Flowsources);
@@ -140,7 +147,12 @@ bool Program::init() {
 		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
 	}else if(simCase == 2)
 	{
-
+		terrain = new HeightMap(terrainshader, sizes, -1.0f, dataHandler->getHeightBuffer());
+		terrain->update();
+		dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
+		
+		printError("Created Terrain");
+	
 
 		watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/shallowwatershader.frag");
 		cam->unlock();

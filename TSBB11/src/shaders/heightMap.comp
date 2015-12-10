@@ -41,7 +41,11 @@ void main() {
 	float ourTerr = terrHeight[x+y*size.x];
 	//write to position (x,z) from where we read, y is data we read.
 	position[offset + 0] = float(x);
-	position[offset + 1] = (ourTerr < terr*scale) ? ourTerr-100.0f  : ourTerr;
+	if(scale  < 0.0f){
+		position[offset + 1] =  ourTerr;
+	}else{
+		position[offset + 1] =  (ourTerr - terr*scale < -0.00001f ) ? ourTerr-100.0f  : ourTerr;
+	}
 	position[offset + 2] = float(y);
 
 	//texCoord = x/width, z/height (typ)
