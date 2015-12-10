@@ -78,8 +78,7 @@ private:
 	GLuint simCase; ///< Which simulation is to be run.
 
 public:
-	int exec1();
-	int exec2();
+	int exec();
 	int testVoxels();
 	bool init();
 
@@ -98,13 +97,12 @@ public:
 	void checkKeys();
 
 	void timeUpdate();
-	void update1();
-	void update2();
+	void update();
 	void display();
 
 	void clean();
 
-	Program();
+	Program(GLuint simCase);
 	~Program();
 };
 

@@ -10,7 +10,8 @@
 
 bool updateRender;
 bool sim = true;
-Program::Program() {
+Program::Program(GLuint simCaseIn) {
+	simCase = simCaseIn;
 	screenW = 800;
 	screenH = 800;
 
@@ -29,8 +30,7 @@ Program::Program() {
 
 Program::~Program() {}
 
-int Program::exec1() {
-	simCase = 1;
+int Program::exec() {
 	
 	if (!init()) return -1;
 
@@ -40,28 +40,7 @@ int Program::exec1() {
 		timeUpdate();
 		while (SDL_PollEvent(&Event)) handleEvent(&Event);
 		checkKeys();
-		update1();
-		display();
-	}
-
-	clean();
-	return 0;
-}
-
-
-int Program::exec2() {
-	simCase = 2;
-	
-	if (!init()) return -1;
-
-	SDL_Event Event;
-	
-
-	while (isRunning) {
-		timeUpdate();
-		while (SDL_PollEvent(&Event)) handleEvent(&Event);
-		checkKeys();
-		update2();
+		update();
 		display();
 	}
 
@@ -218,24 +197,32 @@ void Program::timeUpdate() {
 	FPS = 1000.0f / deltaTime;
 }
 
-void Program::update1() {
+void Program::update() {
 	// Update the tweak bar.
 	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
-	if (sim) {
-		hf->runSimGPU(dtSim);
+		
+	
+	if (simCase == 1)
+	{
+		
+		if (sim) {
+			hf->runSimGPU(dtSim);
+		}
+	
+	
+	
+	}else if(simCase == 2)
+	{
+		if (sim) {
+			sgpu->runSimGPU();
+		}
 	}
+	
+	
 	waterTerrain->update();
+
 }
 
-
-void Program::update2() {
-	// Update the tweak bar.
-	heightAtPos = dataHandler->giveHeight(cam->getPos()->x, cam->getPos()->z);
-	if (sim) {
-		sgpu->runSimGPU();
-	}
-	waterTerrain->update();
-}
 
 void Program::display() {
 	// Clear the screen.
@@ -351,11 +338,6 @@ void Program::handleKeypress(SDL_Event* event) {
 			break;
 		sgpu->cycleBuffer();
 		break;
-	case SDLK_n:
-		depthWater = false;
-		break;
-	case SDLK_m:
-		depthWater = true;
 	default:
 		break;
 	}

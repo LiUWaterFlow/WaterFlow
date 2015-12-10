@@ -31,7 +31,7 @@ INC += -F/Library/Frameworks/
 LINKS =  -framework OpenGL -framework GLUT -Isrc/common/xml -framework Cocoa -framework SDL2 -L/usr/local/lib -lAntTweakBar
 endif
 
-GCC = g++ -Wall -pedantic -std=c++0x -g3
+GCC = g++ -Wall -pedantic -std=c++0x
 
 #if Linux
 ifeq ($(PLATFORM),linux)
