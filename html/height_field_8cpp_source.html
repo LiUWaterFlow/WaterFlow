@@ -161,8 +161,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00061"></a>00061 
 <a name="l00062"></a>00062 
 <a name="l00063"></a><a class="code" href="class_height_field.html#a24a0541061bf79f26c3a66a5ee47cbc1">00063</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a24a0541061bf79f26c3a66a5ee47cbc1" title="Initializes the predefines test data for the CPU.">HeightField::initTest</a>() {
-<a name="l00064"></a>00064     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
-<a name="l00065"></a>00065         <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
+<a name="l00064"></a>00064     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
+<a name="l00065"></a>00065         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
 <a name="l00066"></a>00066             <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>, j*samp) - 2;
 <a name="l00067"></a>00067             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] = 0;
 <a name="l00068"></a>00068         }
@@ -231,8 +231,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00131"></a><a class="code" href="class_height_field.html#a05f20fbc114835aede30d1f4e9c51ab2">00131</a> std::vector&lt;GLuint&gt; *<a class="code" href="class_height_field.html#a05f20fbc114835aede30d1f4e9c51ab2" title="Returns the voxels to be rendered&#39;s positions.">HeightField::getVoxelPositions</a>() {
 <a name="l00132"></a>00132     std::vector&lt;GLuint&gt; *positions = <span class="keyword">new</span> std::vector&lt;GLuint&gt;;
 <a name="l00133"></a>00133 
-<a name="l00134"></a>00134     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
-<a name="l00135"></a>00135         <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
+<a name="l00134"></a>00134     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
+<a name="l00135"></a>00135         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
 <a name="l00136"></a>00136             <span class="keywordflow">if</span> (<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - 1 &gt; <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(i, j)) {
 <a name="l00137"></a>00137                 positions-&gt;push_back(i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>);
 <a name="l00138"></a>00138                 positions-&gt;push_back(round(<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - 1));
@@ -451,7 +451,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>heightField.cpp</b>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 15:28:13 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

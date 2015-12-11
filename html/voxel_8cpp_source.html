@@ -318,7 +318,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00218"></a>00218 
 <a name="l00219"></a>00219   <span class="comment">//if x is not in table. Create y and z tables, resize x, and</span>
 <a name="l00220"></a>00220   <span class="comment">//point to children (y,z);</span>
-<a name="l00221"></a>00221   <span class="keywordflow">if</span>(<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>-&gt;size() &lt; x+1){
+<a name="l00221"></a>00221   <span class="keywordflow">if</span>(<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)x+1){
 <a name="l00222"></a>00222     std::vector&lt;voxel*&gt;* tempZ = <span class="keyword">new</span> std::vector&lt;voxel*&gt;(z+1);
 <a name="l00223"></a>00223     std::vector&lt;std::vector&lt;voxel*&gt;*&gt;* tempY = <span class="keyword">new</span> std::vector&lt;std::vector&lt;voxel*&gt;*&gt;(y+1);
 <a name="l00224"></a>00224     <a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>-&gt;resize(x+1,<span class="keyword">nullptr</span>);
@@ -329,7 +329,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00229"></a>00229   <span class="comment">//if y is not in table. Create z table, resize y, and</span>
 <a name="l00230"></a>00230   <span class="comment">//point to childtable z; Note that existence of y table is</span>
 <a name="l00231"></a>00231   <span class="comment">//managed by the first part of the if-statement</span>
-<a name="l00232"></a>00232   <span class="keywordflow">else</span> <span class="keywordflow">if</span>((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] != <span class="keyword">nullptr</span> &amp;&amp; (*voxels)[x]-&gt;size() &lt; y+1){
+<a name="l00232"></a>00232   <span class="keywordflow">else</span> <span class="keywordflow">if</span>((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] != <span class="keyword">nullptr</span> &amp;&amp; (*voxels)[x]-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)y+1){
 <a name="l00233"></a>00233 
 <a name="l00234"></a>00234     std::vector&lt;voxel*&gt;* tempZ = <span class="keyword">new</span> std::vector&lt;voxel*&gt;(z+1);
 <a name="l00235"></a>00235     (*voxels)[x]-&gt;resize(y+1,<span class="keyword">nullptr</span>);
@@ -338,7 +338,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00238"></a>00238   }
 <a name="l00239"></a>00239   <span class="comment">//if z is not large enough resize. Note that existence of z table is</span>
 <a name="l00240"></a>00240   <span class="comment">//managed by the first two parts of the if-statement</span>
-<a name="l00241"></a>00241   <span class="keywordflow">else</span> <span class="keywordflow">if</span>((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] != <span class="keyword">nullptr</span> &amp;&amp;  (*(*voxels)[x])[y] != <span class="keyword">nullptr</span> &amp;&amp; (*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;size() &lt; z+1){
+<a name="l00241"></a>00241   <span class="keywordflow">else</span> <span class="keywordflow">if</span>((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] != <span class="keyword">nullptr</span> &amp;&amp;  (*(*voxels)[x])[y] != <span class="keyword">nullptr</span> &amp;&amp; (*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)z+1){
 <a name="l00242"></a>00242     (*(*voxels)[x])[y]-&gt;resize(z+1,<span class="keyword">nullptr</span>);
 <a name="l00243"></a>00243 
 <a name="l00244"></a>00244   }
@@ -393,17 +393,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00293"></a>00293     <span class="comment">//std::cout &lt;&lt; &quot;Voxels at x is empty&quot; &lt;&lt; std::endl;</span>
 <a name="l00294"></a>00294 
 <a name="l00295"></a>00295     <span class="comment">//ensure table existance and table size, if either fails return nullptr.</span>
-<a name="l00296"></a>00296     <span class="keywordflow">if</span> (<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>-&gt;size() &lt; x + 1 || (*voxels)[x] == <span class="keyword">nullptr</span>) {
+<a name="l00296"></a>00296     <span class="keywordflow">if</span> (<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)x + 1 || (*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] == <span class="keyword">nullptr</span>) {
 <a name="l00297"></a>00297         <span class="comment">//std::cout &lt;&lt; &quot;In first if in get_Voxel&quot; &lt;&lt; std::endl;</span>
 <a name="l00298"></a>00298         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
 <a name="l00299"></a>00299     }
 <a name="l00300"></a>00300     <span class="comment">//ensure table existance and table size, if either fails return nullptr.</span>
-<a name="l00301"></a>00301     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x]-&gt;size() &lt; y + 1 || (*(*voxels)[x])[y] == <span class="keyword">nullptr</span>) {
+<a name="l00301"></a>00301     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x]-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)y + 1 || (*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y] == <span class="keyword">nullptr</span>) {
 <a name="l00302"></a>00302         <span class="comment">//std::cout &lt;&lt; &quot;In second if in get_Voxel&quot; &lt;&lt; std::endl;</span>
 <a name="l00303"></a>00303         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
 <a name="l00304"></a>00304     }
 <a name="l00305"></a>00305     <span class="comment">//ensure table existance and table size, if either fails return nullptr.</span>
-<a name="l00306"></a>00306     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;size() &lt; z + 1 || (*(*(*voxels)[x])[y])[z] == <span class="keyword">nullptr</span>) {
+<a name="l00306"></a>00306     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)z + 1 || (*(*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y])[z] == <span class="keyword">nullptr</span>) {
 <a name="l00307"></a>00307         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
 <a name="l00308"></a>00308     }
 <a name="l00309"></a>00309 
@@ -487,7 +487,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00387"></a>00387 
 <a name="l00388"></a><a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5">00388</a> std::vector&lt;GLuint&gt; *<a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5" title="Create a data pointer to all existing voxels.">Voxelgrid::getVoxelPositions</a>() {
 <a name="l00389"></a>00389     std::vector&lt;GLuint&gt; *positions = <span class="keyword">new</span> std::vector&lt;GLuint&gt;;
-<a name="l00390"></a>00390     GLuint tempH = 0;
+<a name="l00390"></a>00390     GLint tempH = 0;
 <a name="l00391"></a>00391     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; <a class="code" href="class_voxelgrid.html#a105802faf7a954cac413286276315c2e" title="The width of the map, needed for saving data in linear containers.">width</a>; x++)
 <a name="l00392"></a>00392     {
 <a name="l00393"></a>00393         <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> z = 0; z &lt; <a class="code" href="class_voxelgrid.html#a08a290f3a661bfa6d9a0bc93dae4feeb" title="The height of the map, needed for voxel extraction.">height</a>; z++)
@@ -608,7 +608,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>voxel.cpp</b>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 15:28:13 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
