@@ -200,330 +200,337 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00100"></a>00100 
 <a name="l00101"></a>00101     <span class="comment">// ===== Grass/terrain color Texture =====</span>
 <a name="l00102"></a>00102     glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
-<a name="l00103"></a>00103 <span class="preprocessor">#ifndef _WINDOWS</span>
-<a name="l00104"></a>00104 <span class="preprocessor"></span>    glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
-<a name="l00105"></a>00105     LoadTGATextureData(<span class="stringliteral">&quot;resources/grass.tga&quot;</span>, &amp;tempTex);
-<a name="l00106"></a>00106     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
-<a name="l00107"></a>00107 <span class="preprocessor">#else</span>
-<a name="l00108"></a>00108 <span class="preprocessor"></span>    <span class="comment">// Path to the terrain color image file.</span>
-<a name="l00109"></a>00109     std::string terrainColorPlaceHolder = <span class="stringliteral">&quot;resources/placeHolder.png&quot;</span>;
-<a name="l00110"></a>00110     std::string terrainColorPath = <span class="stringliteral">&quot;resources/terrainColor.jpg&quot;</span>;
-<a name="l00111"></a>00111     <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>* terrainColorTex = <span class="keyword">new</span> <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>(terrainColorPlaceHolder, texIDs[GRASS_TEXUNIT]);
-<a name="l00112"></a>00112 <span class="preprocessor">#endif</span>
-<a name="l00113"></a>00113 <span class="preprocessor"></span>    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-<a name="l00114"></a>00114     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-<a name="l00115"></a>00115     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-<a name="l00116"></a>00116     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-<a name="l00117"></a>00117 
-<a name="l00118"></a>00118     <span class="comment">// ===== Dotted Texture =====</span>
-<a name="l00119"></a>00119 
-<a name="l00120"></a>00120     glActiveTexture(GL_TEXTURE0 + DOTTED_TEXUNIT);
-<a name="l00121"></a>00121     glBindTexture(GL_TEXTURE_2D, texIDs[DOTTED_TEXUNIT]);
-<a name="l00122"></a>00122     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-<a name="l00123"></a>00123     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-<a name="l00124"></a>00124     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-<a name="l00125"></a>00125     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-<a name="l00126"></a>00126     LoadTGATextureData(<span class="stringliteral">&quot;resources/prickig.tga&quot;</span>, &amp;tempTex);
-<a name="l00127"></a>00127     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129     <span class="comment">// ===== Noise Texture =====</span>
-<a name="l00130"></a>00130 
-<a name="l00131"></a>00131     glActiveTexture(GL_TEXTURE0 + NOISE_TEXUNIT);
-<a name="l00132"></a>00132     glBindTexture(GL_TEXTURE_2D, texIDs[NOISE_TEXUNIT]);
-<a name="l00133"></a>00133     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-<a name="l00134"></a>00134     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-<a name="l00135"></a>00135     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-<a name="l00136"></a>00136     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-<a name="l00137"></a>00137     LoadTGATextureData(<span class="stringliteral">&quot;resources/noise.tga&quot;</span>, &amp;tempTex);
-<a name="l00138"></a>00138     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
-<a name="l00139"></a>00139 
-<a name="l00140"></a>00140     <span class="comment">// ===== Grass Texture =====</span>
-<a name="l00141"></a>00141 
-<a name="l00142"></a>00142     glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
-<a name="l00143"></a>00143     glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
-<a name="l00144"></a>00144     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-<a name="l00145"></a>00145     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-<a name="l00146"></a>00146     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-<a name="l00147"></a>00147     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-<a name="l00148"></a>00148     LoadTGATextureData(<span class="stringliteral">&quot;resources/grass.tga&quot;</span>, &amp;tempTex);
-<a name="l00149"></a>00149     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
-<a name="l00150"></a>00150 
-<a name="l00151"></a>00151     <span class="comment">// Just set this to not interfere (possible bug to look into)</span>
-<a name="l00152"></a>00152     glActiveTexture(GL_TEXTURE0  + TOTAL_TEXTURES);
-<a name="l00153"></a>00153 
-<a name="l00154"></a>00154     printError(<span class="stringliteral">&quot;Create textures!&quot;</span>);
-<a name="l00155"></a>00155 }
-<a name="l00156"></a>00156 
+<a name="l00103"></a>00103 <span class="preprocessor">#ifdef _WINDOWS</span>
+<a name="l00104"></a>00104 <span class="preprocessor"></span>    <span class="comment">// Path to the terrain color image file.</span>
+<a name="l00105"></a>00105     std::string terrainColorPath = <span class="stringliteral">&quot;resources/terrainColor.jpg&quot;</span>;
+<a name="l00106"></a>00106     <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>* terrainColorTex = <span class="keyword">new</span> <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>(terrainColorPath, texIDs[GRASS_TEXUNIT]);
+<a name="l00107"></a>00107     <span class="keywordflow">if</span>(terrainColorTex-&gt;<a class="code" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image. Will be -1 when image couldn&#39;t be loaded...">getTexID</a>() == -1)
+<a name="l00108"></a>00108     {
+<a name="l00109"></a>00109         <span class="comment">// The texture ID of the sdlTexture will be -1 if the image could not be loaded.</span>
+<a name="l00110"></a>00110         glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+<a name="l00111"></a>00111         <span class="comment">// Below should be placeholder.tga once someone can convert better than I can.</span>
+<a name="l00112"></a>00112         LoadTGATextureData(<span class="stringliteral">&quot;resources/grass.tga&quot;</span>, &amp;tempTex);
+<a name="l00113"></a>00113         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+<a name="l00114"></a>00114     }
+<a name="l00115"></a>00115 <span class="preprocessor">#else</span>
+<a name="l00116"></a>00116 <span class="preprocessor"></span>    glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+<a name="l00117"></a>00117     LoadTGATextureData(<span class="stringliteral">&quot;resources/grass.tga&quot;</span>, &amp;tempTex);
+<a name="l00118"></a>00118     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+<a name="l00119"></a>00119 <span class="preprocessor">#endif</span>
+<a name="l00120"></a>00120 <span class="preprocessor"></span>    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+<a name="l00121"></a>00121     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+<a name="l00122"></a>00122     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+<a name="l00123"></a>00123     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125     <span class="comment">// ===== Dotted Texture =====</span>
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127     glActiveTexture(GL_TEXTURE0 + DOTTED_TEXUNIT);
+<a name="l00128"></a>00128     glBindTexture(GL_TEXTURE_2D, texIDs[DOTTED_TEXUNIT]);
+<a name="l00129"></a>00129     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+<a name="l00130"></a>00130     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+<a name="l00131"></a>00131     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+<a name="l00132"></a>00132     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+<a name="l00133"></a>00133     LoadTGATextureData(<span class="stringliteral">&quot;resources/prickig.tga&quot;</span>, &amp;tempTex);
+<a name="l00134"></a>00134     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136     <span class="comment">// ===== Noise Texture =====</span>
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138     glActiveTexture(GL_TEXTURE0 + NOISE_TEXUNIT);
+<a name="l00139"></a>00139     glBindTexture(GL_TEXTURE_2D, texIDs[NOISE_TEXUNIT]);
+<a name="l00140"></a>00140     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+<a name="l00141"></a>00141     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+<a name="l00142"></a>00142     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+<a name="l00143"></a>00143     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+<a name="l00144"></a>00144     LoadTGATextureData(<span class="stringliteral">&quot;resources/noise.tga&quot;</span>, &amp;tempTex);
+<a name="l00145"></a>00145     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+<a name="l00146"></a>00146 
+<a name="l00147"></a>00147     <span class="comment">// ===== Grass Texture =====</span>
+<a name="l00148"></a>00148 
+<a name="l00149"></a>00149     <span class="comment">/*glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);</span>
+<a name="l00150"></a>00150 <span class="comment">    glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);</span>
+<a name="l00151"></a>00151 <span class="comment">    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);</span>
+<a name="l00152"></a>00152 <span class="comment">    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);</span>
+<a name="l00153"></a>00153 <span class="comment">    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);</span>
+<a name="l00154"></a>00154 <span class="comment">    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);</span>
+<a name="l00155"></a>00155 <span class="comment">    LoadTGATextureData(&quot;resources/grass.tga&quot;, &amp;tempTex);</span>
+<a name="l00156"></a>00156 <span class="comment">    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);*/</span>
 <a name="l00157"></a>00157 
-<a name="l00158"></a>00158 SkyCube::SkyCube(GLuint program)
-<a name="l00159"></a>00159 : <a class="code" href="classmy_drawable.html">myDrawable</a>(program) {
-<a name="l00160"></a>00160     <span class="comment">/* Initialize skycube */</span>
-<a name="l00161"></a>00161     model = generateCube(10.0f);
+<a name="l00158"></a>00158     <span class="comment">// Just set this to not interfere (possible bug to look into)</span>
+<a name="l00159"></a>00159     glActiveTexture(GL_TEXTURE0  + TOTAL_TEXTURES);
+<a name="l00160"></a>00160 
+<a name="l00161"></a>00161     printError(<span class="stringliteral">&quot;Create textures!&quot;</span>);
 <a name="l00162"></a>00162 }
 <a name="l00163"></a>00163 
-<a name="l00164"></a>00164 <span class="keywordtype">void</span> SkyCube::draw() {
-<a name="l00165"></a>00165     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;cube_texture&quot;</span>), SKYBOX_TEXUNIT);
-<a name="l00166"></a>00166 
-<a name="l00167"></a>00167     DrawModel(model, program, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, NULL);
-<a name="l00168"></a>00168 }
-<a name="l00169"></a>00169 
-<a name="l00170"></a>00170 <span class="comment">// ================================================================</span>
-<a name="l00171"></a>00171 
-<a name="l00172"></a>00172 HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
-<a name="l00173"></a>00173 : <a class="code" href="classmy_drawable.html">myDrawable</a>(drawProgram) {
-<a name="l00174"></a>00174 
-<a name="l00175"></a>00175     dataWidth = sizes[0];
-<a name="l00176"></a>00176     dataHeight = sizes[1];
-<a name="l00177"></a>00177     dataTerrainHeight = maxHeight;
-<a name="l00178"></a>00178     numData = dataWidth * dataHeight;
-<a name="l00179"></a>00179     numIndices = (dataWidth - 1) * (dataHeight - 1) * 2 * 3;
-<a name="l00180"></a>00180 
-<a name="l00181"></a>00181     heightBuffer = inputHeightBuffer;
-<a name="l00182"></a>00182 
-<a name="l00183"></a>00183     texnum = 0;
-<a name="l00184"></a>00184 
-<a name="l00185"></a>00185     initUpdate();
-<a name="l00186"></a>00186 
-<a name="l00187"></a>00187     <a class="code" href="class_height_field.html#a7b3fbdb7763fbc6cd33d96ad38aa4694" title="Initializes the necessary components for rendering the CPU tests.">initDraw</a>();
-<a name="l00188"></a>00188 }
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165 SkyCube::SkyCube(GLuint program)
+<a name="l00166"></a>00166 : <a class="code" href="classmy_drawable.html">myDrawable</a>(program) {
+<a name="l00167"></a>00167     <span class="comment">/* Initialize skycube */</span>
+<a name="l00168"></a>00168     model = generateCube(10.0f);
+<a name="l00169"></a>00169 }
+<a name="l00170"></a>00170 
+<a name="l00171"></a>00171 <span class="keywordtype">void</span> SkyCube::draw() {
+<a name="l00172"></a>00172     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;cube_texture&quot;</span>), SKYBOX_TEXUNIT);
+<a name="l00173"></a>00173 
+<a name="l00174"></a>00174     DrawModel(model, program, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, NULL);
+<a name="l00175"></a>00175 }
+<a name="l00176"></a>00176 
+<a name="l00177"></a>00177 <span class="comment">// ================================================================</span>
+<a name="l00178"></a>00178 
+<a name="l00179"></a>00179 HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
+<a name="l00180"></a>00180 : <a class="code" href="classmy_drawable.html">myDrawable</a>(drawProgram) {
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182     dataWidth = sizes[0];
+<a name="l00183"></a>00183     dataHeight = sizes[1];
+<a name="l00184"></a>00184     dataTerrainHeight = maxHeight;
+<a name="l00185"></a>00185     numData = dataWidth * dataHeight;
+<a name="l00186"></a>00186     numIndices = (dataWidth - 1) * (dataHeight - 1) * 2 * 3;
+<a name="l00187"></a>00187 
+<a name="l00188"></a>00188     heightBuffer = inputHeightBuffer;
 <a name="l00189"></a>00189 
-<a name="l00190"></a>00190 <span class="keywordtype">void</span> HeightMap::initUpdate() {
+<a name="l00190"></a>00190     texnum = 0;
 <a name="l00191"></a>00191 
-<a name="l00192"></a>00192     glGenBuffers(4, drawBuffers);
+<a name="l00192"></a>00192     initUpdate();
 <a name="l00193"></a>00193 
-<a name="l00194"></a>00194     normalsProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/normals.comp&quot;</span>);
-<a name="l00195"></a>00195 
-<a name="l00196"></a>00196     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[3]); <span class="comment">// Normals</span>
-<a name="l00197"></a>00197     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
-<a name="l00198"></a>00198     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00199"></a>00199 
-<a name="l00200"></a>00200     printError(<span class="stringliteral">&quot;init normals&quot;</span>);
-<a name="l00201"></a>00201 
-<a name="l00202"></a>00202     heightMapProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/heightMap.comp&quot;</span>);
-<a name="l00203"></a>00203 
-<a name="l00204"></a>00204     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[0]); <span class="comment">// Vertex positions</span>
-<a name="l00205"></a>00205     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
-<a name="l00206"></a>00206     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00207"></a>00207 
-<a name="l00208"></a>00208     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[1]); <span class="comment">// Texture coordinates</span>
-<a name="l00209"></a>00209     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 2 * numData, NULL, GL_STATIC_DRAW);
-<a name="l00210"></a>00210     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00211"></a>00211 
-<a name="l00212"></a>00212     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[2]); <span class="comment">// Indices</span>
-<a name="l00213"></a>00213     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLint)* numIndices, NULL, GL_STATIC_DRAW);
-<a name="l00214"></a>00214     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00215"></a>00215 
-<a name="l00216"></a>00216     printError(<span class="stringliteral">&quot;init heightmap&quot;</span>);
-<a name="l00217"></a>00217 
-<a name="l00218"></a>00218     textureProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/textureData.comp&quot;</span>);
-<a name="l00219"></a>00219 
-<a name="l00220"></a>00220     printError(<span class="stringliteral">&quot;init texturedata&quot;</span>);
-<a name="l00221"></a>00221 }
+<a name="l00194"></a>00194     <a class="code" href="class_height_field.html#a7b3fbdb7763fbc6cd33d96ad38aa4694" title="Initializes the necessary components for rendering the CPU tests.">initDraw</a>();
+<a name="l00195"></a>00195 }
+<a name="l00196"></a>00196 
+<a name="l00197"></a>00197 <span class="keywordtype">void</span> HeightMap::initUpdate() {
+<a name="l00198"></a>00198 
+<a name="l00199"></a>00199     glGenBuffers(4, drawBuffers);
+<a name="l00200"></a>00200 
+<a name="l00201"></a>00201     normalsProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/normals.comp&quot;</span>);
+<a name="l00202"></a>00202 
+<a name="l00203"></a>00203     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[3]); <span class="comment">// Normals</span>
+<a name="l00204"></a>00204     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
+<a name="l00205"></a>00205     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00206"></a>00206 
+<a name="l00207"></a>00207     printError(<span class="stringliteral">&quot;init normals&quot;</span>);
+<a name="l00208"></a>00208 
+<a name="l00209"></a>00209     heightMapProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/heightMap.comp&quot;</span>);
+<a name="l00210"></a>00210 
+<a name="l00211"></a>00211     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[0]); <span class="comment">// Vertex positions</span>
+<a name="l00212"></a>00212     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
+<a name="l00213"></a>00213     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00214"></a>00214 
+<a name="l00215"></a>00215     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[1]); <span class="comment">// Texture coordinates</span>
+<a name="l00216"></a>00216     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 2 * numData, NULL, GL_STATIC_DRAW);
+<a name="l00217"></a>00217     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00218"></a>00218 
+<a name="l00219"></a>00219     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[2]); <span class="comment">// Indices</span>
+<a name="l00220"></a>00220     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLint)* numIndices, NULL, GL_STATIC_DRAW);
+<a name="l00221"></a>00221     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00222"></a>00222 
-<a name="l00223"></a>00223 <span class="keywordtype">void</span> HeightMap::initDraw() {
+<a name="l00223"></a>00223     printError(<span class="stringliteral">&quot;init heightmap&quot;</span>);
 <a name="l00224"></a>00224 
-<a name="l00225"></a>00225     glGenVertexArrays(1, &amp;drawVAO);
+<a name="l00225"></a>00225     textureProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/textureData.comp&quot;</span>);
 <a name="l00226"></a>00226 
-<a name="l00227"></a>00227     glUseProgram(program);
-<a name="l00228"></a>00228 
-<a name="l00229"></a>00229     printError(<span class="stringliteral">&quot;init draw uniforms&quot;</span>);
-<a name="l00230"></a>00230 
-<a name="l00231"></a>00231     GLint posAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_Position&quot;</span>);
-<a name="l00232"></a>00232     GLint inNormAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_Normal&quot;</span>);
-<a name="l00233"></a>00233     GLint inTexAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
-<a name="l00234"></a>00234 
-<a name="l00235"></a>00235     glBindVertexArray(drawVAO);
-<a name="l00236"></a>00236 
-<a name="l00237"></a>00237     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); <span class="comment">//vertexBufferID</span>
-<a name="l00238"></a>00238     glEnableVertexAttribArray(posAttrib);
-<a name="l00239"></a>00239     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
-<a name="l00240"></a>00240 
-<a name="l00241"></a>00241     printError(<span class="stringliteral">&quot;init draw1&quot;</span>);
-<a name="l00242"></a>00242 
-<a name="l00243"></a>00243     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); <span class="comment">//texBufferID</span>
-<a name="l00244"></a>00244     glEnableVertexAttribArray(inTexAttrib);
-<a name="l00245"></a>00245     glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 2, 0);
-<a name="l00246"></a>00246 
-<a name="l00247"></a>00247     printError(<span class="stringliteral">&quot;init draw2&quot;</span>);
-<a name="l00248"></a>00248 
-<a name="l00249"></a>00249     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[3]); <span class="comment">//normalsBufferID</span>
-<a name="l00250"></a>00250     glEnableVertexAttribArray(inNormAttrib);
-<a name="l00251"></a>00251     glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
-<a name="l00252"></a>00252 
-<a name="l00253"></a>00253     printError(<span class="stringliteral">&quot;init draw3&quot;</span>);
-<a name="l00254"></a>00254 
-<a name="l00255"></a>00255     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);<span class="comment">//indicesBufferID</span>
-<a name="l00256"></a>00256 
-<a name="l00257"></a>00257     printError(<span class="stringliteral">&quot;init draw4&quot;</span>);
-<a name="l00258"></a>00258 
-<a name="l00259"></a>00259     glBindVertexArray(0);
-<a name="l00260"></a>00260 
-<a name="l00261"></a>00261     glBindBuffer(GL_ARRAY_BUFFER, 0);
-<a name="l00262"></a>00262     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+<a name="l00227"></a>00227     printError(<span class="stringliteral">&quot;init texturedata&quot;</span>);
+<a name="l00228"></a>00228 }
+<a name="l00229"></a>00229 
+<a name="l00230"></a>00230 <span class="keywordtype">void</span> HeightMap::initDraw() {
+<a name="l00231"></a>00231 
+<a name="l00232"></a>00232     glGenVertexArrays(1, &amp;drawVAO);
+<a name="l00233"></a>00233 
+<a name="l00234"></a>00234     glUseProgram(program);
+<a name="l00235"></a>00235 
+<a name="l00236"></a>00236     printError(<span class="stringliteral">&quot;init draw uniforms&quot;</span>);
+<a name="l00237"></a>00237 
+<a name="l00238"></a>00238     GLint posAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_Position&quot;</span>);
+<a name="l00239"></a>00239     GLint inNormAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_Normal&quot;</span>);
+<a name="l00240"></a>00240     GLint inTexAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00241"></a>00241 
+<a name="l00242"></a>00242     glBindVertexArray(drawVAO);
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); <span class="comment">//vertexBufferID</span>
+<a name="l00245"></a>00245     glEnableVertexAttribArray(posAttrib);
+<a name="l00246"></a>00246     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
+<a name="l00247"></a>00247 
+<a name="l00248"></a>00248     printError(<span class="stringliteral">&quot;init draw1&quot;</span>);
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); <span class="comment">//texBufferID</span>
+<a name="l00251"></a>00251     glEnableVertexAttribArray(inTexAttrib);
+<a name="l00252"></a>00252     glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 2, 0);
+<a name="l00253"></a>00253 
+<a name="l00254"></a>00254     printError(<span class="stringliteral">&quot;init draw2&quot;</span>);
+<a name="l00255"></a>00255 
+<a name="l00256"></a>00256     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[3]); <span class="comment">//normalsBufferID</span>
+<a name="l00257"></a>00257     glEnableVertexAttribArray(inNormAttrib);
+<a name="l00258"></a>00258     glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
+<a name="l00259"></a>00259 
+<a name="l00260"></a>00260     printError(<span class="stringliteral">&quot;init draw3&quot;</span>);
+<a name="l00261"></a>00261 
+<a name="l00262"></a>00262     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);<span class="comment">//indicesBufferID</span>
 <a name="l00263"></a>00263 
-<a name="l00264"></a>00264     printError(<span class="stringliteral">&quot;init draw5&quot;</span>);
+<a name="l00264"></a>00264     printError(<span class="stringliteral">&quot;init draw4&quot;</span>);
 <a name="l00265"></a>00265 
-<a name="l00266"></a>00266     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
-<a name="l00267"></a>00267     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;sky_texUnit&quot;</span>), SKYBOX_TEXUNIT);
-<a name="l00268"></a>00268     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), texnum + TERRAIN_FIRST_TEXUNIT);
-<a name="l00269"></a>00269     glUniform3f(glGetUniformLocation(program, <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)dataWidth, dataTerrainHeight, (<span class="keywordtype">float</span>)dataHeight);
+<a name="l00266"></a>00266     glBindVertexArray(0);
+<a name="l00267"></a>00267 
+<a name="l00268"></a>00268     glBindBuffer(GL_ARRAY_BUFFER, 0);
+<a name="l00269"></a>00269     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 <a name="l00270"></a>00270 
-<a name="l00271"></a>00271     printError(<span class="stringliteral">&quot;init draw&quot;</span>);
-<a name="l00272"></a>00272 }
-<a name="l00273"></a>00273 
-<a name="l00274"></a>00274 <span class="keywordtype">void</span> HeightMap::generateHeightTexture() {
-<a name="l00275"></a>00275 
-<a name="l00276"></a>00276     glUseProgram(textureProgram);
+<a name="l00271"></a>00271     printError(<span class="stringliteral">&quot;init draw5&quot;</span>);
+<a name="l00272"></a>00272 
+<a name="l00273"></a>00273     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
+<a name="l00274"></a>00274     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;sky_texUnit&quot;</span>), SKYBOX_TEXUNIT);
+<a name="l00275"></a>00275     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), texnum + TERRAIN_FIRST_TEXUNIT);
+<a name="l00276"></a>00276     glUniform3f(glGetUniformLocation(program, <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)dataWidth, dataTerrainHeight, (<span class="keywordtype">float</span>)dataHeight);
 <a name="l00277"></a>00277 
-<a name="l00278"></a>00278     glBindImageTexture(0, myDrawable::texIDs[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
-<a name="l00279"></a>00279 
-<a name="l00280"></a>00280     glUniform2i(glGetUniformLocation(textureProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
-<a name="l00281"></a>00281     glUniform1f(glGetUniformLocation(textureProgram, <span class="stringliteral">&quot;maxHeight&quot;</span>), dataTerrainHeight);
+<a name="l00278"></a>00278     printError(<span class="stringliteral">&quot;init draw&quot;</span>);
+<a name="l00279"></a>00279 }
+<a name="l00280"></a>00280 
+<a name="l00281"></a>00281 <span class="keywordtype">void</span> HeightMap::generateHeightTexture() {
 <a name="l00282"></a>00282 
-<a name="l00283"></a>00283     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
-<a name="l00284"></a>00284     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
-<a name="l00285"></a>00285 
-<a name="l00286"></a>00286     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
-<a name="l00287"></a>00287 
-<a name="l00288"></a>00288     printError(<span class="stringliteral">&quot;Generate terrain texture data&quot;</span>);
-<a name="l00289"></a>00289 }
-<a name="l00290"></a>00290 
-<a name="l00291"></a>00291 <span class="keywordtype">void</span> HeightMap::update() {
+<a name="l00283"></a>00283     glUseProgram(textureProgram);
+<a name="l00284"></a>00284 
+<a name="l00285"></a>00285     glBindImageTexture(0, myDrawable::texIDs[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+<a name="l00286"></a>00286 
+<a name="l00287"></a>00287     glUniform2i(glGetUniformLocation(textureProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
+<a name="l00288"></a>00288     glUniform1f(glGetUniformLocation(textureProgram, <span class="stringliteral">&quot;maxHeight&quot;</span>), dataTerrainHeight);
+<a name="l00289"></a>00289 
+<a name="l00290"></a>00290     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
+<a name="l00291"></a>00291     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
 <a name="l00292"></a>00292 
-<a name="l00293"></a>00293     glUseProgram(normalsProgram);
+<a name="l00293"></a>00293     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
 <a name="l00294"></a>00294 
-<a name="l00295"></a>00295     glUniform2i(glGetUniformLocation(normalsProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
-<a name="l00296"></a>00296 
-<a name="l00297"></a>00297     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
-<a name="l00298"></a>00298     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
+<a name="l00295"></a>00295     printError(<span class="stringliteral">&quot;Generate terrain texture data&quot;</span>);
+<a name="l00296"></a>00296 }
+<a name="l00297"></a>00297 
+<a name="l00298"></a>00298 <span class="keywordtype">void</span> HeightMap::update() {
 <a name="l00299"></a>00299 
-<a name="l00300"></a>00300     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00300"></a>00300     glUseProgram(normalsProgram);
 <a name="l00301"></a>00301 
-<a name="l00302"></a>00302     printError(<span class="stringliteral">&quot;Update normals&quot;</span>);
+<a name="l00302"></a>00302     glUniform2i(glGetUniformLocation(normalsProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
 <a name="l00303"></a>00303 
-<a name="l00304"></a>00304     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, drawBuffers);
-<a name="l00305"></a>00305     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, heightBuffer);
+<a name="l00304"></a>00304     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
+<a name="l00305"></a>00305     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
 <a name="l00306"></a>00306 
-<a name="l00307"></a>00307     glUseProgram(heightMapProgram);
-<a name="l00308"></a>00308     glUniform2i(glGetUniformLocation(heightMapProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
-<a name="l00309"></a>00309     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00307"></a>00307     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00308"></a>00308 
+<a name="l00309"></a>00309     printError(<span class="stringliteral">&quot;Update normals&quot;</span>);
 <a name="l00310"></a>00310 
-<a name="l00311"></a>00311     printError(<span class="stringliteral">&quot;Update vertices&quot;</span>);
-<a name="l00312"></a>00312 }
+<a name="l00311"></a>00311     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, drawBuffers);
+<a name="l00312"></a>00312     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, heightBuffer);
 <a name="l00313"></a>00313 
-<a name="l00314"></a>00314 <span class="keywordtype">void</span> HeightMap::draw() {
-<a name="l00315"></a>00315     glUseProgram(program);
-<a name="l00316"></a>00316     glBindVertexArray(drawVAO);
-<a name="l00317"></a>00317     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), texnum + TERRAIN_FIRST_TEXUNIT);
-<a name="l00318"></a>00318     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
-<a name="l00319"></a>00319 
-<a name="l00320"></a>00320     printError(<span class="stringliteral">&quot;Draw Heightmap&quot;</span>);
-<a name="l00321"></a>00321 }
-<a name="l00322"></a>00322 
-<a name="l00323"></a>00323 <span class="keywordtype">void</span> TW_CALL HeightMap::SetTextureCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00324"></a>00324     <span class="keyword">static_cast&lt;</span><a class="code" href="class_height_map.html">HeightMap</a>*<span class="keyword">&gt;</span>(clientData)-&gt;texnum = *static_cast&lt;const GLuint*&gt;(value);
-<a name="l00325"></a>00325 }
-<a name="l00326"></a>00326 <span class="keywordtype">void</span> TW_CALL HeightMap::GetTextureCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00327"></a>00327     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;texnum;
+<a name="l00314"></a>00314     glUseProgram(heightMapProgram);
+<a name="l00315"></a>00315     glUniform2i(glGetUniformLocation(heightMapProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
+<a name="l00316"></a>00316     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00317"></a>00317 
+<a name="l00318"></a>00318     printError(<span class="stringliteral">&quot;Update vertices&quot;</span>);
+<a name="l00319"></a>00319 }
+<a name="l00320"></a>00320 
+<a name="l00321"></a>00321 <span class="keywordtype">void</span> HeightMap::draw() {
+<a name="l00322"></a>00322     glUseProgram(program);
+<a name="l00323"></a>00323     glBindVertexArray(drawVAO);
+<a name="l00324"></a>00324     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), texnum + TERRAIN_FIRST_TEXUNIT);
+<a name="l00325"></a>00325     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
+<a name="l00326"></a>00326 
+<a name="l00327"></a>00327     printError(<span class="stringliteral">&quot;Draw Heightmap&quot;</span>);
 <a name="l00328"></a>00328 }
 <a name="l00329"></a>00329 
-<a name="l00330"></a>00330 
-<a name="l00331"></a>00331 Water::Water(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
-<a name="l00332"></a>00332 : <a class="code" href="class_height_map.html">HeightMap</a>(drawPrograms[0], sizes, maxHeight, inputHeightBuffer) {
-<a name="l00333"></a>00333     transparency = 0.7f;
-<a name="l00334"></a>00334     maxDepth = 50.0f;
-<a name="l00335"></a>00335 
-<a name="l00336"></a>00336     programToDraw = 0;
-<a name="l00337"></a>00337     programs[0] = drawPrograms[0];
-<a name="l00338"></a>00338     programs[1] = drawPrograms[1];
-<a name="l00339"></a>00339 
-<a name="l00340"></a>00340     vaos[0] = drawVAO;
-<a name="l00341"></a>00341 
-<a name="l00342"></a>00342     glUseProgram(programs[0]);
-<a name="l00343"></a>00343     glUniform1f(glGetUniformLocation(programs[0], <span class="stringliteral">&quot;transparency&quot;</span>), transparency);
-<a name="l00344"></a>00344     glUseProgram(programs[1]);
-<a name="l00345"></a>00345     glUniform1f(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), maxDepth);
+<a name="l00330"></a>00330 <span class="keywordtype">void</span> TW_CALL HeightMap::SetTextureCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00331"></a>00331     <span class="keyword">static_cast&lt;</span><a class="code" href="class_height_map.html">HeightMap</a>*<span class="keyword">&gt;</span>(clientData)-&gt;texnum = *static_cast&lt;const GLuint*&gt;(value);
+<a name="l00332"></a>00332 }
+<a name="l00333"></a>00333 <span class="keywordtype">void</span> TW_CALL HeightMap::GetTextureCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00334"></a>00334     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;texnum;
+<a name="l00335"></a>00335 }
+<a name="l00336"></a>00336 
+<a name="l00337"></a>00337 
+<a name="l00338"></a>00338 Water::Water(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
+<a name="l00339"></a>00339 : <a class="code" href="class_height_map.html">HeightMap</a>(drawPrograms[0], sizes, maxHeight, inputHeightBuffer) {
+<a name="l00340"></a>00340     transparency = 0.7f;
+<a name="l00341"></a>00341     maxDepth = 50.0f;
+<a name="l00342"></a>00342 
+<a name="l00343"></a>00343     programToDraw = 0;
+<a name="l00344"></a>00344     programs[0] = drawPrograms[0];
+<a name="l00345"></a>00345     programs[1] = drawPrograms[1];
 <a name="l00346"></a>00346 
-<a name="l00347"></a>00347     initDepthProgram();
-<a name="l00348"></a>00348 }
-<a name="l00349"></a>00349 
-<a name="l00350"></a>00350 <span class="keywordtype">void</span> Water::initDepthProgram() {
-<a name="l00351"></a>00351     GLuint tempVAO;
-<a name="l00352"></a>00352     glGenVertexArrays(1, &amp;tempVAO);
-<a name="l00353"></a>00353     vaos[1] = tempVAO;
-<a name="l00354"></a>00354 
-<a name="l00355"></a>00355     glUseProgram(programs[1]);
+<a name="l00347"></a>00347     vaos[0] = drawVAO;
+<a name="l00348"></a>00348 
+<a name="l00349"></a>00349     glUseProgram(programs[0]);
+<a name="l00350"></a>00350     glUniform1f(glGetUniformLocation(programs[0], <span class="stringliteral">&quot;transparency&quot;</span>), transparency);
+<a name="l00351"></a>00351     glUseProgram(programs[1]);
+<a name="l00352"></a>00352     glUniform1f(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), maxDepth);
+<a name="l00353"></a>00353 
+<a name="l00354"></a>00354     initDepthProgram();
+<a name="l00355"></a>00355 }
 <a name="l00356"></a>00356 
-<a name="l00357"></a>00357     printError(<span class="stringliteral">&quot;init draw uniforms&quot;</span>);
-<a name="l00358"></a>00358 
-<a name="l00359"></a>00359     GLint posAttrib = glGetAttribLocation(programs[1], <span class="stringliteral">&quot;in_Position&quot;</span>);
-<a name="l00360"></a>00360     GLint inTexAttrib = glGetAttribLocation(programs[1], <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00357"></a>00357 <span class="keywordtype">void</span> Water::initDepthProgram() {
+<a name="l00358"></a>00358     GLuint tempVAO;
+<a name="l00359"></a>00359     glGenVertexArrays(1, &amp;tempVAO);
+<a name="l00360"></a>00360     vaos[1] = tempVAO;
 <a name="l00361"></a>00361 
-<a name="l00362"></a>00362     glBindVertexArray(vaos[1]);
+<a name="l00362"></a>00362     glUseProgram(programs[1]);
 <a name="l00363"></a>00363 
-<a name="l00364"></a>00364     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); <span class="comment">//vertexBufferID</span>
-<a name="l00365"></a>00365     glEnableVertexAttribArray(posAttrib);
-<a name="l00366"></a>00366     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
-<a name="l00367"></a>00367 
-<a name="l00368"></a>00368     printError(<span class="stringliteral">&quot;init draw1&quot;</span>);
-<a name="l00369"></a>00369 
-<a name="l00370"></a>00370     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); <span class="comment">//texBufferID</span>
-<a name="l00371"></a>00371     glEnableVertexAttribArray(inTexAttrib);
-<a name="l00372"></a>00372     glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 2, 0);
-<a name="l00373"></a>00373 
-<a name="l00374"></a>00374     printError(<span class="stringliteral">&quot;init draw3&quot;</span>);
-<a name="l00375"></a>00375 
-<a name="l00376"></a>00376     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);<span class="comment">//indicesBufferID</span>
-<a name="l00377"></a>00377 
-<a name="l00378"></a>00378     printError(<span class="stringliteral">&quot;init draw4&quot;</span>);
-<a name="l00379"></a>00379 
-<a name="l00380"></a>00380     glBindVertexArray(0);
-<a name="l00381"></a>00381 
-<a name="l00382"></a>00382     glBindBuffer(GL_ARRAY_BUFFER, 0);
-<a name="l00383"></a>00383     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+<a name="l00364"></a>00364     printError(<span class="stringliteral">&quot;init draw uniforms&quot;</span>);
+<a name="l00365"></a>00365 
+<a name="l00366"></a>00366     GLint posAttrib = glGetAttribLocation(programs[1], <span class="stringliteral">&quot;in_Position&quot;</span>);
+<a name="l00367"></a>00367     GLint inTexAttrib = glGetAttribLocation(programs[1], <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00368"></a>00368 
+<a name="l00369"></a>00369     glBindVertexArray(vaos[1]);
+<a name="l00370"></a>00370 
+<a name="l00371"></a>00371     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); <span class="comment">//vertexBufferID</span>
+<a name="l00372"></a>00372     glEnableVertexAttribArray(posAttrib);
+<a name="l00373"></a>00373     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
+<a name="l00374"></a>00374 
+<a name="l00375"></a>00375     printError(<span class="stringliteral">&quot;init draw1&quot;</span>);
+<a name="l00376"></a>00376 
+<a name="l00377"></a>00377     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); <span class="comment">//texBufferID</span>
+<a name="l00378"></a>00378     glEnableVertexAttribArray(inTexAttrib);
+<a name="l00379"></a>00379     glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 2, 0);
+<a name="l00380"></a>00380 
+<a name="l00381"></a>00381     printError(<span class="stringliteral">&quot;init draw3&quot;</span>);
+<a name="l00382"></a>00382 
+<a name="l00383"></a>00383     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);<span class="comment">//indicesBufferID</span>
 <a name="l00384"></a>00384 
-<a name="l00385"></a>00385     printError(<span class="stringliteral">&quot;init draw5&quot;</span>);
+<a name="l00385"></a>00385     printError(<span class="stringliteral">&quot;init draw4&quot;</span>);
 <a name="l00386"></a>00386 
-<a name="l00387"></a>00387     glUniform1i(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
-<a name="l00388"></a>00388     glUniform3f(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)dataWidth, dataTerrainHeight, (<span class="keywordtype">float</span>)dataHeight);
-<a name="l00389"></a>00389 
-<a name="l00390"></a>00390     printError(<span class="stringliteral">&quot;init draw&quot;</span>);
-<a name="l00391"></a>00391 }
-<a name="l00392"></a>00392 
+<a name="l00387"></a>00387     glBindVertexArray(0);
+<a name="l00388"></a>00388 
+<a name="l00389"></a>00389     glBindBuffer(GL_ARRAY_BUFFER, 0);
+<a name="l00390"></a>00390     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+<a name="l00391"></a>00391 
+<a name="l00392"></a>00392     printError(<span class="stringliteral">&quot;init draw5&quot;</span>);
 <a name="l00393"></a>00393 
-<a name="l00394"></a>00394 <span class="keywordtype">void</span> TW_CALL Water::SetTransparencyCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00395"></a>00395     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
-<a name="l00396"></a>00396     obj-&gt;transparency = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
-<a name="l00397"></a>00397     glUseProgram(obj-&gt;programs[0]);
-<a name="l00398"></a>00398     glUniform1f(glGetUniformLocation(obj-&gt;programs[0], <span class="stringliteral">&quot;transparency&quot;</span>), obj-&gt;transparency);
-<a name="l00399"></a>00399 }
+<a name="l00394"></a>00394     glUniform1i(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
+<a name="l00395"></a>00395     glUniform3f(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)dataWidth, dataTerrainHeight, (<span class="keywordtype">float</span>)dataHeight);
+<a name="l00396"></a>00396 
+<a name="l00397"></a>00397     printError(<span class="stringliteral">&quot;init draw&quot;</span>);
+<a name="l00398"></a>00398 }
+<a name="l00399"></a>00399 
 <a name="l00400"></a>00400 
-<a name="l00401"></a>00401 <span class="keywordtype">void</span> TW_CALL Water::SetDrawProgramCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00401"></a>00401 <span class="keywordtype">void</span> TW_CALL Water::SetTransparencyCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
 <a name="l00402"></a>00402     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
-<a name="l00403"></a>00403     obj-&gt;programToDraw = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value);
-<a name="l00404"></a>00404     obj-&gt;program = obj-&gt;programs[obj-&gt;programToDraw];
-<a name="l00405"></a>00405     obj-&gt;drawVAO = obj-&gt;vaos[obj-&gt;programToDraw];
+<a name="l00403"></a>00403     obj-&gt;transparency = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
+<a name="l00404"></a>00404     glUseProgram(obj-&gt;programs[0]);
+<a name="l00405"></a>00405     glUniform1f(glGetUniformLocation(obj-&gt;programs[0], <span class="stringliteral">&quot;transparency&quot;</span>), obj-&gt;transparency);
 <a name="l00406"></a>00406 }
 <a name="l00407"></a>00407 
-<a name="l00408"></a>00408 <span class="keywordtype">void</span> TW_CALL Water::SetMaxDepthCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00408"></a>00408 <span class="keywordtype">void</span> TW_CALL Water::SetDrawProgramCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
 <a name="l00409"></a>00409     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
-<a name="l00410"></a>00410     obj-&gt;maxDepth = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
-<a name="l00411"></a>00411     glUseProgram(obj-&gt;programs[1]);
-<a name="l00412"></a>00412     glUniform1f(glGetUniformLocation(obj-&gt;programs[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), obj-&gt;maxDepth);
+<a name="l00410"></a>00410     obj-&gt;programToDraw = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value);
+<a name="l00411"></a>00411     obj-&gt;program = obj-&gt;programs[obj-&gt;programToDraw];
+<a name="l00412"></a>00412     obj-&gt;drawVAO = obj-&gt;vaos[obj-&gt;programToDraw];
 <a name="l00413"></a>00413 }
 <a name="l00414"></a>00414 
-<a name="l00415"></a>00415 
-<a name="l00416"></a>00416 <span class="keywordtype">void</span> TW_CALL Water::GetTransparencyCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00417"></a>00417     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;transparency;
-<a name="l00418"></a>00418 }
-<a name="l00419"></a>00419 
-<a name="l00420"></a>00420 <span class="keywordtype">void</span> TW_CALL Water::GetDrawProgramCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00421"></a>00421     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;programToDraw;
-<a name="l00422"></a>00422 }
-<a name="l00423"></a>00423 
-<a name="l00424"></a>00424 <span class="keywordtype">void</span> TW_CALL Water::GetMaxDepthCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00425"></a>00425     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;maxDepth;
-<a name="l00426"></a>00426 }
+<a name="l00415"></a>00415 <span class="keywordtype">void</span> TW_CALL Water::SetMaxDepthCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00416"></a>00416     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
+<a name="l00417"></a>00417     obj-&gt;maxDepth = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
+<a name="l00418"></a>00418     glUseProgram(obj-&gt;programs[1]);
+<a name="l00419"></a>00419     glUniform1f(glGetUniformLocation(obj-&gt;programs[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), obj-&gt;maxDepth);
+<a name="l00420"></a>00420 }
+<a name="l00421"></a>00421 
+<a name="l00422"></a>00422 
+<a name="l00423"></a>00423 <span class="keywordtype">void</span> TW_CALL Water::GetTransparencyCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00424"></a>00424     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;transparency;
+<a name="l00425"></a>00425 }
+<a name="l00426"></a>00426 
+<a name="l00427"></a>00427 <span class="keywordtype">void</span> TW_CALL Water::GetDrawProgramCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00428"></a>00428     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;programToDraw;
+<a name="l00429"></a>00429 }
+<a name="l00430"></a>00430 
+<a name="l00431"></a>00431 <span class="keywordtype">void</span> TW_CALL Water::GetMaxDepthCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00432"></a>00432     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;maxDepth;
+<a name="l00433"></a>00433 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -544,7 +551,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="my_drawable_8cpp.html">myDrawable.cpp</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 07:54:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

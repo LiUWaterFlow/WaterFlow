@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsdl_texture.html#af7e96433dae1b117f525332fd2180b70">sdlTexture</a> (std::string tPath, GLuint gTexID)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the image file and binds it to a texture ID.  <a href="#af7e96433dae1b117f525332fd2180b70"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76">getTexID</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the texture ID bound to the loaded image.  <a href="#aee6aa8479e23f403095bc8ad63cc8a76"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the texture ID bound to the loaded image. Will be -1 when image couldn't be loaded.  <a href="#aee6aa8479e23f403095bc8ad63cc8a76"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25886799f5a3f09529736c0b37d529a1"></a><!-- doxytag: member="sdlTexture::gTextureID" ref="a25886799f5a3f09529736c0b37d529a1" args="" -->
@@ -131,9 +131,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Stores an image as an SDL_Surface, and binds it as a usable texture. </p>
-<p>Use the <a class="el" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a> class to import image files into the project. It is designed to be compatible with SDL2, and provides a texture ID that can be used as (for instance) a terrain texture. Supported file types are: BMP, GIF, JPEG, LBM, PCX, PNG, PNM, TGA, TIFF, WEBP, XCF, XPM, XV. </p>
+<p>Use the <a class="el" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a> class to import image files into the project. It is designed to be compatible with SDL2, and provides a texture ID that can be used as (for instance) a terrain texture. Supported file types are: BMP, GIF, JPEG, LBM, PCX, PNG, PNM, TGA, TIFF, WEBP, XCF, XPM, XV. If there is an error loading the image file, gTextureID will be set to -1. </p>
 
-<p>Definition at line <a class="el" href="sdl_texture_8h_source.html#l00018">18</a> of file <a class="el" href="sdl_texture_8h_source.html">sdlTexture.h</a>.</p>
+<p>Definition at line <a class="el" href="sdl_texture_8h_source.html#l00019">19</a> of file <a class="el" href="sdl_texture_8h_source.html">sdlTexture.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="af7e96433dae1b117f525332fd2180b70"></a><!-- doxytag: member="sdlTexture::sdlTexture" ref="af7e96433dae1b117f525332fd2180b70" args="(std::string tPath, GLuint gTexID)" -->
 <div class="memitem">
@@ -161,7 +161,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div class="memdoc">
 
 <p>Reads the image file and binds it to a texture ID. </p>
-<p>tPath must be a valid path to an image file. After initialization, the texture ID can then be accessed using <a class="el" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image.">getTexID()</a>. </p>
+<p>tPath must be a valid path to an image file. After initialization, the texture ID can then be accessed using <a class="el" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image. Will be -1 when image couldn&#39;t be loaded...">getTexID()</a>. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">tPath</td><td>path to image file. </td></tr>
@@ -169,10 +169,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </table>
   </dd>
 </dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image.">getTexID()</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd><p class="startdd">Currently not properly handling incorrect files and/or file paths. </p>
-<p class="enddd">Currently only designed to work on Windows. </p>
-</dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image. Will be -1 when image couldn&#39;t be loaded...">getTexID()</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Currently only designed to work on Windows. </dd></dl>
 
 <p>Definition at line <a class="el" href="sdl_texture_8cpp_source.html#l00008">8</a> of file <a class="el" href="sdl_texture_8cpp_source.html">sdlTexture.cpp</a>.</p>
 
@@ -193,10 +191,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div>
 <div class="memdoc">
 
-<p>Getter for the texture ID bound to the loaded image. </p>
+<p>Getter for the texture ID bound to the loaded image. Will be -1 when image couldn't be loaded. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>texture ID bound to the image. </dd></dl>
 
-<p>Definition at line <a class="el" href="sdl_texture_8cpp_source.html#l00031">31</a> of file <a class="el" href="sdl_texture_8cpp_source.html">sdlTexture.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sdl_texture_8cpp_source.html#l00047">47</a> of file <a class="el" href="sdl_texture_8cpp_source.html">sdlTexture.cpp</a>.</p>
 
 </div>
 </div>
@@ -224,7 +222,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
     <ul>
       <li class="navelem"><a class="el" href="classsdl_texture.html">sdlTexture</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 07:54:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

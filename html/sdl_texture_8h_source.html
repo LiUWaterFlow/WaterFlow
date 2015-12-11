@@ -108,16 +108,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00008"></a>00008 <span class="preprocessor">#include &quot;SDL_image.h&quot;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00010"></a>00010 
-<a name="l00018"></a><a class="code" href="classsdl_texture.html">00018</a> <span class="keyword">class </span><a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>
-<a name="l00019"></a>00019 {
-<a name="l00020"></a>00020 <span class="keyword">private</span>:
-<a name="l00021"></a><a class="code" href="classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5">00021</a>     SDL_Surface* <a class="code" href="classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5" title="SDL_Surface used to store the image data.">Surface</a>;           
-<a name="l00022"></a><a class="code" href="classsdl_texture.html#a25886799f5a3f09529736c0b37d529a1">00022</a>     GLuint <a class="code" href="classsdl_texture.html#a25886799f5a3f09529736c0b37d529a1" title="Texture ID that the image is bound to.">gTextureID</a>;              
-<a name="l00023"></a><a class="code" href="classsdl_texture.html#a4cee405305f0550784ee2ce3d5dad715">00023</a>     std::string <a class="code" href="classsdl_texture.html#a4cee405305f0550784ee2ce3d5dad715" title="Path to the image file.">texPath</a>;            
-<a name="l00024"></a>00024 <span class="keyword">public</span>:
+<a name="l00019"></a><a class="code" href="classsdl_texture.html">00019</a> <span class="keyword">class </span><a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>
+<a name="l00020"></a>00020 {
+<a name="l00021"></a>00021 <span class="keyword">private</span>:
+<a name="l00022"></a><a class="code" href="classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5">00022</a>     SDL_Surface* <a class="code" href="classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5" title="SDL_Surface used to store the image data.">Surface</a>;           
+<a name="l00023"></a><a class="code" href="classsdl_texture.html#a25886799f5a3f09529736c0b37d529a1">00023</a>     GLuint <a class="code" href="classsdl_texture.html#a25886799f5a3f09529736c0b37d529a1" title="Texture ID that the image is bound to.">gTextureID</a>;              
+<a name="l00024"></a><a class="code" href="classsdl_texture.html#a4cee405305f0550784ee2ce3d5dad715">00024</a>     std::string <a class="code" href="classsdl_texture.html#a4cee405305f0550784ee2ce3d5dad715" title="Path to the image file.">texPath</a>;            
+<a name="l00025"></a>00025 <span class="keyword">public</span>:
 <a name="l00034"></a>00034     <a class="code" href="classsdl_texture.html#af7e96433dae1b117f525332fd2180b70" title="Reads the image file and binds it to a texture ID.">sdlTexture</a>(std::string tPath, GLuint gTexID);
 <a name="l00035"></a>00035 
-<a name="l00038"></a>00038     GLuint <a class="code" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image.">getTexID</a>();
+<a name="l00038"></a>00038     GLuint <a class="code" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image. Will be -1 when image couldn&#39;t be loaded...">getTexID</a>();
 <a name="l00039"></a>00039 };
 <a name="l00040"></a>00040 
 <a name="l00041"></a>00041 <span class="preprocessor">#endif // READDATA_H</span>
@@ -141,7 +141,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="sdl_texture_8h.html">sdlTexture.h</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 10 2015 12:30:47 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 07:54:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
