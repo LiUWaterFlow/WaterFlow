@@ -140,6 +140,10 @@ void main(void)
 
 	// Depth at fragment.
 	depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
+	
+	if (depth < 0 || out_ObjPos.z < 1 || out_ObjPos.x < 1 ){
+		discard;
+	}
 
 	// Crude displacement approximation.
 	//displacementDirection = normalize(cross(up, right));

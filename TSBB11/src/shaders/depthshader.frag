@@ -23,5 +23,10 @@ void main(void)
 
 	// Depth at fragment.
 	depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
+	
+	if (depth < 0 || out_ObjPos.z < 1 || out_ObjPos.x < 1 ){
+		discard;
+	}
+	
 	out_Color = vec4(vec3(1.0, 1.0, 1.0) * (1 - depth / maxDepth), 1.0);
 }

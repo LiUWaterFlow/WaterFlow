@@ -86,41 +86,12 @@ void ShallowGPU::initGPU() {
 	std::fill_n(flow, texWidth*texHeight, 0.0f);
 	
 
-	int upper = 600;
-	int lower = 500;
-	
 	int upper2 = 180;
 	int lower2 = 70;
 
 	int upper3 = 50;
 	int lower3 = 0;
 
-	float accum= 0.0f;
-	
-	int terrlow = 250;
-	int terrhigh =350; 
-	
-	for (int j = 0; j < texHeight; ++j) {
-		for (int i = 0; i < texWidth; ++i) {
-				f[j*texWidth + i] = 250.0f;
-				
-			if( i < 300 && j < 300 ){
-				f[j*texWidth +i] = 0.0f;
-			}
-			
-			if( i > 251 && j > 299 && j < 900 && i <299){
-				f[j*texWidth +i] = 0.0f;
-			}
-			
-			if( i > 250 && j > 850 && j < 1200 && i < 1500){
-				f[j*texWidth +i] = 0.0f;
-			}
-				
-		}
-	}
-	
-	int centeri = upper2 - lower2;
-	int centerj = upper2 - lower2;
 	
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
@@ -129,11 +100,8 @@ void ShallowGPU::initGPU() {
 			vy[j*texWidth + i] = 0.0f;
 			
 			if(i < upper2 && i >lower2 && j < upper2 && j > lower2){
-				//add interesting data here.
-				float dist = sqrt(pow(i-centeri,2) + pow(j-centerj,2));
+				//add interesting data here
 				u[j*texWidth + i] = 60.0f;
-				//vy[j*texWidth + i] = 5.0f;
-				//vx[j*texWidth + i] = 5.0f;
 			}
 
 			if (i < upper3 && i >lower3 && j < upper3 && j > lower3) {
@@ -146,12 +114,6 @@ void ShallowGPU::initGPU() {
 	if(DEBUG){
 	u[10 + 10 * texWidth] = 5.0f; 
 	}
-	//u[250 + 250*texWidth] = 30.0f;
-	
-	//u[450 + 450*texWidth] = 30.0f;
-	
-	//#warn no floodfill initially.
-	//initFloodFill(u);
 
 	advectWaterProgram = compileComputeShader("src/shaders/advectWaterShader.comp");
 	addProgram = compileComputeShader("src/shaders/addHeightShader.comp");
@@ -394,9 +356,9 @@ void ShallowGPU::Print(GLuint bufferID, std::string msg, int iter) const
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	PrintHelper("BEGIN", msg, iter);
-	for (unsigned int j = 0; j < texHeight; j++)
+	for (int j = 0; j < texHeight; j++)
 	{
-		for (unsigned int i = 0; i < texWidth; i++)
+		for (int i = 0; i < texWidth; i++)
 		{
 
 			const unsigned int index = i + j*texWidth;
