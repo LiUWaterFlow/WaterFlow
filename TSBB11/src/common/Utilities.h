@@ -34,9 +34,11 @@ void releaseModel(Model* m);
 /// @return A float value read from the string.
 float myStrtof(char* strStart, char** strEnd);
 
-
-
-
+/// @brief Compiles a compute shader
+///
+/// Creates and compiles a compute shader using the source code in the specified path
+/// @param location The path to the source for the compute shader
+/// @return The program ID
 GLuint compileComputeShader(const char* location);
 
 

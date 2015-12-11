@@ -36,10 +36,8 @@ struct mapdata {
 class DataHandler
 {
 private:
-	// Data containers
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
 	GLuint terrainBufferID;		///< terrainheight buffer corresponding to readdata data but on GPU.
-	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
 
 	/// @brief Reads the input data to the private mapdata struct.
