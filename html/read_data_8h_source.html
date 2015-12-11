@@ -124,39 +124,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00036"></a><a class="code" href="class_data_handler.html">00036</a> <span class="keyword">class </span><a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>
 <a name="l00037"></a>00037 {
 <a name="l00038"></a>00038 <span class="keyword">private</span>:
-<a name="l00039"></a>00039     <span class="comment">// Data containers</span>
-<a name="l00040"></a><a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb">00040</a>     <a class="code" href="structmapdata.html" title="Contains information about the loaded terrain.">mapdata</a>* <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>;          
-<a name="l00041"></a><a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04">00041</a>     GLuint <a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04" title="terrainheight buffer corresponding to readdata data but on GPU.">terrainBufferID</a>;     
-<a name="l00042"></a>00042     <span class="comment">// Just scaling</span>
-<a name="l00043"></a><a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce">00043</a>     GLfloat <a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce" title="Height scale for the terrain. Calculated as the diff between min and max in the input data...">terrainScale</a>;       
-<a name="l00044"></a>00044 
-<a name="l00050"></a>00050     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea" title="Reads the input data to the private mapdata struct.">readDEM</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile);
-<a name="l00051"></a>00051     
-<a name="l00056"></a>00056     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a669fca65da8fefe434b59c34360837a5" title="Performs normalized convolution of the input data as a single computeshader.">normConvCompute</a>();
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keyword">public</span>:
-<a name="l00073"></a>00073     <a class="code" href="class_data_handler.html#ae56b7b5637d3d66f33d60b9baf482bc7" title="Reads DEM data, scales it and generates a model.">DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile);
-<a name="l00074"></a>00074 
-<a name="l00076"></a>00076     <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">~DataHandler</a>();
-<a name="l00077"></a>00077 
-<a name="l00082"></a><a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f">00082</a>     <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f" title="Get a pointer to the mapdata data.">getData</a>() { <span class="keywordflow">return</span> &amp;<a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a49b47176e25692a214895d405b9a20a1" title="The terrain data is stored in a std::vector.">data</a>[0]; }
-<a name="l00083"></a>00083 
-<a name="l00086"></a><a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d">00086</a>     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a2eb5258cc2abd7eef37c66b55c27282b" title="Width of the terrain data.">ncols</a>; }
-<a name="l00087"></a>00087 
-<a name="l00090"></a><a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111">00090</a>     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a6531c18d8db11cbcdba40e47049796b2" title="Height of the terrain data.">nrows</a>; }
-<a name="l00091"></a>00091 
-<a name="l00094"></a><a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7">00094</a>     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">getElem</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#ae5e3bb6abb30cb7e5f8b779c4aaf6d4e" title="Total number of terrain data.">nelem</a>; }
-<a name="l00095"></a>00095 
-<a name="l00098"></a><a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8">00098</a>     GLfloat <a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce" title="Height scale for the terrain. Calculated as the diff between min and max in the input data...">terrainScale</a>; }
-<a name="l00099"></a>00099         
-<a name="l00102"></a><a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56">00102</a>     GLuint <a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04" title="terrainheight buffer corresponding to readdata data but on GPU.">terrainBufferID</a>; }
-<a name="l00103"></a>00103 
-<a name="l00111"></a>00111     <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row);
-<a name="l00112"></a>00112 
-<a name="l00124"></a>00124     GLfloat <a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(GLfloat x, GLfloat z);
-<a name="l00125"></a>00125 };
-<a name="l00126"></a>00126 
-<a name="l00127"></a>00127 <span class="preprocessor">#endif // READDATA_H</span>
+<a name="l00039"></a><a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb">00039</a>     <a class="code" href="structmapdata.html" title="Contains information about the loaded terrain.">mapdata</a>* <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>;          
+<a name="l00040"></a><a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04">00040</a>     GLuint <a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04" title="terrainheight buffer corresponding to readdata data but on GPU.">terrainBufferID</a>;     
+<a name="l00041"></a><a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce">00041</a>     GLfloat <a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce" title="Height scale for the terrain. Calculated as the diff between min and max in the input data...">terrainScale</a>;       
+<a name="l00042"></a>00042 
+<a name="l00048"></a>00048     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#af4235e3832fa5c54a80bd99fb0fa65ea" title="Reads the input data to the private mapdata struct.">readDEM</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile);
+<a name="l00049"></a>00049     
+<a name="l00054"></a>00054     <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a669fca65da8fefe434b59c34360837a5" title="Performs normalized convolution of the input data as a single computeshader.">normConvCompute</a>();
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 <span class="keyword">public</span>:
+<a name="l00071"></a>00071     <a class="code" href="class_data_handler.html#ae56b7b5637d3d66f33d60b9baf482bc7" title="Reads DEM data, scales it and generates a model.">DataHandler</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* inputfile);
+<a name="l00072"></a>00072 
+<a name="l00074"></a>00074     <a class="code" href="class_data_handler.html#a25f2ab01e70edd3a1c8b0ac4f25e0cd4" title="Handle the internal pointers.">~DataHandler</a>();
+<a name="l00075"></a>00075 
+<a name="l00080"></a><a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f">00080</a>     <span class="keywordtype">float</span>* <a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f" title="Get a pointer to the mapdata data.">getData</a>() { <span class="keywordflow">return</span> &amp;<a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a49b47176e25692a214895d405b9a20a1" title="The terrain data is stored in a std::vector.">data</a>[0]; }
+<a name="l00081"></a>00081 
+<a name="l00084"></a><a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d">00084</a>     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a2eb5258cc2abd7eef37c66b55c27282b" title="Width of the terrain data.">ncols</a>; }
+<a name="l00085"></a>00085 
+<a name="l00088"></a><a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111">00088</a>     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a6531c18d8db11cbcdba40e47049796b2" title="Height of the terrain data.">nrows</a>; }
+<a name="l00089"></a>00089 
+<a name="l00092"></a><a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7">00092</a>     <span class="keywordtype">int</span> <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">getElem</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#ae5e3bb6abb30cb7e5f8b779c4aaf6d4e" title="Total number of terrain data.">nelem</a>; }
+<a name="l00093"></a>00093 
+<a name="l00096"></a><a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8">00096</a>     GLfloat <a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a6a562e7955d84593a664560e2a0e41ce" title="Height scale for the terrain. Calculated as the diff between min and max in the input data...">terrainScale</a>; }
+<a name="l00097"></a>00097         
+<a name="l00100"></a><a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56">00100</a>     GLuint <a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>() { <span class="keywordflow">return</span> <a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04" title="terrainheight buffer corresponding to readdata data but on GPU.">terrainBufferID</a>; }
+<a name="l00101"></a>00101 
+<a name="l00109"></a>00109     <span class="keywordtype">float</span> <a class="code" href="class_data_handler.html#a439774a91fe8218fe6fffe5882102608" title="Returns a datapoint from the mapdata.">getCoord</a>(<span class="keywordtype">int</span> col, <span class="keywordtype">int</span> row);
+<a name="l00110"></a>00110 
+<a name="l00122"></a>00122     GLfloat <a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(GLfloat x, GLfloat z);
+<a name="l00123"></a>00123 };
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125 <span class="preprocessor">#endif // READDATA_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -177,7 +175,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="read_data_8h.html">readData.h</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

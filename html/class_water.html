@@ -106,49 +106,142 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="Water" --><!-- doxytag: inherits="HeightMap" -->
+<p>Specialized version of height map that handles multiple drawing programs.  
+ <a href="class_water.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>&gt;</code></p>
+
 <p>Inherits <a class="el" href="class_height_map.html">HeightMap</a>.</p>
 
 <p><a href="class_water-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4ba4cb92403550c26a7e0f47da84c26"></a><!-- doxytag: member="Water::Water" ref="af4ba4cb92403550c26a7e0f47da84c26" args="(GLuint *drawPrograms, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Water</b> (GLuint *drawPrograms, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#af4ba4cb92403550c26a7e0f47da84c26">Water</a> (GLuint *drawPrograms, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple contructor.  <a href="#af4ba4cb92403550c26a7e0f47da84c26"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2d46082979b6542a686e927ed33c2b2"></a><!-- doxytag: member="Water::GetDrawProgramCB" ref="ab2d46082979b6542a686e927ed33c2b2" args="(void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>GetDrawProgramCB</b> (void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#ab2d46082979b6542a686e927ed33c2b2">GetDrawProgramCB</a> (void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to get current program used for drawing. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3275f7564f0666c42de6c41d9729d84"></a><!-- doxytag: member="Water::GetMaxDepthCB" ref="aa3275f7564f0666c42de6c41d9729d84" args="(void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>GetMaxDepthCB</b> (void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#aa3275f7564f0666c42de6c41d9729d84">GetMaxDepthCB</a> (void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to get max depth. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8f59e118d0adaf3481593036ad34892"></a><!-- doxytag: member="Water::GetTransparencyCB" ref="af8f59e118d0adaf3481593036ad34892" args="(void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>GetTransparencyCB</b> (void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#af8f59e118d0adaf3481593036ad34892">GetTransparencyCB</a> (void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to get which texture is in use. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7df26f16b1b92b84f0df72994b17ffe9"></a><!-- doxytag: member="Water::SetDrawProgramCB" ref="a7df26f16b1b92b84f0df72994b17ffe9" args="(const void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>SetDrawProgramCB</b> (const void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a7df26f16b1b92b84f0df72994b17ffe9">SetDrawProgramCB</a> (const void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to set which program should be used to draw. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42673fecc457db482fb61e93abe8af70"></a><!-- doxytag: member="Water::SetMaxDepthCB" ref="a42673fecc457db482fb61e93abe8af70" args="(const void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxDepthCB</b> (const void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a42673fecc457db482fb61e93abe8af70">SetMaxDepthCB</a> (const void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to set max depth. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f056dee2becf4c1ed3096c0f982f2ea"></a><!-- doxytag: member="Water::SetTransparencyCB" ref="a0f056dee2becf4c1ed3096c0f982f2ea" args="(const void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>SetTransparencyCB</b> (const void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea">SetTransparencyCB</a> (const void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to set which texture to use. <br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a3a1d56f6e0818bcdd5c9b686f55fe8"></a><!-- doxytag: member="Water::initDepthProgram" ref="a5a3a1d56f6e0818bcdd5c9b686f55fe8" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initDepthProgram</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a5a3a1d56f6e0818bcdd5c9b686f55fe8">initDepthProgram</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">For water some additional parameters needs to be set.  <a href="#a5a3a1d56f6e0818bcdd5c9b686f55fe8"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c1d2c10001567f81c79d4f85edb7d87"></a><!-- doxytag: member="Water::maxDepth" ref="a4c1d2c10001567f81c79d4f85edb7d87" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>maxDepth</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87">maxDepth</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Depth drawn as black in the depth shader. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12e154573ac5e53fbb457dcc7ff3679d"></a><!-- doxytag: member="Water::programs" ref="a12e154573ac5e53fbb457dcc7ff3679d" args="[2]" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>programs</b> [2]</td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d">programs</a> [2]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_program.html" title="Main structure of the program.">Program</a> to toggle between (1 = normal, 2 = depth shader) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcaa92d95a03a1d46ec440e3dd1cb790"></a><!-- doxytag: member="Water::programToDraw" ref="afcaa92d95a03a1d46ec440e3dd1cb790" args="" -->
-GLint&#160;</td><td class="memItemRight" valign="bottom"><b>programToDraw</b></td></tr>
+GLint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#afcaa92d95a03a1d46ec440e3dd1cb790">programToDraw</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Which program to use when drawing. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e7d6b9bf03667954a04e61016ed8ac8"></a><!-- doxytag: member="Water::transparency" ref="a1e7d6b9bf03667954a04e61016ed8ac8" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>transparency</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8">transparency</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Tranparancy of the water. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37a5ae8b13cc1d6052b193ed9a2491c3"></a><!-- doxytag: member="Water::vaos" ref="a37a5ae8b13cc1d6052b193ed9a2491c3" args="[2]" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>vaos</b> [2]</td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_water.html#a37a5ae8b13cc1d6052b193ed9a2491c3">vaos</a> [2]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Which VAO to use for drawing. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00092">92</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<div class="textblock"><p>Specialized version of height map that handles multiple drawing programs. </p>
+<p>Currently has the possibility of drawing two different programs and some special parameters. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Could generalize this to the original height map class </dd></dl>
+
+<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00167">167</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="af4ba4cb92403550c26a7e0f47da84c26"></a><!-- doxytag: member="Water::Water" ref="af4ba4cb92403550c26a7e0f47da84c26" args="(GLuint *drawPrograms, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_water.html#af4ba4cb92403550c26a7e0f47da84c26">Water::Water</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLuint *&#160;</td>
+          <td class="paramname"><em>drawPrograms</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLuint *&#160;</td>
+          <td class="paramname"><em>sizes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>maxHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>inputHeightBuffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Simple contructor. </p>
+<p>Takes a few parameters for initial setup of the size of the height map data. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">drawProgram</td><td>The initial program to use for drawing the model </td></tr>
+    <tr><td class="paramname">sizes</td><td>Width and Height of the data  The height map maximum height (low assumed to be 0)  Buffer ID of the height map data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00349">349</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a5a3a1d56f6e0818bcdd5c9b686f55fe8"></a><!-- doxytag: member="Water::initDepthProgram" ref="a5a3a1d56f6e0818bcdd5c9b686f55fe8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_water.html#a5a3a1d56f6e0818bcdd5c9b686f55fe8">Water::initDepthProgram</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>For water some additional parameters needs to be set. </p>
+<p>Creates extra VAO's for use with the other programs, still references the same buffers though but for depth drawing we done need normals. </p>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00368">368</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a></li>
 <li>src/<a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a></li>
 </ul>
@@ -172,7 +265,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>vaos</b> [2]</td></
     <ul>
       <li class="navelem"><a class="el" href="class_water.html">Water</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -111,21 +111,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00011"></a>00011 <span class="preprocessor">#include &quot;gtx/rotate_vector.hpp&quot;</span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &quot;gtc/type_ptr.hpp&quot;</span>
 <a name="l00013"></a>00013 
-<a name="l00014"></a>00014 myDrawable::myDrawable(GLuint program)
+<a name="l00014"></a><a class="code" href="classmy_drawable.html#afc19e8f75e9681697d836ce832ba7fd7">00014</a> <a class="code" href="classmy_drawable.html#afc19e8f75e9681697d836ce832ba7fd7" title="Simple constructor just sets the program.">myDrawable::myDrawable</a>(GLuint program)
 <a name="l00015"></a>00015 : program(program) {}
 <a name="l00016"></a>00016 
-<a name="l00017"></a>00017 GLuint myDrawable::lightBuffer;
-<a name="l00018"></a>00018 <a class="code" href="struct_light_params.html">LightParams</a> myDrawable::lightParam[2];
-<a name="l00019"></a>00019 GLuint myDrawable::texIDs[TOTAL_TEXTURES];
+<a name="l00017"></a>00017 GLuint <a class="code" href="classmy_drawable.html#abd00d2d3c625490d9ec0d5bf7a194a5f" title="The uniform buffer containing the lights.">myDrawable::lightBuffer</a>;
+<a name="l00018"></a>00018 <a class="code" href="struct_light_params.html" title="Light uniform.">LightParams</a> <a class="code" href="classmy_drawable.html#ac323ac4af8a3c0963f0ff6160bfac4c1" title="The CPU copy of the light information.">myDrawable::lightParam</a>[2];
+<a name="l00019"></a>00019 GLuint <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">myDrawable::texIDs</a>[TOTAL_TEXTURES];
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021 <span class="keywordtype">void</span> myDrawable::setLights() {
+<a name="l00021"></a><a class="code" href="classmy_drawable.html#ac5e3db716441b09e8cfd227a5dec73d4">00021</a> <span class="keywordtype">void</span> <a class="code" href="classmy_drawable.html#ac5e3db716441b09e8cfd227a5dec73d4" title="Set the lights used in the program.">myDrawable::setLights</a>() {
 <a name="l00022"></a>00022     <span class="comment">// =========== Lights information ==========</span>
 <a name="l00023"></a>00023 
 <a name="l00024"></a>00024     <span class="comment">// Sun</span>
-<a name="l00025"></a>00025     myDrawable::lightParam[0].position = { 0.58f, 0.58f, 0.58f }; <span class="comment">// Since the sun is a directional source, this is the negative direction, not the position.</span>
-<a name="l00026"></a>00026     myDrawable::lightParam[0].isDirectional = 1.0f;
-<a name="l00027"></a>00027     myDrawable::lightParam[0].color = { 1.0f, 1.0f, 1.0f };
-<a name="l00028"></a>00028     myDrawable::lightParam[0].specularComponent = 50.0f;
+<a name="l00025"></a>00025     myDrawable::lightParam[0].<a class="code" href="struct_light_params.html#a4cc129571ff2abd4c88b736885c0e705" title="Position of the light.">position</a> = { 0.58f, 0.58f, 0.58f }; <span class="comment">// Since the sun is a directional source, this is the negative direction, not the position.</span>
+<a name="l00026"></a>00026     myDrawable::lightParam[0].<a class="code" href="struct_light_params.html#aaaaa297bd11cdd2b71a3fbead0ce6167" title="Is the light directional or not.">isDirectional</a> = 1.0f;
+<a name="l00027"></a>00027     myDrawable::lightParam[0].<a class="code" href="struct_light_params.html#a838a77b6a9b6bbb690d5c2afc7323d74" title="Color of the light.">color</a> = { 1.0f, 1.0f, 1.0f };
+<a name="l00028"></a>00028     myDrawable::lightParam[0].<a class="code" href="struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246" title="Specular exponent of the light (should probably be part of material not light)">specularComponent</a> = 50.0f;
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030     <span class="comment">// Calculating modified incoming light.</span>
 <a name="l00031"></a>00031 
@@ -136,34 +136,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00036"></a>00036     <span class="keywordtype">float</span> waterRefInd = 1.34451f;
 <a name="l00037"></a>00037     <span class="keywordtype">float</span> airRefInd = 1.0f;
 <a name="l00038"></a>00038     glm::vec3 up = glm::vec3(0, 1, 0);
-<a name="l00039"></a>00039     glm::vec3 right = glm::cross(normalize(lightParam[0].position), up);
+<a name="l00039"></a>00039     glm::vec3 right = glm::cross(normalize(<a class="code" href="classmy_drawable.html#ac323ac4af8a3c0963f0ff6160bfac4c1" title="The CPU copy of the light information.">lightParam</a>[0].position), up);
 <a name="l00040"></a>00040     <span class="comment">// Snell&#39;s law.</span>
 <a name="l00041"></a>00041     <span class="keywordtype">float</span> theta1 = asinf(glm::length(right));
 <a name="l00042"></a>00042     <span class="keywordtype">float</span> theta2 = asinf(airRefInd * sinf(theta1) / waterRefInd);
-<a name="l00043"></a>00043     glm::vec3 waterSunPos = glm::rotate(lightParam[0].position, theta1, right);
+<a name="l00043"></a>00043     glm::vec3 waterSunPos = glm::rotate(<a class="code" href="classmy_drawable.html#ac323ac4af8a3c0963f0ff6160bfac4c1" title="The CPU copy of the light information.">lightParam</a>[0].position, theta1, right);
 <a name="l00044"></a>00044     waterSunPos = glm::rotate(waterSunPos, -theta2, right);
 <a name="l00045"></a>00045     <span class="comment">// -----------------------------------------------------------------------------------------------------------------------</span>
 <a name="l00046"></a>00046 
 <a name="l00047"></a>00047     <span class="comment">// Sun under the surface</span>
-<a name="l00048"></a>00048     myDrawable::lightParam[1].position = waterSunPos;
-<a name="l00049"></a>00049     myDrawable::lightParam[1].isDirectional = 1.0f;
-<a name="l00050"></a>00050     myDrawable::lightParam[1].color = { 1.0f, 1.0f, 1.0f };
-<a name="l00051"></a>00051     myDrawable::lightParam[1].specularComponent = 50.0f;
+<a name="l00048"></a>00048     myDrawable::lightParam[1].<a class="code" href="struct_light_params.html#a4cc129571ff2abd4c88b736885c0e705" title="Position of the light.">position</a> = waterSunPos;
+<a name="l00049"></a>00049     myDrawable::lightParam[1].<a class="code" href="struct_light_params.html#aaaaa297bd11cdd2b71a3fbead0ce6167" title="Is the light directional or not.">isDirectional</a> = 1.0f;
+<a name="l00050"></a>00050     myDrawable::lightParam[1].<a class="code" href="struct_light_params.html#a838a77b6a9b6bbb690d5c2afc7323d74" title="Color of the light.">color</a> = { 1.0f, 1.0f, 1.0f };
+<a name="l00051"></a>00051     myDrawable::lightParam[1].<a class="code" href="struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246" title="Specular exponent of the light (should probably be part of material not light)">specularComponent</a> = 50.0f;
 <a name="l00052"></a>00052 
 <a name="l00053"></a>00053 
-<a name="l00054"></a>00054     glGenBuffers(1, &amp;myDrawable::lightBuffer);
+<a name="l00054"></a>00054     glGenBuffers(1, &amp;<a class="code" href="classmy_drawable.html#abd00d2d3c625490d9ec0d5bf7a194a5f" title="The uniform buffer containing the lights.">myDrawable::lightBuffer</a>);
 <a name="l00055"></a>00055 
-<a name="l00056"></a>00056     glBindBuffer(GL_UNIFORM_BUFFER, myDrawable::lightBuffer);
-<a name="l00057"></a>00057     glBufferData(GL_UNIFORM_BUFFER, <span class="keyword">sizeof</span>(<a class="code" href="struct_light_params.html">LightParams</a>)* 2, &amp;myDrawable::lightParam, GL_STATIC_DRAW);
+<a name="l00056"></a>00056     glBindBuffer(GL_UNIFORM_BUFFER, <a class="code" href="classmy_drawable.html#abd00d2d3c625490d9ec0d5bf7a194a5f" title="The uniform buffer containing the lights.">myDrawable::lightBuffer</a>);
+<a name="l00057"></a>00057     glBufferData(GL_UNIFORM_BUFFER, <span class="keyword">sizeof</span>(<a class="code" href="struct_light_params.html" title="Light uniform.">LightParams</a>)* 2, &amp;myDrawable::lightParam, GL_STATIC_DRAW);
 <a name="l00058"></a>00058     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 <a name="l00059"></a>00059 
-<a name="l00060"></a>00060     glBindBufferBase(GL_UNIFORM_BUFFER, 0, myDrawable::lightBuffer);
+<a name="l00060"></a>00060     glBindBufferBase(GL_UNIFORM_BUFFER, 0, <a class="code" href="classmy_drawable.html#abd00d2d3c625490d9ec0d5bf7a194a5f" title="The uniform buffer containing the lights.">myDrawable::lightBuffer</a>);
 <a name="l00061"></a>00061 
 <a name="l00062"></a>00062     printError(<span class="stringliteral">&quot;Create Light&quot;</span>);
 <a name="l00063"></a>00063 }
 <a name="l00064"></a>00064 
-<a name="l00065"></a>00065 <span class="keywordtype">void</span> myDrawable::setTextures(GLuint* size) {
-<a name="l00066"></a>00066     glGenTextures(5, texIDs);
+<a name="l00065"></a><a class="code" href="classmy_drawable.html#ac1e4f3c0f76c8dd25db03301f2498e7c">00065</a> <span class="keywordtype">void</span> <a class="code" href="classmy_drawable.html#ac1e4f3c0f76c8dd25db03301f2498e7c" title="Set the textures used in the program.">myDrawable::setTextures</a>(GLuint* size) {
+<a name="l00066"></a>00066     glGenTextures(5, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>);
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068     <a class="code" href="struct_texture_data.html">TextureData</a> tempTex;
 <a name="l00069"></a>00069     memset(&amp;tempTex, 0, <span class="keyword">sizeof</span>(tempTex));
@@ -171,7 +171,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00071"></a>00071     <span class="comment">// ===== Skybox Texture =====</span>
 <a name="l00072"></a>00072 
 <a name="l00073"></a>00073     glActiveTexture(GL_TEXTURE0 + SKYBOX_TEXUNIT);
-<a name="l00074"></a>00074     glBindTexture(GL_TEXTURE_CUBE_MAP, texIDs[SKYBOX_TEXUNIT]);
+<a name="l00074"></a>00074     glBindTexture(GL_TEXTURE_CUBE_MAP, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[SKYBOX_TEXUNIT]);
 <a name="l00075"></a>00075 
 <a name="l00076"></a>00076     GLuint cubeSide[] = { GL_TEXTURE_CUBE_MAP_NEGATIVE_X, GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, GL_TEXTURE_CUBE_MAP_POSITIVE_Z };
 <a name="l00077"></a>00077     <span class="keyword">const</span> <span class="keywordtype">char</span> *cubeImage[] = { <span class="stringliteral">&quot;resources/Skycube/Xn.tga&quot;</span>, <span class="stringliteral">&quot;resources/Skycube/Xp.tga&quot;</span>, <span class="stringliteral">&quot;resources/Skycube/Yn.tga&quot;</span>, <span class="stringliteral">&quot;resources/Skycube/Yp.tga&quot;</span>, <span class="stringliteral">&quot;resources/Skycube/Zn.tga&quot;</span>, <span class="stringliteral">&quot;resources/Skycube/Zp.tga&quot;</span> };
@@ -191,7 +191,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00091"></a>00091     <span class="comment">// ===== Terrain Data Texture =====</span>
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093     glActiveTexture(GL_TEXTURE0 + TERRAINDATA_TEXUNIT);
-<a name="l00094"></a>00094     glBindTexture(GL_TEXTURE_2D, texIDs[TERRAINDATA_TEXUNIT]);
+<a name="l00094"></a>00094     glBindTexture(GL_TEXTURE_2D, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[TERRAINDATA_TEXUNIT]);
 <a name="l00095"></a>00095     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 <a name="l00096"></a>00096     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 <a name="l00097"></a>00097     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -203,17 +203,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00103"></a>00103 <span class="preprocessor">#ifdef _WINDOWS</span>
 <a name="l00104"></a>00104 <span class="preprocessor"></span>    <span class="comment">// Path to the terrain color image file.</span>
 <a name="l00105"></a>00105     std::string terrainColorPath = <span class="stringliteral">&quot;resources/terrainColor.jpg&quot;</span>;
-<a name="l00106"></a>00106     <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>* terrainColorTex = <span class="keyword">new</span> <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>(terrainColorPath, texIDs[GRASS_TEXUNIT]);
+<a name="l00106"></a>00106     <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>* terrainColorTex = <span class="keyword">new</span> <a class="code" href="classsdl_texture.html" title="Stores an image as an SDL_Surface, and binds it as a usable texture.">sdlTexture</a>(terrainColorPath, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[GRASS_TEXUNIT]);
 <a name="l00107"></a>00107     <span class="keywordflow">if</span>(terrainColorTex-&gt;<a class="code" href="classsdl_texture.html#aee6aa8479e23f403095bc8ad63cc8a76" title="Getter for the texture ID bound to the loaded image. Will be -1 when image couldn&#39;t be loaded...">getTexID</a>() == -1)
 <a name="l00108"></a>00108     {
 <a name="l00109"></a>00109         <span class="comment">// The texture ID of the sdlTexture will be -1 if the image could not be loaded.</span>
-<a name="l00110"></a>00110         glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+<a name="l00110"></a>00110         glBindTexture(GL_TEXTURE_2D, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[GRASS_TEXUNIT]);
 <a name="l00111"></a>00111         <span class="comment">// Below should be placeholder.tga once someone can convert better than I can.</span>
 <a name="l00112"></a>00112         LoadTGATextureData(<span class="stringliteral">&quot;resources/grass.tga&quot;</span>, &amp;tempTex);
 <a name="l00113"></a>00113         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
 <a name="l00114"></a>00114     }
 <a name="l00115"></a>00115 <span class="preprocessor">#else</span>
-<a name="l00116"></a>00116 <span class="preprocessor"></span>    glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+<a name="l00116"></a>00116 <span class="preprocessor"></span>    glBindTexture(GL_TEXTURE_2D, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[GRASS_TEXUNIT]);
 <a name="l00117"></a>00117     LoadTGATextureData(<span class="stringliteral">&quot;resources/grass.tga&quot;</span>, &amp;tempTex);
 <a name="l00118"></a>00118     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
 <a name="l00119"></a>00119 <span class="preprocessor">#endif</span>
@@ -225,7 +225,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00125"></a>00125     <span class="comment">// ===== Dotted Texture =====</span>
 <a name="l00126"></a>00126 
 <a name="l00127"></a>00127     glActiveTexture(GL_TEXTURE0 + DOTTED_TEXUNIT);
-<a name="l00128"></a>00128     glBindTexture(GL_TEXTURE_2D, texIDs[DOTTED_TEXUNIT]);
+<a name="l00128"></a>00128     glBindTexture(GL_TEXTURE_2D, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[DOTTED_TEXUNIT]);
 <a name="l00129"></a>00129     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 <a name="l00130"></a>00130     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 <a name="l00131"></a>00131     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -236,7 +236,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00136"></a>00136     <span class="comment">// ===== Noise Texture =====</span>
 <a name="l00137"></a>00137 
 <a name="l00138"></a>00138     glActiveTexture(GL_TEXTURE0 + NOISE_TEXUNIT);
-<a name="l00139"></a>00139     glBindTexture(GL_TEXTURE_2D, texIDs[NOISE_TEXUNIT]);
+<a name="l00139"></a>00139     glBindTexture(GL_TEXTURE_2D, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">texIDs</a>[NOISE_TEXUNIT]);
 <a name="l00140"></a>00140     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 <a name="l00141"></a>00141     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 <a name="l00142"></a>00142     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -262,104 +262,104 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00162"></a>00162 }
 <a name="l00163"></a>00163 
 <a name="l00164"></a>00164 
-<a name="l00165"></a>00165 SkyCube::SkyCube(GLuint program)
-<a name="l00166"></a>00166 : <a class="code" href="classmy_drawable.html">myDrawable</a>(program) {
+<a name="l00165"></a><a class="code" href="class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db">00165</a> <a class="code" href="class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db" title="Simple constructor just passes the program along.">SkyCube::SkyCube</a>(GLuint program)
+<a name="l00166"></a>00166 : <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a>(program) {
 <a name="l00167"></a>00167     <span class="comment">/* Initialize skycube */</span>
-<a name="l00168"></a>00168     model = generateCube(10.0f);
+<a name="l00168"></a>00168     <a class="code" href="class_sky_cube.html#a19864608890e6046183b594276316e53" title="The model, a cube(!)">model</a> = generateCube(10.0f);
 <a name="l00169"></a>00169 }
 <a name="l00170"></a>00170 
-<a name="l00171"></a>00171 <span class="keywordtype">void</span> SkyCube::draw() {
-<a name="l00172"></a>00172     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;cube_texture&quot;</span>), SKYBOX_TEXUNIT);
+<a name="l00171"></a><a class="code" href="class_sky_cube.html#adb558d01880c61e354fdcb1155b1bf75">00171</a> <span class="keywordtype">void</span> <a class="code" href="class_sky_cube.html#adb558d01880c61e354fdcb1155b1bf75" title="Draw call for the skycube.">SkyCube::draw</a>() {
+<a name="l00172"></a>00172     glUniform1i(glGetUniformLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;cube_texture&quot;</span>), SKYBOX_TEXUNIT);
 <a name="l00173"></a>00173 
-<a name="l00174"></a>00174     DrawModel(model, program, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, NULL);
+<a name="l00174"></a>00174     DrawModel(<a class="code" href="class_sky_cube.html#a19864608890e6046183b594276316e53" title="The model, a cube(!)">model</a>, <a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;in_Position&quot;</span>, NULL, NULL);
 <a name="l00175"></a>00175 }
 <a name="l00176"></a>00176 
 <a name="l00177"></a>00177 <span class="comment">// ================================================================</span>
 <a name="l00178"></a>00178 
-<a name="l00179"></a>00179 HeightMap::HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
-<a name="l00180"></a>00180 : <a class="code" href="classmy_drawable.html">myDrawable</a>(drawProgram) {
+<a name="l00179"></a><a class="code" href="class_height_map.html#a1259900fe0d225884a207b5c4583e343">00179</a> <a class="code" href="class_height_map.html#a1259900fe0d225884a207b5c4583e343" title="Simple contructor.">HeightMap::HeightMap</a>(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
+<a name="l00180"></a>00180 : <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a>(drawProgram) {
 <a name="l00181"></a>00181 
-<a name="l00182"></a>00182     dataWidth = sizes[0];
-<a name="l00183"></a>00183     dataHeight = sizes[1];
-<a name="l00184"></a>00184     dataTerrainHeight = maxHeight;
-<a name="l00185"></a>00185     numData = dataWidth * dataHeight;
-<a name="l00186"></a>00186     numIndices = (dataWidth - 1) * (dataHeight - 1) * 2 * 3;
+<a name="l00182"></a>00182     <a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a> = sizes[0];
+<a name="l00183"></a>00183     <a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a> = sizes[1];
+<a name="l00184"></a>00184     <a class="code" href="class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4" title="Diff between lowest and highest point in the height map.">dataTerrainHeight</a> = maxHeight;
+<a name="l00185"></a>00185     <a class="code" href="class_height_map.html#ada129f4670034a4c7f8221d4b6c15f14" title="Total number of vertices needed.">numData</a> = <a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a> * <a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a>;
+<a name="l00186"></a>00186     <a class="code" href="class_height_map.html#ae14c7708311284235901e0947b2885c0" title="Total number of indices needed.">numIndices</a> = (<a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a> - 1) * (dataHeight - 1) * 2 * 3;
 <a name="l00187"></a>00187 
-<a name="l00188"></a>00188     heightBuffer = inputHeightBuffer;
+<a name="l00188"></a>00188     <a class="code" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f" title="Buffer with the height data information.">heightBuffer</a> = inputHeightBuffer;
 <a name="l00189"></a>00189 
-<a name="l00190"></a>00190     texnum = 0;
+<a name="l00190"></a>00190     <a class="code" href="class_height_map.html#a6693d100783a47d2602e72b70031ae57" title="Currently used texture.">texnum</a> = 0;
 <a name="l00191"></a>00191 
-<a name="l00192"></a>00192     initUpdate();
+<a name="l00192"></a>00192     <a class="code" href="class_height_map.html#afe4e1929278b03da7a45faf16ed93ab6" title="Creates the buffers and shader programs.">initUpdate</a>();
 <a name="l00193"></a>00193 
-<a name="l00194"></a>00194     <a class="code" href="class_height_field.html#a7b3fbdb7763fbc6cd33d96ad38aa4694" title="Initializes the necessary components for rendering the CPU tests.">initDraw</a>();
+<a name="l00194"></a>00194     <a class="code" href="class_height_map.html#ab709cbc473f892883f28ef605291624c" title="Sets the VAO pointers for drawing the model.">initDraw</a>();
 <a name="l00195"></a>00195 }
 <a name="l00196"></a>00196 
-<a name="l00197"></a>00197 <span class="keywordtype">void</span> HeightMap::initUpdate() {
+<a name="l00197"></a><a class="code" href="class_height_map.html#afe4e1929278b03da7a45faf16ed93ab6">00197</a> <span class="keywordtype">void</span> <a class="code" href="class_height_map.html#afe4e1929278b03da7a45faf16ed93ab6" title="Creates the buffers and shader programs.">HeightMap::initUpdate</a>() {
 <a name="l00198"></a>00198 
-<a name="l00199"></a>00199     glGenBuffers(4, drawBuffers);
+<a name="l00199"></a>00199     glGenBuffers(4, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>);
 <a name="l00200"></a>00200 
-<a name="l00201"></a>00201     normalsProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/normals.comp&quot;</span>);
+<a name="l00201"></a>00201     <a class="code" href="class_height_map.html#a7922d13c9196356e9947455f7f340c9b" title="Compute shader for calculating the normals from a height map.">normalsProgram</a> = compileComputeShader(<span class="stringliteral">&quot;src/shaders/normals.comp&quot;</span>);
 <a name="l00202"></a>00202 
-<a name="l00203"></a>00203     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[3]); <span class="comment">// Normals</span>
-<a name="l00204"></a>00204     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
+<a name="l00203"></a>00203     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[3]); <span class="comment">// Normals</span>
+<a name="l00204"></a>00204     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * <a class="code" href="class_height_map.html#ada129f4670034a4c7f8221d4b6c15f14" title="Total number of vertices needed.">numData</a>, NULL, GL_STATIC_DRAW);
 <a name="l00205"></a>00205     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00206"></a>00206 
 <a name="l00207"></a>00207     printError(<span class="stringliteral">&quot;init normals&quot;</span>);
 <a name="l00208"></a>00208 
-<a name="l00209"></a>00209     heightMapProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/heightMap.comp&quot;</span>);
+<a name="l00209"></a>00209     <a class="code" href="class_height_map.html#a9a690db1987f4368eec9a567f05240b5" title="Compute shader that generates the rest of the vertex data.">heightMapProgram</a> = compileComputeShader(<span class="stringliteral">&quot;src/shaders/heightMap.comp&quot;</span>);
 <a name="l00210"></a>00210 
-<a name="l00211"></a>00211     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[0]); <span class="comment">// Vertex positions</span>
+<a name="l00211"></a>00211     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[0]); <span class="comment">// Vertex positions</span>
 <a name="l00212"></a>00212     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 3 * numData, NULL, GL_STATIC_DRAW);
 <a name="l00213"></a>00213     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00214"></a>00214 
-<a name="l00215"></a>00215     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[1]); <span class="comment">// Texture coordinates</span>
+<a name="l00215"></a>00215     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[1]); <span class="comment">// Texture coordinates</span>
 <a name="l00216"></a>00216     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat)* 2 * numData, NULL, GL_STATIC_DRAW);
 <a name="l00217"></a>00217     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00218"></a>00218 
-<a name="l00219"></a>00219     glBindBuffer(GL_SHADER_STORAGE_BUFFER, drawBuffers[2]); <span class="comment">// Indices</span>
-<a name="l00220"></a>00220     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLint)* numIndices, NULL, GL_STATIC_DRAW);
+<a name="l00219"></a>00219     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[2]); <span class="comment">// Indices</span>
+<a name="l00220"></a>00220     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLint)* <a class="code" href="class_height_map.html#ae14c7708311284235901e0947b2885c0" title="Total number of indices needed.">numIndices</a>, NULL, GL_STATIC_DRAW);
 <a name="l00221"></a>00221     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00222"></a>00222 
 <a name="l00223"></a>00223     printError(<span class="stringliteral">&quot;init heightmap&quot;</span>);
 <a name="l00224"></a>00224 
-<a name="l00225"></a>00225     textureProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/textureData.comp&quot;</span>);
+<a name="l00225"></a>00225     <a class="code" href="class_height_map.html#af039e94aa2cdc2ce10cb8371430b2b34" title="Creates a texture with normal and height data, for use in other shaders where interpolation is import...">textureProgram</a> = compileComputeShader(<span class="stringliteral">&quot;src/shaders/textureData.comp&quot;</span>);
 <a name="l00226"></a>00226 
 <a name="l00227"></a>00227     printError(<span class="stringliteral">&quot;init texturedata&quot;</span>);
 <a name="l00228"></a>00228 }
 <a name="l00229"></a>00229 
-<a name="l00230"></a>00230 <span class="keywordtype">void</span> HeightMap::initDraw() {
+<a name="l00230"></a><a class="code" href="class_height_map.html#ab709cbc473f892883f28ef605291624c">00230</a> <span class="keywordtype">void</span> <a class="code" href="class_height_map.html#ab709cbc473f892883f28ef605291624c" title="Sets the VAO pointers for drawing the model.">HeightMap::initDraw</a>() {
 <a name="l00231"></a>00231 
-<a name="l00232"></a>00232     glGenVertexArrays(1, &amp;drawVAO);
+<a name="l00232"></a>00232     glGenVertexArrays(1, &amp;<a class="code" href="class_height_map.html#a2e479d75dd4135bdaed30272cbfdc3a6" title="Vertex Array for the drawable information.">drawVAO</a>);
 <a name="l00233"></a>00233 
-<a name="l00234"></a>00234     glUseProgram(program);
+<a name="l00234"></a>00234     glUseProgram(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>);
 <a name="l00235"></a>00235 
 <a name="l00236"></a>00236     printError(<span class="stringliteral">&quot;init draw uniforms&quot;</span>);
 <a name="l00237"></a>00237 
-<a name="l00238"></a>00238     GLint posAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_Position&quot;</span>);
-<a name="l00239"></a>00239     GLint inNormAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_Normal&quot;</span>);
-<a name="l00240"></a>00240     GLint inTexAttrib = glGetAttribLocation(program, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00238"></a>00238     GLint posAttrib = glGetAttribLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;in_Position&quot;</span>);
+<a name="l00239"></a>00239     GLint inNormAttrib = glGetAttribLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;in_Normal&quot;</span>);
+<a name="l00240"></a>00240     GLint inTexAttrib = glGetAttribLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00241"></a>00241 
-<a name="l00242"></a>00242     glBindVertexArray(drawVAO);
+<a name="l00242"></a>00242     glBindVertexArray(<a class="code" href="class_height_map.html#a2e479d75dd4135bdaed30272cbfdc3a6" title="Vertex Array for the drawable information.">drawVAO</a>);
 <a name="l00243"></a>00243 
-<a name="l00244"></a>00244     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); <span class="comment">//vertexBufferID</span>
+<a name="l00244"></a>00244     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[0]); <span class="comment">//vertexBufferID</span>
 <a name="l00245"></a>00245     glEnableVertexAttribArray(posAttrib);
 <a name="l00246"></a>00246     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
 <a name="l00247"></a>00247 
 <a name="l00248"></a>00248     printError(<span class="stringliteral">&quot;init draw1&quot;</span>);
 <a name="l00249"></a>00249 
-<a name="l00250"></a>00250     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); <span class="comment">//texBufferID</span>
+<a name="l00250"></a>00250     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[1]); <span class="comment">//texBufferID</span>
 <a name="l00251"></a>00251     glEnableVertexAttribArray(inTexAttrib);
 <a name="l00252"></a>00252     glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 2, 0);
 <a name="l00253"></a>00253 
 <a name="l00254"></a>00254     printError(<span class="stringliteral">&quot;init draw2&quot;</span>);
 <a name="l00255"></a>00255 
-<a name="l00256"></a>00256     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[3]); <span class="comment">//normalsBufferID</span>
+<a name="l00256"></a>00256     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[3]); <span class="comment">//normalsBufferID</span>
 <a name="l00257"></a>00257     glEnableVertexAttribArray(inNormAttrib);
 <a name="l00258"></a>00258     glVertexAttribPointer(inNormAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
 <a name="l00259"></a>00259 
 <a name="l00260"></a>00260     printError(<span class="stringliteral">&quot;init draw3&quot;</span>);
 <a name="l00261"></a>00261 
-<a name="l00262"></a>00262     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);<span class="comment">//indicesBufferID</span>
+<a name="l00262"></a>00262     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[2]);<span class="comment">//indicesBufferID</span>
 <a name="l00263"></a>00263 
 <a name="l00264"></a>00264     printError(<span class="stringliteral">&quot;init draw4&quot;</span>);
 <a name="l00265"></a>00265 
@@ -370,128 +370,128 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00270"></a>00270 
 <a name="l00271"></a>00271     printError(<span class="stringliteral">&quot;init draw5&quot;</span>);
 <a name="l00272"></a>00272 
-<a name="l00273"></a>00273     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
-<a name="l00274"></a>00274     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;sky_texUnit&quot;</span>), SKYBOX_TEXUNIT);
-<a name="l00275"></a>00275     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), texnum + TERRAIN_FIRST_TEXUNIT);
-<a name="l00276"></a>00276     glUniform3f(glGetUniformLocation(program, <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)dataWidth, dataTerrainHeight, (<span class="keywordtype">float</span>)dataHeight);
+<a name="l00273"></a>00273     glUniform1i(glGetUniformLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
+<a name="l00274"></a>00274     glUniform1i(glGetUniformLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;sky_texUnit&quot;</span>), SKYBOX_TEXUNIT);
+<a name="l00275"></a>00275     glUniform1i(glGetUniformLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), <a class="code" href="class_height_map.html#a6693d100783a47d2602e72b70031ae57" title="Currently used texture.">texnum</a> + TERRAIN_FIRST_TEXUNIT);
+<a name="l00276"></a>00276     glUniform3f(glGetUniformLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)<a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a>, <a class="code" href="class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4" title="Diff between lowest and highest point in the height map.">dataTerrainHeight</a>, (<span class="keywordtype">float</span>)<a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a>);
 <a name="l00277"></a>00277 
 <a name="l00278"></a>00278     printError(<span class="stringliteral">&quot;init draw&quot;</span>);
 <a name="l00279"></a>00279 }
 <a name="l00280"></a>00280 
-<a name="l00281"></a>00281 <span class="keywordtype">void</span> HeightMap::generateHeightTexture() {
+<a name="l00281"></a><a class="code" href="class_height_map.html#a3e153f90e5693a5b9ad4797bd744f085">00281</a> <span class="keywordtype">void</span> <a class="code" href="class_height_map.html#a3e153f90e5693a5b9ad4797bd744f085" title="Generates the height data texture.">HeightMap::generateHeightTexture</a>() {
 <a name="l00282"></a>00282 
-<a name="l00283"></a>00283     glUseProgram(textureProgram);
+<a name="l00283"></a>00283     glUseProgram(<a class="code" href="class_height_map.html#af039e94aa2cdc2ce10cb8371430b2b34" title="Creates a texture with normal and height data, for use in other shaders where interpolation is import...">textureProgram</a>);
 <a name="l00284"></a>00284 
-<a name="l00285"></a>00285     glBindImageTexture(0, myDrawable::texIDs[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+<a name="l00285"></a>00285     glBindImageTexture(0, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">myDrawable::texIDs</a>[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
 <a name="l00286"></a>00286 
-<a name="l00287"></a>00287     glUniform2i(glGetUniformLocation(textureProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
-<a name="l00288"></a>00288     glUniform1f(glGetUniformLocation(textureProgram, <span class="stringliteral">&quot;maxHeight&quot;</span>), dataTerrainHeight);
+<a name="l00287"></a>00287     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_map.html#af039e94aa2cdc2ce10cb8371430b2b34" title="Creates a texture with normal and height data, for use in other shaders where interpolation is import...">textureProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a>, <a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a>);
+<a name="l00288"></a>00288     glUniform1f(glGetUniformLocation(<a class="code" href="class_height_map.html#af039e94aa2cdc2ce10cb8371430b2b34" title="Creates a texture with normal and height data, for use in other shaders where interpolation is import...">textureProgram</a>, <span class="stringliteral">&quot;maxHeight&quot;</span>), <a class="code" href="class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4" title="Diff between lowest and highest point in the height map.">dataTerrainHeight</a>);
 <a name="l00289"></a>00289 
-<a name="l00290"></a>00290     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
-<a name="l00291"></a>00291     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
+<a name="l00290"></a>00290     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, <a class="code" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f" title="Buffer with the height data information.">heightBuffer</a>);
+<a name="l00291"></a>00291     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[3]);
 <a name="l00292"></a>00292 
-<a name="l00293"></a>00293     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00293"></a>00293     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a> / 16.0f), 1);
 <a name="l00294"></a>00294     <span class="comment">//glFinish();</span>
 <a name="l00295"></a>00295     <span class="comment">//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);</span>
 <a name="l00296"></a>00296     printError(<span class="stringliteral">&quot;Generate terrain texture data&quot;</span>);
 <a name="l00297"></a>00297 }
 <a name="l00298"></a>00298 
-<a name="l00299"></a>00299 <span class="keywordtype">void</span> HeightMap::update() {
+<a name="l00299"></a><a class="code" href="class_height_map.html#a8b52621356a17ff2ab865ad2d5559d89">00299</a> <span class="keywordtype">void</span> <a class="code" href="class_height_map.html#a8b52621356a17ff2ab865ad2d5559d89" title="Calculates the new vertex data from the height map buffer.">HeightMap::update</a>() {
 <a name="l00300"></a>00300 
-<a name="l00301"></a>00301     glUseProgram(normalsProgram);
+<a name="l00301"></a>00301     glUseProgram(<a class="code" href="class_height_map.html#a7922d13c9196356e9947455f7f340c9b" title="Compute shader for calculating the normals from a height map.">normalsProgram</a>);
 <a name="l00302"></a>00302 
-<a name="l00303"></a>00303     glUniform2i(glGetUniformLocation(normalsProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
+<a name="l00303"></a>00303     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_map.html#a7922d13c9196356e9947455f7f340c9b" title="Compute shader for calculating the normals from a height map.">normalsProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a>, <a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a>);
 <a name="l00304"></a>00304 
-<a name="l00305"></a>00305     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, heightBuffer);
-<a name="l00306"></a>00306     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
+<a name="l00305"></a>00305     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, <a class="code" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f" title="Buffer with the height data information.">heightBuffer</a>);
+<a name="l00306"></a>00306     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[3]);
 <a name="l00307"></a>00307 
-<a name="l00308"></a>00308     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00308"></a>00308     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a> / 16.0f), 1);
 <a name="l00309"></a>00309 
 <a name="l00310"></a>00310     printError(<span class="stringliteral">&quot;Update normals&quot;</span>);
 <a name="l00311"></a>00311 
-<a name="l00312"></a>00312     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, drawBuffers);
-<a name="l00313"></a>00313     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, heightBuffer);
+<a name="l00312"></a>00312     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 0, 3, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>);
+<a name="l00313"></a>00313     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, <a class="code" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f" title="Buffer with the height data information.">heightBuffer</a>);
 <a name="l00314"></a>00314     
-<a name="l00315"></a>00315     glBindImageTexture(0, myDrawable::texIDs[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
+<a name="l00315"></a>00315     glBindImageTexture(0, <a class="code" href="classmy_drawable.html#a3b79c2bb61f34db6e0bd14d8c2b66108" title="The texture ID&#39;s used in the program.">myDrawable::texIDs</a>[TERRAINDATA_TEXUNIT], 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
 <a name="l00316"></a>00316     
-<a name="l00317"></a>00317     glUseProgram(heightMapProgram);
+<a name="l00317"></a>00317     glUseProgram(<a class="code" href="class_height_map.html#a9a690db1987f4368eec9a567f05240b5" title="Compute shader that generates the rest of the vertex data.">heightMapProgram</a>);
 <a name="l00318"></a>00318     
 <a name="l00319"></a>00319     <span class="keywordflow">if</span>(dynamic_cast&lt;Water*&gt;(<span class="keyword">this</span>) != <span class="keyword">nullptr</span>){
-<a name="l00320"></a>00320         glUniform1f(glGetUniformLocation(heightMapProgram, <span class="stringliteral">&quot;scale&quot;</span>), dataTerrainHeight);
+<a name="l00320"></a>00320         glUniform1f(glGetUniformLocation(<a class="code" href="class_height_map.html#a9a690db1987f4368eec9a567f05240b5" title="Compute shader that generates the rest of the vertex data.">heightMapProgram</a>, <span class="stringliteral">&quot;scale&quot;</span>), <a class="code" href="class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4" title="Diff between lowest and highest point in the height map.">dataTerrainHeight</a>);
 <a name="l00321"></a>00321     }<span class="keywordflow">else</span>{
-<a name="l00322"></a>00322         glUniform1f(glGetUniformLocation(heightMapProgram, <span class="stringliteral">&quot;scale&quot;</span>), -1.0f);
+<a name="l00322"></a>00322         glUniform1f(glGetUniformLocation(<a class="code" href="class_height_map.html#a9a690db1987f4368eec9a567f05240b5" title="Compute shader that generates the rest of the vertex data.">heightMapProgram</a>, <span class="stringliteral">&quot;scale&quot;</span>), -1.0f);
 <a name="l00323"></a>00323     }
 <a name="l00324"></a>00324     
 <a name="l00325"></a>00325     
-<a name="l00326"></a>00326     glUniform2i(glGetUniformLocation(heightMapProgram, <span class="stringliteral">&quot;size&quot;</span>), dataWidth, dataHeight);
-<a name="l00327"></a>00327     glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
+<a name="l00326"></a>00326     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_map.html#a9a690db1987f4368eec9a567f05240b5" title="Compute shader that generates the rest of the vertex data.">heightMapProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a>, <a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a>);
+<a name="l00327"></a>00327     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a> / 16.0f), 1);
 <a name="l00328"></a>00328 
 <a name="l00329"></a>00329     printError(<span class="stringliteral">&quot;Update vertices&quot;</span>);
 <a name="l00330"></a>00330 }
 <a name="l00331"></a>00331 
-<a name="l00332"></a>00332 <span class="keywordtype">void</span> HeightMap::draw() {
-<a name="l00333"></a>00333     glUseProgram(program);
-<a name="l00334"></a>00334     glBindVertexArray(drawVAO);
-<a name="l00335"></a>00335     glUniform1i(glGetUniformLocation(program, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), texnum + TERRAIN_FIRST_TEXUNIT);
-<a name="l00336"></a>00336     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0L);
+<a name="l00332"></a><a class="code" href="class_height_map.html#ac55d9987b43621f94cf1fe8ef9d6b39b">00332</a> <span class="keywordtype">void</span> <a class="code" href="class_height_map.html#ac55d9987b43621f94cf1fe8ef9d6b39b" title="Draws the height field using the set draw program and texture.">HeightMap::draw</a>() {
+<a name="l00333"></a>00333     glUseProgram(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>);
+<a name="l00334"></a>00334     glBindVertexArray(<a class="code" href="class_height_map.html#a2e479d75dd4135bdaed30272cbfdc3a6" title="Vertex Array for the drawable information.">drawVAO</a>);
+<a name="l00335"></a>00335     glUniform1i(glGetUniformLocation(<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a>, <span class="stringliteral">&quot;terr_texUnit&quot;</span>), <a class="code" href="class_height_map.html#a6693d100783a47d2602e72b70031ae57" title="Currently used texture.">texnum</a> + TERRAIN_FIRST_TEXUNIT);
+<a name="l00336"></a>00336     glDrawElements(GL_TRIANGLES, <a class="code" href="class_height_map.html#ae14c7708311284235901e0947b2885c0" title="Total number of indices needed.">numIndices</a>, GL_UNSIGNED_INT, 0L);
 <a name="l00337"></a>00337 
 <a name="l00338"></a>00338     printError(<span class="stringliteral">&quot;Draw Heightmap&quot;</span>);
 <a name="l00339"></a>00339 }
 <a name="l00340"></a>00340 
-<a name="l00341"></a>00341 <span class="keywordtype">void</span> TW_CALL HeightMap::SetTextureCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00342"></a>00342     <span class="keyword">static_cast&lt;</span><a class="code" href="class_height_map.html">HeightMap</a>*<span class="keyword">&gt;</span>(clientData)-&gt;texnum = *static_cast&lt;const GLuint*&gt;(value);
+<a name="l00341"></a><a class="code" href="class_height_map.html#a077dece0f6f9df497c097c931501615f">00341</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_height_map.html#a077dece0f6f9df497c097c931501615f" title="Used by AntTweakBar to set which texture to use.">HeightMap::SetTextureCB</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00342"></a>00342     <span class="keyword">static_cast&lt;</span><a class="code" href="class_height_map.html">HeightMap</a>*<span class="keyword">&gt;</span>(clientData)-&gt;<a class="code" href="class_height_map.html#a6693d100783a47d2602e72b70031ae57" title="Currently used texture.">texnum</a> = *static_cast&lt;const GLuint*&gt;(value);
 <a name="l00343"></a>00343 }
-<a name="l00344"></a>00344 <span class="keywordtype">void</span> TW_CALL HeightMap::GetTextureCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00344"></a><a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8">00344</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8" title="Used by AntTweakBar to get which texture is in use.">HeightMap::GetTextureCB</a>(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
 <a name="l00345"></a>00345     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;texnum;
 <a name="l00346"></a>00346 }
 <a name="l00347"></a>00347 
 <a name="l00348"></a>00348 
-<a name="l00349"></a>00349 Water::Water(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
+<a name="l00349"></a><a class="code" href="class_water.html#af4ba4cb92403550c26a7e0f47da84c26">00349</a> <a class="code" href="class_water.html#af4ba4cb92403550c26a7e0f47da84c26" title="Simple contructor.">Water::Water</a>(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer)
 <a name="l00350"></a>00350 : <a class="code" href="class_height_map.html">HeightMap</a>(drawPrograms[0], sizes, maxHeight, inputHeightBuffer) {
-<a name="l00351"></a>00351     transparency = 0.7f;
-<a name="l00352"></a>00352     maxDepth = 50.0f;
+<a name="l00351"></a>00351     <a class="code" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8" title="Tranparancy of the water.">transparency</a> = 0.7f;
+<a name="l00352"></a>00352     <a class="code" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87" title="Depth drawn as black in the depth shader.">maxDepth</a> = 50.0f;
 <a name="l00353"></a>00353 
-<a name="l00354"></a>00354     programToDraw = 0;
-<a name="l00355"></a>00355     programs[0] = drawPrograms[0];
-<a name="l00356"></a>00356     programs[1] = drawPrograms[1];
+<a name="l00354"></a>00354     <a class="code" href="class_water.html#afcaa92d95a03a1d46ec440e3dd1cb790" title="Which program to use when drawing.">programToDraw</a> = 0;
+<a name="l00355"></a>00355     <a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[0] = drawPrograms[0];
+<a name="l00356"></a>00356     <a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1] = drawPrograms[1];
 <a name="l00357"></a>00357 
-<a name="l00358"></a>00358     vaos[0] = drawVAO;
+<a name="l00358"></a>00358     <a class="code" href="class_water.html#a37a5ae8b13cc1d6052b193ed9a2491c3" title="Which VAO to use for drawing.">vaos</a>[0] = <a class="code" href="class_height_map.html#a2e479d75dd4135bdaed30272cbfdc3a6" title="Vertex Array for the drawable information.">drawVAO</a>;
 <a name="l00359"></a>00359 
-<a name="l00360"></a>00360     glUseProgram(programs[0]);
-<a name="l00361"></a>00361     glUniform1f(glGetUniformLocation(programs[0], <span class="stringliteral">&quot;transparency&quot;</span>), transparency);
-<a name="l00362"></a>00362     glUseProgram(programs[1]);
-<a name="l00363"></a>00363     glUniform1f(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), maxDepth);
+<a name="l00360"></a>00360     glUseProgram(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[0]);
+<a name="l00361"></a>00361     glUniform1f(glGetUniformLocation(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[0], <span class="stringliteral">&quot;transparency&quot;</span>), <a class="code" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8" title="Tranparancy of the water.">transparency</a>);
+<a name="l00362"></a>00362     glUseProgram(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1]);
+<a name="l00363"></a>00363     glUniform1f(glGetUniformLocation(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), <a class="code" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87" title="Depth drawn as black in the depth shader.">maxDepth</a>);
 <a name="l00364"></a>00364 
-<a name="l00365"></a>00365     initDepthProgram();
+<a name="l00365"></a>00365     <a class="code" href="class_water.html#a5a3a1d56f6e0818bcdd5c9b686f55fe8" title="For water some additional parameters needs to be set.">initDepthProgram</a>();
 <a name="l00366"></a>00366 }
 <a name="l00367"></a>00367 
-<a name="l00368"></a>00368 <span class="keywordtype">void</span> Water::initDepthProgram() {
+<a name="l00368"></a><a class="code" href="class_water.html#a5a3a1d56f6e0818bcdd5c9b686f55fe8">00368</a> <span class="keywordtype">void</span> <a class="code" href="class_water.html#a5a3a1d56f6e0818bcdd5c9b686f55fe8" title="For water some additional parameters needs to be set.">Water::initDepthProgram</a>() {
 <a name="l00369"></a>00369     GLuint tempVAO;
 <a name="l00370"></a>00370     glGenVertexArrays(1, &amp;tempVAO);
-<a name="l00371"></a>00371     vaos[1] = tempVAO;
+<a name="l00371"></a>00371     <a class="code" href="class_water.html#a37a5ae8b13cc1d6052b193ed9a2491c3" title="Which VAO to use for drawing.">vaos</a>[1] = tempVAO;
 <a name="l00372"></a>00372 
-<a name="l00373"></a>00373     glUseProgram(programs[1]);
+<a name="l00373"></a>00373     glUseProgram(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1]);
 <a name="l00374"></a>00374 
 <a name="l00375"></a>00375     printError(<span class="stringliteral">&quot;init draw uniforms&quot;</span>);
 <a name="l00376"></a>00376 
-<a name="l00377"></a>00377     GLint posAttrib = glGetAttribLocation(programs[1], <span class="stringliteral">&quot;in_Position&quot;</span>);
-<a name="l00378"></a>00378     GLint inTexAttrib = glGetAttribLocation(programs[1], <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
+<a name="l00377"></a>00377     GLint posAttrib = glGetAttribLocation(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1], <span class="stringliteral">&quot;in_Position&quot;</span>);
+<a name="l00378"></a>00378     GLint inTexAttrib = glGetAttribLocation(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1], <span class="stringliteral">&quot;in_TexCoord&quot;</span>);
 <a name="l00379"></a>00379 
-<a name="l00380"></a>00380     glBindVertexArray(vaos[1]);
+<a name="l00380"></a>00380     glBindVertexArray(<a class="code" href="class_water.html#a37a5ae8b13cc1d6052b193ed9a2491c3" title="Which VAO to use for drawing.">vaos</a>[1]);
 <a name="l00381"></a>00381 
-<a name="l00382"></a>00382     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[0]); <span class="comment">//vertexBufferID</span>
+<a name="l00382"></a>00382     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[0]); <span class="comment">//vertexBufferID</span>
 <a name="l00383"></a>00383     glEnableVertexAttribArray(posAttrib);
 <a name="l00384"></a>00384     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 3, 0);
 <a name="l00385"></a>00385 
 <a name="l00386"></a>00386     printError(<span class="stringliteral">&quot;init draw1&quot;</span>);
 <a name="l00387"></a>00387 
-<a name="l00388"></a>00388     glBindBuffer(GL_ARRAY_BUFFER, drawBuffers[1]); <span class="comment">//texBufferID</span>
+<a name="l00388"></a>00388     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[1]); <span class="comment">//texBufferID</span>
 <a name="l00389"></a>00389     glEnableVertexAttribArray(inTexAttrib);
 <a name="l00390"></a>00390     glVertexAttribPointer(inTexAttrib, 2, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(GLfloat)* 2, 0);
 <a name="l00391"></a>00391 
 <a name="l00392"></a>00392     printError(<span class="stringliteral">&quot;init draw3&quot;</span>);
 <a name="l00393"></a>00393 
-<a name="l00394"></a>00394     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawBuffers[2]);<span class="comment">//indicesBufferID</span>
+<a name="l00394"></a>00394     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[2]);<span class="comment">//indicesBufferID</span>
 <a name="l00395"></a>00395 
 <a name="l00396"></a>00396     printError(<span class="stringliteral">&quot;init draw4&quot;</span>);
 <a name="l00397"></a>00397 
@@ -502,44 +502,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00402"></a>00402 
 <a name="l00403"></a>00403     printError(<span class="stringliteral">&quot;init draw5&quot;</span>);
 <a name="l00404"></a>00404 
-<a name="l00405"></a>00405     glUniform1i(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
-<a name="l00406"></a>00406     glUniform3f(glGetUniformLocation(programs[1], <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)dataWidth, dataTerrainHeight, (<span class="keywordtype">float</span>)dataHeight);
+<a name="l00405"></a>00405     glUniform1i(glGetUniformLocation(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1], <span class="stringliteral">&quot;height_texUnit&quot;</span>), TERRAINDATA_TEXUNIT);
+<a name="l00406"></a>00406     glUniform3f(glGetUniformLocation(<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1], <span class="stringliteral">&quot;size&quot;</span>), (<span class="keywordtype">float</span>)<a class="code" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5" title="Width of the data in the height map.">dataWidth</a>, <a class="code" href="class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4" title="Diff between lowest and highest point in the height map.">dataTerrainHeight</a>, (<span class="keywordtype">float</span>)<a class="code" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64" title="Height of the data in the height map.">dataHeight</a>);
 <a name="l00407"></a>00407 
 <a name="l00408"></a>00408     printError(<span class="stringliteral">&quot;init draw&quot;</span>);
 <a name="l00409"></a>00409 }
 <a name="l00410"></a>00410 
 <a name="l00411"></a>00411 
-<a name="l00412"></a>00412 <span class="keywordtype">void</span> TW_CALL Water::SetTransparencyCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00413"></a>00413     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
-<a name="l00414"></a>00414     obj-&gt;transparency = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
-<a name="l00415"></a>00415     glUseProgram(obj-&gt;programs[0]);
-<a name="l00416"></a>00416     glUniform1f(glGetUniformLocation(obj-&gt;programs[0], <span class="stringliteral">&quot;transparency&quot;</span>), obj-&gt;transparency);
+<a name="l00412"></a><a class="code" href="class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea">00412</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea" title="Used by AntTweakBar to set which texture to use.">Water::SetTransparencyCB</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00413"></a>00413     <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>*<span class="keyword">&gt;</span>(clientData);
+<a name="l00414"></a>00414     obj-&gt;<a class="code" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8" title="Tranparancy of the water.">transparency</a> = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
+<a name="l00415"></a>00415     glUseProgram(obj-&gt;<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[0]);
+<a name="l00416"></a>00416     glUniform1f(glGetUniformLocation(obj-&gt;<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[0], <span class="stringliteral">&quot;transparency&quot;</span>), obj-&gt;<a class="code" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8" title="Tranparancy of the water.">transparency</a>);
 <a name="l00417"></a>00417 }
 <a name="l00418"></a>00418 
-<a name="l00419"></a>00419 <span class="keywordtype">void</span> TW_CALL Water::SetDrawProgramCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00420"></a>00420     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
-<a name="l00421"></a>00421     obj-&gt;programToDraw = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value);
-<a name="l00422"></a>00422     obj-&gt;program = obj-&gt;programs[obj-&gt;programToDraw];
-<a name="l00423"></a>00423     obj-&gt;drawVAO = obj-&gt;vaos[obj-&gt;programToDraw];
+<a name="l00419"></a><a class="code" href="class_water.html#a7df26f16b1b92b84f0df72994b17ffe9">00419</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_water.html#a7df26f16b1b92b84f0df72994b17ffe9" title="Used by AntTweakBar to set which program should be used to draw.">Water::SetDrawProgramCB</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00420"></a>00420     <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>*<span class="keyword">&gt;</span>(clientData);
+<a name="l00421"></a>00421     obj-&gt;<a class="code" href="class_water.html#afcaa92d95a03a1d46ec440e3dd1cb790" title="Which program to use when drawing.">programToDraw</a> = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value);
+<a name="l00422"></a>00422     obj-&gt;<a class="code" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0" title="The program that should be used to draw.">program</a> = obj-&gt;<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[obj-&gt;<a class="code" href="class_water.html#afcaa92d95a03a1d46ec440e3dd1cb790" title="Which program to use when drawing.">programToDraw</a>];
+<a name="l00423"></a>00423     obj-&gt;<a class="code" href="class_height_map.html#a2e479d75dd4135bdaed30272cbfdc3a6" title="Vertex Array for the drawable information.">drawVAO</a> = obj-&gt;<a class="code" href="class_water.html#a37a5ae8b13cc1d6052b193ed9a2491c3" title="Which VAO to use for drawing.">vaos</a>[obj-&gt;<a class="code" href="class_water.html#afcaa92d95a03a1d46ec440e3dd1cb790" title="Which program to use when drawing.">programToDraw</a>];
 <a name="l00424"></a>00424 }
 <a name="l00425"></a>00425 
-<a name="l00426"></a>00426 <span class="keywordtype">void</span> TW_CALL Water::SetMaxDepthCB(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
-<a name="l00427"></a>00427     <a class="code" href="class_water.html">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html">Water</a>*<span class="keyword">&gt;</span>(clientData);
-<a name="l00428"></a>00428     obj-&gt;maxDepth = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
-<a name="l00429"></a>00429     glUseProgram(obj-&gt;programs[1]);
-<a name="l00430"></a>00430     glUniform1f(glGetUniformLocation(obj-&gt;programs[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), obj-&gt;maxDepth);
+<a name="l00426"></a><a class="code" href="class_water.html#a42673fecc457db482fb61e93abe8af70">00426</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_water.html#a42673fecc457db482fb61e93abe8af70" title="Used by AntTweakBar to set max depth.">Water::SetMaxDepthCB</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00427"></a>00427     <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>* obj = <span class="keyword">static_cast&lt;</span><a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>*<span class="keyword">&gt;</span>(clientData);
+<a name="l00428"></a>00428     obj-&gt;<a class="code" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87" title="Depth drawn as black in the depth shader.">maxDepth</a> = *<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value);
+<a name="l00429"></a>00429     glUseProgram(obj-&gt;<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1]);
+<a name="l00430"></a>00430     glUniform1f(glGetUniformLocation(obj-&gt;<a class="code" href="class_water.html#a12e154573ac5e53fbb457dcc7ff3679d" title="Program to toggle between (1 = normal, 2 = depth shader)">programs</a>[1], <span class="stringliteral">&quot;maxDepth&quot;</span>), obj-&gt;<a class="code" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87" title="Depth drawn as black in the depth shader.">maxDepth</a>);
 <a name="l00431"></a>00431 }
 <a name="l00432"></a>00432 
 <a name="l00433"></a>00433 
-<a name="l00434"></a>00434 <span class="keywordtype">void</span> TW_CALL Water::GetTransparencyCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00434"></a><a class="code" href="class_water.html#af8f59e118d0adaf3481593036ad34892">00434</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_water.html#af8f59e118d0adaf3481593036ad34892" title="Used by AntTweakBar to get which texture is in use.">Water::GetTransparencyCB</a>(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
 <a name="l00435"></a>00435     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;transparency;
 <a name="l00436"></a>00436 }
 <a name="l00437"></a>00437 
-<a name="l00438"></a>00438 <span class="keywordtype">void</span> TW_CALL Water::GetDrawProgramCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00438"></a><a class="code" href="class_water.html#ab2d46082979b6542a686e927ed33c2b2">00438</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_water.html#ab2d46082979b6542a686e927ed33c2b2" title="Used by AntTweakBar to get current program used for drawing.">Water::GetDrawProgramCB</a>(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
 <a name="l00439"></a>00439     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;programToDraw;
 <a name="l00440"></a>00440 }
 <a name="l00441"></a>00441 
-<a name="l00442"></a>00442 <span class="keywordtype">void</span> TW_CALL Water::GetMaxDepthCB(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
+<a name="l00442"></a><a class="code" href="class_water.html#aa3275f7564f0666c42de6c41d9729d84">00442</a> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_water.html#aa3275f7564f0666c42de6c41d9729d84" title="Used by AntTweakBar to get max depth.">Water::GetMaxDepthCB</a>(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData) {
 <a name="l00443"></a>00443     *<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(value) = static_cast&lt;Water*&gt;(clientData)-&gt;maxDepth;
 <a name="l00444"></a>00444 }
 </pre></div></div><!-- contents -->
@@ -562,7 +562,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="my_drawable_8cpp.html">myDrawable.cpp</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

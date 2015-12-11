@@ -45,5 +45,5 @@ var class_program =
     [ "terrainshader", "class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0", null ],
     [ "voxs", "class_program.html#ae794815f232982f2720a92eec1ce4ad5", null ],
     [ "watershader", "class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e", null ],
-    [ "waterTerrain", "class_program.html#a2e346238c22ef9c1ff9a95c6991aaf33", null ]
+    [ "waterTerrain", "class_program.html#a695cace84c7c72e8a5e339c5b536ddfb", null ]
 ];

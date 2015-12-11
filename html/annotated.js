@@ -8,6 +8,7 @@ var annotated =
     [ "Flood_Fill_data", "struct_flood___fill__data.html", "struct_flood___fill__data" ],
     [ "FlowSource", "class_flow_source.html", "class_flow_source" ],
     [ "HeightField", "class_height_field.html", "class_height_field" ],
+    [ "Heightmap", "class_heightmap.html", null ],
     [ "HeightMap", "class_height_map.html", "class_height_map" ],
     [ "init_Data_struct", "structinit___data__struct.html", "structinit___data__struct" ],
     [ "LightParams", "struct_light_params.html", "struct_light_params" ],

@@ -8,6 +8,7 @@ var hierarchy =
     [ "Flood_Fill_data", "struct_flood___fill__data.html", null ],
     [ "FlowSource", "class_flow_source.html", null ],
     [ "HeightField", "class_height_field.html", null ],
+    [ "Heightmap", "class_heightmap.html", null ],
     [ "init_Data_struct", "structinit___data__struct.html", null ],
     [ "LightParams", "struct_light_params.html", null ],
     [ "mapdata", "structmapdata.html", null ],

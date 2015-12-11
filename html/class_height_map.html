@@ -114,57 +114,191 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1259900fe0d225884a207b5c4583e343"></a><!-- doxytag: member="HeightMap::HeightMap" ref="a1259900fe0d225884a207b5c4583e343" args="(GLuint drawProgram, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>HeightMap</b> (GLuint drawProgram, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a1259900fe0d225884a207b5c4583e343">HeightMap</a> (GLuint drawProgram, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple contructor.  <a href="#a1259900fe0d225884a207b5c4583e343"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac55d9987b43621f94cf1fe8ef9d6b39b"></a><!-- doxytag: member="HeightMap::draw" ref="ac55d9987b43621f94cf1fe8ef9d6b39b" args="()" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>draw</b> ()</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#ac55d9987b43621f94cf1fe8ef9d6b39b">draw</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the height field using the set draw program and texture. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e153f90e5693a5b9ad4797bd744f085"></a><!-- doxytag: member="HeightMap::generateHeightTexture" ref="a3e153f90e5693a5b9ad4797bd744f085" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>generateHeightTexture</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b52621356a17ff2ab865ad2d5559d89"></a><!-- doxytag: member="HeightMap::update" ref="a8b52621356a17ff2ab865ad2d5559d89" args="()" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a3e153f90e5693a5b9ad4797bd744f085">generateHeightTexture</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the height data texture. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a8b52621356a17ff2ab865ad2d5559d89">update</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the new vertex data from the height map buffer.  <a href="#a8b52621356a17ff2ab865ad2d5559d89"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2be3b4aa547f359dda3f709d45b136d8"></a><!-- doxytag: member="HeightMap::GetTextureCB" ref="a2be3b4aa547f359dda3f709d45b136d8" args="(void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>GetTextureCB</b> (void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8">GetTextureCB</a> (void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to get which texture is in use. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a077dece0f6f9df497c097c931501615f"></a><!-- doxytag: member="HeightMap::SetTextureCB" ref="a077dece0f6f9df497c097c931501615f" args="(const void *value, void *clientData)" -->
-static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><b>SetTextureCB</b> (const void *value, void *clientData)</td></tr>
+static void TW_CALL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a077dece0f6f9df497c097c931501615f">SetTextureCB</a> (const void *value, void *clientData)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by AntTweakBar to set which texture to use. <br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab709cbc473f892883f28ef605291624c"></a><!-- doxytag: member="HeightMap::initDraw" ref="ab709cbc473f892883f28ef605291624c" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initDraw</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe4e1929278b03da7a45faf16ed93ab6"></a><!-- doxytag: member="HeightMap::initUpdate" ref="afe4e1929278b03da7a45faf16ed93ab6" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initUpdate</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#ab709cbc473f892883f28ef605291624c">initDraw</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the VAO pointers for drawing the model.  <a href="#ab709cbc473f892883f28ef605291624c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#afe4e1929278b03da7a45faf16ed93ab6">initUpdate</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the buffers and shader programs.  <a href="#afe4e1929278b03da7a45faf16ed93ab6"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0de6b2ca5b6696dc8acf83318e095e64"></a><!-- doxytag: member="HeightMap::dataHeight" ref="a0de6b2ca5b6696dc8acf83318e095e64" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>dataHeight</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64">dataHeight</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Height of the data in the height map. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abaf0c18b42ca96077c255f965be5dfd4"></a><!-- doxytag: member="HeightMap::dataTerrainHeight" ref="abaf0c18b42ca96077c255f965be5dfd4" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>dataTerrainHeight</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4">dataTerrainHeight</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Diff between lowest and highest point in the height map. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac805cda7f140372e4e80dc2735d6e8e5"></a><!-- doxytag: member="HeightMap::dataWidth" ref="ac805cda7f140372e4e80dc2735d6e8e5" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>dataWidth</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5">dataWidth</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Width of the data in the height map. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab41281520075f40db2aa2cb2a7a8e03f"></a><!-- doxytag: member="HeightMap::drawBuffers" ref="ab41281520075f40db2aa2cb2a7a8e03f" args="[4]" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>drawBuffers</b> [4]</td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f">drawBuffers</a> [4]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e479d75dd4135bdaed30272cbfdc3a6"></a><!-- doxytag: member="HeightMap::drawVAO" ref="a2e479d75dd4135bdaed30272cbfdc3a6" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>drawVAO</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a2e479d75dd4135bdaed30272cbfdc3a6">drawVAO</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex Array for the drawable information. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a63f103ccb56ef5ec4945d35cbf904f"></a><!-- doxytag: member="HeightMap::heightBuffer" ref="a3a63f103ccb56ef5ec4945d35cbf904f" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>heightBuffer</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f">heightBuffer</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer with the height data information. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a690db1987f4368eec9a567f05240b5"></a><!-- doxytag: member="HeightMap::heightMapProgram" ref="a9a690db1987f4368eec9a567f05240b5" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>heightMapProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a9a690db1987f4368eec9a567f05240b5">heightMapProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute shader that generates the rest of the vertex data. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7922d13c9196356e9947455f7f340c9b"></a><!-- doxytag: member="HeightMap::normalsProgram" ref="a7922d13c9196356e9947455f7f340c9b" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>normalsProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a7922d13c9196356e9947455f7f340c9b">normalsProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute shader for calculating the normals from a height map. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada129f4670034a4c7f8221d4b6c15f14"></a><!-- doxytag: member="HeightMap::numData" ref="ada129f4670034a4c7f8221d4b6c15f14" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>numData</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#ada129f4670034a4c7f8221d4b6c15f14">numData</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of vertices needed. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae14c7708311284235901e0947b2885c0"></a><!-- doxytag: member="HeightMap::numIndices" ref="ae14c7708311284235901e0947b2885c0" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>numIndices</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#ae14c7708311284235901e0947b2885c0">numIndices</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of indices needed. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6693d100783a47d2602e72b70031ae57"></a><!-- doxytag: member="HeightMap::texnum" ref="a6693d100783a47d2602e72b70031ae57" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>texnum</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#a6693d100783a47d2602e72b70031ae57">texnum</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently used texture. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af039e94aa2cdc2ce10cb8371430b2b34"></a><!-- doxytag: member="HeightMap::textureProgram" ref="af039e94aa2cdc2ce10cb8371430b2b34" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>textureProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_map.html#af039e94aa2cdc2ce10cb8371430b2b34">textureProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a texture with normal and height data, for use in other shaders where interpolation is important. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00063">63</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00104">104</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a1259900fe0d225884a207b5c4583e343"></a><!-- doxytag: member="HeightMap::HeightMap" ref="a1259900fe0d225884a207b5c4583e343" args="(GLuint drawProgram, GLuint *sizes, GLfloat maxHeight, GLuint inputHeightBuffer)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_height_map.html#a1259900fe0d225884a207b5c4583e343">HeightMap::HeightMap</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>drawProgram</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLuint *&#160;</td>
+          <td class="paramname"><em>sizes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>maxHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>inputHeightBuffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Simple contructor. </p>
+<p>Takes a few parameters for initial setup of the size of the height map data. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">drawProgram</td><td>The initial program to use for drawing the model </td></tr>
+    <tr><td class="paramname">sizes</td><td>Width and Height of the data  The height map maximum height (low assumed to be 0)  Buffer ID of the height map data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00179">179</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ab709cbc473f892883f28ef605291624c"></a><!-- doxytag: member="HeightMap::initDraw" ref="ab709cbc473f892883f28ef605291624c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_height_map.html#ab709cbc473f892883f28ef605291624c">HeightMap::initDraw</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the VAO pointers for drawing the model. </p>
+<p>Also uploads some of the static uniforms that are used for drawing. </p>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00230">230</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afe4e1929278b03da7a45faf16ed93ab6"></a><!-- doxytag: member="HeightMap::initUpdate" ref="afe4e1929278b03da7a45faf16ed93ab6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_height_map.html#afe4e1929278b03da7a45faf16ed93ab6">HeightMap::initUpdate</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Creates the buffers and shader programs. </p>
+<p>Init for creating buffers and shaders used for creating and/or updating the model vertice data. </p>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00197">197</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8b52621356a17ff2ab865ad2d5559d89"></a><!-- doxytag: member="HeightMap::update" ref="a8b52621356a17ff2ab865ad2d5559d89" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_height_map.html#a8b52621356a17ff2ab865ad2d5559d89">HeightMap::update</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Calculates the new vertex data from the height map buffer. </p>
+<p>Calculates the normals first using sobel filters in x and z direction and then sets a height for y that makes the result look good (might need tuning). After that the rest of the data is pretty straight forward to generate. </p>
+
+<p>Implements <a class="el" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1">myDrawable</a>.</p>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00299">299</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a></li>
 <li>src/<a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a></li>
 </ul>
@@ -188,7 +322,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>textureProgram</b><
     <ul>
       <li class="navelem"><a class="el" href="class_height_map.html">HeightMap</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -104,84 +104,109 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="Program" -->
+<p>Main structure of the program.  
+ <a href="class_program.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="program_8h_source.html">program.h</a>&gt;</code></p>
+
 <p><a href="class_program-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a098584c44f1088a4ea2213e1f4c6b609"></a><!-- doxytag: member="Program::Program" ref="a098584c44f1088a4ea2213e1f4c6b609" args="(GLuint simCase)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Program</b> (GLuint <a class="el" href="class_program.html#a9be10e8a6d395386725ac96b014f9897">simCase</a>)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3410448e2325bd75c6e31bc455d6edb8"></a><!-- doxytag: member="Program::checkKeys" ref="a3410448e2325bd75c6e31bc455d6edb8" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>checkKeys</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ea8bf33b0305ade5a80c1009c3f83a4"></a><!-- doxytag: member="Program::clean" ref="a9ea8bf33b0305ade5a80c1009c3f83a4" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clean</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c1399ac5ed69e5c152f1a2cc1e644d4"></a><!-- doxytag: member="Program::display" ref="a3c1399ac5ed69e5c152f1a2cc1e644d4" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>display</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac6bc1a3542199a9e37bb4c2dd6f06928"></a><!-- doxytag: member="Program::exec" ref="ac6bc1a3542199a9e37bb4c2dd6f06928" args="()" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>exec</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f3b3316b781a8db4d53097ef07df91b"></a><!-- doxytag: member="Program::handleEvent" ref="a8f3b3316b781a8db4d53097ef07df91b" args="(SDL_Event *event)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handleEvent</b> (SDL_Event *event)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3565718658a8e8b1331516cf9a252ad"></a><!-- doxytag: member="Program::handleKeypress" ref="aa3565718658a8e8b1331516cf9a252ad" args="(SDL_Event *event)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handleKeypress</b> (SDL_Event *event)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a098584c44f1088a4ea2213e1f4c6b609">Program</a> (GLuint <a class="el" href="class_program.html#a9be10e8a6d395386725ac96b014f9897">simCase</a>)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple constructor that selects which type of simulation to use.  <a href="#a098584c44f1088a4ea2213e1f4c6b609"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a986aef1c50e1d338a3315a47ba6df549"></a><!-- doxytag: member="Program::~Program" ref="a986aef1c50e1d338a3315a47ba6df549" args="()" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549">~Program</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple destructor that just cleans up. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8">checkKeys</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks which keys are held down each iteration.  <a href="#a3410448e2325bd75c6e31bc455d6edb8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4">clean</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes sure the program exits cleanly.  <a href="#a9ea8bf33b0305ade5a80c1009c3f83a4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4">display</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">All rendering commands are sent here.  <a href="#a3c1399ac5ed69e5c152f1a2cc1e644d4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928">exec</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Main entry for running the program.  <a href="#ac6bc1a3542199a9e37bb4c2dd6f06928"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b">handleEvent</a> (SDL_Event *event)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes care of all events since last main loop iteration.  <a href="#a8f3b3316b781a8db4d53097ef07df91b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">handleKeypress</a> (SDL_Event *event)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a741d3785e72b557c43098c67c6560185">handleMouseButton</a> (SDL_Event *event)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from mouse click.  <a href="#a741d3785e72b557c43098c67c6560185"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accf66aa172a27d0ed4263d78da35c51c"></a><!-- doxytag: member="Program::handleMouseMove" ref="accf66aa172a27d0ed4263d78da35c51c" args="(SDL_Event *event)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handleMouseMove</b> (SDL_Event *event)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af90b1259f253f244467ab8ad486a27c6"></a><!-- doxytag: member="Program::init" ref="af90b1259f253f244467ab8ad486a27c6" args="()" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c">handleMouseMove</a> (SDL_Event *event)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#af90b1259f253f244467ab8ad486a27c6">init</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">All one time initializations for the program is done here.  <a href="#af90b1259f253f244467ab8ad486a27c6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19c0940ec20dc55d130873dbf53e9dd3"></a><!-- doxytag: member="Program::testVoxels" ref="a19c0940ec20dc55d130873dbf53e9dd3" args="()" -->
 int&#160;</td><td class="memItemRight" valign="bottom"><b>testVoxels</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a653227b05df05ddcbb7b74ed6b1dfc37"></a><!-- doxytag: member="Program::timeUpdate" ref="a653227b05df05ddcbb7b74ed6b1dfc37" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>timeUpdate</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e0347fbe4d1bb37f98a8ecf43cdcc95"></a><!-- doxytag: member="Program::update" ref="a1e0347fbe4d1bb37f98a8ecf43cdcc95" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37">timeUpdate</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the time.  <a href="#a653227b05df05ddcbb7b74ed6b1dfc37"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95">update</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the simulation and camera.  <a href="#a1e0347fbe4d1bb37f98a8ecf43cdcc95"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae567a36cf97946d2229c48760425b537"></a><!-- doxytag: member="Program::antBar" ref="ae567a36cf97946d2229c48760425b537" args="" -->
-TwBar *&#160;</td><td class="memItemRight" valign="bottom"><b>antBar</b></td></tr>
+TwBar *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ae567a36cf97946d2229c48760425b537">antBar</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle for AntTweakBar GUI window. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab397a2824b4eb543be9fed5acc21ac24"></a><!-- doxytag: member="Program::cam" ref="ab397a2824b4eb543be9fed5acc21ac24" args="" -->
-<a class="el" href="class_camera.html">Camera</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>cam</b></td></tr>
+<a class="el" href="class_camera.html">Camera</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24">cam</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_camera.html">Camera</a> for moving in 3D. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bf878628281f945c58bc372c37baccf"></a><!-- doxytag: member="Program::currentTime" ref="a2bf878628281f945c58bc372c37baccf" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>currentTime</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a2bf878628281f945c58bc372c37baccf">currentTime</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total time since program started. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af12f89dbec45930ea3f3a73266e443a7"></a><!-- doxytag: member="Program::dataHandler" ref="af12f89dbec45930ea3f3a73266e443a7" args="" -->
-<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>dataHandler</b></td></tr>
+<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7">dataHandler</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds data about the terrain. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ded976bf91549da8748447d6779e284"></a><!-- doxytag: member="Program::deltaTime" ref="a8ded976bf91549da8748447d6779e284" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>deltaTime</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a8ded976bf91549da8748447d6779e284">deltaTime</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Time for last frame. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2e129519cc65348320bf3f36aeafa35"></a><!-- doxytag: member="Program::depthshader" ref="af2e129519cc65348320bf3f36aeafa35" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>depthshader</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#af2e129519cc65348320bf3f36aeafa35">depthshader</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaders used for rendering a depthmap of the water. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9fcf98c3da71b91b7733641bf1d044b"></a><!-- doxytag: member="Program::depthWater" ref="ad9fcf98c3da71b91b7733641bf1d044b" args="" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>depthWater</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32e5a7fa5e4c98370e69ccabc1b99503"></a><!-- doxytag: member="Program::dtSim" ref="a32e5a7fa5e4c98370e69ccabc1b99503" args="" -->
 GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>dtSim</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1f15a546df461c2260031eed5f9119a"></a><!-- doxytag: member="Program::FPS" ref="ad1f15a546df461c2260031eed5f9119a" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>FPS</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ad1f15a546df461c2260031eed5f9119a">FPS</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Current frames per second (based on deltaTime) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac17eb47523bd8f13dacd0cd0b5dfe490"></a><!-- doxytag: member="Program::glcontext" ref="ac17eb47523bd8f13dacd0cd0b5dfe490" args="" -->
-SDL_GLContext&#160;</td><td class="memItemRight" valign="bottom"><b>glcontext</b></td></tr>
+SDL_GLContext&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490">glcontext</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">SDL openGL context. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0f53e1a52b9e22d303d9e9aa3be4d45"></a><!-- doxytag: member="Program::heighAtClickProj" ref="af0f53e1a52b9e22d303d9e9aa3be4d45" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>heighAtClickProj</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45">heighAtClickProj</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain/water height at the clicked position. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38ceb7490b608f5fe62d86ddedfa971a"></a><!-- doxytag: member="Program::heightAtClickData" ref="a38ceb7490b608f5fe62d86ddedfa971a" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>heightAtClickData</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a">heightAtClickData</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain height at the clicked position. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a493aa34bec63c94238a09278d7053a15"></a><!-- doxytag: member="Program::heightAtPos" ref="a493aa34bec63c94238a09278d7053a15" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>heightAtPos</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a493aa34bec63c94238a09278d7053a15">heightAtPos</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain height at the comera position. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab591e6f2678a46d92eed5ac346a89c9b"></a><!-- doxytag: member="Program::hf" ref="ab591e6f2678a46d92eed5ac346a89c9b" args="" -->
 <a class="el" href="class_height_field.html">HeightField</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>hf</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71dc4ccfa65beb8173109a07f3990f26"></a><!-- doxytag: member="Program::isRunning" ref="a71dc4ccfa65beb8173109a07f3990f26" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRunning</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26">isRunning</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">True as long as the program is running, set to false to quit. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a493bb9224256680646ad4b665dcf7cbb"></a><!-- doxytag: member="Program::mouseHidden" ref="a493bb9224256680646ad4b665dcf7cbb" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mouseHidden</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb">mouseHidden</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Bool to check if the mouse is hidden or not. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38c65b8abc1780fd560f4565f7313406"></a><!-- doxytag: member="Program::objX" ref="a38c65b8abc1780fd560f4565f7313406" args="" -->
-double&#160;</td><td class="memItemRight" valign="bottom"><b>objX</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a38c65b8abc1780fd560f4565f7313406">objX</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain x coordinate at clicked position. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a190f4114c3854d8dd401941388e54171"></a><!-- doxytag: member="Program::objZ" ref="a190f4114c3854d8dd401941388e54171" args="" -->
-double&#160;</td><td class="memItemRight" valign="bottom"><b>objZ</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a190f4114c3854d8dd401941388e54171">objZ</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain z coordinate at clicked position. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd61da34f87f7393d04c4b46a820b26c"></a><!-- doxytag: member="Program::screen" ref="acd61da34f87f7393d04c4b46a820b26c" args="" -->
-SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><b>screen</b></td></tr>
+SDL_Window *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c">screen</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle for the SDL window. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9413b3bee4a475a1f326fe27f301a94"></a><!-- doxytag: member="Program::screenH" ref="af9413b3bee4a475a1f326fe27f301a94" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>screenH</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94">screenH</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Screen height. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34d0a54618d68052932de029a455adc2"></a><!-- doxytag: member="Program::screenW" ref="a34d0a54618d68052932de029a455adc2" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>screenW</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a34d0a54618d68052932de029a455adc2">screenW</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Screen width. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6d4f3298f16f35e5d90c08939b736df"></a><!-- doxytag: member="Program::sgpu" ref="af6d4f3298f16f35e5d90c08939b736df" args="" -->
 <a class="el" href="class_shallow_g_p_u.html">ShallowGPU</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>sgpu</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94e352a7762cf519e2dfd062c2143334"></a><!-- doxytag: member="Program::shallowwatershader" ref="a94e352a7762cf519e2dfd062c2143334" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>shallowwatershader</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a94e352a7762cf519e2dfd062c2143334">shallowwatershader</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaders used for rendering water in the shallow water simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abc6c730e4bf3f2e09f2547ca7b984856"></a><!-- doxytag: member="Program::sim" ref="abc6c730e4bf3f2e09f2547ca7b984856" args="" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856">sim</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the simulation is paused or not. <br/></td></tr>
@@ -189,24 +214,205 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a9be10e8a6d395386725ac96b014f9897">simCase</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Which simulation is to be run. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a053a892600e9e86a71f1c25eb20a1e4b"></a><!-- doxytag: member="Program::skycube" ref="a053a892600e9e86a71f1c25eb20a1e4b" args="" -->
-<a class="el" href="classmy_drawable.html">myDrawable</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>skycube</b></td></tr>
+<a class="el" href="classmy_drawable.html">myDrawable</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b">skycube</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Skycube model. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06284fec165e78abfa63778bb6712d18"></a><!-- doxytag: member="Program::skyshader" ref="a06284fec165e78abfa63778bb6712d18" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>skyshader</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a06284fec165e78abfa63778bb6712d18">skyshader</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaders used for rendering the skybox. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8cda0569981a64436eda879c336dd37b"></a><!-- doxytag: member="Program::terrain" ref="a8cda0569981a64436eda879c336dd37b" args="" -->
-<a class="el" href="classmy_drawable.html">myDrawable</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>terrain</b></td></tr>
+<a class="el" href="classmy_drawable.html">myDrawable</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a8cda0569981a64436eda879c336dd37b">terrain</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain model. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac099ca345b6e89c18be9d204ecf7b2a0"></a><!-- doxytag: member="Program::terrainshader" ref="ac099ca345b6e89c18be9d204ecf7b2a0" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>terrainshader</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0">terrainshader</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaders used for rendering terrain. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae794815f232982f2720a92eec1ce4ad5"></a><!-- doxytag: member="Program::voxs" ref="ae794815f232982f2720a92eec1ce4ad5" args="" -->
 <a class="el" href="class_voxelgrid.html">Voxelgrid</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>voxs</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06e8b1ba11857e6c13fa26fbd3186d9e"></a><!-- doxytag: member="Program::watershader" ref="a06e8b1ba11857e6c13fa26fbd3186d9e" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>watershader</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e346238c22ef9c1ff9a95c6991aaf33"></a><!-- doxytag: member="Program::waterTerrain" ref="a2e346238c22ef9c1ff9a95c6991aaf33" args="" -->
-<a class="el" href="classmy_drawable.html">myDrawable</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>waterTerrain</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e">watershader</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaders used for rendering the water. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a695cace84c7c72e8a5e339c5b536ddfb"></a><!-- doxytag: member="Program::waterTerrain" ref="a695cace84c7c72e8a5e339c5b536ddfb" args="" -->
+<a class="el" href="classmy_drawable.html">myDrawable</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb">waterTerrain</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a> model. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="program_8h_source.html#l00036">36</a> of file <a class="el" href="program_8h_source.html">program.h</a>.</p>
-</div><hr/><h2>Member Function Documentation</h2>
+<div class="textblock"><p>Main structure of the program. </p>
+<p>This is where the broad strokes of the program should be outlined. Contains the main loop of the program and funtions for the different phases. </p>
+
+<p>Definition at line <a class="el" href="program_8h_source.html#l00041">41</a> of file <a class="el" href="program_8h_source.html">program.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a098584c44f1088a4ea2213e1f4c6b609"></a><!-- doxytag: member="Program::Program" ref="a098584c44f1088a4ea2213e1f4c6b609" args="(GLuint simCase)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_program.html#a098584c44f1088a4ea2213e1f4c6b609">Program::Program</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>simCase</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Simple constructor that selects which type of simulation to use. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simCase</td><td>Selected simulation method (1 = heightfield, 2 = shallowWater) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00012">12</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a3410448e2325bd75c6e31bc455d6edb8"></a><!-- doxytag: member="Program::checkKeys" ref="a3410448e2325bd75c6e31bc455d6edb8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8">Program::checkKeys</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Checks which keys are held down each iteration. </p>
+<p>This is for events that requires buttons to be held down for longer periods of time. Currently used mainly for moving the camera around in the 3D environment. For single event keypresses use <a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">handleKeypress()</a> </p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">handleKeypress</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00386">386</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9ea8bf33b0305ade5a80c1009c3f83a4"></a><!-- doxytag: member="Program::clean" ref="a9ea8bf33b0305ade5a80c1009c3f83a4" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4">Program::clean</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Makes sure the program exits cleanly. </p>
+<p>Closes the SDL OpenGL context correctly and closes the AntTweakBar. </p>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00281">281</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3c1399ac5ed69e5c152f1a2cc1e644d4"></a><!-- doxytag: member="Program::display" ref="a3c1399ac5ed69e5c152f1a2cc1e644d4" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4">Program::display</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>All rendering commands are sent here. </p>
+<p>Sends the rendering commands to all drawables and uploads the camera uniforms to the programs. </p>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00242">242</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac6bc1a3542199a9e37bb4c2dd6f06928"></a><!-- doxytag: member="Program::exec" ref="ac6bc1a3542199a9e37bb4c2dd6f06928" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928">Program::exec</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Main entry for running the program. </p>
+<p>Contains the main loop for the program and the structure of which order the program phases comes in. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>Returns -1 if the init did not run correctly </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00034">34</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8f3b3316b781a8db4d53097ef07df91b"></a><!-- doxytag: member="Program::handleEvent" ref="a8f3b3316b781a8db4d53097ef07df91b" args="(SDL_Event *event)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b">Program::handleEvent</a> </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Event *&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Takes care of all events since last main loop iteration. </p>
+<p>Looks at all events and either takes care of the more uncommon ones like screen events and quit events. Passes the other events along to the appropriate handler. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>An event to be processed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">handleKeypress</a> </dd>
+<dd>
+<a class="el" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c">handleMouseMove</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00289">289</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa3565718658a8e8b1331516cf9a252ad"></a><!-- doxytag: member="Program::handleKeypress" ref="aa3565718658a8e8b1331516cf9a252ad" args="(SDL_Event *event)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">Program::handleKeypress</a> </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Event *&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Handles Keyboard presses that should only happen once</p>
+<p>Define events here when a single event should be generated from a keyboard press. For held down key events look at <a class="el" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys()</a> instead. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>An event to be processed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00324">324</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a741d3785e72b557c43098c67c6560185"></a><!-- doxytag: member="Program::handleMouseButton" ref="a741d3785e72b557c43098c67c6560185" args="(SDL_Event *event)" -->
 <div class="memitem">
 <div class="memproto">
@@ -225,8 +431,105 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>watershader</b></td
 <p>Get data from mouse click. </p>
 <p>Callback funciton for left mouse button. Retrieves x and y ((0, 0) is upper left corner from this function) of mouse. glReadPixels is used to retrieve Z-values from depth buffer. Here width-y is passed to comply with OpenGL implementation. glGetIntegerv retrievs values of Viewport matrix to pass to gluUnProject later. gluUnProject retrievs the original model coordinates from screen coordinates and Z-value. objY contains terrain height at clicked position after gluUnProject. </p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Left shift need to be pressed to collect data </dd></dl>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>An event to be processed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Definition at line <a class="el" href="program_8cpp_source.html#l00368">368</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="accf66aa172a27d0ed4263d78da35c51c"></a><!-- doxytag: member="Program::handleMouseMove" ref="accf66aa172a27d0ed4263d78da35c51c" args="(SDL_Event *event)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c">Program::handleMouseMove</a> </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Event *&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Handles movements of the mouse</p>
+<p>Rotates the camera if the mouse pointer is hidden otherwise it just passes the movements to AntTweakBar so that it is possible to interact with the GUI. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>An event to be processed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00361">361</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af90b1259f253f244467ab8ad486a27c6"></a><!-- doxytag: member="Program::init" ref="af90b1259f253f244467ab8ad486a27c6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_program.html#af90b1259f253f244467ab8ad486a27c6">Program::init</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>All one time initializations for the program is done here. </p>
+<p>The openGL context is created and all objects should be created and initialized here. If the init does not return true the program exits. Currently this only happens if the OpenGL context fails to initialize in some way. </p>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00061">61</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a653227b05df05ddcbb7b74ed6b1dfc37"></a><!-- doxytag: member="Program::timeUpdate" ref="a653227b05df05ddcbb7b74ed6b1dfc37" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37">Program::timeUpdate</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Updates the time. </p>
+<p>Calculates the last frame time and updates the FPS and current time. This is not part of update since we want the same time delta for events as for the update. </p>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00208">208</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1e0347fbe4d1bb37f98a8ecf43cdcc95"></a><!-- doxytag: member="Program::update" ref="a1e0347fbe4d1bb37f98a8ecf43cdcc95" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95">Program::update</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Updates the simulation and camera. </p>
+<p>This is where the simulation is updated currently. After the simulation the model for the water is updated. </p>
+
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00215">215</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -254,7 +557,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>watershader</b></td
     <ul>
       <li class="navelem"><a class="el" href="class_program.html">Program</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

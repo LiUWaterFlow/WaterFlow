@@ -103,22 +103,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="LightParams" -->
+<p>Light uniform.  
+ <a href="struct_light_params.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>&gt;</code></p>
+
 <p><a href="struct_light_params-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a838a77b6a9b6bbb690d5c2afc7323d74"></a><!-- doxytag: member="LightParams::color" ref="a838a77b6a9b6bbb690d5c2afc7323d74" args="" -->
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>color</b></td></tr>
+glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_light_params.html#a838a77b6a9b6bbb690d5c2afc7323d74">color</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Color of the light. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaaaa297bd11cdd2b71a3fbead0ce6167"></a><!-- doxytag: member="LightParams::isDirectional" ref="aaaaa297bd11cdd2b71a3fbead0ce6167" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>isDirectional</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_light_params.html#aaaaa297bd11cdd2b71a3fbead0ce6167">isDirectional</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the light directional or not. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cc129571ff2abd4c88b736885c0e705"></a><!-- doxytag: member="LightParams::position" ref="a4cc129571ff2abd4c88b736885c0e705" args="" -->
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_light_params.html#a4cc129571ff2abd4c88b736885c0e705">position</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Position of the light. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70c4d85de2901abaa7bc946a6c911246"></a><!-- doxytag: member="LightParams::specularComponent" ref="a70c4d85de2901abaa7bc946a6c911246" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>specularComponent</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246">specularComponent</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Specular exponent of the light (should probably be part of material not light) <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00018">18</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
+<div class="textblock"><p>Light uniform. </p>
+<p>Used as a uniform buffer to avoid sending the lights more than once to the GPU. Use this as an array to send multiple lights to the shader programs. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>The order of the parameters is very important since the GPU needs to pack the arrays in a certain way. Please refer to OpenGL documentation for more information. </dd></dl>
+
+<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00025">25</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a></li>
 </ul>
@@ -142,7 +154,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>specularComponent<
     <ul>
       <li class="navelem"><a class="el" href="struct_light_params.html">LightParams</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

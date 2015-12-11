@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['performnormalizedconvolution',['performNormalizedConvolution',['../class_data_handler.html#a8409a68f2aeb6b6d77e3f8cd0b7150e9',1,'DataHandler']]]
+  ['program',['Program',['../class_program.html#a098584c44f1088a4ea2213e1f4c6b609',1,'Program']]]
 ];

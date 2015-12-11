@@ -104,27 +104,110 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="SkyCube" --><!-- doxytag: inherits="myDrawable" -->
+<p>Used as a skycube for the program.  
+ <a href="class_sky_cube.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>&gt;</code></p>
+
 <p>Inherits <a class="el" href="classmy_drawable.html">myDrawable</a>.</p>
 
 <p><a href="class_sky_cube-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a13067d5a23500fa99d8254ed9a2652db"></a><!-- doxytag: member="SkyCube::SkyCube" ref="a13067d5a23500fa99d8254ed9a2652db" args="(GLuint program)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>SkyCube</b> (GLuint program)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb558d01880c61e354fdcb1155b1bf75"></a><!-- doxytag: member="SkyCube::draw" ref="adb558d01880c61e354fdcb1155b1bf75" args="()" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>draw</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8314929ebf0a899218235f81ab39238"></a><!-- doxytag: member="SkyCube::update" ref="ae8314929ebf0a899218235f81ab39238" args="()" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db">SkyCube</a> (GLuint <a class="el" href="classmy_drawable.html#a09112938b41875f269a5b70381b2a0e0">program</a>)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple constructor just passes the program along.  <a href="#a13067d5a23500fa99d8254ed9a2652db"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sky_cube.html#adb558d01880c61e354fdcb1155b1bf75">draw</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw call for the skycube.  <a href="#adb558d01880c61e354fdcb1155b1bf75"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sky_cube.html#ae8314929ebf0a899218235f81ab39238">update</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">No update funtion for this one.  <a href="#ae8314929ebf0a899218235f81ab39238"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19864608890e6046183b594276316e53"></a><!-- doxytag: member="SkyCube::model" ref="a19864608890e6046183b594276316e53" args="" -->
-<a class="el" href="struct_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>model</b></td></tr>
+<a class="el" href="struct_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sky_cube.html#a19864608890e6046183b594276316e53">model</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The model, a cube(!) <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00053">53</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<div class="textblock"><p>Used as a skycube for the program. </p>
+<p>Probably only need one of these in the program. </p>
+
+<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00079">79</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a13067d5a23500fa99d8254ed9a2652db"></a><!-- doxytag: member="SkyCube::SkyCube" ref="a13067d5a23500fa99d8254ed9a2652db" args="(GLuint program)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db">SkyCube::SkyCube</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>program</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Simple constructor just passes the program along. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">program</td><td>The program to use when drawing the drawable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00165">165</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="adb558d01880c61e354fdcb1155b1bf75"></a><!-- doxytag: member="SkyCube::draw" ref="adb558d01880c61e354fdcb1155b1bf75" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_sky_cube.html#adb558d01880c61e354fdcb1155b1bf75">SkyCube::draw</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Draw call for the skycube. </p>
+<p>Very simple just need to send the texture ID for the sky texture as uniform. </p>
+
+<p>Implements <a class="el" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6">myDrawable</a>.</p>
+
+<p>Definition at line <a class="el" href="my_drawable_8cpp_source.html#l00171">171</a> of file <a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae8314929ebf0a899218235f81ab39238"></a><!-- doxytag: member="SkyCube::update" ref="ae8314929ebf0a899218235f81ab39238" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="class_sky_cube.html#ae8314929ebf0a899218235f81ab39238">SkyCube::update</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>No update funtion for this one. </p>
+<p>Could possibly be used to animate a moving sky or something awesome. </p>
+
+<p>Implements <a class="el" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1">myDrawable</a>.</p>
+
+<p>Definition at line <a class="el" href="my_drawable_8h_source.html#l00091">91</a> of file <a class="el" href="my_drawable_8h_source.html">myDrawable.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="my_drawable_8h_source.html">myDrawable.h</a></li>
 <li>src/<a class="el" href="my_drawable_8cpp_source.html">myDrawable.cpp</a></li>
 </ul>
@@ -148,7 +231,7 @@ Private Attributes</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="class_sky_cube.html">SkyCube</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 16:30:55 for Waterflow by
+    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
