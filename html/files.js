@@ -16,7 +16,7 @@ var files =
     [ "src/heightField.h", null, null ],
     [ "src/myDrawable.cpp", "my_drawable_8cpp.html", null ],
     [ "src/myDrawable.h", null, null ],
-    [ "src/program.cpp", "program_8cpp.html", "program_8cpp" ],
+    [ "src/program.cpp", "program_8cpp.html", null ],
     [ "src/program.h", "program_8h.html", null ],
     [ "src/readData.cpp", "read_data_8cpp.html", null ],
     [ "src/readData.h", "read_data_8h.html", null ],

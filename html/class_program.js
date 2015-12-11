@@ -37,6 +37,7 @@ var class_program =
     [ "screenW", "class_program.html#a34d0a54618d68052932de029a455adc2", null ],
     [ "sgpu", "class_program.html#af6d4f3298f16f35e5d90c08939b736df", null ],
     [ "shallowwatershader", "class_program.html#a94e352a7762cf519e2dfd062c2143334", null ],
+    [ "sim", "class_program.html#abc6c730e4bf3f2e09f2547ca7b984856", null ],
     [ "simCase", "class_program.html#a9be10e8a6d395386725ac96b014f9897", null ],
     [ "skycube", "class_program.html#a053a892600e9e86a71f1c25eb20a1e4b", null ],
     [ "skyshader", "class_program.html#a06284fec165e78abfa63778bb6712d18", null ],
