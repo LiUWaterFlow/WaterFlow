@@ -92,6 +92,27 @@ void ShallowGPU::initGPU() {
 	int upper3 = 50;
 	int lower3 = 0;
 
+
+	for (int j = 0; j < texHeight; ++j) {
+		for (int i = 0; i < texWidth; ++i) {
+				f[j*texWidth + i] = 250.0f;
+			
+			if( i < 300 && j < 300 ){
+				f[j*texWidth +i] = 0.0f;
+			}
+			
+			if( i > 251 && j > 299 && j < 900 && i <299){
+				f[j*texWidth +i] = 0.0f;
+			}
+			
+			if( i > 250 && j > 850 && j < 1200 && i < 1500){
+				f[j*texWidth +i] = 0.0f;
+			}
+				
+				
+		}
+	}
+
 	
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
@@ -114,6 +135,7 @@ void ShallowGPU::initGPU() {
 	if(DEBUG){
 	u[10 + 10 * texWidth] = 5.0f; 
 	}
+
 
 	advectWaterProgram = compileComputeShader("src/shaders/advectWaterShader.comp");
 	addProgram = compileComputeShader("src/shaders/addHeightShader.comp");
