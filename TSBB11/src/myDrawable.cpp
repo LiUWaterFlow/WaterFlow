@@ -74,7 +74,7 @@ void myDrawable::setTextures(GLuint* size) {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texIDs[SKYBOX_TEXUNIT]);
 
 	GLuint cubeSide[] = { GL_TEXTURE_CUBE_MAP_NEGATIVE_X, GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, GL_TEXTURE_CUBE_MAP_POSITIVE_Z };
-	char *cubeImage[] = { "resources/Skycube/Xn.tga", "resources/Skycube/Xp.tga", "resources/Skycube/Yn.tga", "resources/Skycube/Yp.tga", "resources/Skycube/Zn.tga", "resources/Skycube/Zp.tga" };
+	const char *cubeImage[] = { "resources/Skycube/Xn.tga", "resources/Skycube/Xp.tga", "resources/Skycube/Yn.tga", "resources/Skycube/Yp.tga", "resources/Skycube/Zn.tga", "resources/Skycube/Zp.tga" };
 
 	for (size_t i = 0; i < 6; i++) {
 		LoadTGATextureData(cubeImage[i], &tempTex);
@@ -291,7 +291,8 @@ void HeightMap::generateHeightTexture() {
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
 
 	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
-
+	//glFinish();
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	printError("Generate terrain texture data");
 }
 
@@ -315,7 +316,13 @@ void HeightMap::update() {
 	
 	glUseProgram(heightMapProgram);
 	
-	glUniform1f(glGetUniformLocation(heightMapProgram, "scale"), dataTerrainHeight);
+	if(dynamic_cast<Water*>(this) != nullptr){
+		glUniform1f(glGetUniformLocation(heightMapProgram, "scale"), dataTerrainHeight);
+	}else{
+		glUniform1f(glGetUniformLocation(heightMapProgram, "scale"), -1.0f);
+	}
+	
+	
 	glUniform2i(glGetUniformLocation(heightMapProgram, "size"), dataWidth, dataHeight);
 	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
 

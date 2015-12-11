@@ -35,7 +35,7 @@ bool LoadTGATextureData(const char *filename, TextureData *texture)	// Loads A T
 	GLuint bytesPerPixel,		// Holds Number Of Bytes Per Pixel Used In The TGA File
 		imageSize,		// Used To Store The Image Size When Setting Aside Ram
 		temp;			// Temporary Variable
-	long rowSize, stepSize;
+	unsigned long rowSize, stepSize;
 	size_t bytesRead;
 	unsigned int w, h;
 	GLubyte *rowP;
