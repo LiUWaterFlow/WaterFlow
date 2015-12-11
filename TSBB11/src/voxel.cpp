@@ -218,7 +218,7 @@ void Voxelgrid::setVoxel(int16_t x, int16_t y, int16_t z, bool filledx, float ax
 
   //if x is not in table. Create y and z tables, resize x, and
   //point to children (y,z);
-  if(voxels->size() < x+1){
+  if(voxels->size() < (unsigned int)x+1){
     std::vector<voxel*>* tempZ = new std::vector<voxel*>(z+1);
     std::vector<std::vector<voxel*>*>* tempY = new std::vector<std::vector<voxel*>*>(y+1);
     voxels->resize(x+1,nullptr);
@@ -229,7 +229,7 @@ void Voxelgrid::setVoxel(int16_t x, int16_t y, int16_t z, bool filledx, float ax
   //if y is not in table. Create z table, resize y, and
   //point to childtable z; Note that existence of y table is
   //managed by the first part of the if-statement
-  else if((*voxels)[x] != nullptr && (*voxels)[x]->size() < y+1){
+  else if((*voxels)[x] != nullptr && (*voxels)[x]->size() < (unsigned int)y+1){
 
     std::vector<voxel*>* tempZ = new std::vector<voxel*>(z+1);
     (*voxels)[x]->resize(y+1,nullptr);
@@ -238,7 +238,7 @@ void Voxelgrid::setVoxel(int16_t x, int16_t y, int16_t z, bool filledx, float ax
   }
   //if z is not large enough resize. Note that existence of z table is
   //managed by the first two parts of the if-statement
-  else if((*voxels)[x] != nullptr &&  (*(*voxels)[x])[y] != nullptr && (*(*voxels)[x])[y]->size() < z+1){
+  else if((*voxels)[x] != nullptr &&  (*(*voxels)[x])[y] != nullptr && (*(*voxels)[x])[y]->size() < (unsigned int)z+1){
     (*(*voxels)[x])[y]->resize(z+1,nullptr);
 
   }
@@ -293,17 +293,17 @@ voxel* Voxelgrid::getVoxel(int16_t x, int16_t y, int16_t z)
 	//std::cout << "Voxels at x is empty" << std::endl;
 
 	//ensure table existance and table size, if either fails return nullptr.
-	if (voxels->size() < x + 1 || (*voxels)[x] == nullptr) {
+	if (voxels->size() < (unsigned int)x + 1 || (*voxels)[x] == nullptr) {
 		//std::cout << "In first if in get_Voxel" << std::endl;
 		return nullptr;
 	}
 	//ensure table existance and table size, if either fails return nullptr.
-	else if ((*voxels)[x]->size() < y + 1 || (*(*voxels)[x])[y] == nullptr) {
+	else if ((*voxels)[x]->size() < (unsigned int)y + 1 || (*(*voxels)[x])[y] == nullptr) {
 		//std::cout << "In second if in get_Voxel" << std::endl;
 		return nullptr;
 	}
 	//ensure table existance and table size, if either fails return nullptr.
-	else if ((*(*voxels)[x])[y]->size() < z + 1 || (*(*(*voxels)[x])[y])[z] == nullptr) {
+	else if ((*(*voxels)[x])[y]->size() < (unsigned int)z + 1 || (*(*(*voxels)[x])[y])[z] == nullptr) {
 		return nullptr;
 	}
 
@@ -387,7 +387,7 @@ if (temp_z - 1 > 0 && datahandler->giveHeight(temp_x, temp_z - 1) < height && ge
 
 std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 	std::vector<GLuint> *positions = new std::vector<GLuint>;
-	GLuint tempH = 0;
+	GLint tempH = 0;
 	for (size_t x = 0; x < width; x++)
 	{
 		for (size_t z = 0; z < height; z++)

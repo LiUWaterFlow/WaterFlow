@@ -54,6 +54,8 @@ int Program::testVoxels() {
 	if (!init()) return -1;
 	SDL_SetRelativeMouseMode(SDL_FALSE);
 	voxelTest::mainTest(dataHandler);
+	
+	return 0;
 
 }
 bool Program::init() {

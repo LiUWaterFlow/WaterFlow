@@ -61,8 +61,8 @@ void HeightField::floodFill(float* u, int x, int z, float height) {
 
 
 void HeightField::initTest() {
-	for (size_t i = 0; i < width; i++) {
-		for (size_t j = 0; j < height; j++) {
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
 			u[i][j] = terr->giveHeight(i*samp, j*samp) - 2;
 			v[i][j] = 0;
 		}
@@ -131,8 +131,8 @@ void HeightField::render() {
 std::vector<GLuint> *HeightField::getVoxelPositions() {
 	std::vector<GLuint> *positions = new std::vector<GLuint>;
 
-	for (size_t i = 0; i < width; i++) {
-		for (size_t j = 0; j < height; j++) {
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
 			if (u[i][j] - 1 > terr->giveHeight(i, j)) {
 				positions->push_back(i*samp);
 				positions->push_back(round(u[i][j] - 1));
