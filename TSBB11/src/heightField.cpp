@@ -1,4 +1,4 @@
-/// @file heightfield.cpp
+/// @file heightField.cpp
 /// @brief Implementations of functions in heightfield.h
 
 #include "heightField.h"

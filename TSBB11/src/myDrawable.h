@@ -1,4 +1,4 @@
-/// @file drawable.h
+/// @file myDrawable.h
 /// @brief Contains classes with draw methods.
 
 #ifndef MYDRAWABLE_H
@@ -96,7 +96,7 @@ public:
 	virtual void draw();
 };
 
-/// @class Heightmap
+/// @class HeightMap
 /// @brief This class can be used to create models from height maps
 ///
 /// Creates vertex data from a heightmap, generates vertices, normals, texture coordinates and
@@ -135,8 +135,8 @@ public:
 	/// Takes a few parameters for initial setup of the size of the height map data.
 	/// @param drawProgram The initial program to use for drawing the model
 	/// @param sizes Width and Height of the data
-	/// @maxHeight The height map maximum height (low assumed to be 0)
-	/// @inputHeightBuffer Buffer ID of the height map data
+	/// @param maxHeight The height map maximum height (low assumed to be 0)
+	/// @param inputHeightBuffer Buffer ID of the height map data
 	HeightMap(GLuint drawProgram, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer);
 	
 	/// @brief Calculates the new vertex data from the height map buffer
@@ -182,10 +182,10 @@ public:
 	/// @brief Simple contructor
 	///
 	/// Takes a few parameters for initial setup of the size of the height map data.
-	/// @param drawProgram The initial program to use for drawing the model
+	/// @param drawPrograms The initial program to use for drawing the model
 	/// @param sizes Width and Height of the data
-	/// @maxHeight The height map maximum height (low assumed to be 0)
-	/// @inputHeightBuffer Buffer ID of the height map data
+	/// @param maxHeight The height map maximum height (low assumed to be 0)
+	/// @param inputHeightBuffer Buffer ID of the height map data
 	Water(GLuint* drawPrograms, GLuint* sizes, GLfloat maxHeight, GLuint inputHeightBuffer);
 
 	/// @brief Used by AntTweakBar to set which texture to use

@@ -127,14 +127,14 @@ public:
 	/// @see handleMouseMove
 	void handleEvent(SDL_Event* event);
 
-	/// @handleKeypress Handles Keyboard presses that should only happen once
+	/// @brief Handles Keyboard presses that should only happen once
 	///
 	/// Define events here when a single event should be generated from a keyboard press.
 	/// For held down key events look at checkKeys() instead.
 	/// @param event An event to be processed
 	void handleKeypress(SDL_Event* event);
 
-	/// @handleMouseMove Handles movements of the mouse
+	/// @brief Handles movements of the mouse
 	///
 	/// Rotates the camera if the mouse pointer is hidden otherwise it just passes the movements to AntTweakBar
 	/// so that it is possible to interact with the GUI.

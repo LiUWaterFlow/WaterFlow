@@ -1,4 +1,4 @@
-/// @file Utilities.c
+/// @file Utilities.cpp
 /// This file implements useful functions not part of the other libraries.
 
 #ifdef __APPLE__

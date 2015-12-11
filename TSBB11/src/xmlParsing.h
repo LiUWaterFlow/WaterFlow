@@ -1,4 +1,4 @@
-/// @file xmlparsing.h
+/// @file xmlParsing.h
 /// @brief This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.
 #ifndef XMLPARSING_H
 #define XMLPARSING_H

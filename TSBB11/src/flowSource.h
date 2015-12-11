@@ -1,4 +1,4 @@
-/// @file flowsource.h
+/// @file flowSource.h
 /// @brief Contains class specifing a flow source and its parameters.
 #ifndef FLOWSOURCE_H
 #define FLOWSOURCE_H

@@ -1,4 +1,4 @@
-/// @file heightfield.h
+/// @file heightField.h
 /// @brief Contains the CPU and GPU implementation of heightfield.
 
 #ifndef HEIGHTFIELD_H
