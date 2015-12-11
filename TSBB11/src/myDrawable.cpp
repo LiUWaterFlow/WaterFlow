@@ -100,15 +100,22 @@ void myDrawable::setTextures(GLuint* size) {
 
 	// ===== Grass/terrain color Texture =====
 	glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
-#ifndef _WINDOWS
+#ifdef _WINDOWS
+	// Path to the terrain color image file.
+	std::string terrainColorPath = "resources/terrainColor.jpg";
+	sdlTexture* terrainColorTex = new sdlTexture(terrainColorPath, texIDs[GRASS_TEXUNIT]);
+	if(terrainColorTex->getTexID() == -1)
+	{
+		// The texture ID of the sdlTexture will be -1 if the image could not be loaded.
+		glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
+		// Below should be placeholder.tga once someone can convert better than I can.
+		LoadTGATextureData("resources/grass.tga", &tempTex);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+	}
+#else
 	glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
 	LoadTGATextureData("resources/grass.tga", &tempTex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
-#else
-	// Path to the terrain color image file.
-	std::string terrainColorPlaceHolder = "resources/placeHolder.png";
-	std::string terrainColorPath = "resources/terrainColor.jpg";
-	sdlTexture* terrainColorTex = new sdlTexture(terrainColorPlaceHolder, texIDs[GRASS_TEXUNIT]);
 #endif
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -139,14 +146,14 @@ void myDrawable::setTextures(GLuint* size) {
 
 	// ===== Grass Texture =====
 
-	glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
+	/*glActiveTexture(GL_TEXTURE0 + GRASS_TEXUNIT);
 	glBindTexture(GL_TEXTURE_2D, texIDs[GRASS_TEXUNIT]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	LoadTGATextureData("resources/grass.tga", &tempTex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempTex.width, tempTex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, tempTex.imageData);*/
 
 	// Just set this to not interfere (possible bug to look into)
 	glActiveTexture(GL_TEXTURE0  + TOTAL_TEXTURES);
