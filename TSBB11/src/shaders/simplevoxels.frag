@@ -1,3 +1,6 @@
+/// @file simplevoxels.frag
+/// @brief Fragment shader to draw a simple representation of the voxel grid.
+
 #version 150
 
 out vec4 outColor;

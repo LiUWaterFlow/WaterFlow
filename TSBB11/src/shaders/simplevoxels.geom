@@ -1,3 +1,8 @@
+/// @file simplevoxels.geom
+/// @brief Geometry shader to draw a simple representation of the voxel grid.
+///
+/// Creates billboards from each point in the voxel grid
+
 #version 150 
 
 layout(points) in;

@@ -1,3 +1,9 @@
+/// @file textureData.comp
+/// @brief Compute shader for creating a texture from buffers
+///
+/// Used to create normal + height texture of the terrain so that the
+/// water rendering has information about the terrain.
+
 #version 430
 
 layout(local_size_x = 16, local_size_y = 16) in;

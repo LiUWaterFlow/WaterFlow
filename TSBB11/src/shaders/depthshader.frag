@@ -1,3 +1,6 @@
+/// @file depthshader.frag
+/// @brief Fragment shader for depth map rendering
+
 #version 150
 
 in vec2 out_TexCoord;
