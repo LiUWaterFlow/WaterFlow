@@ -98,61 +98,66 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/shaders/terrainshader.vert</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#version 430</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span>
-<a name="l00003"></a>00003 layout (std430,binding = 6) buffer velocity
-<a name="l00004"></a>00004 {
-<a name="l00005"></a>00005     <span class="keywordtype">float</span> v[];
-<a name="l00006"></a>00006     
-<a name="l00007"></a>00007 };
-<a name="l00008"></a>00008 
-<a name="l00009"></a>00009 in vec3 in_Position;
-<a name="l00010"></a>00010 in vec3 in_Normal;      <span class="comment">// Vertex-normal.</span>
-<a name="l00011"></a>00011 in vec2 in_TexCoord; <span class="comment">//not currently used</span>
-<a name="l00012"></a>00012 
-<a name="l00013"></a>00013 out vec3 out_Normal;
-<a name="l00014"></a>00014 out vec2 out_TexCoord;<span class="comment">// not currently used</span>
-<a name="l00015"></a>00015 out vec3 out_ObjPos;
-<a name="l00016"></a>00016 
-<a name="l00017"></a>00017 uniform mat4 WTVMatrix;
-<a name="l00018"></a>00018 uniform mat4 VTPMatrix;
-<a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <span class="comment">//out float out_Col_i;</span>
-<a name="l00021"></a>00021 <span class="comment">//out float out_Col_j;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="comment">//uniform mat4 MTWMatrix;</span>
-<a name="l00024"></a>00024 <span class="comment">//uniform mat3 iNormalMatrixTrans;</span>
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 <span class="comment">//uniform ivec2 size;</span>
+<a href="terrainshader_8vert.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 
+<a name="l00005"></a>00005 
+<a name="l00006"></a>00006 <span class="preprocessor">#version 430</span>
+<a name="l00007"></a>00007 <span class="preprocessor"></span>
+<a name="l00008"></a>00008 layout (std430,binding = 6) buffer velocity
+<a name="l00009"></a>00009 {
+<a name="l00010"></a>00010     <span class="keywordtype">float</span> v[];
+<a name="l00011"></a>00011     
+<a name="l00012"></a>00012 };
+<a name="l00013"></a>00013 
+<a name="l00014"></a>00014 in vec3 in_Position;
+<a name="l00015"></a>00015 in vec3 in_Normal;      <span class="comment">// Vertex-normal.</span>
+<a name="l00016"></a>00016 in vec2 in_TexCoord; <span class="comment">//not currently used</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 out vec3 out_Normal;
+<a name="l00019"></a>00019 out vec2 out_TexCoord;<span class="comment">// not currently used</span>
+<a name="l00020"></a>00020 out vec3 out_ObjPos;
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022 uniform mat4 WTVMatrix;
+<a name="l00023"></a>00023 uniform mat4 VTPMatrix;
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 <span class="comment">//out float out_Col_i;</span>
+<a name="l00026"></a>00026 <span class="comment">//out float out_Col_j;</span>
 <a name="l00027"></a>00027 
-<a name="l00028"></a>00028 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
-<a name="l00029"></a>00029 {
-<a name="l00030"></a>00030     <span class="comment">/*</span>
-<a name="l00031"></a>00031 <span class="comment">    int i = int(in_Position.x);</span>
-<a name="l00032"></a>00032 <span class="comment">    int j = int(in_Position.z);</span>
-<a name="l00033"></a>00033 <span class="comment">     </span>
-<a name="l00034"></a>00034 <span class="comment">    int ipos = clamp(i+1,0,size.x-1);</span>
-<a name="l00035"></a>00035 <span class="comment">    int imin = clamp(i-1,0,size.x-1);</span>
-<a name="l00036"></a>00036 <span class="comment">    int jpos = clamp(i+1,0,size.x-1);</span>
-<a name="l00037"></a>00037 <span class="comment">    int jmin = clamp(i-1,0,size.x-1);</span>
-<a name="l00038"></a>00038 <span class="comment">        </span>
-<a name="l00039"></a>00039 <span class="comment">    int off0 = i+j*size.x;</span>
-<a name="l00040"></a>00040 <span class="comment">    int off1 = imin+j*size.x;</span>
-<a name="l00041"></a>00041 <span class="comment">    int off2 = ipos+j*size.x;</span>
-<a name="l00042"></a>00042 <span class="comment">    int off3 = i+jmin*size.x;</span>
-<a name="l00043"></a>00043 <span class="comment">    int off4 = i+jpos*size.x;</span>
-<a name="l00044"></a>00044 <span class="comment">    </span>
-<a name="l00045"></a>00045 <span class="comment">    </span>
-<a name="l00046"></a>00046 <span class="comment">    out_Col_i = (v[off0]-v[off1]) + (v[off0] -v[off2]); </span>
-<a name="l00047"></a>00047 <span class="comment">    out_Col_j = (v[off0]-v[off3]) + (v[off0] -v[off4]); </span>
-<a name="l00048"></a>00048 <span class="comment">    */</span>
-<a name="l00049"></a>00049     
-<a name="l00050"></a>00050     out_Normal = in_Normal;
-<a name="l00051"></a>00051     out_TexCoord = in_TexCoord; <span class="comment">// not currently used</span>
-<a name="l00052"></a>00052     out_ObjPos = in_Position;
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054     gl_Position = VTPMatrix * WTVMatrix * vec4(in_Position, 1.0);
-<a name="l00055"></a>00055 }
+<a name="l00028"></a>00028 <span class="comment">//uniform mat4 MTWMatrix;</span>
+<a name="l00029"></a>00029 <span class="comment">//uniform mat3 iNormalMatrixTrans;</span>
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="comment">//uniform ivec2 size;</span>
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
+<a name="l00034"></a>00034 {
+<a name="l00035"></a>00035     <span class="comment">/*</span>
+<a name="l00036"></a>00036 <span class="comment">    int i = int(in_Position.x);</span>
+<a name="l00037"></a>00037 <span class="comment">    int j = int(in_Position.z);</span>
+<a name="l00038"></a>00038 <span class="comment">     </span>
+<a name="l00039"></a>00039 <span class="comment">    int ipos = clamp(i+1,0,size.x-1);</span>
+<a name="l00040"></a>00040 <span class="comment">    int imin = clamp(i-1,0,size.x-1);</span>
+<a name="l00041"></a>00041 <span class="comment">    int jpos = clamp(i+1,0,size.x-1);</span>
+<a name="l00042"></a>00042 <span class="comment">    int jmin = clamp(i-1,0,size.x-1);</span>
+<a name="l00043"></a>00043 <span class="comment">        </span>
+<a name="l00044"></a>00044 <span class="comment">    int off0 = i+j*size.x;</span>
+<a name="l00045"></a>00045 <span class="comment">    int off1 = imin+j*size.x;</span>
+<a name="l00046"></a>00046 <span class="comment">    int off2 = ipos+j*size.x;</span>
+<a name="l00047"></a>00047 <span class="comment">    int off3 = i+jmin*size.x;</span>
+<a name="l00048"></a>00048 <span class="comment">    int off4 = i+jpos*size.x;</span>
+<a name="l00049"></a>00049 <span class="comment">    </span>
+<a name="l00050"></a>00050 <span class="comment">    </span>
+<a name="l00051"></a>00051 <span class="comment">    out_Col_i = (v[off0]-v[off1]) + (v[off0] -v[off2]); </span>
+<a name="l00052"></a>00052 <span class="comment">    out_Col_j = (v[off0]-v[off3]) + (v[off0] -v[off4]); </span>
+<a name="l00053"></a>00053 <span class="comment">    */</span>
+<a name="l00054"></a>00054     
+<a name="l00055"></a>00055     out_Normal = in_Normal;
+<a name="l00056"></a>00056     out_TexCoord = in_TexCoord; <span class="comment">// not currently used</span>
+<a name="l00057"></a>00057     out_ObjPos = in_Position;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     gl_Position = VTPMatrix * WTVMatrix * vec4(in_Position, 1.0);
+<a name="l00060"></a>00060 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -171,9 +176,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>terrainshader.vert</b>      </li>
+      <li class="navelem"><a class="el" href="terrainshader_8vert.html">terrainshader.vert</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 12:08:56 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 12:31:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

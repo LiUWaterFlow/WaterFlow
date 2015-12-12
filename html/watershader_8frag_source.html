@@ -98,270 +98,273 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/shaders/watershader.frag</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#version 430</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span>
-<a name="l00003"></a>00003 <span class="comment">// ===== Uniform Buffers =====</span>
-<a name="l00004"></a>00004 
-<a name="l00005"></a>00005 <span class="keyword">struct </span><a class="code" href="struct_light_param.html">LightParam</a> {
-<a name="l00006"></a>00006     vec3 pos;
-<a name="l00007"></a>00007     <span class="keywordtype">float</span> isDir;
-<a name="l00008"></a>00008     vec3 color;
-<a name="l00009"></a>00009     <span class="keywordtype">float</span> specExp;
-<a name="l00010"></a>00010 };
-<a name="l00011"></a>00011 
-<a name="l00012"></a>00012 layout(std140, binding = 0) uniform LightInfo {
-<a name="l00013"></a>00013     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
-<a name="l00014"></a>00014 };
-<a name="l00015"></a>00015 
-<a name="l00016"></a>00016 
-<a name="l00017"></a>00017 <span class="comment">// ===== Uniforms =====</span>
-<a name="l00018"></a>00018 
-<a name="l00019"></a>00019 uniform vec3 camPos;                <span class="comment">// Camera position.</span>
-<a name="l00020"></a>00020 
-<a name="l00021"></a>00021 uniform <span class="keywordtype">float</span> transparency;
-<a name="l00022"></a>00022 uniform sampler2D terr_texUnit;     <span class="comment">// Terrain texture.</span>
-<a name="l00023"></a>00023 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
-<a name="l00024"></a>00024 uniform samplerCube sky_texUnit;    <span class="comment">// Skybox texture.</span>
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 uniform vec3 size;
-<a name="l00027"></a>00027 
-<a name="l00028"></a>00028 uniform <span class="keywordtype">float</span> time;
-<a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="comment">// ===== In/Out params =====</span>
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032 in vec3 out_Normal;
-<a name="l00033"></a>00033 in vec3 out_terrNormal;
-<a name="l00034"></a>00034 in vec2 out_TexCoord;
-<a name="l00035"></a>00035 in vec3 out_ObjPos;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037 out vec4 out_Color;
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039 <span class="comment">// ===== Variables needed =====</span>
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041 <span class="comment">// Light vectors</span>
-<a name="l00042"></a>00042 vec3 r;             <span class="comment">// Reflected light.</span>
-<a name="l00043"></a>00043 vec3 s;             <span class="comment">// Incident light.</span>
-<a name="l00044"></a>00044 vec3 eye;           <span class="comment">// Vector from the fragment to the camera.</span>
-<a name="l00045"></a>00045 vec3 Normal;        <span class="comment">// (Modified) fragment normal.</span>
-<a name="l00046"></a>00046 vec3 re;            <span class="comment">// Reflected eye vector.</span>
-<a name="l00047"></a>00047 vec3 right;         <span class="comment">// Vector to the right (camera position dependent).</span>
+<a href="watershader_8frag.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 <span class="preprocessor">#version 430</span>
+<a name="l00005"></a>00005 <span class="preprocessor"></span>
+<a name="l00006"></a>00006 <span class="comment">// ===== Uniform Buffers =====</span>
+<a name="l00007"></a>00007 
+<a name="l00013"></a>00013 <span class="keyword">struct </span><a class="code" href="struct_light_param.html">LightParam</a> {
+<a name="l00014"></a>00014     vec3 <a class="code" href="struct_light_param.html#adfbe9e72effb9033d1cba1d67c072c06" title="Position of the light.">pos</a>;       
+<a name="l00015"></a>00015     <span class="keywordtype">float</span> <a class="code" href="struct_light_param.html#a41d5735172cd50396e8a8ac6d49530c0" title="Is the light directional or not.">isDir</a>;    
+<a name="l00016"></a>00016     vec3 <a class="code" href="struct_light_param.html#a1162fe85cffdbf791838c610b92ba7a8" title="Color of the light.">color</a>;     
+<a name="l00017"></a>00017     <span class="keywordtype">float</span> <a class="code" href="struct_light_param.html#ab3ad8c95b263f29b214742032d14d228" title="Specular exponent for the light.">specExp</a>;  
+<a name="l00018"></a>00018 };
+<a name="l00019"></a>00019 
+<a name="l00020"></a>00020 layout(std140, binding = 0) uniform LightInfo {
+<a name="l00021"></a>00021     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
+<a name="l00022"></a>00022 };
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 <span class="comment">// ===== Uniforms =====</span>
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 uniform vec3 camPos;                <span class="comment">// Camera position.</span>
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029 uniform <span class="keywordtype">float</span> transparency;
+<a name="l00030"></a>00030 uniform sampler2D terr_texUnit;     <span class="comment">// Terrain texture.</span>
+<a name="l00031"></a>00031 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
+<a name="l00032"></a>00032 uniform samplerCube sky_texUnit;    <span class="comment">// Skybox texture.</span>
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034 uniform vec3 size;
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036 uniform <span class="keywordtype">float</span> time;
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 <span class="comment">// ===== In/Out params =====</span>
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040 in vec3 out_Normal;
+<a name="l00041"></a>00041 in vec3 out_terrNormal;
+<a name="l00042"></a>00042 in vec2 out_TexCoord;
+<a name="l00043"></a>00043 in vec3 out_ObjPos;
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045 out vec4 out_Color;
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047 <span class="comment">// ===== Variables needed =====</span>
 <a name="l00048"></a>00048 
-<a name="l00049"></a>00049 <span class="comment">// Lighting (the Phong model with extras).</span>
-<a name="l00050"></a>00050 <span class="keywordtype">float</span> kamb;
-<a name="l00051"></a>00051 <span class="keywordtype">float</span> kdiff;
-<a name="l00052"></a>00052 <span class="keywordtype">float</span> ktrans;
-<a name="l00053"></a>00053 <span class="keywordtype">float</span> ktransr;
-<a name="l00054"></a>00054 <span class="keywordtype">float</span> ktransg;
-<a name="l00055"></a>00055 <span class="keywordtype">float</span> ktransb;
-<a name="l00056"></a>00056 <span class="keywordtype">float</span> krefl;
-<a name="l00057"></a>00057 <span class="keywordtype">float</span> kblue;
-<a name="l00058"></a>00058 vec3 ambLight;      <span class="comment">// Ambient.</span>
-<a name="l00059"></a>00059 vec3 diffLight;     <span class="comment">// Diffuse.</span>
-<a name="l00060"></a>00060 vec3 specLight;     <span class="comment">// Specular.</span>
-<a name="l00061"></a>00061 vec3 reflLight;     <span class="comment">// Reflected light (skybox).</span>
-<a name="l00062"></a>00062 vec3 surfaceLight;  <span class="comment">// Total surface light.</span>
-<a name="l00063"></a>00063 vec3 surfaceColor;
-<a name="l00064"></a>00064 vec3 bottomLight;   <span class="comment">// Total bottom light.</span>
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="comment">// Snell&#39;s law angles.</span>
-<a name="l00067"></a>00067 <span class="keywordtype">float</span> theta1;       <span class="comment">// Incident light angle.</span>
-<a name="l00068"></a>00068 <span class="keywordtype">float</span> theta2;       <span class="comment">// Refracted light angle.</span>
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 <span class="comment">// Underwater triangulation components.</span>
-<a name="l00071"></a>00071 <span class="keywordtype">float</span> depth;
-<a name="l00072"></a>00072 vec3 displacementDirection;
-<a name="l00073"></a>00073 <span class="keywordtype">float</span> bottomDisplacement1;
-<a name="l00074"></a>00074 vec3 displacement1;
-<a name="l00075"></a>00075 <span class="keywordtype">float</span> depthAtDis1;
-<a name="l00076"></a>00076 <span class="keywordtype">float</span> h;
-<a name="l00077"></a>00077 <span class="keywordtype">float</span> alpha;
-<a name="l00078"></a>00078 <span class="keywordtype">float</span> bottomDisplacement2;
-<a name="l00079"></a>00079 vec3 displacement2;
-<a name="l00080"></a>00080 <span class="keywordtype">float</span> depthAtDis2;
-<a name="l00081"></a>00081 <span class="keywordtype">float</span> wdist;
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 vec3 bottomPos;
-<a name="l00084"></a>00084 vec3 bottomNormal;
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086 <span class="comment">// Texture lookups.</span>
-<a name="l00087"></a>00087 vec4 terrainDataUnderSurface;
-<a name="l00088"></a>00088 vec4 terrainDataAtDis1;
-<a name="l00089"></a>00089 vec4 terrainDataAtBottom;
-<a name="l00090"></a>00090 vec4 texDataAtBottom;
-<a name="l00091"></a>00091 vec3 skyrefl;
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093 <span class="comment">// Constants</span>
-<a name="l00094"></a>00094 <span class="keyword">const</span> <span class="keywordtype">float</span> waterRefInd = 1.34451;
-<a name="l00095"></a>00095 <span class="keyword">const</span> <span class="keywordtype">float</span> airRefInd = 1.0;
-<a name="l00096"></a>00096 <span class="keyword">const</span> vec3 up = vec3(0.0, 1.0, 0.0);
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
-<a name="l00099"></a>00099 {
-<a name="l00100"></a>00100     <span class="comment">// eye vector is calculated.</span>
-<a name="l00101"></a>00101     eye = camPos - out_ObjPos;
-<a name="l00102"></a>00102     <span class="comment">//float dist = length(eye);</span>
-<a name="l00103"></a>00103     eye = normalize(eye);
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105     
-<a name="l00106"></a>00106     <span class="comment">// Modelling surface waves.</span>
-<a name="l00107"></a>00107     <span class="keywordtype">float</span> rho1 = sqrt(pow(out_ObjPos.x, 2) + pow(out_ObjPos.z, 2));
-<a name="l00108"></a>00108     <span class="keywordtype">float</span> rho2 = sqrt(pow((size.x - <span class="keywordtype">float</span>(out_ObjPos.x)), 2) + pow(out_ObjPos.z, 2));
-<a name="l00109"></a>00109     <span class="keywordtype">float</span> xwave = sin(0.1 * time + out_ObjPos.x) + sin(-0.01 * time + out_ObjPos.x);
-<a name="l00110"></a>00110     <span class="keywordtype">float</span> ywave = sin(0.2 * time + out_ObjPos.z) + sin(-0.3 * time + out_ObjPos.z);
-<a name="l00111"></a>00111     <span class="keywordtype">float</span> rhowave1 = sin(0.05 * time + 0.5 + rho1) + 0.2 * sin(-0.01 * time + rho1);
-<a name="l00112"></a>00112     <span class="keywordtype">float</span> rhowave2 = sin(-0.05 * time + 0.5 + rho2/10.0f) + 0.2 * sin(-0.01 * time + rho2 / 10.0f);
-<a name="l00113"></a>00113     <span class="keywordtype">float</span> rand = 1;
-<a name="l00114"></a>00114     rand = fract(sin(dot(vec2(out_ObjPos.x + time, out_ObjPos.z), vec2(12.9898, 78.233))) * 43758.5453);
-<a name="l00115"></a>00115     <span class="comment">// Perturbing surface normals.</span>
-<a name="l00116"></a>00116     Normal = vec3(0.1 * (0.1 * xwave + 0.1 * rhowave1 + rhowave2), out_Normal.y, 0.1 * 0.1 * ywave);
-<a name="l00117"></a>00117     <span class="comment">//Normal += vec3(1 + 0.2 * rand, 1, 1);</span>
-<a name="l00118"></a>00118     
-<a name="l00119"></a>00119     Normal = normalize(0.5 * out_Normal + 0.5 * Normal);
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121 
-<a name="l00122"></a>00122 
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124     <span class="comment">//Normal = out_Normal;</span>
-<a name="l00125"></a>00125 
-<a name="l00126"></a>00126     <span class="comment">// Incident and reflected light is calculated for the light source.</span>
-<a name="l00127"></a>00127     s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
-<a name="l00128"></a>00128     r = normalize(2 * Normal * dot(normalize(s), Normal) - s);
+<a name="l00049"></a>00049 <span class="comment">// Light vectors</span>
+<a name="l00050"></a>00050 vec3 r;             <span class="comment">// Reflected light.</span>
+<a name="l00051"></a>00051 vec3 s;             <span class="comment">// Incident light.</span>
+<a name="l00052"></a>00052 vec3 eye;           <span class="comment">// Vector from the fragment to the camera.</span>
+<a name="l00053"></a>00053 vec3 Normal;        <span class="comment">// (Modified) fragment normal.</span>
+<a name="l00054"></a>00054 vec3 re;            <span class="comment">// Reflected eye vector.</span>
+<a name="l00055"></a>00055 vec3 right;         <span class="comment">// Vector to the right (camera position dependent).</span>
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057 <span class="comment">// Lighting (the Phong model with extras).</span>
+<a name="l00058"></a>00058 <span class="keywordtype">float</span> kamb;
+<a name="l00059"></a>00059 <span class="keywordtype">float</span> kdiff;
+<a name="l00060"></a>00060 <span class="keywordtype">float</span> ktrans;
+<a name="l00061"></a>00061 <span class="keywordtype">float</span> ktransr;
+<a name="l00062"></a>00062 <span class="keywordtype">float</span> ktransg;
+<a name="l00063"></a>00063 <span class="keywordtype">float</span> ktransb;
+<a name="l00064"></a>00064 <span class="keywordtype">float</span> krefl;
+<a name="l00065"></a>00065 <span class="keywordtype">float</span> kblue;
+<a name="l00066"></a>00066 vec3 ambLight;      <span class="comment">// Ambient.</span>
+<a name="l00067"></a>00067 vec3 diffLight;     <span class="comment">// Diffuse.</span>
+<a name="l00068"></a>00068 vec3 specLight;     <span class="comment">// Specular.</span>
+<a name="l00069"></a>00069 vec3 reflLight;     <span class="comment">// Reflected light (skybox).</span>
+<a name="l00070"></a>00070 vec3 surfaceLight;  <span class="comment">// Total surface light.</span>
+<a name="l00071"></a>00071 vec3 surfaceColor;
+<a name="l00072"></a>00072 vec3 bottomLight;   <span class="comment">// Total bottom light.</span>
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 <span class="comment">// Snell&#39;s law angles.</span>
+<a name="l00075"></a>00075 <span class="keywordtype">float</span> theta1;       <span class="comment">// Incident light angle.</span>
+<a name="l00076"></a>00076 <span class="keywordtype">float</span> theta2;       <span class="comment">// Refracted light angle.</span>
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078 <span class="comment">// Underwater triangulation components.</span>
+<a name="l00079"></a>00079 <span class="keywordtype">float</span> depth;
+<a name="l00080"></a>00080 vec3 displacementDirection;
+<a name="l00081"></a>00081 <span class="keywordtype">float</span> bottomDisplacement1;
+<a name="l00082"></a>00082 vec3 displacement1;
+<a name="l00083"></a>00083 <span class="keywordtype">float</span> depthAtDis1;
+<a name="l00084"></a>00084 <span class="keywordtype">float</span> h;
+<a name="l00085"></a>00085 <span class="keywordtype">float</span> alpha;
+<a name="l00086"></a>00086 <span class="keywordtype">float</span> bottomDisplacement2;
+<a name="l00087"></a>00087 vec3 displacement2;
+<a name="l00088"></a>00088 <span class="keywordtype">float</span> depthAtDis2;
+<a name="l00089"></a>00089 <span class="keywordtype">float</span> wdist;
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091 vec3 bottomPos;
+<a name="l00092"></a>00092 vec3 bottomNormal;
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 <span class="comment">// Texture lookups.</span>
+<a name="l00095"></a>00095 vec4 terrainDataUnderSurface;
+<a name="l00096"></a>00096 vec4 terrainDataAtDis1;
+<a name="l00097"></a>00097 vec4 terrainDataAtBottom;
+<a name="l00098"></a>00098 vec4 texDataAtBottom;
+<a name="l00099"></a>00099 vec3 skyrefl;
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101 <span class="comment">// Constants</span>
+<a name="l00102"></a>00102 <span class="keyword">const</span> <span class="keywordtype">float</span> waterRefInd = 1.34451;
+<a name="l00103"></a>00103 <span class="keyword">const</span> <span class="keywordtype">float</span> airRefInd = 1.0;
+<a name="l00104"></a>00104 <span class="keyword">const</span> vec3 up = vec3(0.0, 1.0, 0.0);
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
+<a name="l00107"></a>00107 {
+<a name="l00108"></a>00108     <span class="comment">// eye vector is calculated.</span>
+<a name="l00109"></a>00109     eye = camPos - out_ObjPos;
+<a name="l00110"></a>00110     <span class="comment">//float dist = length(eye);</span>
+<a name="l00111"></a>00111     eye = normalize(eye);
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113     
+<a name="l00114"></a>00114     <span class="comment">// Modelling surface waves.</span>
+<a name="l00115"></a>00115     <span class="keywordtype">float</span> rho1 = sqrt(pow(out_ObjPos.x, 2) + pow(out_ObjPos.z, 2));
+<a name="l00116"></a>00116     <span class="keywordtype">float</span> rho2 = sqrt(pow((size.x - <span class="keywordtype">float</span>(out_ObjPos.x)), 2) + pow(out_ObjPos.z, 2));
+<a name="l00117"></a>00117     <span class="keywordtype">float</span> xwave = sin(0.1 * time + out_ObjPos.x) + sin(-0.01 * time + out_ObjPos.x);
+<a name="l00118"></a>00118     <span class="keywordtype">float</span> ywave = sin(0.2 * time + out_ObjPos.z) + sin(-0.3 * time + out_ObjPos.z);
+<a name="l00119"></a>00119     <span class="keywordtype">float</span> rhowave1 = sin(0.05 * time + 0.5 + rho1) + 0.2 * sin(-0.01 * time + rho1);
+<a name="l00120"></a>00120     <span class="keywordtype">float</span> rhowave2 = sin(-0.05 * time + 0.5 + rho2/10.0f) + 0.2 * sin(-0.01 * time + rho2 / 10.0f);
+<a name="l00121"></a>00121     <span class="keywordtype">float</span> rand = 1;
+<a name="l00122"></a>00122     rand = fract(sin(dot(vec2(out_ObjPos.x + time, out_ObjPos.z), vec2(12.9898, 78.233))) * 43758.5453);
+<a name="l00123"></a>00123     <span class="comment">// Perturbing surface normals.</span>
+<a name="l00124"></a>00124     Normal = vec3(0.1 * (0.1 * xwave + 0.1 * rhowave1 + rhowave2), out_Normal.y, 0.1 * 0.1 * ywave);
+<a name="l00125"></a>00125     <span class="comment">//Normal += vec3(1 + 0.2 * rand, 1, 1);</span>
+<a name="l00126"></a>00126     
+<a name="l00127"></a>00127     Normal = normalize(0.5 * out_Normal + 0.5 * Normal);
+<a name="l00128"></a>00128 
 <a name="l00129"></a>00129 
-<a name="l00130"></a>00130     right = cross(Normal, eye);
-<a name="l00131"></a>00131     <span class="comment">// Snell&#39;s law</span>
-<a name="l00132"></a>00132     <span class="comment">// Since asin is not that cheap, approximations could be made here.</span>
-<a name="l00133"></a>00133     theta1 = asin(length(right));
-<a name="l00134"></a>00134 
-<a name="l00135"></a>00135 
-<a name="l00136"></a>00136     theta2 = asin(airRefInd * sin(theta1) / waterRefInd);
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132     <span class="comment">//Normal = out_Normal;</span>
+<a name="l00133"></a>00133 
+<a name="l00134"></a>00134     <span class="comment">// Incident and reflected light is calculated for the light source.</span>
+<a name="l00135"></a>00135     s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
+<a name="l00136"></a>00136     r = normalize(2 * Normal * dot(normalize(s), Normal) - s);
 <a name="l00137"></a>00137 
-<a name="l00138"></a>00138     <span class="comment">// Texture lookup at fragment.</span>
-<a name="l00139"></a>00139     terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
-<a name="l00140"></a>00140 
-<a name="l00141"></a>00141     <span class="comment">// Depth at fragment.</span>
-<a name="l00142"></a>00142     depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
-<a name="l00143"></a>00143     
-<a name="l00144"></a>00144     <span class="keywordflow">if</span> (depth &lt; 0 || out_ObjPos.z &lt; 1 || out_ObjPos.x &lt; 1 ){
-<a name="l00145"></a>00145         discard;
-<a name="l00146"></a>00146     }
-<a name="l00147"></a>00147 
-<a name="l00148"></a>00148     <span class="comment">// Crude displacement approximation.</span>
-<a name="l00149"></a>00149     <span class="comment">//displacementDirection = normalize(cross(up, right));</span>
-<a name="l00150"></a>00150     vec3 s2 = airRefInd / waterRefInd * cross(Normal, cross(Normal, eye)) - Normal * sqrt(1 - pow(airRefInd / waterRefInd, 2) * dot(cross(Normal, eye), cross(Normal, eye)));
-<a name="l00151"></a>00151     displacementDirection = normalize(s2 - dot(s2, -up) * -up);
-<a name="l00152"></a>00152     bottomDisplacement1 = tan(theta2) * depth;
-<a name="l00153"></a>00153     displacement1 = bottomDisplacement1 * displacementDirection;
-<a name="l00154"></a>00154 
+<a name="l00138"></a>00138     right = cross(Normal, eye);
+<a name="l00139"></a>00139     <span class="comment">// Snell&#39;s law</span>
+<a name="l00140"></a>00140     <span class="comment">// Since asin is not that cheap, approximations could be made here.</span>
+<a name="l00141"></a>00141     theta1 = asin(length(right));
+<a name="l00142"></a>00142 
+<a name="l00143"></a>00143 
+<a name="l00144"></a>00144     theta2 = asin(airRefInd * sin(theta1) / waterRefInd);
+<a name="l00145"></a>00145 
+<a name="l00146"></a>00146     <span class="comment">// Texture lookup at fragment.</span>
+<a name="l00147"></a>00147     terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
+<a name="l00148"></a>00148 
+<a name="l00149"></a>00149     <span class="comment">// Depth at fragment.</span>
+<a name="l00150"></a>00150     depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
+<a name="l00151"></a>00151     
+<a name="l00152"></a>00152     <span class="keywordflow">if</span> (depth &lt; 0 || out_ObjPos.z &lt; 1 || out_ObjPos.x &lt; 1 ){
+<a name="l00153"></a>00153         discard;
+<a name="l00154"></a>00154     }
 <a name="l00155"></a>00155 
-<a name="l00156"></a>00156 
-<a name="l00157"></a>00157     <span class="comment">// Texture lookup at approximation.</span>
-<a name="l00158"></a>00158     terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.z));
-<a name="l00159"></a>00159 
-<a name="l00160"></a>00160     <span class="comment">// To minimize negative depth values, a better approximation is made.</span>
-<a name="l00161"></a>00161     <span class="comment">// &quot;Depth&quot; at approximation.</span>
-<a name="l00162"></a>00162     depthAtDis1 = out_ObjPos.y - size.y * terrainDataAtDis1.a;
-<a name="l00163"></a>00163     <span class="comment">// Height at approximation (y distance from fragment bottom to approximation bottom).</span>
-<a name="l00164"></a>00164     h = depth - depthAtDis1;
-<a name="l00165"></a>00165     <span class="comment">// Better approximation</span>
-<a name="l00166"></a>00166     alpha = abs(atan(h / bottomDisplacement1));
-<a name="l00167"></a>00167     bottomDisplacement2 = cos(alpha) * depth * sin(theta2) / cos(alpha - theta2);
-<a name="l00168"></a>00168     displacement2 = bottomDisplacement2 * displacementDirection;
-<a name="l00169"></a>00169 
-<a name="l00170"></a>00170 
-<a name="l00171"></a>00171     <span class="comment">// Texture lookups at better approximation</span>
-<a name="l00172"></a>00172     terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
-<a name="l00173"></a>00173 
-<a name="l00174"></a>00174 
-<a name="l00175"></a>00175 
-<a name="l00176"></a>00176 
-<a name="l00177"></a>00177     texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
-<a name="l00178"></a>00178     <span class="comment">// &quot;Depth&quot; at better approximation</span>
-<a name="l00179"></a>00179     depthAtDis2 = out_ObjPos.y - size.y * terrainDataAtBottom.a;
-<a name="l00180"></a>00180 
-<a name="l00181"></a>00181     <span class="comment">// Coordinates and normal of seen position of bottom.</span>
-<a name="l00182"></a>00182     bottomPos = out_ObjPos + displacement2 - vec3(0, depthAtDis2, 0);
-<a name="l00183"></a>00183     bottomNormal = terrainDataAtBottom.rgb;
+<a name="l00156"></a>00156     <span class="comment">// Crude displacement approximation.</span>
+<a name="l00157"></a>00157     <span class="comment">//displacementDirection = normalize(cross(up, right));</span>
+<a name="l00158"></a>00158     vec3 s2 = airRefInd / waterRefInd * cross(Normal, cross(Normal, eye)) - Normal * sqrt(1 - pow(airRefInd / waterRefInd, 2) * dot(cross(Normal, eye), cross(Normal, eye)));
+<a name="l00159"></a>00159     displacementDirection = normalize(s2 - dot(s2, -up) * -up);
+<a name="l00160"></a>00160     bottomDisplacement1 = tan(theta2) * depth;
+<a name="l00161"></a>00161     displacement1 = bottomDisplacement1 * displacementDirection;
+<a name="l00162"></a>00162 
+<a name="l00163"></a>00163 
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165     <span class="comment">// Texture lookup at approximation.</span>
+<a name="l00166"></a>00166     terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.z));
+<a name="l00167"></a>00167 
+<a name="l00168"></a>00168     <span class="comment">// To minimize negative depth values, a better approximation is made.</span>
+<a name="l00169"></a>00169     <span class="comment">// &quot;Depth&quot; at approximation.</span>
+<a name="l00170"></a>00170     depthAtDis1 = out_ObjPos.y - size.y * terrainDataAtDis1.a;
+<a name="l00171"></a>00171     <span class="comment">// Height at approximation (y distance from fragment bottom to approximation bottom).</span>
+<a name="l00172"></a>00172     h = depth - depthAtDis1;
+<a name="l00173"></a>00173     <span class="comment">// Better approximation</span>
+<a name="l00174"></a>00174     alpha = abs(atan(h / bottomDisplacement1));
+<a name="l00175"></a>00175     bottomDisplacement2 = cos(alpha) * depth * sin(theta2) / cos(alpha - theta2);
+<a name="l00176"></a>00176     displacement2 = bottomDisplacement2 * displacementDirection;
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178 
+<a name="l00179"></a>00179     <span class="comment">// Texture lookups at better approximation</span>
+<a name="l00180"></a>00180     terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183 
 <a name="l00184"></a>00184 
-<a name="l00185"></a>00185     <span class="comment">// Distance from surface to seen position of bottom.</span>
-<a name="l00186"></a>00186     wdist = length(bottomPos - out_ObjPos);
-<a name="l00187"></a>00187     
-<a name="l00188"></a>00188     <span class="comment">// Skybox reflection.</span>
-<a name="l00189"></a>00189     <span class="comment">// Reflected eye vector.</span>
-<a name="l00190"></a>00190     re = 2 * dot(eye, Normal) * Normal - eye;
-<a name="l00191"></a>00191     skyrefl = texture(sky_texUnit, re).rgb;
-<a name="l00192"></a>00192     <span class="comment">// Light components, water surface.</span>
-<a name="l00193"></a>00193     kamb = 0.1;
-<a name="l00194"></a>00194     krefl = clamp((1 - eye.y), 0.2, 0.7);
-<a name="l00195"></a>00195     <span class="comment">// Ambient light.</span>
-<a name="l00196"></a>00196     ambLight = kamb * vec3(1.0, 1.0, 1.0);
-<a name="l00197"></a>00197     reflLight = vec3(0.0, 0.0, 0.0);
-<a name="l00198"></a>00198     <span class="comment">// Reflected light.</span>
-<a name="l00199"></a>00199     reflLight += krefl * skyrefl;
-<a name="l00200"></a>00200     <span class="comment">// Transmitted light coefficient.</span>
-<a name="l00201"></a>00201     <span class="comment">// --- Old code ---</span>
-<a name="l00202"></a>00202     <span class="comment">//float transexp = transparency;    // -----Not sure why this is needed.-----</span>
-<a name="l00203"></a>00203     <span class="comment">//ktrans = clamp(pow((1 + wdist), -transparency), 0.0f, 1.0f);</span>
-<a name="l00204"></a>00204     
-<a name="l00205"></a>00205     <span class="comment">// ----------------</span>
-<a name="l00206"></a>00206     <span class="comment">// --- New code ---</span>
-<a name="l00207"></a>00207     <span class="comment">//float maxDepthColor = clamp(size.y * transparency, 1.0, size.y * transparency);</span>
-<a name="l00208"></a>00208     <span class="comment">//ktrans = clamp(wdist, 0, maxDepthColor);</span>
-<a name="l00209"></a>00209     <span class="comment">//ktrans = 1 - 1 / maxDepthColor * ktrans;</span>
-<a name="l00210"></a>00210     <span class="comment">//surfaceColor = vec3(0.01, 0.02, 0.1);</span>
-<a name="l00211"></a>00211     <span class="comment">// ----------------</span>
-<a name="l00212"></a>00212     surfaceLight = vec3(0.0, 0.0, 0.0);
-<a name="l00213"></a>00213     <span class="comment">// The light components are added to the total surface light.</span>
-<a name="l00214"></a>00214     surfaceLight += ambLight;
-<a name="l00215"></a>00215     <span class="comment">//surfaceLight += surfaceColor;</span>
-<a name="l00216"></a>00216     surfaceLight += reflLight;
-<a name="l00217"></a>00217     <span class="comment">//surfaceLight *= clamp(pow((1 + wdist), -0.1*transparency), 0.0, 1.0);</span>
-<a name="l00218"></a>00218 
-<a name="l00219"></a>00219     ktransr = clamp((1-reflLight.r)*pow((1 + wdist), -1.8*transparency), 0.0, 0.5);
-<a name="l00220"></a>00220     ktransg = clamp((1-reflLight.g)*pow((1 + wdist), -1.7*transparency), 0.0, 0.5);
-<a name="l00221"></a>00221     ktransb = clamp((1-reflLight.b)*pow((1 + wdist), -1.5*transparency), 0.0, 0.5);
-<a name="l00222"></a>00222     kblue = 1 - eye.y;
-<a name="l00223"></a>00223 
-<a name="l00224"></a>00224     <span class="comment">//--- Calculating bottomLight</span>
-<a name="l00225"></a>00225 
-<a name="l00226"></a>00226     <span class="comment">// Phong lighting for the bottom.</span>
-<a name="l00227"></a>00227     s = normalize(lights[1].pos - (1 - lights[1].isDir) * bottomPos);
-<a name="l00228"></a>00228     r = normalize(2 * bottomNormal * dot(normalize(s), normalize(bottomNormal)) - s);
-<a name="l00229"></a>00229 
-<a name="l00230"></a>00230     <span class="comment">// eye vector is calculated (note: from bottom to surface, not to camera).</span>
-<a name="l00231"></a>00231     eye = normalize(out_ObjPos - bottomPos);
-<a name="l00232"></a>00232 
-<a name="l00233"></a>00233     <span class="comment">// Light according to the Phong model.</span>
-<a name="l00234"></a>00234     kamb = 0.1;
-<a name="l00235"></a>00235     kdiff = 0.5;
-<a name="l00236"></a>00236     krefl = 0.5;
-<a name="l00237"></a>00237     ambLight = kamb * vec3(1.0, 1.0, 1.0);
-<a name="l00238"></a>00238     diffLight = vec3(0.0, 0.0, 0.0);
-<a name="l00239"></a>00239     specLight = vec3(0.0, 0.0, 0.0);
-<a name="l00240"></a>00240     <span class="comment">// Diffuse light.</span>
-<a name="l00241"></a>00241     diffLight += kdiff * lights[1].color * max(0.0, dot(s, normalize(bottomNormal)));
-<a name="l00242"></a>00242     <span class="comment">// Specular light.</span>
-<a name="l00243"></a>00243     specLight += krefl * lights[1].color * max(0.0, pow(dot(r, eye), lights[1].specExp));
-<a name="l00244"></a>00244 
-<a name="l00245"></a>00245     bottomLight = vec3(0.0, 0.0, 0.0);
-<a name="l00246"></a>00246     <span class="comment">// The light components are added to the total bottom light.</span>
-<a name="l00247"></a>00247     bottomLight += ambLight;
-<a name="l00248"></a>00248     bottomLight += diffLight;
-<a name="l00249"></a>00249     bottomLight += specLight;
-<a name="l00250"></a>00250     
-<a name="l00251"></a>00251     bottomLight *= texDataAtBottom.rgb;
-<a name="l00252"></a>00252     bottomLight = vec3(bottomLight.r * ktransr, bottomLight.g * ktransg, bottomLight.b * ktransb); <span class="comment">//Color dependant attenuation</span>
-<a name="l00253"></a>00253 
-<a name="l00254"></a>00254     <span class="comment">// --- Old code ---</span>
-<a name="l00255"></a>00255     <span class="comment">//out_Color = vec4(0.5 * (1 - ktrans) * surfaceLight + ktrans * bottomLight, 1.0);</span>
-<a name="l00256"></a>00256     <span class="comment">// ----------------</span>
-<a name="l00257"></a>00257     <span class="comment">// --- New code ---</span>
-<a name="l00258"></a>00258 
-<a name="l00259"></a>00259     <span class="comment">// ----------------</span>
-<a name="l00260"></a>00260 
-<a name="l00261"></a>00261     out_Color = vec4(bottomLight + surfaceLight, 1.0);
-<a name="l00262"></a>00262     <span class="comment">// test</span>
-<a name="l00263"></a>00263     <span class="comment">//out_Color = vec4(diffLight, 1.0f);</span>
-<a name="l00264"></a>00264 }
+<a name="l00185"></a>00185     texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
+<a name="l00186"></a>00186     <span class="comment">// &quot;Depth&quot; at better approximation</span>
+<a name="l00187"></a>00187     depthAtDis2 = out_ObjPos.y - size.y * terrainDataAtBottom.a;
+<a name="l00188"></a>00188 
+<a name="l00189"></a>00189     <span class="comment">// Coordinates and normal of seen position of bottom.</span>
+<a name="l00190"></a>00190     bottomPos = out_ObjPos + displacement2 - vec3(0, depthAtDis2, 0);
+<a name="l00191"></a>00191     bottomNormal = terrainDataAtBottom.rgb;
+<a name="l00192"></a>00192 
+<a name="l00193"></a>00193     <span class="comment">// Distance from surface to seen position of bottom.</span>
+<a name="l00194"></a>00194     wdist = length(bottomPos - out_ObjPos);
+<a name="l00195"></a>00195     
+<a name="l00196"></a>00196     <span class="comment">// Skybox reflection.</span>
+<a name="l00197"></a>00197     <span class="comment">// Reflected eye vector.</span>
+<a name="l00198"></a>00198     re = 2 * dot(eye, Normal) * Normal - eye;
+<a name="l00199"></a>00199     skyrefl = texture(sky_texUnit, re).rgb;
+<a name="l00200"></a>00200     <span class="comment">// Light components, water surface.</span>
+<a name="l00201"></a>00201     kamb = 0.1;
+<a name="l00202"></a>00202     krefl = clamp((1 - eye.y), 0.2, 0.7);
+<a name="l00203"></a>00203     <span class="comment">// Ambient light.</span>
+<a name="l00204"></a>00204     ambLight = kamb * vec3(1.0, 1.0, 1.0);
+<a name="l00205"></a>00205     reflLight = vec3(0.0, 0.0, 0.0);
+<a name="l00206"></a>00206     <span class="comment">// Reflected light.</span>
+<a name="l00207"></a>00207     reflLight += krefl * skyrefl;
+<a name="l00208"></a>00208     <span class="comment">// Transmitted light coefficient.</span>
+<a name="l00209"></a>00209     <span class="comment">// --- Old code ---</span>
+<a name="l00210"></a>00210     <span class="comment">//float transexp = transparency;    // -----Not sure why this is needed.-----</span>
+<a name="l00211"></a>00211     <span class="comment">//ktrans = clamp(pow((1 + wdist), -transparency), 0.0f, 1.0f);</span>
+<a name="l00212"></a>00212     
+<a name="l00213"></a>00213     <span class="comment">// ----------------</span>
+<a name="l00214"></a>00214     <span class="comment">// --- New code ---</span>
+<a name="l00215"></a>00215     <span class="comment">//float maxDepthColor = clamp(size.y * transparency, 1.0, size.y * transparency);</span>
+<a name="l00216"></a>00216     <span class="comment">//ktrans = clamp(wdist, 0, maxDepthColor);</span>
+<a name="l00217"></a>00217     <span class="comment">//ktrans = 1 - 1 / maxDepthColor * ktrans;</span>
+<a name="l00218"></a>00218     <span class="comment">//surfaceColor = vec3(0.01, 0.02, 0.1);</span>
+<a name="l00219"></a>00219     <span class="comment">// ----------------</span>
+<a name="l00220"></a>00220     surfaceLight = vec3(0.0, 0.0, 0.0);
+<a name="l00221"></a>00221     <span class="comment">// The light components are added to the total surface light.</span>
+<a name="l00222"></a>00222     surfaceLight += ambLight;
+<a name="l00223"></a>00223     <span class="comment">//surfaceLight += surfaceColor;</span>
+<a name="l00224"></a>00224     surfaceLight += reflLight;
+<a name="l00225"></a>00225     <span class="comment">//surfaceLight *= clamp(pow((1 + wdist), -0.1*transparency), 0.0, 1.0);</span>
+<a name="l00226"></a>00226 
+<a name="l00227"></a>00227     ktransr = clamp((1-reflLight.r)*pow((1 + wdist), -1.8*transparency), 0.0, 0.5);
+<a name="l00228"></a>00228     ktransg = clamp((1-reflLight.g)*pow((1 + wdist), -1.7*transparency), 0.0, 0.5);
+<a name="l00229"></a>00229     ktransb = clamp((1-reflLight.b)*pow((1 + wdist), -1.5*transparency), 0.0, 0.5);
+<a name="l00230"></a>00230     kblue = 1 - eye.y;
+<a name="l00231"></a>00231 
+<a name="l00232"></a>00232     <span class="comment">//--- Calculating bottomLight</span>
+<a name="l00233"></a>00233 
+<a name="l00234"></a>00234     <span class="comment">// Phong lighting for the bottom.</span>
+<a name="l00235"></a>00235     s = normalize(lights[1].pos - (1 - lights[1].isDir) * bottomPos);
+<a name="l00236"></a>00236     r = normalize(2 * bottomNormal * dot(normalize(s), normalize(bottomNormal)) - s);
+<a name="l00237"></a>00237 
+<a name="l00238"></a>00238     <span class="comment">// eye vector is calculated (note: from bottom to surface, not to camera).</span>
+<a name="l00239"></a>00239     eye = normalize(out_ObjPos - bottomPos);
+<a name="l00240"></a>00240 
+<a name="l00241"></a>00241     <span class="comment">// Light according to the Phong model.</span>
+<a name="l00242"></a>00242     kamb = 0.1;
+<a name="l00243"></a>00243     kdiff = 0.5;
+<a name="l00244"></a>00244     krefl = 0.5;
+<a name="l00245"></a>00245     ambLight = kamb * vec3(1.0, 1.0, 1.0);
+<a name="l00246"></a>00246     diffLight = vec3(0.0, 0.0, 0.0);
+<a name="l00247"></a>00247     specLight = vec3(0.0, 0.0, 0.0);
+<a name="l00248"></a>00248     <span class="comment">// Diffuse light.</span>
+<a name="l00249"></a>00249     diffLight += kdiff * lights[1].color * max(0.0, dot(s, normalize(bottomNormal)));
+<a name="l00250"></a>00250     <span class="comment">// Specular light.</span>
+<a name="l00251"></a>00251     specLight += krefl * lights[1].color * max(0.0, pow(dot(r, eye), lights[1].specExp));
+<a name="l00252"></a>00252 
+<a name="l00253"></a>00253     bottomLight = vec3(0.0, 0.0, 0.0);
+<a name="l00254"></a>00254     <span class="comment">// The light components are added to the total bottom light.</span>
+<a name="l00255"></a>00255     bottomLight += ambLight;
+<a name="l00256"></a>00256     bottomLight += diffLight;
+<a name="l00257"></a>00257     bottomLight += specLight;
+<a name="l00258"></a>00258     
+<a name="l00259"></a>00259     bottomLight *= texDataAtBottom.rgb;
+<a name="l00260"></a>00260     bottomLight = vec3(bottomLight.r * ktransr, bottomLight.g * ktransg, bottomLight.b * ktransb); <span class="comment">//Color dependant attenuation</span>
+<a name="l00261"></a>00261 
+<a name="l00262"></a>00262     <span class="comment">// --- Old code ---</span>
+<a name="l00263"></a>00263     <span class="comment">//out_Color = vec4(0.5 * (1 - ktrans) * surfaceLight + ktrans * bottomLight, 1.0);</span>
+<a name="l00264"></a>00264     <span class="comment">// ----------------</span>
+<a name="l00265"></a>00265     <span class="comment">// --- New code ---</span>
+<a name="l00266"></a>00266 
+<a name="l00267"></a>00267     <span class="comment">// ----------------</span>
+<a name="l00268"></a>00268 
+<a name="l00269"></a>00269     out_Color = vec4(bottomLight + surfaceLight, 1.0);
+<a name="l00270"></a>00270     <span class="comment">// test</span>
+<a name="l00271"></a>00271     <span class="comment">//out_Color = vec4(diffLight, 1.0f);</span>
+<a name="l00272"></a>00272 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -380,9 +383,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>watershader.frag</b>      </li>
+      <li class="navelem"><a class="el" href="watershader_8frag.html">watershader.frag</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 12:08:56 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 12:31:49 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
