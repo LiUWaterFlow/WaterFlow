@@ -279,7 +279,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>lib\x64;lib\AntTweak;lib\SDL2_image\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AntTweakBar64.lib;SDL2.lib;SDL2main.lib;glu32.lib;opengl32.lib;SDL2_image.lib</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar64.lib;SDL2.lib;SDL2main.lib;glu32.lib;opengl32.lib;SDL2_image.lib;legacy_stdio_definitions.lib;</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>

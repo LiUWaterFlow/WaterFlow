@@ -19,8 +19,8 @@
 
     <Source Name="Hill">
       <Position x="515" y="2" z="1943"/>
-      <TimeP t="0.2, 0.8, 1.5, 1.7, -1" />
-      <Pressure p="0, 2.4, 2.3, 2.1, 0" />
+      <TimeP t="0.2, 0.8, 3.5, 5.7, -1" />
+      <Pressure p="0, 25.4, 2.3, 2.1, 10" />
       <TimeN t="3, -1"/>
       <Normals>
         <Normal x="6.1" y="7.2" z="9.3"/>

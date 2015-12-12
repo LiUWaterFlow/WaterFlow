@@ -204,7 +204,7 @@ void HeightField::initGPU() {
 	std::fill_n(f, texWidth*texHeight, 0.0f);
 
 	initFloodFill(u);
-	
+
 	std::valarray<float> fvalarray(terr->getData(), texWidth*texHeight);
 	fvalarray = fvalarray - 0.0001f;
 	
