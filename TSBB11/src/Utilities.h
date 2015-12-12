@@ -32,6 +32,7 @@ void releaseModel(Model* m);
 /// multiplied by 10 for each new number read from the string.
 /// @param strStart Pointer to where the string starts
 /// @param strEnd Pointer to where it stopped reading
+/// @param val Starting value to add to, will be multiplied by ten for each integer read.
 /// @return The integers read from the string or added to the input.
 uint64_t myStrtol(char* strStart, char** strEnd, uint64_t val);
 
