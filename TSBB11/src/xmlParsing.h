@@ -9,11 +9,15 @@
 #include <sstream>
 #include <string>
 
+/// @struct Flood_Fill_data
+/// @brief Struct that contains information about a location to be filled
 struct Flood_Fill_data{
- Flood_Fill_data(int, int, float);
- int x;
- int z;
- float height;
+	/// @brief Simple constructor for initialization
+	Flood_Fill_data(int, int, float);
+
+	int x;			///< X position of fill to start
+	int z;			///< Z position of fill to start
+	float height;	///< Height of the completed fill
 };
 
 struct init_Data_struct {
@@ -47,7 +51,7 @@ void parsePosition(FlowSource* obj, pugi::xml_node node);
 
 /// @brief This function parses the normals data in the given xml nodes.
 /// @param obj pointer to FlowSource object that normal data will be writen to.
-/// @param norm xml node with child nodes containing normals defined by the attributes: "x", "y" and " "z".
+/// @param norm xml node with child nodes containing normals defined by the attributes: "x", "y" and "z".
 /// @param time xml node containing time values as CSV in attribute "t".
 void parseNormal(FlowSource* obj, pugi::xml_node norm, pugi::xml_node time);
 

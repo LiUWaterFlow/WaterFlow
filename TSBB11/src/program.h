@@ -50,14 +50,13 @@ private:
 	// States
 	bool isRunning;		///< True as long as the program is running, set to false to quit
 	bool mouseHidden;	///< Bool to check if the mouse is hidden or not
-	bool depthWater;
 
 	// Time variables
 	GLfloat currentTime;	///< Total time since program started
 	GLfloat deltaTime;		///< Time for last frame
 	GLfloat FPS;			///< Current frames per second (based on deltaTime)
 
-	GLfloat dtSim;
+	GLfloat dtSim;			///< dT to use in heightfield simulation
 
 	//AntTweakBar variabels
 	TwBar *antBar;				///< Handle for AntTweakBar GUI window
@@ -76,11 +75,11 @@ private:
 	DataHandler* dataHandler;	///< Holds data about the terrain
 
 	//Voxgrid
-	Voxelgrid* voxs;
+	Voxelgrid* voxs;	///< A voxelgrid, not currently used
 	//HeightField
-	HeightField* hf;
+	HeightField* hf;	///< Heightfield for water simulation
 	//ShallowWater
-	ShallowGPU* sgpu;
+	ShallowGPU* sgpu;	///< Shallow water simulation
 
 	// References to shader programs:
 	GLuint terrainshader;		///< Shaders used for rendering terrain
@@ -182,6 +181,7 @@ public:
 	/// Closes the SDL OpenGL context correctly and closes the AntTweakBar.
 	void clean();
 
+	/// @brief Run a test program for the voxelgrid
 	int testVoxels();
 };
 

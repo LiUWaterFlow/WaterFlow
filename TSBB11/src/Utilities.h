@@ -30,8 +30,8 @@ void releaseModel(Model* m);
 ///	
 /// Accepts a starting point value which will be added to at the end, i.e. the value will be 
 /// multiplied by 10 for each new number read from the string.
-/// @param srtStart Pointer to where the string starts
-/// @param srtEnd Pointer to where it stopped reading
+/// @param strStart Pointer to where the string starts
+/// @param strEnd Pointer to where it stopped reading
 /// @return The integers read from the string or added to the input.
 uint64_t myStrtol(char* strStart, char** strEnd, uint64_t val);
 
@@ -40,8 +40,8 @@ uint64_t myStrtol(char* strStart, char** strEnd, uint64_t val);
 /// Takes the pointer to the beginning of a string and reads a float, ignoring starting whitespace. 
 /// Handles sign and up to 9 decimals. Use strEnd to get a pointer to where the it stopped reading the string.
 /// Most of this code comes from StackOverflow
-/// @param srtStart Pointer to where the string starts
-/// @param srtEnd Pointer to where it stopped reading
+/// @param strStart Pointer to where the string starts
+/// @param strEnd Pointer to where it stopped reading
 /// @return A float value read from the string.
 float myStrtof(char* strStart, char** strEnd);
 

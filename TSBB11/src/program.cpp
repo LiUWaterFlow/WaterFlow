@@ -18,7 +18,6 @@ Program::Program(GLuint simCaseIn) {
 
 	isRunning = true;
 	mouseHidden = true;
-	depthWater = false;
 
 	heightAtClickData = 0.0f;
 	heighAtClickProj = 0.0f;
