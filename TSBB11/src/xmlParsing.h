@@ -1,4 +1,4 @@
-/// @file xmlparsing.h
+/// @file xmlParsing.h
 /// @brief This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.
 #ifndef XMLPARSING_H
 #define XMLPARSING_H
@@ -9,22 +9,24 @@
 #include <sstream>
 #include <string>
 
-
-/// @brief Data structure specyfing position in xz-plane by ints and height by a float.
+/// @struct Flood_Fill_data
+/// @brief Struct that contains information about a location to be filled
 struct Flood_Fill_data{
- Flood_Fill_data(int, int, float);
- int x;
- int z;
- float height;
+	/// @brief Simple constructor for initialization
+	Flood_Fill_data(int, int, float);
+	int x;			///< X position of fill to start
+	int z;			///< Z position of fill to start
+	float height;	///< Height of the completed fill
 };
 
-
+/// @struct init_Data_struct
 /// @brief Encapsulating struct for all objects read from XML file.
 struct init_Data_struct {
+  /// @brief Simple constructor for initialization
   init_Data_struct(const char* XMLfile);
-  std::string data_filename;
-  std::vector<FlowSource*> Flowsources;
-  std::vector<Flood_Fill_data*> FFData;
+  std::string data_filename;	///< path and name of dem data to be used for terrain generation.
+  std::vector<FlowSource*> Flowsources; ///< Vector containing pointers to the Sources used for generating time varying water flows.
+  std::vector<Flood_Fill_data*> FFData; ///< Vctor containing pionters to flood fill structs used for creating large scale lakes. 
 };
 
 /// @brief Converts a string with CSV to a vector with floats.
@@ -50,7 +52,7 @@ void parsePosition(FlowSource* obj, pugi::xml_node node);
 
 /// @brief This function parses the normals data in the given xml nodes.
 /// @param obj pointer to FlowSource object that normal data will be writen to.
-/// @param norm xml node with child nodes containing normals defined by the attributes: "x", "y" and " "z".
+/// @param norm xml node with child nodes containing normals defined by the attributes: "x", "y" and "z".
 /// @param time xml node containing time values as CSV in attribute "t".
 void parseNormal(FlowSource* obj, pugi::xml_node norm, pugi::xml_node time);
 
