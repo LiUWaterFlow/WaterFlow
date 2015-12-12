@@ -1,7 +1,6 @@
 var NAVTREE =
 [
   [ "Waterflow", "index.html", [
-    [ "WaterFlow", "index.html", null ],
     [ "Related Pages", "pages.html", "pages" ],
     [ "Classes", null, [
       [ "Class List", "annotated.html", "annotated" ],

@@ -116,6 +116,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct that contains information about a location to be filled.  <a href="struct_flood___fill__data.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinit___data__struct.html">init_Data_struct</a></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -167,7 +168,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
 <p>This function removes flowSources to free up memory. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">Vector</td><td>with pointers to flowSource objects to be deleted. </td></tr>
+    <tr><td class="paramname">srces</td><td>Vector with pointers to flowSource objects to be deleted. </td></tr>
   </table>
   </dd>
 </dl>
@@ -295,8 +296,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td>pointer to <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> object that normal data will be writen to. </td></tr>
-    <tr><td class="paramname">norm</td><td>xml node with child nodes containing normals defined by the attributes: "x", "y" and " "z".
-    @param time xml node containing time values as CSV in attribute "t". </td></tr>
+    <tr><td class="paramname">norm</td><td>xml node with child nodes containing normals defined by the attributes: "x", "y" and "z". </td></tr>
+    <tr><td class="paramname">time</td><td>xml node containing time values as CSV in attribute "t". </td></tr>
   </table>
   </dd>
 </dl>
@@ -484,7 +485,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
     <ul>
       <li class="navelem"><a class="el" href="xml_parsing_8h.html">xmlParsing.h</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 00:45:23 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

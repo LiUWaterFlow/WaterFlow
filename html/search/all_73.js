@@ -20,11 +20,12 @@ var searchData=
   ['settotalwater',['setTotalWater',['../class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716',1,'FlowSource']]],
   ['settransparencycb',['SetTransparencyCB',['../class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea',1,'Water']]],
   ['setvoxel',['setVoxel',['../class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da',1,'Voxelgrid']]],
+  ['sgpu',['sgpu',['../class_program.html#af6d4f3298f16f35e5d90c08939b736df',1,'Program']]],
   ['shallowgpu',['ShallowGPU',['../class_shallow_g_p_u.html',1,'']]],
   ['shallowwatershader',['shallowwatershader',['../class_program.html#a94e352a7762cf519e2dfd062c2143334',1,'Program']]],
   ['sim',['sim',['../class_program.html#abc6c730e4bf3f2e09f2547ca7b984856',1,'Program']]],
   ['simcase',['simCase',['../class_program.html#a9be10e8a6d395386725ac96b014f9897',1,'Program']]],
-  ['skycube',['SkyCube',['../class_sky_cube.html',1,'SkyCube'],['../class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db',1,'SkyCube::SkyCube()'],['../class_program.html#a053a892600e9e86a71f1c25eb20a1e4b',1,'Program::skycube()']]],
+  ['skycube',['SkyCube',['../class_sky_cube.html',1,'SkyCube'],['../class_program.html#a053a892600e9e86a71f1c25eb20a1e4b',1,'Program::skycube()'],['../class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db',1,'SkyCube::SkyCube()']]],
   ['skyshader',['skyshader',['../class_program.html#a06284fec165e78abfa63778bb6712d18',1,'Program']]],
   ['specularcomponent',['specularComponent',['../struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246',1,'LightParams']]],
   ['surface',['Surface',['../classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5',1,'sdlTexture']]]

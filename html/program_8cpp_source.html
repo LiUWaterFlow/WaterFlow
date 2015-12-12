@@ -118,389 +118,388 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00018"></a>00018 
 <a name="l00019"></a>00019     <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a> = <span class="keyword">true</span>;
 <a name="l00020"></a>00020     <a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a> = <span class="keyword">true</span>;
-<a name="l00021"></a>00021     depthWater = <span class="keyword">false</span>;
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023     <a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a> = 0.0f;
-<a name="l00024"></a>00024     <a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a> = 0.0f;
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026     <span class="comment">// Time init</span>
-<a name="l00027"></a>00027     <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a> = (GLfloat)SDL_GetTicks();
-<a name="l00028"></a>00028     <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a> = 0;
-<a name="l00029"></a>00029     dtSim = 1.0f / (2.0f*20.0f*30.0f);
-<a name="l00030"></a>00030 }
-<a name="l00031"></a>00031 
-<a name="l00032"></a><a class="code" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549">00032</a> <a class="code" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549" title="Simple destructor that just cleans up.">Program::~Program</a>() {}
-<a name="l00033"></a>00033 
-<a name="l00034"></a><a class="code" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928">00034</a> <span class="keywordtype">int</span> <a class="code" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928" title="Main entry for running the program.">Program::exec</a>() {
-<a name="l00035"></a>00035     
-<a name="l00036"></a>00036     <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init</a>()) <span class="keywordflow">return</span> -1;
-<a name="l00037"></a>00037 
-<a name="l00038"></a>00038     SDL_Event Event;
-<a name="l00039"></a>00039     
-<a name="l00040"></a>00040     <span class="keywordflow">while</span> (<a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a>) {
-<a name="l00041"></a>00041         <a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37" title="Updates the time.">timeUpdate</a>();
-<a name="l00042"></a>00042         <span class="keywordflow">while</span> (SDL_PollEvent(&amp;Event)) <a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b" title="Takes care of all events since last main loop iteration.">handleEvent</a>(&amp;Event);
-<a name="l00043"></a>00043         <a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys</a>();
-<a name="l00044"></a>00044         <a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95" title="Updates the simulation and camera.">update</a>();
-<a name="l00045"></a>00045         <a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4" title="All rendering commands are sent here.">display</a>();
-<a name="l00046"></a>00046     }
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048     <a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4" title="Makes sure the program exits cleanly.">clean</a>();
-<a name="l00049"></a>00049     <span class="keywordflow">return</span> 0;
-<a name="l00050"></a>00050 }
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052 <span class="keywordtype">int</span> Program::testVoxels() {
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054     <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init</a>()) <span class="keywordflow">return</span> -1;
-<a name="l00055"></a>00055     SDL_SetRelativeMouseMode(SDL_FALSE);
-<a name="l00056"></a>00056     voxelTest::mainTest(<a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>);
-<a name="l00057"></a>00057     
-<a name="l00058"></a>00058     <span class="keywordflow">return</span> 0;
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 }
-<a name="l00061"></a><a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6">00061</a> <span class="keywordtype">bool</span> <a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">Program::init</a>() {
-<a name="l00062"></a>00062     <span class="comment">// SDL, glew and OpenGL init</span>
-<a name="l00063"></a>00063     <span class="keywordflow">if</span> (SDL_Init(SDL_INIT_VIDEO) != 0) {
-<a name="l00064"></a>00064         fprintf(stderr, <span class="stringliteral">&quot;Failed to initialise SDL: %s&quot;</span>, SDL_GetError());
-<a name="l00065"></a>00065         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00066"></a>00066     }
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="preprocessor">#ifdef __APPLE__</span>
-<a name="l00069"></a>00069 <span class="preprocessor"></span>    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-<a name="l00070"></a>00070     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-<a name="l00073"></a>00073 <span class="preprocessor">#endif</span>
-<a name="l00074"></a>00074 <span class="preprocessor"></span>
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076     <a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a> = SDL_CreateWindow(<span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, <a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-<a name="l00077"></a>00077     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a> == 0) {
-<a name="l00078"></a>00078         fprintf(stderr, <span class="stringliteral">&quot;Failed to set Video Mode: %s&quot;</span>, SDL_GetError());
-<a name="l00079"></a>00079         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00080"></a>00080     }
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022     <a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a> = 0.0f;
+<a name="l00023"></a>00023     <a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a> = 0.0f;
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025     <span class="comment">// Time init</span>
+<a name="l00026"></a>00026     <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a> = (GLfloat)SDL_GetTicks();
+<a name="l00027"></a>00027     <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a> = 0;
+<a name="l00028"></a>00028     <a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503" title="dT to use in heightfield simulation">dtSim</a> = 1.0f / (2.0f*20.0f*30.0f);
+<a name="l00029"></a>00029 }
+<a name="l00030"></a>00030 
+<a name="l00031"></a><a class="code" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549">00031</a> <a class="code" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549" title="Simple destructor that just cleans up.">Program::~Program</a>() {}
+<a name="l00032"></a>00032 
+<a name="l00033"></a><a class="code" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928">00033</a> <span class="keywordtype">int</span> <a class="code" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928" title="Main entry for running the program.">Program::exec</a>() {
+<a name="l00034"></a>00034     
+<a name="l00035"></a>00035     <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init</a>()) <span class="keywordflow">return</span> -1;
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037     SDL_Event Event;
+<a name="l00038"></a>00038     
+<a name="l00039"></a>00039     <span class="keywordflow">while</span> (<a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a>) {
+<a name="l00040"></a>00040         <a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37" title="Updates the time.">timeUpdate</a>();
+<a name="l00041"></a>00041         <span class="keywordflow">while</span> (SDL_PollEvent(&amp;Event)) <a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b" title="Takes care of all events since last main loop iteration.">handleEvent</a>(&amp;Event);
+<a name="l00042"></a>00042         <a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys</a>();
+<a name="l00043"></a>00043         <a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95" title="Updates the simulation and camera.">update</a>();
+<a name="l00044"></a>00044         <a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4" title="All rendering commands are sent here.">display</a>();
+<a name="l00045"></a>00045     }
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047     <a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4" title="Makes sure the program exits cleanly.">clean</a>();
+<a name="l00048"></a>00048     <span class="keywordflow">return</span> 0;
+<a name="l00049"></a>00049 }
+<a name="l00050"></a>00050 
+<a name="l00051"></a><a class="code" href="class_program.html#a19c0940ec20dc55d130873dbf53e9dd3">00051</a> <span class="keywordtype">int</span> <a class="code" href="class_program.html#a19c0940ec20dc55d130873dbf53e9dd3" title="Run a test program for the voxelgrid.">Program::testVoxels</a>() {
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053     <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init</a>()) <span class="keywordflow">return</span> -1;
+<a name="l00054"></a>00054     SDL_SetRelativeMouseMode(SDL_FALSE);
+<a name="l00055"></a>00055     voxelTest::mainTest(<a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>);
+<a name="l00056"></a>00056     
+<a name="l00057"></a>00057     <span class="keywordflow">return</span> 0;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 }
+<a name="l00060"></a><a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6">00060</a> <span class="keywordtype">bool</span> <a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">Program::init</a>() {
+<a name="l00061"></a>00061     <span class="comment">// SDL, glew and OpenGL init</span>
+<a name="l00062"></a>00062     <span class="keywordflow">if</span> (SDL_Init(SDL_INIT_VIDEO) != 0) {
+<a name="l00063"></a>00063         fprintf(stderr, <span class="stringliteral">&quot;Failed to initialise SDL: %s&quot;</span>, SDL_GetError());
+<a name="l00064"></a>00064         <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00065"></a>00065     }
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="preprocessor">#ifdef __APPLE__</span>
+<a name="l00068"></a>00068 <span class="preprocessor"></span>    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+<a name="l00069"></a>00069     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+<a name="l00072"></a>00072 <span class="preprocessor">#endif</span>
+<a name="l00073"></a>00073 <span class="preprocessor"></span>
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075     <a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a> = SDL_CreateWindow(<span class="stringliteral">&quot;TSBB11, Waterflow visualization (SDL)&quot;</span>, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, <a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+<a name="l00076"></a>00076     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a> == 0) {
+<a name="l00077"></a>00077         fprintf(stderr, <span class="stringliteral">&quot;Failed to set Video Mode: %s&quot;</span>, SDL_GetError());
+<a name="l00078"></a>00078         <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00079"></a>00079     }
+<a name="l00080"></a>00080 
 <a name="l00081"></a>00081 
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083     <a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490" title="SDL openGL context.">glcontext</a> = SDL_GL_CreateContext(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>);
+<a name="l00082"></a>00082     <a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490" title="SDL openGL context.">glcontext</a> = SDL_GL_CreateContext(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>);
+<a name="l00083"></a>00083 
 <a name="l00084"></a>00084 
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086     SDL_SetRelativeMouseMode(SDL_TRUE);
-<a name="l00087"></a>00087     glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
-<a name="l00088"></a>00088     printError(<span class="stringliteral">&quot;After SDL init: &quot;</span>);
+<a name="l00085"></a>00085     SDL_SetRelativeMouseMode(SDL_TRUE);
+<a name="l00086"></a>00086     glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
+<a name="l00087"></a>00087     printError(<span class="stringliteral">&quot;After SDL init: &quot;</span>);
+<a name="l00088"></a>00088 
 <a name="l00089"></a>00089 
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="preprocessor">#ifdef _WINDOWS</span>
-<a name="l00092"></a>00092 <span class="preprocessor"></span>    glewInit();
-<a name="l00093"></a>00093 <span class="preprocessor">#endif</span>
-<a name="l00094"></a>00094 <span class="preprocessor"></span>
-<a name="l00095"></a>00095     dumpInfo();
-<a name="l00096"></a>00096     <span class="comment">/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this</span>
-<a name="l00097"></a>00097 <span class="comment">    is then used as startdata.</span>
-<a name="l00098"></a>00098 <span class="comment">    */</span>
-<a name="l00099"></a>00099     <span class="keyword">const</span> <span class="keywordtype">char</span>* xmlfile = <span class="stringliteral">&quot;src/xml/xgconsole.xml&quot;</span>;
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101     <a class="code" href="structinit___data__struct.html">init_Data_struct</a> init_data(xmlfile);
-<a name="l00102"></a>00102     <span class="comment">// Load terrain data.</span>
-<a name="l00103"></a>00103     <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a> = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(init_data.data_filename.c_str());
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105     <span class="comment">// Initial placement of camera.</span>
-<a name="l00106"></a>00106     <span class="keywordtype">int</span> xzLim = 250; <span class="comment">// Maximal distance (x and z) between terrain and camera</span>
-<a name="l00107"></a>00107     <span class="keywordtype">int</span> yLimLo = 100; <span class="comment">// Minimal distance (y) between camera and terrain</span>
-<a name="l00108"></a>00108     <span class="keywordtype">int</span> yLimHi = 500; <span class="comment">// yLimHi + dataHandler-&gt;getTerrainScale() = maximal distance (y) between camera and terrain</span>
-<a name="l00109"></a>00109     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a> = <span class="keyword">new</span> <a class="code" href="class_camera.html">Camera</a>(glm::vec3(0.0f, 500.0f, 0.0f), &amp;<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, &amp;<a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>(), xzLim, yLimLo, yLimHi, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>);
-<a name="l00110"></a>00110     
-<a name="l00111"></a>00111 
-<a name="l00112"></a>00112     printError(<span class="stringliteral">&quot;After hf init&quot;</span>);
-<a name="l00113"></a>00113     <span class="comment">// Load and compile shaders.</span>
-<a name="l00114"></a>00114     <a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/terrainshader.frag&quot;</span>);
-<a name="l00115"></a>00115     <a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/skyshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/skyshader.frag&quot;</span>);
-<a name="l00116"></a>00116     <span class="comment">//shallowwatershader = loadShaders(&quot;src/shaders/terrainshader.vert&quot;, &quot;src/shaders/watershader.frag&quot;);</span>
-<a name="l00117"></a>00117     <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/depthshader.frag&quot;</span>);
-<a name="l00118"></a>00118     
-<a name="l00119"></a>00119     GLuint sizes[] = { <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() };
-<a name="l00120"></a>00120     
-<a name="l00121"></a>00121     <span class="comment">// Create drawables</span>
-<a name="l00122"></a>00122     
-<a name="l00123"></a>00123     <a class="code" href="classmy_drawable.html#ac5e3db716441b09e8cfd227a5dec73d4" title="Set the lights used in the program.">myDrawable::setLights</a>();
-<a name="l00124"></a>00124     <a class="code" href="classmy_drawable.html#ac1e4f3c0f76c8dd25db03301f2498e7c" title="Set the textures used in the program.">myDrawable::setTextures</a>(sizes);
+<a name="l00090"></a>00090 <span class="preprocessor">#ifdef _WINDOWS</span>
+<a name="l00091"></a>00091 <span class="preprocessor"></span>    glewInit();
+<a name="l00092"></a>00092 <span class="preprocessor">#endif</span>
+<a name="l00093"></a>00093 <span class="preprocessor"></span>
+<a name="l00094"></a>00094     dumpInfo();
+<a name="l00095"></a>00095     <span class="comment">/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this</span>
+<a name="l00096"></a>00096 <span class="comment">    is then used as startdata.</span>
+<a name="l00097"></a>00097 <span class="comment">    */</span>
+<a name="l00098"></a>00098     <span class="keyword">const</span> <span class="keywordtype">char</span>* xmlfile = <span class="stringliteral">&quot;src/xml/xgconsole.xml&quot;</span>;
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100     <a class="code" href="structinit___data__struct.html">init_Data_struct</a> init_data(xmlfile);
+<a name="l00101"></a>00101     <span class="comment">// Load terrain data.</span>
+<a name="l00102"></a>00102     <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a> = <span class="keyword">new</span> <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>(init_data.data_filename.c_str());
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104     <span class="comment">// Initial placement of camera.</span>
+<a name="l00105"></a>00105     <span class="keywordtype">int</span> xzLim = 250; <span class="comment">// Maximal distance (x and z) between terrain and camera</span>
+<a name="l00106"></a>00106     <span class="keywordtype">int</span> yLimLo = 100; <span class="comment">// Minimal distance (y) between camera and terrain</span>
+<a name="l00107"></a>00107     <span class="keywordtype">int</span> yLimHi = 500; <span class="comment">// yLimHi + dataHandler-&gt;getTerrainScale() = maximal distance (y) between camera and terrain</span>
+<a name="l00108"></a>00108     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a> = <span class="keyword">new</span> <a class="code" href="class_camera.html">Camera</a>(glm::vec3(0.0f, 500.0f, 0.0f), &amp;<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, &amp;<a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>(), xzLim, yLimLo, yLimHi, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>);
+<a name="l00109"></a>00109     
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111     printError(<span class="stringliteral">&quot;After hf init&quot;</span>);
+<a name="l00112"></a>00112     <span class="comment">// Load and compile shaders.</span>
+<a name="l00113"></a>00113     <a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/terrainshader.frag&quot;</span>);
+<a name="l00114"></a>00114     <a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/skyshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/skyshader.frag&quot;</span>);
+<a name="l00115"></a>00115     <span class="comment">//shallowwatershader = loadShaders(&quot;src/shaders/terrainshader.vert&quot;, &quot;src/shaders/watershader.frag&quot;);</span>
+<a name="l00116"></a>00116     <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/depthshader.frag&quot;</span>);
+<a name="l00117"></a>00117     
+<a name="l00118"></a>00118     GLuint sizes[] = { <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() };
+<a name="l00119"></a>00119     
+<a name="l00120"></a>00120     <span class="comment">// Create drawables</span>
+<a name="l00121"></a>00121     
+<a name="l00122"></a>00122     <a class="code" href="classmy_drawable.html#ac5e3db716441b09e8cfd227a5dec73d4" title="Set the lights used in the program.">myDrawable::setLights</a>();
+<a name="l00123"></a>00123     <a class="code" href="classmy_drawable.html#ac1e4f3c0f76c8dd25db03301f2498e7c" title="Set the textures used in the program.">myDrawable::setTextures</a>(sizes);
+<a name="l00124"></a>00124     
 <a name="l00125"></a>00125     
 <a name="l00126"></a>00126     
 <a name="l00127"></a>00127     
-<a name="l00128"></a>00128     
-<a name="l00129"></a>00129 
+<a name="l00128"></a>00128 
+<a name="l00129"></a>00129     
 <a name="l00130"></a>00130     
 <a name="l00131"></a>00131     
-<a name="l00132"></a>00132     
-<a name="l00133"></a>00133     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 1)
-<a name="l00134"></a>00134     {
-<a name="l00135"></a>00135         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a> = <span class="keyword">new</span> <a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>(<a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>, sizes, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>());
-<a name="l00136"></a>00136         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>-&gt;<a class="code" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1" title="Use this to specify the way to update the entity.">update</a>();
-<a name="l00137"></a>00137         <span class="keyword">dynamic_cast&lt;</span><a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>*<span class="keyword">&gt;</span>(<a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>)-&gt;generateHeightTexture();
-<a name="l00138"></a>00138         
-<a name="l00139"></a>00139         printError(<span class="stringliteral">&quot;Created Terrain&quot;</span>);
-<a name="l00140"></a>00140     
+<a name="l00132"></a>00132     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 1)
+<a name="l00133"></a>00133     {
+<a name="l00134"></a>00134         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a> = <span class="keyword">new</span> <a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>(<a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>, sizes, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>());
+<a name="l00135"></a>00135         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>-&gt;<a class="code" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1" title="Use this to specify the way to update the entity.">update</a>();
+<a name="l00136"></a>00136         <span class="keyword">dynamic_cast&lt;</span><a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>*<span class="keyword">&gt;</span>(<a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>)-&gt;generateHeightTexture();
+<a name="l00137"></a>00137         
+<a name="l00138"></a>00138         printError(<span class="stringliteral">&quot;Created Terrain&quot;</span>);
+<a name="l00139"></a>00139     
+<a name="l00140"></a>00140         
 <a name="l00141"></a>00141         
-<a name="l00142"></a>00142         
-<a name="l00143"></a>00143         <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/watershader.frag&quot;</span>);
-<a name="l00144"></a>00144         <span class="comment">// Initialize water simulation</span>
-<a name="l00145"></a>00145         hf = <span class="keyword">new</span> <a class="code" href="class_height_field.html">HeightField</a>(<a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>, init_data.FFData, init_data.Flowsources);
-<a name="l00146"></a>00146         hf-&gt;<a class="code" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a>();
-<a name="l00147"></a>00147 
-<a name="l00148"></a>00148         GLuint shaders[2] = { <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>, <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a> };
-<a name="l00149"></a>00149         <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a> = <span class="keyword">new</span> <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>(shaders, sizes, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), hf-&gt;<a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
-<a name="l00150"></a>00150     }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 2)
-<a name="l00151"></a>00151     {
-<a name="l00152"></a>00152         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a> = <span class="keyword">new</span> <a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>(<a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>, sizes, -1.0f, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>());
-<a name="l00153"></a>00153         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>-&gt;<a class="code" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1" title="Use this to specify the way to update the entity.">update</a>();
-<a name="l00154"></a>00154         <span class="keyword">dynamic_cast&lt;</span><a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>*<span class="keyword">&gt;</span>(<a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>)-&gt;generateHeightTexture();
-<a name="l00155"></a>00155         
-<a name="l00156"></a>00156         printError(<span class="stringliteral">&quot;Created Terrain&quot;</span>);
-<a name="l00157"></a>00157     
-<a name="l00158"></a>00158 
-<a name="l00159"></a>00159         <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/shallowwatershader.frag&quot;</span>);
-<a name="l00160"></a>00160         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;unlock();
-<a name="l00161"></a>00161         <span class="comment">// Initialize water simulation</span>
-<a name="l00162"></a>00162         sgpu = <span class="keyword">new</span> <a class="code" href="class_shallow_g_p_u.html">ShallowGPU</a>(<a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>, init_data.FFData);
-<a name="l00163"></a>00163         sgpu-&gt;initGPU();
-<a name="l00164"></a>00164 
-<a name="l00165"></a>00165         GLuint shaders[2] = { <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>, <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a> };
-<a name="l00166"></a>00166         <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a> = <span class="keyword">new</span> <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>(shaders, sizes, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), sgpu-&gt;shallowBuffers[7]);
-<a name="l00167"></a>00167     }
-<a name="l00168"></a>00168         
-<a name="l00169"></a>00169     printError(<span class="stringliteral">&quot;Created Water&quot;</span>);
-<a name="l00170"></a>00170     <a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b" title="Skycube model.">skycube</a> = <span class="keyword">new</span> <a class="code" href="class_sky_cube.html" title="Used as a skycube for the program.">SkyCube</a>(<a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a>);
+<a name="l00142"></a>00142         <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/watershader.frag&quot;</span>);
+<a name="l00143"></a>00143         <span class="comment">// Initialize water simulation</span>
+<a name="l00144"></a>00144         <a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b" title="Heightfield for water simulation.">hf</a> = <span class="keyword">new</span> <a class="code" href="class_height_field.html">HeightField</a>(<a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>, init_data.FFData, init_data.Flowsources);
+<a name="l00145"></a>00145         <a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b" title="Heightfield for water simulation.">hf</a>-&gt;<a class="code" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a>();
+<a name="l00146"></a>00146 
+<a name="l00147"></a>00147         GLuint shaders[2] = { <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>, <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a> };
+<a name="l00148"></a>00148         <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a> = <span class="keyword">new</span> <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>(shaders, sizes, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), <a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b" title="Heightfield for water simulation.">hf</a>-&gt;<a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
+<a name="l00149"></a>00149     }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 2)
+<a name="l00150"></a>00150     {
+<a name="l00151"></a>00151         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a> = <span class="keyword">new</span> <a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>(<a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>, sizes, -1.0f, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a85df9b024391d302dccb1f9b2519bc56" title="Get the buffer ID containing the height data.">getHeightBuffer</a>());
+<a name="l00152"></a>00152         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>-&gt;<a class="code" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1" title="Use this to specify the way to update the entity.">update</a>();
+<a name="l00153"></a>00153         <span class="keyword">dynamic_cast&lt;</span><a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a>*<span class="keyword">&gt;</span>(<a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>)-&gt;generateHeightTexture();
+<a name="l00154"></a>00154         
+<a name="l00155"></a>00155         printError(<span class="stringliteral">&quot;Created Terrain&quot;</span>);
+<a name="l00156"></a>00156     
+<a name="l00157"></a>00157 
+<a name="l00158"></a>00158         <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a> = loadShaders(<span class="stringliteral">&quot;src/shaders/terrainshader.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/shallowwatershader.frag&quot;</span>);
+<a name="l00159"></a>00159         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;unlock();
+<a name="l00160"></a>00160         <span class="comment">// Initialize water simulation</span>
+<a name="l00161"></a>00161         <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a> = <span class="keyword">new</span> <a class="code" href="class_shallow_g_p_u.html">ShallowGPU</a>(<a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>, init_data.FFData);
+<a name="l00162"></a>00162         <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a>-&gt;initGPU();
+<a name="l00163"></a>00163 
+<a name="l00164"></a>00164         GLuint shaders[2] = { <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>, <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a> };
+<a name="l00165"></a>00165         <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a> = <span class="keyword">new</span> <a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a>(shaders, sizes, <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>(), <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a>-&gt;shallowBuffers[7]);
+<a name="l00166"></a>00166     }
+<a name="l00167"></a>00167         
+<a name="l00168"></a>00168     printError(<span class="stringliteral">&quot;Created Water&quot;</span>);
+<a name="l00169"></a>00169     <a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b" title="Skycube model.">skycube</a> = <span class="keyword">new</span> <a class="code" href="class_sky_cube.html" title="Used as a skycube for the program.">SkyCube</a>(<a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a>);
+<a name="l00170"></a>00170 
 <a name="l00171"></a>00171 
-<a name="l00172"></a>00172 
-<a name="l00173"></a>00173     <span class="comment">/* Initialize AntTweakBar */</span>
-<a name="l00174"></a>00174     TwInit(TW_OPENGL_CORE, NULL);
-<a name="l00175"></a>00175     TwWindowSize(<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
-<a name="l00176"></a>00176     <a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a> = TwNewBar(<span class="stringliteral">&quot;UIinfo&quot;</span>);
-<a name="l00177"></a>00177     TwDefine(<span class="stringliteral">&quot; UIinfo refresh=0.1 &quot;</span>);
-<a name="l00178"></a>00178     TwDefine(<span class="stringliteral">&quot; UIinfo valueswidth=fit &quot;</span>);
-<a name="l00179"></a>00179     TwDefine(<span class="stringliteral">&quot; UIinfo size=&#39;280 350&#39; &quot;</span>);
-<a name="l00180"></a>00180     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;FPS&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a" title="Current frames per second (based on deltaTime)">FPS</a>, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00181"></a>00181     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;CameraX&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;x, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00182"></a>00182     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;CameraZ&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;z, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00183"></a>00183 
-<a name="l00184"></a>00184     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Camera Height&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;y, <span class="stringliteral">&quot;group=Info&quot;</span>);
-<a name="l00185"></a>00185     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Height&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15" title="Terrain height at the comera position.">heightAtPos</a>, <span class="stringliteral">&quot;help= &#39;Shows terrain height at camera position&#39; group=Info&quot;</span>);
-<a name="l00186"></a>00186 
-<a name="l00187"></a>00187     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Height (Proj)&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using inverse projection&#39; &quot;</span>);
-<a name="l00188"></a>00188     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Height (Data)&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using terrain data for height&#39; &quot;</span>);
-<a name="l00189"></a>00189     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain X&quot;</span>, TW_TYPE_DOUBLE, &amp;<a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain x at click&#39; &quot;</span>);
-<a name="l00190"></a>00190     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Z&quot;</span>, TW_TYPE_DOUBLE, &amp;<a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain z at click&#39; &quot;</span>);
-<a name="l00191"></a>00191 
-<a name="l00192"></a>00192     TwAddVarRW(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;MovSpeed&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getSpeedPtr(), <span class="stringliteral">&quot; min=0 max=10 step=0.05 group=Changables label=&#39;Movement speed&#39; &quot;</span>);
-<a name="l00193"></a>00193     TwAddVarRW(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;RotSpeed&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getRotSpeedPtr(), <span class="stringliteral">&quot; min=0 max=0.1 step=0.0005 group=Changables label=&#39;Rotation speed&#39; &quot;</span>);
-<a name="l00194"></a>00194 
-<a name="l00195"></a>00195     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Texture&quot;</span>, TW_TYPE_INT32, <a class="code" href="class_height_map.html#a077dece0f6f9df497c097c931501615f" title="Used by AntTweakBar to set which texture to use.">HeightMap::SetTextureCB</a>, <a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8" title="Used by AntTweakBar to get which texture is in use.">HeightMap::GetTextureCB</a>, <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>, <span class="stringliteral">&quot; min=0 max=2 step=1 group=Changables &quot;</span>);
-<a name="l00196"></a>00196     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Bottom Texture&quot;</span>, TW_TYPE_INT32, <a class="code" href="class_height_map.html#a077dece0f6f9df497c097c931501615f" title="Used by AntTweakBar to set which texture to use.">HeightMap::SetTextureCB</a>, <a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8" title="Used by AntTweakBar to get which texture is in use.">HeightMap::GetTextureCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=2 step=1 group=Changables &quot;</span>);
-<a name="l00197"></a>00197 
-<a name="l00198"></a>00198     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Draw Program&quot;</span>, TW_TYPE_INT32, <a class="code" href="class_water.html#a7df26f16b1b92b84f0df72994b17ffe9" title="Used by AntTweakBar to set which program should be used to draw.">Water::SetDrawProgramCB</a>, <a class="code" href="class_water.html#ab2d46082979b6542a686e927ed33c2b2" title="Used by AntTweakBar to get current program used for drawing.">Water::GetDrawProgramCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=1 step=1 group=Changables &quot;</span>);
-<a name="l00199"></a>00199     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Transparency&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea" title="Used by AntTweakBar to set which texture to use.">Water::SetTransparencyCB</a>, <a class="code" href="class_water.html#af8f59e118d0adaf3481593036ad34892" title="Used by AntTweakBar to get which texture is in use.">Water::GetTransparencyCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=1.0 step=0.05 group=Changables &quot;</span>);
-<a name="l00200"></a>00200     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;MaxDepth&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_water.html#a42673fecc457db482fb61e93abe8af70" title="Used by AntTweakBar to set max depth.">Water::SetMaxDepthCB</a>, <a class="code" href="class_water.html#aa3275f7564f0666c42de6c41d9729d84" title="Used by AntTweakBar to get max depth.">Water::GetMaxDepthCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=500.0 step=10.0 group=Changables &quot;</span>);
-<a name="l00201"></a>00201     TwAddVarRW(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Simulation dt&quot;</span>, TW_TYPE_FLOAT, &amp;dtSim, <span class="stringliteral">&quot;min=0.00005 max=0.0025 step=0.00005 group=Changables label=&#39;Simulation dt&#39; &quot;</span>);
-<a name="l00202"></a>00202     
-<a name="l00203"></a>00203     printError(<span class="stringliteral">&quot;After total init: &quot;</span>);
-<a name="l00204"></a>00204 
-<a name="l00205"></a>00205     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00206"></a>00206 }
-<a name="l00207"></a>00207 
-<a name="l00208"></a><a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37">00208</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37" title="Updates the time.">Program::timeUpdate</a>() {
-<a name="l00209"></a>00209     GLfloat t = (GLfloat)SDL_GetTicks();
-<a name="l00210"></a>00210     <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a> = t - <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a>;
-<a name="l00211"></a>00211     currentTime = t;
-<a name="l00212"></a>00212     <a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a" title="Current frames per second (based on deltaTime)">FPS</a> = 1000.0f / <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>;
-<a name="l00213"></a>00213 }
-<a name="l00214"></a>00214 
-<a name="l00215"></a><a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95">00215</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95" title="Updates the simulation and camera.">Program::update</a>() {
-<a name="l00216"></a>00216     <span class="comment">// Update the tweak bar.</span>
-<a name="l00217"></a>00217     <a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15" title="Terrain height at the comera position.">heightAtPos</a> = <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;x, <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;z);
-<a name="l00218"></a>00218         
-<a name="l00219"></a>00219     
-<a name="l00220"></a>00220     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 1)
-<a name="l00221"></a>00221     {
-<a name="l00222"></a>00222         
-<a name="l00223"></a>00223         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>) {
-<a name="l00224"></a>00224             hf-&gt;<a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">runSimGPU</a>(dtSim);
-<a name="l00225"></a>00225         }
+<a name="l00172"></a>00172     <span class="comment">/* Initialize AntTweakBar */</span>
+<a name="l00173"></a>00173     TwInit(TW_OPENGL_CORE, NULL);
+<a name="l00174"></a>00174     TwWindowSize(<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
+<a name="l00175"></a>00175     <a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a> = TwNewBar(<span class="stringliteral">&quot;UIinfo&quot;</span>);
+<a name="l00176"></a>00176     TwDefine(<span class="stringliteral">&quot; UIinfo refresh=0.1 &quot;</span>);
+<a name="l00177"></a>00177     TwDefine(<span class="stringliteral">&quot; UIinfo valueswidth=fit &quot;</span>);
+<a name="l00178"></a>00178     TwDefine(<span class="stringliteral">&quot; UIinfo size=&#39;280 350&#39; &quot;</span>);
+<a name="l00179"></a>00179     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;FPS&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a" title="Current frames per second (based on deltaTime)">FPS</a>, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00180"></a>00180     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;CameraX&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;x, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00181"></a>00181     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;CameraZ&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;z, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00182"></a>00182 
+<a name="l00183"></a>00183     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Camera Height&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;y, <span class="stringliteral">&quot;group=Info&quot;</span>);
+<a name="l00184"></a>00184     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Height&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15" title="Terrain height at the comera position.">heightAtPos</a>, <span class="stringliteral">&quot;help= &#39;Shows terrain height at camera position&#39; group=Info&quot;</span>);
+<a name="l00185"></a>00185 
+<a name="l00186"></a>00186     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Height (Proj)&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using inverse projection&#39; &quot;</span>);
+<a name="l00187"></a>00187     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Height (Data)&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain height at click using terrain data for height&#39; &quot;</span>);
+<a name="l00188"></a>00188     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain X&quot;</span>, TW_TYPE_DOUBLE, &amp;<a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain x at click&#39; &quot;</span>);
+<a name="l00189"></a>00189     TwAddVarRO(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Z&quot;</span>, TW_TYPE_DOUBLE, &amp;<a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>, <span class="stringliteral">&quot;group=Click help= &#39;Shows terrain z at click&#39; &quot;</span>);
+<a name="l00190"></a>00190 
+<a name="l00191"></a>00191     TwAddVarRW(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;MovSpeed&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getSpeedPtr(), <span class="stringliteral">&quot; min=0 max=10 step=0.05 group=Changables label=&#39;Movement speed&#39; &quot;</span>);
+<a name="l00192"></a>00192     TwAddVarRW(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;RotSpeed&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getRotSpeedPtr(), <span class="stringliteral">&quot; min=0 max=0.1 step=0.0005 group=Changables label=&#39;Rotation speed&#39; &quot;</span>);
+<a name="l00193"></a>00193 
+<a name="l00194"></a>00194     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Terrain Texture&quot;</span>, TW_TYPE_INT32, <a class="code" href="class_height_map.html#a077dece0f6f9df497c097c931501615f" title="Used by AntTweakBar to set which texture to use.">HeightMap::SetTextureCB</a>, <a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8" title="Used by AntTweakBar to get which texture is in use.">HeightMap::GetTextureCB</a>, <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>, <span class="stringliteral">&quot; min=0 max=2 step=1 group=Changables &quot;</span>);
+<a name="l00195"></a>00195     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Bottom Texture&quot;</span>, TW_TYPE_INT32, <a class="code" href="class_height_map.html#a077dece0f6f9df497c097c931501615f" title="Used by AntTweakBar to set which texture to use.">HeightMap::SetTextureCB</a>, <a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8" title="Used by AntTweakBar to get which texture is in use.">HeightMap::GetTextureCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=2 step=1 group=Changables &quot;</span>);
+<a name="l00196"></a>00196 
+<a name="l00197"></a>00197     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Draw Program&quot;</span>, TW_TYPE_INT32, <a class="code" href="class_water.html#a7df26f16b1b92b84f0df72994b17ffe9" title="Used by AntTweakBar to set which program should be used to draw.">Water::SetDrawProgramCB</a>, <a class="code" href="class_water.html#ab2d46082979b6542a686e927ed33c2b2" title="Used by AntTweakBar to get current program used for drawing.">Water::GetDrawProgramCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=1 step=1 group=Changables &quot;</span>);
+<a name="l00198"></a>00198     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Transparency&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea" title="Used by AntTweakBar to set which texture to use.">Water::SetTransparencyCB</a>, <a class="code" href="class_water.html#af8f59e118d0adaf3481593036ad34892" title="Used by AntTweakBar to get which texture is in use.">Water::GetTransparencyCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=1.0 step=0.05 group=Changables &quot;</span>);
+<a name="l00199"></a>00199     TwAddVarCB(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;MaxDepth&quot;</span>, TW_TYPE_FLOAT, <a class="code" href="class_water.html#a42673fecc457db482fb61e93abe8af70" title="Used by AntTweakBar to set max depth.">Water::SetMaxDepthCB</a>, <a class="code" href="class_water.html#aa3275f7564f0666c42de6c41d9729d84" title="Used by AntTweakBar to get max depth.">Water::GetMaxDepthCB</a>, <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>, <span class="stringliteral">&quot; min=0 max=500.0 step=10.0 group=Changables &quot;</span>);
+<a name="l00200"></a>00200     TwAddVarRW(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, <span class="stringliteral">&quot;Simulation dt&quot;</span>, TW_TYPE_FLOAT, &amp;<a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503" title="dT to use in heightfield simulation">dtSim</a>, <span class="stringliteral">&quot;min=0.00005 max=0.0025 step=0.00005 group=Changables label=&#39;Simulation dt&#39; &quot;</span>);
+<a name="l00201"></a>00201     
+<a name="l00202"></a>00202     printError(<span class="stringliteral">&quot;After total init: &quot;</span>);
+<a name="l00203"></a>00203 
+<a name="l00204"></a>00204     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00205"></a>00205 }
+<a name="l00206"></a>00206 
+<a name="l00207"></a><a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37">00207</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37" title="Updates the time.">Program::timeUpdate</a>() {
+<a name="l00208"></a>00208     GLfloat t = (GLfloat)SDL_GetTicks();
+<a name="l00209"></a>00209     <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a> = t - <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a>;
+<a name="l00210"></a>00210     currentTime = t;
+<a name="l00211"></a>00211     <a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a" title="Current frames per second (based on deltaTime)">FPS</a> = 1000.0f / <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>;
+<a name="l00212"></a>00212 }
+<a name="l00213"></a>00213 
+<a name="l00214"></a><a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95">00214</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95" title="Updates the simulation and camera.">Program::update</a>() {
+<a name="l00215"></a>00215     <span class="comment">// Update the tweak bar.</span>
+<a name="l00216"></a>00216     <a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15" title="Terrain height at the comera position.">heightAtPos</a> = <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;x, <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getPos()-&gt;z);
+<a name="l00217"></a>00217         
+<a name="l00218"></a>00218     
+<a name="l00219"></a>00219     <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 1)
+<a name="l00220"></a>00220     {
+<a name="l00221"></a>00221         
+<a name="l00222"></a>00222         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>) {
+<a name="l00223"></a>00223             <a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b" title="Heightfield for water simulation.">hf</a>-&gt;<a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">runSimGPU</a>(<a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503" title="dT to use in heightfield simulation">dtSim</a>);
+<a name="l00224"></a>00224         }
+<a name="l00225"></a>00225     
 <a name="l00226"></a>00226     
 <a name="l00227"></a>00227     
-<a name="l00228"></a>00228     
-<a name="l00229"></a>00229     }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 2)
-<a name="l00230"></a>00230     {
-<a name="l00231"></a>00231         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>) {
-<a name="l00232"></a>00232             sgpu-&gt;runSimGPU();
-<a name="l00233"></a>00233         }
-<a name="l00234"></a>00234     }
+<a name="l00228"></a>00228     }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> == 2)
+<a name="l00229"></a>00229     {
+<a name="l00230"></a>00230         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>) {
+<a name="l00231"></a>00231             <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a>-&gt;runSimGPU();
+<a name="l00232"></a>00232         }
+<a name="l00233"></a>00233     }
+<a name="l00234"></a>00234     
 <a name="l00235"></a>00235     
-<a name="l00236"></a>00236     
-<a name="l00237"></a>00237     <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>-&gt;<a class="code" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1" title="Use this to specify the way to update the entity.">update</a>();
-<a name="l00238"></a>00238 
-<a name="l00239"></a>00239 }
+<a name="l00236"></a>00236     <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>-&gt;<a class="code" href="classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1" title="Use this to specify the way to update the entity.">update</a>();
+<a name="l00237"></a>00237 
+<a name="l00238"></a>00238 }
+<a name="l00239"></a>00239 
 <a name="l00240"></a>00240 
-<a name="l00241"></a>00241 
-<a name="l00242"></a><a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4">00242</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4" title="All rendering commands are sent here.">Program::display</a>() {
-<a name="l00243"></a>00243     <span class="comment">// Clear the screen.</span>
-<a name="l00244"></a>00244     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-<a name="l00245"></a>00245 
-<a name="l00246"></a>00246     <span class="comment">// ========================== Draw skybox ==========================</span>
-<a name="l00247"></a>00247     glDisable(GL_CULL_FACE);
-<a name="l00248"></a>00248     glDisable(GL_DEPTH_TEST);
-<a name="l00249"></a>00249 
-<a name="l00250"></a>00250     <span class="comment">// ---Camera shader data---</span>
-<a name="l00251"></a>00251     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a>);
-<a name="l00252"></a>00252     <a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b" title="Skycube model.">skycube</a>-&gt;<a class="code" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6" title="Use this to specify the way to draw the entity.">draw</a>();
-<a name="l00253"></a>00253 
-<a name="l00254"></a>00254     <span class="comment">// ========================== Draw Terrain =========================</span>
-<a name="l00255"></a>00255     glEnable(GL_DEPTH_TEST);
-<a name="l00256"></a>00256     glEnable(GL_CULL_FACE);
-<a name="l00257"></a>00257     glCullFace(GL_BACK);
-<a name="l00258"></a>00258 
-<a name="l00259"></a>00259     <span class="comment">// ---Camera shader data---</span>
-<a name="l00260"></a>00260     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>);
-<a name="l00261"></a>00261     <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> != 2){
-<a name="l00262"></a>00262         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>-&gt;<a class="code" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6" title="Use this to specify the way to draw the entity.">draw</a>();
-<a name="l00263"></a>00263     }
-<a name="l00264"></a>00264 
-<a name="l00265"></a>00265     <span class="comment">// ======================== Draw water body ========================</span>
-<a name="l00266"></a>00266     glDisable(GL_CULL_FACE);
-<a name="l00267"></a>00267 
-<a name="l00268"></a>00268     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a>);
-<a name="l00269"></a>00269     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>);
-<a name="l00270"></a>00270     glUniform1f(glGetUniformLocation(<a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>, <span class="stringliteral">&quot;time&quot;</span>), <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a> / 20.0f);
-<a name="l00271"></a>00271     <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>-&gt;<a class="code" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6" title="Use this to specify the way to draw the entity.">draw</a>();
-<a name="l00272"></a>00272 
-<a name="l00273"></a>00273     <span class="comment">// ========================== Draw AntBar ==========================</span>
-<a name="l00274"></a>00274     TwDraw();
-<a name="l00275"></a>00275 
-<a name="l00276"></a>00276     printError(<span class="stringliteral">&quot;after display&quot;</span>);
-<a name="l00277"></a>00277 
-<a name="l00278"></a>00278     SDL_GL_SwapWindow(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>);
-<a name="l00279"></a>00279 }
-<a name="l00280"></a>00280 
-<a name="l00281"></a><a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4">00281</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4" title="Makes sure the program exits cleanly.">Program::clean</a>() {
-<a name="l00282"></a>00282     TwTerminate();
-<a name="l00283"></a>00283     SDL_GL_DeleteContext(<a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490" title="SDL openGL context.">glcontext</a>);
-<a name="l00284"></a>00284     SDL_Quit();
-<a name="l00285"></a>00285 }
+<a name="l00241"></a><a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4">00241</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4" title="All rendering commands are sent here.">Program::display</a>() {
+<a name="l00242"></a>00242     <span class="comment">// Clear the screen.</span>
+<a name="l00243"></a>00243     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<a name="l00244"></a>00244 
+<a name="l00245"></a>00245     <span class="comment">// ========================== Draw skybox ==========================</span>
+<a name="l00246"></a>00246     glDisable(GL_CULL_FACE);
+<a name="l00247"></a>00247     glDisable(GL_DEPTH_TEST);
+<a name="l00248"></a>00248 
+<a name="l00249"></a>00249     <span class="comment">// ---Camera shader data---</span>
+<a name="l00250"></a>00250     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a>);
+<a name="l00251"></a>00251     <a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b" title="Skycube model.">skycube</a>-&gt;<a class="code" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6" title="Use this to specify the way to draw the entity.">draw</a>();
+<a name="l00252"></a>00252 
+<a name="l00253"></a>00253     <span class="comment">// ========================== Draw Terrain =========================</span>
+<a name="l00254"></a>00254     glEnable(GL_DEPTH_TEST);
+<a name="l00255"></a>00255     glEnable(GL_CULL_FACE);
+<a name="l00256"></a>00256     glCullFace(GL_BACK);
+<a name="l00257"></a>00257 
+<a name="l00258"></a>00258     <span class="comment">// ---Camera shader data---</span>
+<a name="l00259"></a>00259     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>);
+<a name="l00260"></a>00260     <span class="keywordflow">if</span>(<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> != 2){
+<a name="l00261"></a>00261         <a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>-&gt;<a class="code" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6" title="Use this to specify the way to draw the entity.">draw</a>();
+<a name="l00262"></a>00262     }
+<a name="l00263"></a>00263 
+<a name="l00264"></a>00264     <span class="comment">// ======================== Draw water body ========================</span>
+<a name="l00265"></a>00265     glDisable(GL_CULL_FACE);
+<a name="l00266"></a>00266 
+<a name="l00267"></a>00267     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a>);
+<a name="l00268"></a>00268     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;uploadCamData(<a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>);
+<a name="l00269"></a>00269     glUniform1f(glGetUniformLocation(<a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>, <span class="stringliteral">&quot;time&quot;</span>), <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a> / 20.0f);
+<a name="l00270"></a>00270     <a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>-&gt;<a class="code" href="classmy_drawable.html#a7fee23ede2291e4d8ceecc4e6056cfd6" title="Use this to specify the way to draw the entity.">draw</a>();
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272     <span class="comment">// ========================== Draw AntBar ==========================</span>
+<a name="l00273"></a>00273     TwDraw();
+<a name="l00274"></a>00274 
+<a name="l00275"></a>00275     printError(<span class="stringliteral">&quot;after display&quot;</span>);
+<a name="l00276"></a>00276 
+<a name="l00277"></a>00277     SDL_GL_SwapWindow(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>);
+<a name="l00278"></a>00278 }
+<a name="l00279"></a>00279 
+<a name="l00280"></a><a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4">00280</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4" title="Makes sure the program exits cleanly.">Program::clean</a>() {
+<a name="l00281"></a>00281     TwTerminate();
+<a name="l00282"></a>00282     SDL_GL_DeleteContext(<a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490" title="SDL openGL context.">glcontext</a>);
+<a name="l00283"></a>00283     SDL_Quit();
+<a name="l00284"></a>00284 }
+<a name="l00285"></a>00285 
 <a name="l00286"></a>00286 
-<a name="l00287"></a>00287 
-<a name="l00288"></a>00288 <span class="comment">// Handle events.</span>
-<a name="l00289"></a><a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b">00289</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b" title="Takes care of all events since last main loop iteration.">Program::handleEvent</a>(SDL_Event* event) {
-<a name="l00290"></a>00290     <span class="keywordflow">switch</span> (event-&gt;type) {
-<a name="l00291"></a>00291     <span class="keywordflow">case</span> SDL_QUIT:
-<a name="l00292"></a>00292         <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a> = <span class="keyword">false</span>;
-<a name="l00293"></a>00293         <span class="keywordflow">break</span>;
-<a name="l00294"></a>00294     <span class="keywordflow">case</span> SDL_KEYDOWN:
-<a name="l00295"></a>00295         <a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">handleKeypress</a>(event);
-<a name="l00296"></a>00296         <span class="keywordflow">break</span>;
-<a name="l00297"></a>00297     <span class="keywordflow">case</span> SDL_WINDOWEVENT:
-<a name="l00298"></a>00298         <span class="keywordflow">switch</span> (event-&gt;window.event) {
-<a name="l00299"></a>00299         <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
-<a name="l00300"></a>00300             SDL_SetWindowSize(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>, event-&gt;window.data1, event-&gt;window.data2);
-<a name="l00301"></a>00301             SDL_GetWindowSize(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>, &amp;<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, &amp;<a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
-<a name="l00302"></a>00302             glViewport(0, 0, <a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
-<a name="l00303"></a>00303             TwWindowSize(<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
-<a name="l00304"></a>00304             <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;updateVTP();
-<a name="l00305"></a>00305             <span class="keywordflow">break</span>;
-<a name="l00306"></a>00306         }
-<a name="l00307"></a>00307         <span class="keywordflow">break</span>;
-<a name="l00308"></a>00308     <span class="keywordflow">case</span> SDL_MOUSEMOTION:
-<a name="l00309"></a>00309         <a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">handleMouseMove</a>(event);
-<a name="l00310"></a>00310         <span class="keywordflow">break</span>;
-<a name="l00311"></a>00311     <span class="keywordflow">case</span> SDL_MOUSEBUTTONDOWN:
-<a name="l00312"></a>00312         TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
-<a name="l00313"></a>00313         <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">handleMouseButton</a>(event);
-<a name="l00314"></a>00314         <span class="keywordflow">break</span>;
-<a name="l00315"></a>00315     <span class="keywordflow">case</span> SDL_MOUSEBUTTONUP:
-<a name="l00316"></a>00316         TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
-<a name="l00317"></a>00317         <span class="keywordflow">break</span>;
-<a name="l00318"></a>00318     <span class="keywordflow">default</span>:
-<a name="l00319"></a>00319         <span class="keywordflow">break</span>;
-<a name="l00320"></a>00320     }
-<a name="l00321"></a>00321 }
-<a name="l00322"></a>00322 
-<a name="l00323"></a>00323 <span class="comment">// Handle keys.</span>
-<a name="l00324"></a><a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">00324</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">Program::handleKeypress</a>(SDL_Event* event) {
-<a name="l00325"></a>00325     TwKeyPressed(event-&gt;key.keysym.sym, TW_KMOD_NONE);
-<a name="l00326"></a>00326     <span class="keywordflow">switch</span> (event-&gt;key.keysym.sym) {
-<a name="l00327"></a>00327     <span class="keywordflow">case</span> SDLK_ESCAPE:
-<a name="l00328"></a>00328         <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a> = <span class="keyword">false</span>;
-<a name="l00329"></a>00329         <span class="keywordflow">break</span>;
-<a name="l00330"></a>00330     <span class="keywordflow">case</span> SDLK_h:
-<a name="l00331"></a>00331         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;toggleFrozen();
-<a name="l00332"></a>00332         <a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a> = !<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>;
-<a name="l00333"></a>00333         <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
-<a name="l00334"></a>00334             SDL_SetRelativeMouseMode(SDL_FALSE);
-<a name="l00335"></a>00335         } <span class="keywordflow">else</span> {
-<a name="l00336"></a>00336             SDL_SetRelativeMouseMode(SDL_TRUE);
-<a name="l00337"></a>00337         }
-<a name="l00338"></a>00338         <span class="keywordflow">break</span>;
-<a name="l00339"></a>00339     <span class="keywordflow">case</span> SDLK_r:
-<a name="l00340"></a>00340         <span class="keywordtype">int</span> isBarHidden;
-<a name="l00341"></a>00341         TwGetParam(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, NULL, <span class="stringliteral">&quot;iconified&quot;</span>, TW_PARAM_INT32, 1, &amp;isBarHidden);
-<a name="l00342"></a>00342         <span class="keywordflow">if</span> (!isBarHidden) {
-<a name="l00343"></a>00343             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=true&quot;</span>);
-<a name="l00344"></a>00344         } <span class="keywordflow">else</span> {
-<a name="l00345"></a>00345             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=false&quot;</span>);
-<a name="l00346"></a>00346         }
-<a name="l00347"></a>00347         <span class="keywordflow">break</span>;
-<a name="l00348"></a>00348     <span class="keywordflow">case</span> SDLK_p:
-<a name="l00349"></a>00349         <a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a> = !<a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>;
-<a name="l00350"></a>00350         <span class="keywordflow">break</span>;
-<a name="l00351"></a>00351     <span class="keywordflow">case</span> SDLK_c:
-<a name="l00352"></a>00352         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> != 2)
-<a name="l00353"></a>00353             <span class="keywordflow">break</span>;
-<a name="l00354"></a>00354         sgpu-&gt;cycleBuffer();
-<a name="l00355"></a>00355         <span class="keywordflow">break</span>;
-<a name="l00356"></a>00356     <span class="keywordflow">default</span>:
-<a name="l00357"></a>00357         <span class="keywordflow">break</span>;
-<a name="l00358"></a>00358     }
-<a name="l00359"></a>00359 }
-<a name="l00360"></a>00360 
-<a name="l00361"></a><a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c">00361</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">Program::handleMouseMove</a>(SDL_Event* event) {
-<a name="l00362"></a>00362     <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
-<a name="l00363"></a>00363         TwMouseMotion(event-&gt;motion.x, event-&gt;motion.y);
-<a name="l00364"></a>00364     }
-<a name="l00365"></a>00365     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;changeLookAtPos(event-&gt;motion.xrel, event-&gt;motion.yrel);
-<a name="l00366"></a>00366 }
-<a name="l00367"></a>00367 
-<a name="l00368"></a><a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185">00368</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">Program::handleMouseButton</a>(SDL_Event* event) {
-<a name="l00369"></a>00369     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
-<a name="l00370"></a>00370     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_LSHIFT] &amp;&amp; !<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
-<a name="l00371"></a>00371         <span class="keywordtype">float</span> depth;
-<a name="l00372"></a>00372         <span class="keywordtype">int</span> x;
-<a name="l00373"></a>00373         <span class="keywordtype">int</span> y;
-<a name="l00374"></a>00374         GLint viewport[4] = { 0, 0, 0, 0 };
-<a name="l00375"></a>00375         glGetIntegerv(GL_VIEWPORT, viewport);
-<a name="l00376"></a>00376         SDL_GetMouseState(&amp;x, &amp;y);
-<a name="l00377"></a>00377         glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &amp;depth);
-<a name="l00378"></a>00378         GLdouble objY = 0.0;
-<a name="l00379"></a>00379         gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getWTV()), glm::value_ptr((glm::dmat4)*<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getVTP()), viewport, &amp;<a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>, &amp;objY, &amp;<a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>);
-<a name="l00380"></a>00380 
-<a name="l00381"></a>00381         <a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a> = (GLfloat)objY;
-<a name="l00382"></a>00382         <a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a> = <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)<a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>, (GLfloat)<a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>);
-<a name="l00383"></a>00383     }
-<a name="l00384"></a>00384 }
-<a name="l00385"></a>00385 
-<a name="l00386"></a><a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8">00386</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">Program::checkKeys</a>() {
-<a name="l00387"></a>00387     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
-<a name="l00388"></a>00388     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
-<a name="l00389"></a>00389         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;forward(<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
-<a name="l00390"></a>00390     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
-<a name="l00391"></a>00391         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;forward(-<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
-<a name="l00392"></a>00392     }
-<a name="l00393"></a>00393     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
-<a name="l00394"></a>00394         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;strafe(<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
-<a name="l00395"></a>00395     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
-<a name="l00396"></a>00396         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;strafe(-<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
-<a name="l00397"></a>00397     }
-<a name="l00398"></a>00398     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_Q]) {
-<a name="l00399"></a>00399         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;jump(<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
-<a name="l00400"></a>00400     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_E]) {
-<a name="l00401"></a>00401         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;jump(-<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
-<a name="l00402"></a>00402     }
-<a name="l00403"></a>00403 }
+<a name="l00287"></a>00287 <span class="comment">// Handle events.</span>
+<a name="l00288"></a><a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b">00288</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b" title="Takes care of all events since last main loop iteration.">Program::handleEvent</a>(SDL_Event* event) {
+<a name="l00289"></a>00289     <span class="keywordflow">switch</span> (event-&gt;type) {
+<a name="l00290"></a>00290     <span class="keywordflow">case</span> SDL_QUIT:
+<a name="l00291"></a>00291         <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a> = <span class="keyword">false</span>;
+<a name="l00292"></a>00292         <span class="keywordflow">break</span>;
+<a name="l00293"></a>00293     <span class="keywordflow">case</span> SDL_KEYDOWN:
+<a name="l00294"></a>00294         <a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">handleKeypress</a>(event);
+<a name="l00295"></a>00295         <span class="keywordflow">break</span>;
+<a name="l00296"></a>00296     <span class="keywordflow">case</span> SDL_WINDOWEVENT:
+<a name="l00297"></a>00297         <span class="keywordflow">switch</span> (event-&gt;window.event) {
+<a name="l00298"></a>00298         <span class="keywordflow">case</span> SDL_WINDOWEVENT_RESIZED:
+<a name="l00299"></a>00299             SDL_SetWindowSize(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>, event-&gt;window.data1, event-&gt;window.data2);
+<a name="l00300"></a>00300             SDL_GetWindowSize(<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>, &amp;<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, &amp;<a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
+<a name="l00301"></a>00301             glViewport(0, 0, <a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
+<a name="l00302"></a>00302             TwWindowSize(<a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>, <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>);
+<a name="l00303"></a>00303             <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;updateVTP();
+<a name="l00304"></a>00304             <span class="keywordflow">break</span>;
+<a name="l00305"></a>00305         }
+<a name="l00306"></a>00306         <span class="keywordflow">break</span>;
+<a name="l00307"></a>00307     <span class="keywordflow">case</span> SDL_MOUSEMOTION:
+<a name="l00308"></a>00308         <a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">handleMouseMove</a>(event);
+<a name="l00309"></a>00309         <span class="keywordflow">break</span>;
+<a name="l00310"></a>00310     <span class="keywordflow">case</span> SDL_MOUSEBUTTONDOWN:
+<a name="l00311"></a>00311         TwMouseButton(TW_MOUSE_PRESSED, TW_MOUSE_LEFT);
+<a name="l00312"></a>00312         <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">handleMouseButton</a>(event);
+<a name="l00313"></a>00313         <span class="keywordflow">break</span>;
+<a name="l00314"></a>00314     <span class="keywordflow">case</span> SDL_MOUSEBUTTONUP:
+<a name="l00315"></a>00315         TwMouseButton(TW_MOUSE_RELEASED, TW_MOUSE_LEFT);
+<a name="l00316"></a>00316         <span class="keywordflow">break</span>;
+<a name="l00317"></a>00317     <span class="keywordflow">default</span>:
+<a name="l00318"></a>00318         <span class="keywordflow">break</span>;
+<a name="l00319"></a>00319     }
+<a name="l00320"></a>00320 }
+<a name="l00321"></a>00321 
+<a name="l00322"></a>00322 <span class="comment">// Handle keys.</span>
+<a name="l00323"></a><a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad">00323</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">Program::handleKeypress</a>(SDL_Event* event) {
+<a name="l00324"></a>00324     TwKeyPressed(event-&gt;key.keysym.sym, TW_KMOD_NONE);
+<a name="l00325"></a>00325     <span class="keywordflow">switch</span> (event-&gt;key.keysym.sym) {
+<a name="l00326"></a>00326     <span class="keywordflow">case</span> SDLK_ESCAPE:
+<a name="l00327"></a>00327         <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a> = <span class="keyword">false</span>;
+<a name="l00328"></a>00328         <span class="keywordflow">break</span>;
+<a name="l00329"></a>00329     <span class="keywordflow">case</span> SDLK_h:
+<a name="l00330"></a>00330         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;toggleFrozen();
+<a name="l00331"></a>00331         <a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a> = !<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>;
+<a name="l00332"></a>00332         <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
+<a name="l00333"></a>00333             SDL_SetRelativeMouseMode(SDL_FALSE);
+<a name="l00334"></a>00334         } <span class="keywordflow">else</span> {
+<a name="l00335"></a>00335             SDL_SetRelativeMouseMode(SDL_TRUE);
+<a name="l00336"></a>00336         }
+<a name="l00337"></a>00337         <span class="keywordflow">break</span>;
+<a name="l00338"></a>00338     <span class="keywordflow">case</span> SDLK_r:
+<a name="l00339"></a>00339         <span class="keywordtype">int</span> isBarHidden;
+<a name="l00340"></a>00340         TwGetParam(<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>, NULL, <span class="stringliteral">&quot;iconified&quot;</span>, TW_PARAM_INT32, 1, &amp;isBarHidden);
+<a name="l00341"></a>00341         <span class="keywordflow">if</span> (!isBarHidden) {
+<a name="l00342"></a>00342             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=true&quot;</span>);
+<a name="l00343"></a>00343         } <span class="keywordflow">else</span> {
+<a name="l00344"></a>00344             TwDefine(<span class="stringliteral">&quot; UIinfo iconified=false&quot;</span>);
+<a name="l00345"></a>00345         }
+<a name="l00346"></a>00346         <span class="keywordflow">break</span>;
+<a name="l00347"></a>00347     <span class="keywordflow">case</span> SDLK_p:
+<a name="l00348"></a>00348         <a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a> = !<a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>;
+<a name="l00349"></a>00349         <span class="keywordflow">break</span>;
+<a name="l00350"></a>00350     <span class="keywordflow">case</span> SDLK_c:
+<a name="l00351"></a>00351         <span class="keywordflow">if</span> (<a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a> != 2)
+<a name="l00352"></a>00352             <span class="keywordflow">break</span>;
+<a name="l00353"></a>00353         <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a>-&gt;cycleBuffer();
+<a name="l00354"></a>00354         <span class="keywordflow">break</span>;
+<a name="l00355"></a>00355     <span class="keywordflow">default</span>:
+<a name="l00356"></a>00356         <span class="keywordflow">break</span>;
+<a name="l00357"></a>00357     }
+<a name="l00358"></a>00358 }
+<a name="l00359"></a>00359 
+<a name="l00360"></a><a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c">00360</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">Program::handleMouseMove</a>(SDL_Event* event) {
+<a name="l00361"></a>00361     <span class="keywordflow">if</span> (!<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
+<a name="l00362"></a>00362         TwMouseMotion(event-&gt;motion.x, event-&gt;motion.y);
+<a name="l00363"></a>00363     }
+<a name="l00364"></a>00364     <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;changeLookAtPos(event-&gt;motion.xrel, event-&gt;motion.yrel);
+<a name="l00365"></a>00365 }
+<a name="l00366"></a>00366 
+<a name="l00367"></a><a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185">00367</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">Program::handleMouseButton</a>(SDL_Event* event) {
+<a name="l00368"></a>00368     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
+<a name="l00369"></a>00369     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_LSHIFT] &amp;&amp; !<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
+<a name="l00370"></a>00370         <span class="keywordtype">float</span> depth;
+<a name="l00371"></a>00371         <span class="keywordtype">int</span> x;
+<a name="l00372"></a>00372         <span class="keywordtype">int</span> y;
+<a name="l00373"></a>00373         GLint viewport[4] = { 0, 0, 0, 0 };
+<a name="l00374"></a>00374         glGetIntegerv(GL_VIEWPORT, viewport);
+<a name="l00375"></a>00375         SDL_GetMouseState(&amp;x, &amp;y);
+<a name="l00376"></a>00376         glReadPixels(x, viewport[3] - y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &amp;depth);
+<a name="l00377"></a>00377         GLdouble objY = 0.0;
+<a name="l00378"></a>00378         gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getWTV()), glm::value_ptr((glm::dmat4)*<a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;getVTP()), viewport, &amp;<a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>, &amp;objY, &amp;<a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>);
+<a name="l00379"></a>00379 
+<a name="l00380"></a>00380         <a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a> = (GLfloat)objY;
+<a name="l00381"></a>00381         <a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a> = <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)<a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>, (GLfloat)<a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>);
+<a name="l00382"></a>00382     }
+<a name="l00383"></a>00383 }
+<a name="l00384"></a>00384 
+<a name="l00385"></a><a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8">00385</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">Program::checkKeys</a>() {
+<a name="l00386"></a>00386     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
+<a name="l00387"></a>00387     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_W]) {
+<a name="l00388"></a>00388         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;forward(<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
+<a name="l00389"></a>00389     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_S]) {
+<a name="l00390"></a>00390         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;forward(-<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
+<a name="l00391"></a>00391     }
+<a name="l00392"></a>00392     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_A]) {
+<a name="l00393"></a>00393         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;strafe(<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
+<a name="l00394"></a>00394     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_D]) {
+<a name="l00395"></a>00395         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;strafe(-<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
+<a name="l00396"></a>00396     }
+<a name="l00397"></a>00397     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_Q]) {
+<a name="l00398"></a>00398         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;jump(<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
+<a name="l00399"></a>00399     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_E]) {
+<a name="l00400"></a>00400         <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>-&gt;jump(-<a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>);
+<a name="l00401"></a>00401     }
+<a name="l00402"></a>00402 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -521,7 +520,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="program_8cpp.html">program.cpp</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 00:45:23 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
