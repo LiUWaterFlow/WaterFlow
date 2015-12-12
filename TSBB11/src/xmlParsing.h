@@ -74,7 +74,7 @@ std::string loadMapPath(const char* xmlFile);
 std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile);
 
 /// @brief This function removes flowSources to free up memory
-/// @param Vector with pointers to flowSource objects to be deleted.
+/// @param srces Vector with pointers to flowSource objects to be deleted.
 void deleteAllFlows(std::vector<FlowSource*> srces);
 
 #endif
