@@ -1,7 +1,7 @@
 var searchData=
 [
   ['init',['init',['../class_program.html#af90b1259f253f244467ab8ad486a27c6',1,'Program']]],
-  ['init_5fdata_5fstruct',['init_Data_struct',['../structinit___data__struct.html',1,'']]],
+  ['init_5fdata_5fstruct',['init_Data_struct',['../structinit___data__struct.html',1,'init_Data_struct'],['../structinit___data__struct.html#af47b94af894188f5f23dddc7da28d572',1,'init_Data_struct::init_Data_struct()']]],
   ['initdepthprogram',['initDepthProgram',['../class_water.html#a5a3a1d56f6e0818bcdd5c9b686f55fe8',1,'Water']]],
   ['initdraw',['initDraw',['../class_height_field.html#a7b3fbdb7763fbc6cd33d96ad38aa4694',1,'HeightField::initDraw()'],['../class_height_map.html#ab709cbc473f892883f28ef605291624c',1,'HeightMap::initDraw()'],['../class_voxelgrid.html#a3cb4da20aae77258b01efa9059ff319d',1,'Voxelgrid::initDraw()']]],
   ['initfloodfill',['initFloodFill',['../class_height_field.html#ace18eb2da691c51dfe7666e075e2f362',1,'HeightField']]],
