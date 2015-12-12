@@ -169,7 +169,7 @@ Functions</h2></td></tr>
 <p>This function removes flowSources to free up memory. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">Vector</td><td>with pointers to flowSource objects to be deleted. </td></tr>
+    <tr><td class="paramname">srces</td><td>Vector with pointers to flowSource objects to be deleted. </td></tr>
   </table>
   </dd>
 </dl>
@@ -206,8 +206,8 @@ Functions</h2></td></tr>
 <p>This function progresses the pressure time for the flowsources provided and checks if there has ocured a change in pressure. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">Vector</td><td>with pointers to flowSource objects to be updated and and checked for changes. </td></tr>
-    <tr><td class="paramname">Time</td><td>unit to advance the internal source time with given as a foat. </td></tr>
+    <tr><td class="paramname">flows</td><td>Vector with pointers to flowSource objects to be updated and and checked for changes. </td></tr>
+    <tr><td class="paramname">dt</td><td>Time unit to advance the internal source time with given as a foat. </td></tr>
   </table>
   </dd>
 </dl>
@@ -291,7 +291,7 @@ Functions</h2></td></tr>
 <p>Loads all flood objects given in the floods node from a XML file to a vector. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">Relative</td><td>path to the XML file containing the floods to fill the terrain with. </td></tr>
+    <tr><td class="paramname">xmlFile</td><td>Relative path to the XML file containing the floods to fill the terrain with. </td></tr>
   </table>
   </dd>
 </dl>
@@ -347,7 +347,7 @@ Functions</h2></td></tr>
 <p>Loads a path given in the data node from a XML file. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">relative</td><td>path to the XML file containing the terrain map to be loaded. </td></tr>
+    <tr><td class="paramname">xmlFile</td><td>relative path to the XML file containing the terrain map to be loaded. </td></tr>
   </table>
   </dd>
 </dl>
@@ -581,7 +581,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="xml_parsing_8h.html">xmlParsing.h</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 11:58:27 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 12:08:56 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
