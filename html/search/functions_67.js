@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['generatecanvas',['generateCanvas',['../_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02',1,'Utilities.cpp']]],
-  ['generatecube',['generateCube',['../_utilities_8h.html#aa506b4da68622401ef54b3c2b61f61c5',1,'Utilities.cpp']]],
+  ['generatecanvas',['generateCanvas',['../_utilities_8cpp.html#a553ad688ab9cff4181348ca37bb66c02',1,'generateCanvas():&#160;Utilities.cpp'],['../_utilities_8h.html#a553ad688ab9cff4181348ca37bb66c02',1,'generateCanvas():&#160;Utilities.cpp']]],
+  ['generatecube',['generateCube',['../_utilities_8cpp.html#aa506b4da68622401ef54b3c2b61f61c5',1,'generateCube(GLfloat s):&#160;Utilities.cpp'],['../_utilities_8h.html#aa506b4da68622401ef54b3c2b61f61c5',1,'generateCube(GLfloat s):&#160;Utilities.cpp']]],
   ['generateheighttexture',['generateHeightTexture',['../class_height_map.html#a3e153f90e5693a5b9ad4797bd744f085',1,'HeightMap']]],
   ['getcoord',['getCoord',['../class_data_handler.html#a439774a91fe8218fe6fffe5882102608',1,'DataHandler']]],
   ['getdata',['getData',['../class_data_handler.html#a21b8d03927e699113554021fa3303b8f',1,'DataHandler']]],

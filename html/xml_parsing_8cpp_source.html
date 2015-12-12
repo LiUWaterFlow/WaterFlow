@@ -98,7 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/xmlParsing.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;xmlParsing.h&quot;</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;<a class="code" href="xml_parsing_8h.html" title="This file implement all the parsing functions for the XML file contents and an generating function fo...">xmlParsing.h</a>&quot;</span>
 <a name="l00002"></a>00002 
 <a name="l00003"></a>00003 <span class="comment">// This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.</span>
 <a name="l00004"></a>00004 
@@ -118,7 +118,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00018"></a>00018 }
 <a name="l00019"></a>00019 
 <a name="l00020"></a>00020 <span class="comment">// Converts a string with CSV to a vector with floats.</span>
-<a name="l00021"></a>00021 std::vector&lt;float&gt; fStrToVector(std::string str){
+<a name="l00021"></a><a class="code" href="xml_parsing_8h.html#a0de587f4a597747382371f3546a3976e">00021</a> std::vector&lt;float&gt; fStrToVector(std::string str){
 <a name="l00022"></a>00022   std::vector&lt;float&gt; valueVector;
 <a name="l00023"></a>00023   std::stringstream ss(str);
 <a name="l00024"></a>00024   std::string fValue;
@@ -133,7 +133,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a>00033 }
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035 <span class="comment">//Converts a string with CSV to a vector with ints.</span>
-<a name="l00036"></a>00036 std::vector&lt;int&gt; iStrToVector(std::string str){
+<a name="l00036"></a><a class="code" href="xml_parsing_8h.html#ad07366eb0018d98b50a2d948080ca729">00036</a> std::vector&lt;int&gt; iStrToVector(std::string str){
 <a name="l00037"></a>00037   std::vector&lt;int&gt; valueVector;
 <a name="l00038"></a>00038   std::stringstream ss(str);
 <a name="l00039"></a>00039   std::string iValue;
@@ -148,7 +148,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00048"></a>00048 }
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 <span class="comment">// This function parses the pressure values from the XML file by takeing the Pressure node, the PressureTime node and a pointer to a FlowSource object as input and adding the contents to the provided Object.</span>
-<a name="l00051"></a>00051 <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time){
+<a name="l00051"></a><a class="code" href="xml_parsing_8h.html#a86df4518021c2206b1db3aacb7d0462d">00051</a> <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time){
 <a name="l00052"></a>00052   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
 <a name="l00053"></a>00053   std::string pstr = pres.attribute(<span class="stringliteral">&quot;p&quot;</span>).value();
 <a name="l00054"></a>00054   std::vector&lt;float&gt; timevec = fStrToVector(timestr);
@@ -157,7 +157,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00057"></a>00057 }
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059 <span class="comment">// This function parses the Position node and adds it to by pointer provided FlowSource Object.</span>
-<a name="l00060"></a>00060 <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
+<a name="l00060"></a><a class="code" href="xml_parsing_8h.html#aeed36cfb6e61afc083de19e3a4149d5b">00060</a> <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
 <a name="l00061"></a>00061   <span class="keywordtype">int</span> x, y, z;
 <a name="l00062"></a>00062   x = node.attribute(<span class="stringliteral">&quot;x&quot;</span>).as_int();
 <a name="l00063"></a>00063   y = node.attribute(<span class="stringliteral">&quot;y&quot;</span>).as_int();
@@ -166,7 +166,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00066"></a>00066 }
 <a name="l00067"></a>00067 
 <a name="l00068"></a>00068 <span class="comment">// This function parses the xyz direction of A Normal node and the time of a NormalTime node, then adds the result to an FlowSource Object given by pointer.</span>
-<a name="l00069"></a>00069 <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time){
+<a name="l00069"></a><a class="code" href="xml_parsing_8h.html#a6e35121f61218a4aa715dbe4eaf28066">00069</a> <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time){
 <a name="l00070"></a>00070   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
 <a name="l00071"></a>00071   std::vector&lt;float&gt; ndir;
 <a name="l00072"></a>00072   std::vector&lt;std::vector&lt;float&gt; &gt; nvec;
@@ -183,20 +183,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00083"></a>00083 }
 <a name="l00084"></a>00084 
 <a name="l00085"></a>00085 
-<a name="l00086"></a>00086 <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
+<a name="l00086"></a><a class="code" href="xml_parsing_8h.html#a33a1bfd12f751836dca16d1173d961b6">00086</a> <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
 <a name="l00087"></a>00087   <span class="keywordtype">float</span> tot;
 <a name="l00088"></a>00088   tot = node.attribute(<span class="stringliteral">&quot;tot&quot;</span>).as_float();
 <a name="l00089"></a>00089   obj-&gt;<a class="code" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716" title="This sets a float symbolising the total water in a source.">setTotalWater</a>(tot);
 <a name="l00090"></a>00090 }
 <a name="l00091"></a>00091 
-<a name="l00092"></a>00092 <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
+<a name="l00092"></a><a class="code" href="xml_parsing_8h.html#a0073e599b7b1e7cf28efcd15d577f413">00092</a> <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
 <a name="l00093"></a>00093   <span class="keywordtype">float</span> r;
 <a name="l00094"></a>00094   r = node.attribute(<span class="stringliteral">&quot;r&quot;</span>).as_float();
 <a name="l00095"></a>00095   obj-&gt;<a class="code" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09" title="Sets the radius of the source.">setRadius</a>(r);
 <a name="l00096"></a>00096 }
 <a name="l00097"></a>00097 
 <a name="l00098"></a>00098 <span class="comment">// This Function transverces all child nodes to a Sources node in a (by input) specified XML file. Fore every source specifed it adds a new FlowSource object and populates it with the contents in the XML file coresponding to the source. It returns a vector with pointers to the objects it creates.</span>
-<a name="l00099"></a>00099 std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile) {
+<a name="l00099"></a><a class="code" href="xml_parsing_8h.html#a5bb94de317ebdd420db4ceb9bc680b75">00099</a> std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile) {
 <a name="l00100"></a>00100   pugi::xml_document doc;
 <a name="l00101"></a>00101   std::vector&lt;FlowSource*&gt; srces;
 <a name="l00102"></a>00102   <span class="keywordflow">if</span> (!doc.load_file(xmlFile)) <span class="keywordflow">return</span> srces;
@@ -249,7 +249,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00149"></a>00149 }
 <a name="l00150"></a>00150 
 <a name="l00151"></a>00151 
-<a name="l00152"></a>00152 <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces){
+<a name="l00152"></a><a class="code" href="xml_parsing_8h.html#af56f09b13f2870063e6c632e4dde426c">00152</a> <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces){
 <a name="l00153"></a>00153   <span class="keywordflow">for</span>(<span class="keyword">auto</span> it = srces.begin(); it != srces.end(); ++it){
 <a name="l00154"></a>00154     <span class="keyword">delete</span> *it;
 <a name="l00155"></a>00155   }
@@ -262,7 +262,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -275,7 +275,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>xmlParsing.cpp</b>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

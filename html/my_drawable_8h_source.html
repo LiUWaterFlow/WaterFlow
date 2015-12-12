@@ -98,7 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/myDrawable.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a href="my_drawable_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
 <a name="l00002"></a>00002 
 <a name="l00003"></a>00003 
 <a name="l00004"></a>00004 <span class="preprocessor">#ifndef MYDRAWABLE_H</span>
@@ -122,7 +122,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00029"></a><a class="code" href="struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246">00029</a>     GLfloat <a class="code" href="struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246" title="Specular exponent of the light (should probably be part of material not light)">specularComponent</a>;  
 <a name="l00030"></a>00030 };
 <a name="l00031"></a>00031 
-<a name="l00034"></a>00034 <span class="keyword">enum</span> textureUnits {
+<a name="l00034"></a><a class="code" href="my_drawable_8h.html#ab878a3ea1dd7ba461930cf8717b2f586">00034</a> <span class="keyword">enum</span> <a class="code" href="my_drawable_8h.html#ab878a3ea1dd7ba461930cf8717b2f586" title="The texture unit used for different textures.">textureUnits</a> {
 <a name="l00035"></a>00035     SKYBOX_TEXUNIT,
 <a name="l00036"></a>00036     TERRAINDATA_TEXUNIT,
 <a name="l00037"></a>00037     TERRAIN_FIRST_TEXUNIT,
@@ -165,7 +165,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00096"></a>00096     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_sky_cube.html#adb558d01880c61e354fdcb1155b1bf75" title="Draw call for the skycube.">draw</a>();
 <a name="l00097"></a>00097 };
 <a name="l00098"></a>00098 
-<a name="l00104"></a><a class="code" href="class_height_map.html">00104</a> <span class="keyword">class </span><a class="code" href="class_height_map.html">HeightMap</a> : <span class="keyword">public</span> <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> {
+<a name="l00104"></a><a class="code" href="class_height_map.html">00104</a> <span class="keyword">class </span><a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a> : <span class="keyword">public</span> <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> {
 <a name="l00105"></a>00105  <span class="keyword">protected</span>:
 <a name="l00106"></a><a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f">00106</a>     GLuint <a class="code" href="class_height_map.html#ab41281520075f40db2aa2cb2a7a8e03f" title="The vertice data buffers in order: Vertex coordinate, Texture Coordinate, Normals, Incides.">drawBuffers</a>[4];  
 <a name="l00107"></a><a class="code" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f">00107</a>     GLuint <a class="code" href="class_height_map.html#a3a63f103ccb56ef5ec4945d35cbf904f" title="Buffer with the height data information.">heightBuffer</a>;    
@@ -201,7 +201,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00159"></a>00159     <span class="keyword">static</span> <span class="keywordtype">void</span> TW_CALL <a class="code" href="class_height_map.html#a2be3b4aa547f359dda3f709d45b136d8" title="Used by AntTweakBar to get which texture is in use.">GetTextureCB</a>(<span class="keywordtype">void</span>* value, <span class="keywordtype">void</span>* clientData);
 <a name="l00160"></a>00160 };
 <a name="l00161"></a>00161 
-<a name="l00167"></a><a class="code" href="class_water.html">00167</a> <span class="keyword">class </span><a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a> : <span class="keyword">public</span> <a class="code" href="class_height_map.html">HeightMap</a> {
+<a name="l00167"></a><a class="code" href="class_water.html">00167</a> <span class="keyword">class </span><a class="code" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a> : <span class="keyword">public</span> <a class="code" href="class_height_map.html" title="This class can be used to create models from height maps.">HeightMap</a> {
 <a name="l00168"></a>00168 <span class="keyword">private</span>:
 <a name="l00169"></a><a class="code" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8">00169</a>     GLfloat <a class="code" href="class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8" title="Tranparancy of the water.">transparency</a>;   
 <a name="l00170"></a><a class="code" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87">00170</a>     GLfloat <a class="code" href="class_water.html#a4c1d2c10001567f81c79d4f85edb7d87" title="Depth drawn as black in the depth shader.">maxDepth</a>;       
@@ -236,7 +236,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -247,9 +247,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>myDrawable.h</b>      </li>
+      <li class="navelem"><a class="el" href="my_drawable_8h.html">myDrawable.h</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

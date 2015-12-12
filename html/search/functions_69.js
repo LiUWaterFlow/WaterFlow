@@ -7,5 +7,6 @@ var searchData=
   ['initgpu',['initGPU',['../class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c',1,'HeightField']]],
   ['inittest',['initTest',['../class_height_field.html#a24a0541061bf79f26c3a66a5ee47cbc1',1,'HeightField']]],
   ['initupdate',['initUpdate',['../class_height_map.html#afe4e1929278b03da7a45faf16ed93ab6',1,'HeightMap']]],
-  ['isequalpoint',['isEqualPoint',['../class_voxelgrid.html#a5f3ca05d55e3fc8b47f2e306f6d1b02c',1,'Voxelgrid']]]
+  ['isequalpoint',['isEqualPoint',['../class_voxelgrid.html#a5f3ca05d55e3fc8b47f2e306f6d1b02c',1,'Voxelgrid']]],
+  ['istrtovector',['iStrToVector',['../xml_parsing_8h.html#ad07366eb0018d98b50a2d948080ca729',1,'xmlParsing.cpp']]]
 ];

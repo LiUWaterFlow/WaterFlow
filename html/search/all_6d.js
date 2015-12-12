@@ -10,5 +10,6 @@ var searchData=
   ['mousehidden',['mouseHidden',['../class_program.html#a493bb9224256680646ad4b665dcf7cbb',1,'Program']]],
   ['mydrawable',['myDrawable',['../classmy_drawable.html',1,'myDrawable'],['../classmy_drawable.html#afc19e8f75e9681697d836ce832ba7fd7',1,'myDrawable::myDrawable()']]],
   ['mydrawable_2ecpp',['myDrawable.cpp',['../my_drawable_8cpp.html',1,'']]],
-  ['mystrtof',['myStrtof',['../_utilities_8h.html#abd9c4e46f1ccd1abff3b99b4181d9dc6',1,'Utilities.cpp']]]
+  ['mydrawable_2eh',['myDrawable.h',['../my_drawable_8h.html',1,'']]],
+  ['mystrtof',['myStrtof',['../_utilities_8cpp.html#abd9c4e46f1ccd1abff3b99b4181d9dc6',1,'myStrtof(char *strStart, char **strEnd):&#160;Utilities.cpp'],['../_utilities_8h.html#abd9c4e46f1ccd1abff3b99b4181d9dc6',1,'myStrtof(char *strStart, char **strEnd):&#160;Utilities.cpp']]]
 ];

@@ -237,12 +237,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00137"></a>00137     }
 <a name="l00138"></a>00138 
 <a name="l00139"></a>00139 
-<a name="l00140"></a>00140     advectWaterProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/advectWaterShader.comp&quot;</span>);
-<a name="l00141"></a>00141     addProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/addHeightShader.comp&quot;</span>);
-<a name="l00142"></a>00142     advectVelocityXProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/advectVelocityXShader.comp&quot;</span>);
-<a name="l00143"></a>00143     advectVelocityYProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/advectVelocityYShader.comp&quot;</span>);
-<a name="l00144"></a>00144     updateHeightProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/updateHeightShader.comp&quot;</span>);
-<a name="l00145"></a>00145     updateVelocityProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/updateVelocityShader.comp&quot;</span>);
+<a name="l00140"></a>00140     advectWaterProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/advectWaterShader.comp&quot;</span>);
+<a name="l00141"></a>00141     addProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/addHeightShader.comp&quot;</span>);
+<a name="l00142"></a>00142     advectVelocityXProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/advectVelocityXShader.comp&quot;</span>);
+<a name="l00143"></a>00143     advectVelocityYProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/advectVelocityYShader.comp&quot;</span>);
+<a name="l00144"></a>00144     updateHeightProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/updateHeightShader.comp&quot;</span>);
+<a name="l00145"></a>00145     updateVelocityProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/updateVelocityShader.comp&quot;</span>);
 <a name="l00146"></a>00146     <span class="comment">//create buffers</span>
 <a name="l00147"></a>00147     glGenBuffers(8, shallowBuffers);
 <a name="l00148"></a>00148     GLint numData = texWidth*texHeight;
@@ -515,7 +515,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -528,7 +528,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>shallowGPU.cpp</b>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

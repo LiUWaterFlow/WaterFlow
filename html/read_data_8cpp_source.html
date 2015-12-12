@@ -233,7 +233,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00133"></a>00133         <span class="keywordtype">float</span> incoord = 0;
 <a name="l00134"></a>00134 
 <a name="l00135"></a>00135         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_data_handler.html#a91942a6386e768c7bed670f50e1c7ba7" title="Getter for the number of datapoints.">getElem</a>(); i++) {
-<a name="l00136"></a>00136             incoord = myStrtof(currentStr, &amp;currentStr);
+<a name="l00136"></a>00136             incoord = <a class="code" href="_utilities_8cpp.html#abd9c4e46f1ccd1abff3b99b4181d9dc6" title="Converts string to floats.">myStrtof</a>(currentStr, &amp;currentStr);
 <a name="l00137"></a>00137 
 <a name="l00138"></a>00138             <span class="keywordflow">if</span> (incoord &gt; <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a4a48eeea0d8fe4854e90b4d89620e5ca" title="Maximum input, used to scale.">max_value</a>) {
 <a name="l00139"></a>00139                 <a class="code" href="class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb" title="mapdata struct for the loaded terrain data.">readdata</a>-&gt;<a class="code" href="structmapdata.html#a4a48eeea0d8fe4854e90b4d89620e5ca" title="Maximum input, used to scale.">max_value</a> = incoord;
@@ -264,7 +264,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00164"></a>00164 
 <a name="l00165"></a><a class="code" href="class_data_handler.html#a669fca65da8fefe434b59c34360837a5">00165</a> <span class="keywordtype">void</span> <a class="code" href="class_data_handler.html#a669fca65da8fefe434b59c34360837a5" title="Performs normalized convolution of the input data as a single computeshader.">DataHandler::normConvCompute</a>() {
 <a name="l00166"></a>00166 
-<a name="l00167"></a>00167     GLuint normConvProgram = compileComputeShader(<span class="stringliteral">&quot;src/shaders/normConv.comp&quot;</span>);
+<a name="l00167"></a>00167     GLuint normConvProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/normConv.comp&quot;</span>);
 <a name="l00168"></a>00168 
 <a name="l00169"></a>00169     glGenBuffers(1, &amp;<a class="code" href="class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04" title="terrainheight buffer corresponding to readdata data but on GPU.">terrainBufferID</a>);
 <a name="l00170"></a>00170 
@@ -343,7 +343,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -356,7 +356,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="read_data_8cpp.html">readData.cpp</a>      </li>
 
-    <li class="footer">Generated on Fri Dec 11 2015 23:49:36 for Waterflow by
+    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
