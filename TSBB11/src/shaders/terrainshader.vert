@@ -1,3 +1,8 @@
+/// @file terrainshader.vert
+/// @brief Vertex shader for model rendering
+///
+/// Used to render all height maps i.e. terrain, water and shallow water.
+
 #version 430
 
 layout (std430,binding = 6) buffer velocity

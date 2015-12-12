@@ -18,7 +18,6 @@ Program::Program(GLuint simCaseIn) {
 
 	isRunning = true;
 	mouseHidden = true;
-	depthWater = false;
 
 	heightAtClickData = 0.0f;
 	heighAtClickProj = 0.0f;
@@ -81,28 +80,6 @@ bool Program::init() {
 
 
 	glcontext = SDL_GL_CreateContext(screen);
-	int* numBindings;
-	glGetIntegerv(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS,numBindings);
-
-	if (simCase == 1) {
-		if (*numBindings > 8) {
-			
-		}
-		else {
-			std::cerr << "This graphics card has too few Shader Storage Buffer bindings" << std::endl;
-			system("pause");
-			return -1;
-		}
-	}if (simCase == 2) {
-		if (*numBindings > 12) {
-
-		}
-		else {
-			std::cerr << "This graphics card has too few Shader Storage Buffer bindings"<< std::endl;
-			system("pause");
-			return -1;
-		}
-	}
 
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 	glClearColor(0.1f, 0.7f, 0.1f, 1.0f);
@@ -112,6 +89,32 @@ bool Program::init() {
 #ifdef _WINDOWS
 	glewInit();
 #endif
+	//Check for compatibility.
+	int numBindings;
+	glGetIntegerv(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS, &numBindings);
+
+	if (simCase == 1) {
+		if (numBindings > 8) {
+
+		}
+		else {
+			std::cerr << "This graphics card has too few Shader Storage Buffer bindings" << std::endl;
+			system("pause");
+			return -1;
+		}
+	}if (simCase == 2) {
+		if (numBindings > 12) {
+
+		}
+		else {
+			std::cerr << "This graphics card has too few Shader Storage Buffer bindings" << std::endl;
+			system("pause");
+			return -1;
+		}
+	}
+
+
+
 
 	dumpInfo();
 	/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this

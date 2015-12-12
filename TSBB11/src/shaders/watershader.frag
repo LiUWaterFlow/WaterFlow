@@ -1,12 +1,20 @@
+/// @file watershader.frag
+/// @brief Fragment shader for water rendering
+
 #version 430
 
 // ===== Uniform Buffers =====
 
+/// @ struct LightParam
+/// @ brief Struct that contains one light source
+///
+/// Load an array of light params as a uniform buffer, that makes it possible to
+/// upload the lights only once.
 struct LightParam {
-	vec3 pos;
-	float isDir;
-	vec3 color;
-	float specExp;
+	vec3 pos;		///< Position of the light
+	float isDir;	///< Is the light directional or not
+	vec3 color;		///< Color of the light
+	float specExp;	///< Specular exponent for the light
 };
 
 layout(std140, binding = 0) uniform LightInfo {

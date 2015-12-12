@@ -1,4 +1,4 @@
-/// @file xmlparsing.h
+/// @file xmlParsing.h
 /// @brief This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.
 #ifndef XMLPARSING_H
 #define XMLPARSING_H
@@ -9,19 +9,24 @@
 #include <sstream>
 #include <string>
 
+/// @struct Flood_Fill_data
+/// @brief Struct that contains information about a location to be filled
 struct Flood_Fill_data{
- Flood_Fill_data(int, int, float);
- int x;
- int z;
- float height;
+	/// @brief Simple constructor for initialization
+	Flood_Fill_data(int, int, float);
+	int x;			///< X position of fill to start
+	int z;			///< Z position of fill to start
+	float height;	///< Height of the completed fill
 };
 
+/// @struct init_Data_struct
+/// @brief Encapsulating struct for all objects read from XML file.
 struct init_Data_struct {
+  /// @brief Simple constructor for initialization
   init_Data_struct(const char* XMLfile);
-  /* const char* data_filename; */
-  std::string data_filename;
-  std::vector<FlowSource*> Flowsources;
-  std::vector<Flood_Fill_data*> FFData;
+  std::string data_filename;	///< path and name of dem data to be used for terrain generation.
+  std::vector<FlowSource*> Flowsources; ///< Vector containing pointers to the Sources used for generating time varying water flows.
+  std::vector<Flood_Fill_data*> FFData; ///< Vctor containing pionters to flood fill structs used for creating large scale lakes. 
 };
 
 /// @brief Converts a string with CSV to a vector with floats.
@@ -47,7 +52,7 @@ void parsePosition(FlowSource* obj, pugi::xml_node node);
 
 /// @brief This function parses the normals data in the given xml nodes.
 /// @param obj pointer to FlowSource object that normal data will be writen to.
-/// @param norm xml node with child nodes containing normals defined by the attributes: "x", "y" and " "z".
+/// @param norm xml node with child nodes containing normals defined by the attributes: "x", "y" and "z".
 /// @param time xml node containing time values as CSV in attribute "t".
 void parseNormal(FlowSource* obj, pugi::xml_node norm, pugi::xml_node time);
 
@@ -67,14 +72,25 @@ void parseRadius(FlowSource* obj, pugi::xml_node node);
 /// @return A vector filled with pointers to flowSource objects containing data given by an XML file.
 std::vector<FlowSource*> loadFlows(const char* xmlFile);
 
+
+/// @brief This function progresses the pressure time for the flowsources provided and checks if there has ocured a change in pressure.
+/// @param flows Vector with pointers to flowSource objects to be updated and and checked for changes.
+/// @param dt Time unit to advance the internal source time with given as a foat.
+/// @return If any source has changed is pressure this function will return true. Otherwise the return will be false.
 bool flowChange(std::vector<FlowSource*> flows, float dt);
 
+/// @brief Loads a path given in the data node from a XML file.
+/// @param xmlFile relative path to the XML file containing the terrain map to be loaded.
+/// @return string containing relative path to the dem data file used for terrain generatrion.
 std::string loadMapPath(const char* xmlFile);
 
+/// @brief Loads all flood objects given in the floods node from a XML file to a vector.
+/// @param xmlFile Relative path to the XML file containing the floods to fill the terrain with.
+/// @return A vector containing pointers to Flood_Fill_Data objects created from flood nodes.
 std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile);
 
 /// @brief This function removes flowSources to free up memory
-/// @param Vector with pointers to flowSource objects to be deleted.
+/// @param srces Vector with pointers to flowSource objects to be deleted.
 void deleteAllFlows(std::vector<FlowSource*> srces);
 
 #endif

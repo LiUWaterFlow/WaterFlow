@@ -36,10 +36,8 @@ struct mapdata {
 class DataHandler
 {
 private:
-	// Data containers
 	mapdata* readdata; 			///< mapdata struct for the loaded terrain data.
 	GLuint terrainBufferID;		///< terrainheight buffer corresponding to readdata data but on GPU.
-	// Just scaling
 	GLfloat terrainScale;		///< Height scale for the terrain. Calculated as the diff between min and max in the input data.
 
 	/// @brief Reads the input data to the private mapdata struct.
@@ -58,17 +56,10 @@ private:
 public:
 	/// @brief Reads DEM data, scales it and generates a model.
 	///
-	/// Reads the inputfile for DEM data and populates a mapdata struct,
-	/// scales the data using scaleDataBefore() and creates the initial
-	/// environment for Normalized convolution and finally generates an initial
-	/// terrain.
+	/// Reads the inputfile for DEM data and populates a mapdata struct, and creates the buffer
+	/// for Normalized convolution and finally generates an initial terrain height map.
 	/// @param inputfile path to DEM data.
-	/// @param sampleFactor Downsampling factor for the terrain. Must be a power of 2. [1,2,4...]
-	/// default value is 1. (No downsampling). Note that the terrainScale will be used as
-	/// tScale/sampleFactor. So a downsampling should not change the overall proportions of the model
-	/// @param tScale sets terrainScale, default value is 500.0f
 	/// @see readDEM()
-	/// @see scaleDataBefore()
 	/// @see GenerateTerrain()
 	DataHandler(const char* inputfile);
 
@@ -116,9 +107,6 @@ public:
 	/// Written by Ingemar Ragnemalm but slightly modfied
 	/// @param x input width position
 	/// @param z input depth position
-	/// @param vertexArray input data
-	/// @param width size of the input data
-	/// @param height size of the input data
 	/// @see GenerateTerrain()
 	/// @see giveNormal()
 	GLfloat giveHeight(GLfloat x, GLfloat z);

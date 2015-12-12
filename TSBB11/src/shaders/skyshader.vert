@@ -1,3 +1,6 @@
+/// @file skyshader.vert
+/// @brief Vertex shader for skybox rendering
+
 #version 150
 
 in vec3 in_Position;

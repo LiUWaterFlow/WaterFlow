@@ -1,4 +1,4 @@
-/// @file flowsource.h
+/// @file flowSource.h
 /// @brief Contains class specifing a flow source and its parameters.
 #ifndef FLOWSOURCE_H
 #define FLOWSOURCE_H
@@ -18,13 +18,15 @@ class FlowSource {
   std::vector<float> pressureTime; ///<  Vector containing time instances specifying change of pressure, "-1" is the only negativ vaslue allowed and must be at the end.
   ///< "-1" specifies an infinite source.
   std::vector<float> pressure; ///< Vector containing pressure values
-  int xpos, ypos, zpos; ///< The position of the source given by the parameters x, y and z/
+  int xpos; ///< The x position of the source.
+  int ypos; ///< The y position of the source.
+  int zpos; ///< The z position of the source.
   float totalWater; ///< The total water of the source.
   float radius; ///< The radius of the source.
   float currTime; ///< The current internal source time, this should be linear maped to simulation time.
 
 public:
-  float currPres;
+  float currPres; ///< The current pressure in the source.
   /// @brief Initializes an epty source with time set to zero, it sould be populated with data using the set* functions.
   FlowSource() {currTime = 0; currPres = 0;};
   /// @brief default destructor for now.
@@ -64,12 +66,15 @@ public:
   /// @return The position given in voxels by a vector with xyz values.
   std::vector<int> getPosition();
   /// @brief Gets the water left in the flow source as descriebed by totalWater.
-  /// @returns Water left in source, @warning this value never changes in current implementation 
+  /// @return Water left in source, @warning this value never changes in current implementation 
   float getWaterLeft();
   /// @brief Gets the radius of the flow source.
-  /// @returns Radius of the source, @warning this value never changes in current implementation   
+  /// @return Radius of the source, @warning this value never changes in current implementation   
   float getRadius();
 
+  /// @brief Checks for changes in pressure after performing an update on the source.
+  /// @param dt The time given as float to be used for advancing the currTime value of the source.
+  /// @return True if the currPres value has changed after update, false otherwise.
   bool getChange(float dt);
 };
 
