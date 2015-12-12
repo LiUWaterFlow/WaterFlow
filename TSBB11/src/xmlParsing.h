@@ -74,23 +74,23 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile);
 
 
 /// @brief This function progresses the pressure time for the flowsources provided and checks if there has ocured a change in pressure.
-/// @param Vector with pointers to flowSource objects to be updated and and checked for changes.
-/// @param Time unit to advance the internal source time with given as a foat.
+/// @param flows Vector with pointers to flowSource objects to be updated and and checked for changes.
+/// @param dt Time unit to advance the internal source time with given as a foat.
 /// @return If any source has changed is pressure this function will return true. Otherwise the return will be false.
 bool flowChange(std::vector<FlowSource*> flows, float dt);
 
 /// @brief Loads a path given in the data node from a XML file.
-/// @param relative path to the XML file containing the terrain map to be loaded.
+/// @param xmlFile relative path to the XML file containing the terrain map to be loaded.
 /// @return string containing relative path to the dem data file used for terrain generatrion.
 std::string loadMapPath(const char* xmlFile);
 
 /// @brief Loads all flood objects given in the floods node from a XML file to a vector.
-/// @param Relative path to the XML file containing the floods to fill the terrain with.
+/// @param xmlFile Relative path to the XML file containing the floods to fill the terrain with.
 /// @return A vector containing pointers to Flood_Fill_Data objects created from flood nodes.
 std::vector<Flood_Fill_data*> loadFFData(const char* xmlFile);
 
 /// @brief This function removes flowSources to free up memory
-/// @param Vector with pointers to flowSource objects to be deleted.
+/// @param srces Vector with pointers to flowSource objects to be deleted.
 void deleteAllFlows(std::vector<FlowSource*> srces);
 
 #endif

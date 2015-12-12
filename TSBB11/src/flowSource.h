@@ -73,7 +73,7 @@ public:
   float getRadius();
 
   /// @brief Checks for changes in pressure after performing an update on the source.
-  /// @param The time given as float to be used for advancing the currTime value of the source.
+  /// @param dt The time given as float to be used for advancing the currTime value of the source.
   /// @return True if the currPres value has changed after update, false otherwise.
   bool getChange(float dt);
 };
