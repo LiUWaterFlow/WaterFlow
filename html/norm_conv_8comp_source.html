@@ -106,48 +106,48 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00006"></a>00006 
 <a name="l00007"></a>00007 <span class="preprocessor">#version 430  </span>
 <a name="l00008"></a>00008 <span class="preprocessor"></span>
-<a name="l00009"></a>00009 layout(local_size_x = 16, local_size_y = 16) in;  
+<a name="l00009"></a>00009 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a>(local_size_x = 16, local_size_y = 16) in;  
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 layout (std430, binding = 0) readonly buffer height0 
+<a name="l00011"></a>00011 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a> (std430, binding = 0) readonly buffer height0 
 <a name="l00012"></a>00012 { 
 <a name="l00013"></a>00013     <span class="keywordtype">float</span> terrHeightIn[];  
 <a name="l00014"></a>00014 };   
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016 layout (std430, binding = 1) writeonly buffer height1 
+<a name="l00016"></a>00016 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a> (std430, binding = 1) writeonly buffer height1 
 <a name="l00017"></a>00017 { 
 <a name="l00018"></a>00018     <span class="keywordtype">float</span> terrHeightOut[];  
 <a name="l00019"></a>00019 };  
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021 layout (std430, binding = 2) buffer NoDataCheck 
+<a name="l00021"></a>00021 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a> (std430, binding = 2) buffer NoDataCheck 
 <a name="l00022"></a>00022 { 
 <a name="l00023"></a>00023     uint isNODATA; 
 <a name="l00024"></a>00024 };  
 <a name="l00025"></a>00025 
-<a name="l00026"></a>00026 uniform ivec2 size;  
+<a name="l00026"></a>00026 uniform ivec2 <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>;  
 <a name="l00027"></a>00027 
-<a name="l00028"></a>00028 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>){ 
+<a name="l00028"></a>00028 <span class="keywordtype">void</span> <a class="code" href="field_shader_8comp.html#acdef7a1fd863a6d3770c1268cb06add3" title="HeightField simulation kernel.">main</a>(<span class="keywordtype">void</span>){ 
 <a name="l00029"></a>00029     ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);  
 <a name="l00030"></a>00030 
-<a name="l00031"></a>00031     <span class="keywordtype">int</span> x = clamp(storePos.x, 0, size.x-1); 
-<a name="l00032"></a>00032     <span class="keywordtype">int</span> y = clamp(storePos.y, 0, size.y-1); 
-<a name="l00033"></a>00033     <span class="keywordtype">int</span> xplus = clamp(x + 1, 0, size.x-1); 
-<a name="l00034"></a>00034     <span class="keywordtype">int</span> xminus = clamp(x - 1, 0, size.x-1); 
-<a name="l00035"></a>00035     <span class="keywordtype">int</span> yplus = clamp(y + 1, 0, size.y-1); 
-<a name="l00036"></a>00036     <span class="keywordtype">int</span> yminus = clamp(y - 1, 0, size.y-1);  
+<a name="l00031"></a>00031     <span class="keywordtype">int</span> x = clamp(storePos.x, 0, <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x-1); 
+<a name="l00032"></a>00032     <span class="keywordtype">int</span> y = clamp(storePos.y, 0, <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y-1); 
+<a name="l00033"></a>00033     <span class="keywordtype">int</span> xplus = clamp(x + 1, 0, <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x-1); 
+<a name="l00034"></a>00034     <span class="keywordtype">int</span> xminus = clamp(x - 1, 0, <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x-1); 
+<a name="l00035"></a>00035     <span class="keywordtype">int</span> yplus = clamp(y + 1, 0, <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y-1); 
+<a name="l00036"></a>00036     <span class="keywordtype">int</span> yminus = clamp(y - 1, 0, <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y-1);  
 <a name="l00037"></a>00037     
 <a name="l00038"></a>00038     <span class="keywordtype">float</span> filtered_color;
 <a name="l00039"></a>00039 
 <a name="l00040"></a>00040     <span class="keywordtype">float</span> conf[9];
 <a name="l00041"></a>00041     <span class="keywordtype">float</span> confSum;
-<a name="l00042"></a>00042     conf[0] = float(terrHeightIn[x + y * size.x] &gt; -0.5f);
-<a name="l00043"></a>00043     conf[1] = float(terrHeightIn[xplus + y * size.x] &gt; -0.5f);
-<a name="l00044"></a>00044     conf[2] = float(terrHeightIn[xminus + y * size.x] &gt; -0.5f);
-<a name="l00045"></a>00045     conf[3] = float(terrHeightIn[x + yplus * size.x] &gt; -0.5f);
-<a name="l00046"></a>00046     conf[4] = float(terrHeightIn[x + yminus * size.x] &gt; -0.5f);
-<a name="l00047"></a>00047     conf[5] = float(terrHeightIn[xplus + yplus * size.x] &gt; -0.5f);
-<a name="l00048"></a>00048     conf[6] = float(terrHeightIn[xplus + yminus * size.x] &gt; -0.5f); 
-<a name="l00049"></a>00049     conf[7] = float(terrHeightIn[xminus + yplus * size.x] &gt; -0.5f); 
-<a name="l00050"></a>00050     conf[8] = float(terrHeightIn[xminus + yminus * size.x] &gt; -0.5f); 
+<a name="l00042"></a>00042     conf[0] = float(terrHeightIn[x + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f);
+<a name="l00043"></a>00043     conf[1] = float(terrHeightIn[xplus + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f);
+<a name="l00044"></a>00044     conf[2] = float(terrHeightIn[xminus + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f);
+<a name="l00045"></a>00045     conf[3] = float(terrHeightIn[x + yplus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f);
+<a name="l00046"></a>00046     conf[4] = float(terrHeightIn[x + yminus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f);
+<a name="l00047"></a>00047     conf[5] = float(terrHeightIn[xplus + yplus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f);
+<a name="l00048"></a>00048     conf[6] = float(terrHeightIn[xplus + yminus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f); 
+<a name="l00049"></a>00049     conf[7] = float(terrHeightIn[xminus + yplus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f); 
+<a name="l00050"></a>00050     conf[8] = float(terrHeightIn[xminus + yminus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] &gt; -0.5f); 
 <a name="l00051"></a>00051 
 <a name="l00052"></a>00052     confSum  = 4 * conf[0]; 
 <a name="l00053"></a>00053     confSum += 2 * conf[1]; 
@@ -159,22 +159,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00059"></a>00059     confSum += 1 * conf[7]; 
 <a name="l00060"></a>00060     confSum += 1 * conf[8]; 
 <a name="l00061"></a>00061 
-<a name="l00062"></a>00062     filtered_color =  4.0 * conf[0] * terrHeightIn[x + y * size.x]; 
-<a name="l00063"></a>00063     filtered_color += 2.0 * conf[1] * terrHeightIn[xplus + y * size.x];
-<a name="l00064"></a>00064     filtered_color += 2.0 * conf[2] * terrHeightIn[xminus + y * size.x]; 
-<a name="l00065"></a>00065     filtered_color += 2.0 * conf[3] * terrHeightIn[x + yplus * size.x]; 
-<a name="l00066"></a>00066     filtered_color += 2.0 * conf[4] * terrHeightIn[x + yminus * size.x]; 
-<a name="l00067"></a>00067     filtered_color += 1.0 * conf[5] * terrHeightIn[xplus + yplus * size.x]; 
-<a name="l00068"></a>00068     filtered_color += 1.0 * conf[6] * terrHeightIn[xplus + yminus * size.x]; 
-<a name="l00069"></a>00069     filtered_color += 1.0 * conf[7] * terrHeightIn[xminus + yplus * size.x]; 
-<a name="l00070"></a>00070     filtered_color += 1.0 * conf[8] * terrHeightIn[xminus + yminus * size.x]; 
+<a name="l00062"></a>00062     filtered_color =  4.0 * conf[0] * terrHeightIn[x + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00063"></a>00063     filtered_color += 2.0 * conf[1] * terrHeightIn[xplus + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x];
+<a name="l00064"></a>00064     filtered_color += 2.0 * conf[2] * terrHeightIn[xminus + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00065"></a>00065     filtered_color += 2.0 * conf[3] * terrHeightIn[x + yplus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00066"></a>00066     filtered_color += 2.0 * conf[4] * terrHeightIn[x + yminus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00067"></a>00067     filtered_color += 1.0 * conf[5] * terrHeightIn[xplus + yplus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00068"></a>00068     filtered_color += 1.0 * conf[6] * terrHeightIn[xplus + yminus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00069"></a>00069     filtered_color += 1.0 * conf[7] * terrHeightIn[xminus + yplus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
+<a name="l00070"></a>00070     filtered_color += 1.0 * conf[8] * terrHeightIn[xminus + yminus * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x]; 
 <a name="l00071"></a>00071     filtered_color = filtered_color / confSum;  
 <a name="l00072"></a>00072   
-<a name="l00073"></a>00073     terrHeightOut[x + y * size.x] = terrHeightIn[x + y * size.x];
+<a name="l00073"></a>00073     terrHeightOut[x + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] = terrHeightIn[x + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x];
 <a name="l00074"></a>00074 
 <a name="l00075"></a>00075     <span class="keywordflow">if</span>(confSum &gt; 0.5f &amp;&amp; conf[0] &lt; 0.5f)
 <a name="l00076"></a>00076     {
-<a name="l00077"></a>00077         terrHeightOut[x + y * size.x] =filtered_color;  
+<a name="l00077"></a>00077         terrHeightOut[x + y * <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x] =filtered_color;  
 <a name="l00078"></a>00078     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (confSum &lt; 0.5f &amp;&amp; conf[0] &lt; 0.5f) 
 <a name="l00079"></a>00079     {
 <a name="l00080"></a>00080         atomicAdd(isNODATA, 1); 
@@ -200,7 +200,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>normConv.comp</b>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 18:06:54 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

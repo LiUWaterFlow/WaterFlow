@@ -14,5 +14,6 @@ var searchData=
   ['settotalwater',['setTotalWater',['../class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716',1,'FlowSource']]],
   ['settransparencycb',['SetTransparencyCB',['../class_water.html#a0f056dee2becf4c1ed3096c0f982f2ea',1,'Water']]],
   ['setvoxel',['setVoxel',['../class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da',1,'Voxelgrid']]],
+  ['shallowgpu',['ShallowGPU',['../class_shallow_g_p_u.html#a4a76282d73b87928653f99b66444f590',1,'ShallowGPU']]],
   ['skycube',['SkyCube',['../class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db',1,'SkyCube']]]
 ];

@@ -215,7 +215,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00115"></a>00115     <a class="code" href="structneighs.html" title="Struct used for returning a voxel and it&#39;s neighbours.">neighs</a>* neigh = <span class="keyword">new</span> <a class="code" href="structneighs.html" title="Struct used for returning a voxel and it&#39;s neighbours.">neighs</a>();
 <a name="l00116"></a>00116     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 27; i++)
 <a name="l00117"></a>00117     {
-<a name="l00118"></a>00118         neigh-&gt;voxs[i] = <a class="code" href="class_voxelgrid.html#a950956825ad8fa3bf471f3fc9fe17566" title="Gets a pixel using the hash functions.">hashGet</a>(x + <a class="code" href="class_voxelgrid.html#a19c3b7448b7e81cd1e00faa3afa31907" title="xoffsets for neighbour extraction.">xoff</a>[i],y+<a class="code" href="class_voxelgrid.html#a36abccf98d98a94637134ff80b381d41" title="xoffsets for neighbour extraction.">yoff</a>[i],z+<a class="code" href="class_voxelgrid.html#a52b0102ea163cae0b691a791d431da47" title="xoffsets for neighbour extraction.">zoff</a>[i]);
+<a name="l00118"></a>00118         neigh-&gt;<a class="code" href="structneighs.html#a6320d0ede46493cdf1485af2d2dfd1ca" title="array of the voxels in the neighbourhood">voxs</a>[i] = <a class="code" href="class_voxelgrid.html#a950956825ad8fa3bf471f3fc9fe17566" title="Gets a pixel using the hash functions.">hashGet</a>(x + <a class="code" href="class_voxelgrid.html#a19c3b7448b7e81cd1e00faa3afa31907" title="xoffsets for neighbour extraction.">xoff</a>[i],y+<a class="code" href="class_voxelgrid.html#a36abccf98d98a94637134ff80b381d41" title="xoffsets for neighbour extraction.">yoff</a>[i],z+<a class="code" href="class_voxelgrid.html#a52b0102ea163cae0b691a791d431da47" title="xoffsets for neighbour extraction.">zoff</a>[i]);
 <a name="l00119"></a>00119     }
 <a name="l00120"></a>00120 
 <a name="l00121"></a>00121     <span class="keywordflow">return</span> neigh;
@@ -228,7 +228,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00128"></a>00128     <a class="code" href="structneighs.html" title="Struct used for returning a voxel and it&#39;s neighbours.">neighs</a>* neigh = <span class="keyword">new</span> <a class="code" href="structneighs.html" title="Struct used for returning a voxel and it&#39;s neighbours.">neighs</a>();
 <a name="l00129"></a>00129     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 27; i++)
 <a name="l00130"></a>00130     {
-<a name="l00131"></a>00131         neigh-&gt;voxs[i] = <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(x + <a class="code" href="class_voxelgrid.html#a19c3b7448b7e81cd1e00faa3afa31907" title="xoffsets for neighbour extraction.">xoff</a>[i], y + <a class="code" href="class_voxelgrid.html#a36abccf98d98a94637134ff80b381d41" title="xoffsets for neighbour extraction.">yoff</a>[i], z + <a class="code" href="class_voxelgrid.html#a52b0102ea163cae0b691a791d431da47" title="xoffsets for neighbour extraction.">zoff</a>[i]);
+<a name="l00131"></a>00131         neigh-&gt;<a class="code" href="structneighs.html#a6320d0ede46493cdf1485af2d2dfd1ca" title="array of the voxels in the neighbourhood">voxs</a>[i] = <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(x + <a class="code" href="class_voxelgrid.html#a19c3b7448b7e81cd1e00faa3afa31907" title="xoffsets for neighbour extraction.">xoff</a>[i], y + <a class="code" href="class_voxelgrid.html#a36abccf98d98a94637134ff80b381d41" title="xoffsets for neighbour extraction.">yoff</a>[i], z + <a class="code" href="class_voxelgrid.html#a52b0102ea163cae0b691a791d431da47" title="xoffsets for neighbour extraction.">zoff</a>[i]);
 <a name="l00132"></a>00132     }
 <a name="l00133"></a>00133 
 <a name="l00134"></a>00134     <span class="keywordflow">return</span> neigh;
@@ -338,7 +338,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00238"></a>00238   }
 <a name="l00239"></a>00239   <span class="comment">//if z is not large enough resize. Note that existence of z table is</span>
 <a name="l00240"></a>00240   <span class="comment">//managed by the first two parts of the if-statement</span>
-<a name="l00241"></a>00241   <span class="keywordflow">else</span> <span class="keywordflow">if</span>((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] != <span class="keyword">nullptr</span> &amp;&amp;  (*(*voxels)[x])[y] != <span class="keyword">nullptr</span> &amp;&amp; (*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)z+1){
+<a name="l00241"></a>00241   <span class="keywordflow">else</span> <span class="keywordflow">if</span>((*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x] != <span class="keyword">nullptr</span> &amp;&amp;  (*(*voxels)[x])[y] != <span class="keyword">nullptr</span> &amp;&amp; (*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;<a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>() &lt; (<span class="keywordtype">unsigned</span> int)z+1){
 <a name="l00242"></a>00242     (*(*voxels)[x])[y]-&gt;resize(z+1,<span class="keyword">nullptr</span>);
 <a name="l00243"></a>00243 
 <a name="l00244"></a>00244   }
@@ -403,7 +403,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00303"></a>00303         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
 <a name="l00304"></a>00304     }
 <a name="l00305"></a>00305     <span class="comment">//ensure table existance and table size, if either fails return nullptr.</span>
-<a name="l00306"></a>00306     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;size() &lt; (<span class="keywordtype">unsigned</span> int)z + 1 || (*(*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y])[z] == <span class="keyword">nullptr</span>) {
+<a name="l00306"></a>00306     <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y]-&gt;<a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>() &lt; (<span class="keywordtype">unsigned</span> int)z + 1 || (*(*(*<a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>)[x])[y])[z] == <span class="keyword">nullptr</span>) {
 <a name="l00307"></a>00307         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
 <a name="l00308"></a>00308     }
 <a name="l00309"></a>00309 
@@ -528,14 +528,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00428"></a>00428     <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> = <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;size() / 3;
 <a name="l00429"></a>00429     <a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a> = loadShadersG(<span class="stringliteral">&quot;src/shaders/simplevoxels.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/simplevoxels.frag&quot;</span>, <span class="stringliteral">&quot;src/shaders/simplevoxels.geom&quot;</span>);
 <a name="l00430"></a>00430 
-<a name="l00431"></a>00431     glGenBuffers(1, &amp;voxelBuffer);
-<a name="l00432"></a>00432     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+<a name="l00431"></a>00431     glGenBuffers(1, &amp;<a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
+<a name="l00432"></a>00432     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
 <a name="l00433"></a>00433     glBufferData(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> * 3 * <span class="keyword">sizeof</span>(GLuint), <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;data(), GL_STATIC_COPY);
 <a name="l00434"></a>00434     glBindBuffer(GL_ARRAY_BUFFER, 0);
 <a name="l00435"></a>00435 
-<a name="l00436"></a>00436     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-<a name="l00437"></a>00437     glGenVertexArrays(1, &amp;<a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="Buffers and VAOs.">voxelVAO</a>);
-<a name="l00438"></a>00438     glBindVertexArray(<a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="Buffers and VAOs.">voxelVAO</a>);
+<a name="l00436"></a>00436     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
+<a name="l00437"></a>00437     glGenVertexArrays(1, &amp;<a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="VAOs for rendering.">voxelVAO</a>);
+<a name="l00438"></a>00438     glBindVertexArray(<a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="VAOs for rendering.">voxelVAO</a>);
 <a name="l00439"></a>00439 
 <a name="l00440"></a>00440     GLuint posAttrib = glGetAttribLocation(<a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a>, <span class="stringliteral">&quot;posValue&quot;</span>);
 <a name="l00441"></a>00441     glEnableVertexAttribArray(posAttrib);
@@ -550,15 +550,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00450"></a>00450     <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a> = <a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5" title="Create a data pointer to all existing voxels.">getVoxelPositions</a>();
 <a name="l00451"></a>00451     <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> = <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;size() / 3;
 <a name="l00452"></a>00452 
-<a name="l00453"></a>00453     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+<a name="l00453"></a>00453     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
 <a name="l00454"></a>00454     glBufferData(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> * 3 * <span class="keyword">sizeof</span>(GLuint), <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;data(), GL_STATIC_COPY);
 <a name="l00455"></a>00455     glBindBuffer(GL_ARRAY_BUFFER, 0);
 <a name="l00456"></a>00456 }
 <a name="l00457"></a>00457 
 <a name="l00458"></a><a class="code" href="class_voxelgrid.html#ad850b26513019f007173548c1d205ac3">00458</a> <span class="keywordtype">void</span> <a class="code" href="class_voxelgrid.html#ad850b26513019f007173548c1d205ac3" title="Draw the voxel data.">Voxelgrid::drawVoxels</a>(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 <a name="l00459"></a>00459     glUseProgram(<a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a>);
-<a name="l00460"></a>00460     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-<a name="l00461"></a>00461     glBindVertexArray(<a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="Buffers and VAOs.">voxelVAO</a>);
+<a name="l00460"></a>00460     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
+<a name="l00461"></a>00461     glBindVertexArray(<a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="VAOs for rendering.">voxelVAO</a>);
 <a name="l00462"></a>00462     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a>, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 <a name="l00463"></a>00463     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a>, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 <a name="l00464"></a>00464 
@@ -608,7 +608,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>voxel.cpp</b>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 18:06:54 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

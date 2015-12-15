@@ -106,81 +106,397 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="ShallowGPU" -->
+<p>Handles the shallow water testcase simulation.  
+ <a href="class_shallow_g_p_u.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="shallow_g_p_u_8h_source.html">shallowGPU.h</a>&gt;</code></p>
+
 <p><a href="class_shallow_g_p_u-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a76282d73b87928653f99b66444f590"></a><!-- doxytag: member="ShallowGPU::ShallowGPU" ref="a4a76282d73b87928653f99b66444f590" args="(DataHandler *t, std::vector&lt; Flood_Fill_data * &gt; FFDataIn)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>ShallowGPU</b> (<a class="el" href="class_data_handler.html">DataHandler</a> *t, std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt; FFDataIn)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a4a76282d73b87928653f99b66444f590">ShallowGPU</a> (<a class="el" href="class_data_handler.html">DataHandler</a> *t, std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt; FFDataIn)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for shallowGPU.  <a href="#a4a76282d73b87928653f99b66444f590"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad161481171580a04462a1b1b747d6f42"></a><!-- doxytag: member="ShallowGPU::cycleBuffer" ref="ad161481171580a04462a1b1b747d6f42" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>cycleBuffer</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#ad161481171580a04462a1b1b747d6f42">cycleBuffer</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">change output buffer <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a902ffc04e7a2b2ce8234d9268e64c907"></a><!-- doxytag: member="ShallowGPU::initGPU" ref="a902ffc04e7a2b2ce8234d9268e64c907" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initGPU</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64bbc0e1ded34a276ef7339d18ee1d92"></a><!-- doxytag: member="ShallowGPU::runSimGPU" ref="a64bbc0e1ded34a276ef7339d18ee1d92" args="(GLfloat dt=1.0f/30.0f)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>runSimGPU</b> (GLfloat dt=1.0f/30.0f)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14332c53b854eb679b8074cc3b8af58a"></a><!-- doxytag: member="ShallowGPU::updateSim" ref="a14332c53b854eb679b8074cc3b8af58a" args="(GLfloat)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateSim</b> (GLfloat)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a902ffc04e7a2b2ce8234d9268e64c907">initGPU</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes GPU for simulation. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92">runSimGPU</a> (GLfloat <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>=1.0f/30.0f)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the simulation one timestep.  <a href="#a64bbc0e1ded34a276ef7339d18ee1d92"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a14332c53b854eb679b8074cc3b8af58a">updateSim</a> (GLfloat)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">runs the simulation one timestep (CPU)  <a href="#a14332c53b854eb679b8074cc3b8af58a"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bdd11068c77906c513082fd1ca6675e"></a><!-- doxytag: member="ShallowGPU::addProgram" ref="a3bdd11068c77906c513082fd1ca6675e" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>addProgram</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLuint advectWaterProgram GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#ae9e5126fe42f4d073f7ad1edf1abdbd6">addProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; shader used for simulation  <a href="#ae9e5126fe42f4d073f7ad1edf1abdbd6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a149f44c7be2d828774134b5505ab15d9"></a><!-- doxytag: member="ShallowGPU::advectVelocityXProgram" ref="a149f44c7be2d828774134b5505ab15d9" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>advectVelocityXProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a149f44c7be2d828774134b5505ab15d9">advectVelocityXProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">shader used for simulation <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82df26f926f49b30e2fe3d4943a0010d"></a><!-- doxytag: member="ShallowGPU::advectVelocityYProgram" ref="a82df26f926f49b30e2fe3d4943a0010d" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>advectVelocityYProgram</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a675afa38097d77e9482b9230ff2759c5"></a><!-- doxytag: member="ShallowGPU::advectWaterProgram" ref="a675afa38097d77e9482b9230ff2759c5" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>advectWaterProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d">advectVelocityYProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">shader used for simulation <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1aa23d1c380a2e0c5a09223c4ce0c99"></a><!-- doxytag: member="ShallowGPU::drawBuffers" ref="ae1aa23d1c380a2e0c5a09223c4ce0c99" args="[4]" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>drawBuffers</b> [4]</td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#ae1aa23d1c380a2e0c5a09223c4ce0c99">drawBuffers</a> [4]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">drawBuffers (can be removed) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4acbc181095d4d7cc10b7e7320d3351"></a><!-- doxytag: member="ShallowGPU::shallowBuffers" ref="ac4acbc181095d4d7cc10b7e7320d3351" args="[9]" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>shallowBuffers</b> [9]</td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351">shallowBuffers</a> [9]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffers used for passing data between shaders. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b0209e0d8d0278ceb4af2f651ef6c52"></a><!-- doxytag: member="ShallowGPU::updateHeightProgram" ref="a2b0209e0d8d0278ceb4af2f651ef6c52" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>updateHeightProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a2b0209e0d8d0278ceb4af2f651ef6c52">updateHeightProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">shader used for simulation <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a288a836c327b8e27cd136dbaa15ec272"></a><!-- doxytag: member="ShallowGPU::updateVelocityProgram" ref="a288a836c327b8e27cd136dbaa15ec272" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>updateVelocityProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a288a836c327b8e27cd136dbaa15ec272">updateVelocityProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">shader used for simulation <br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b5ecfae4c8a8f26d11c99131b8ba76d"></a><!-- doxytag: member="ShallowGPU::bindSimGPU" ref="a3b5ecfae4c8a8f26d11c99131b8ba76d" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>bindSimGPU</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0a82ab4087eb75122c0040cd219086f4"></a><!-- doxytag: member="ShallowGPU::clip" ref="a0a82ab4087eb75122c0040cd219086f4" args="(int n, int lower, int upper)" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>clip</b> (int n, int lower, int upper)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a186adafc9a754dec7586e3a982da25c4"></a><!-- doxytag: member="ShallowGPU::clipf" ref="a186adafc9a754dec7586e3a982da25c4" args="(GLfloat n, GLfloat lower, GLfloat upper)" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>clipf</b> (GLfloat n, GLfloat lower, GLfloat upper)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1caaa781b1766c6c19be8408ec8d1afc"></a><!-- doxytag: member="ShallowGPU::floodFill" ref="a1caaa781b1766c6c19be8408ec8d1afc" args="(float *u, int x, int z, float height)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>floodFill</b> (float *u, int x, int z, float height)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa671fe907df66ea77faa55ef003e1ecc"></a><!-- doxytag: member="ShallowGPU::initFloodFill" ref="aa671fe907df66ea77faa55ef003e1ecc" args="(float *u)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initFloodFill</b> (float *u)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b7df612a5972b4376f160befd1861e1"></a><!-- doxytag: member="ShallowGPU::Print" ref="a5b7df612a5972b4376f160befd1861e1" args="(GLuint bID, std::string msg, int iter) const " -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Print</b> (GLuint bID, std::string msg, int iter) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a3b5ecfae4c8a8f26d11c99131b8ba76d">bindSimGPU</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">binds the necessary buffers for rendering (CPU)  <a href="#a3b5ecfae4c8a8f26d11c99131b8ba76d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a0a82ab4087eb75122c0040cd219086f4">clip</a> (int n, int lower, int upper)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">clamps the int value  <a href="#a0a82ab4087eb75122c0040cd219086f4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a186adafc9a754dec7586e3a982da25c4">clipf</a> (GLfloat n, GLfloat lower, GLfloat upper)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">clamps the float value  <a href="#a186adafc9a754dec7586e3a982da25c4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a1caaa781b1766c6c19be8408ec8d1afc">floodFill</a> (float *u, int x, int z, float height)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Floodfills point x,z to height and saves in heightmap u.  <a href="#a1caaa781b1766c6c19be8408ec8d1afc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc">initFloodFill</a> (float *u)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the floodfill algorithms.  <a href="#aa671fe907df66ea77faa55ef003e1ecc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1">Print</a> (GLuint bID, std::string msg, int iter) const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints debug info for buffer at bID.  <a href="#a5b7df612a5972b4376f160befd1861e1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a237a7ac2da280f24bd37278dfef6237e"></a><!-- doxytag: member="ShallowGPU::PrintHelper" ref="a237a7ac2da280f24bd37278dfef6237e" args="(std::string start_end, std::string msg, int iter) const " -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintHelper</b> (std::string start_end, std::string msg, int iter) const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e">PrintHelper</a> (std::string start_end, std::string msg, int iter) const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">helper function for print. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f121c744393233c909104d5a770e378"></a><!-- doxytag: member="ShallowGPU::PrintNumber" ref="a9f121c744393233c909104d5a770e378" args="(float value) const " -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintNumber</b> (float value) const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378">PrintNumber</a> (float value) const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">helper function for print. <br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57500fa07853e38fdcacfb14ecc4d233"></a><!-- doxytag: member="ShallowGPU::bufferOut" ref="a57500fa07853e38fdcacfb14ecc4d233" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>bufferOut</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a57500fa07853e38fdcacfb14ecc4d233">bufferOut</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Out buffer to be rendered. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb034925673380e571d1907d0d806635"></a><!-- doxytag: member="ShallowGPU::cycle" ref="aeb034925673380e571d1907d0d806635" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>cycle</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#aeb034925673380e571d1907d0d806635">cycle</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Cycle used for selecting render output. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c6e669711c59bbe2581c1e9a09dab03"></a><!-- doxytag: member="ShallowGPU::firstTime" ref="a8c6e669711c59bbe2581c1e9a09dab03" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>firstTime</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a8c6e669711c59bbe2581c1e9a09dab03">firstTime</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">First time check (can be removed) <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f10d59a26bb7105b9e0f32148454c57"></a><!-- doxytag: member="ShallowGPU::flood" ref="a9f10d59a26bb7105b9e0f32148454c57" args="" -->
-std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>flood</b></td></tr>
+std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57">flood</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Floodfill data structure. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad786dc6e93bff6f9dba490f92d79e42f"></a><!-- doxytag: member="ShallowGPU::flow" ref="ad786dc6e93bff6f9dba490f92d79e42f" args="" -->
-float *&#160;</td><td class="memItemRight" valign="bottom"><b>flow</b></td></tr>
+float *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#ad786dc6e93bff6f9dba490f92d79e42f">flow</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of added flow per iteration. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d65f816e58251bff553ddb20128a9c4"></a><!-- doxytag: member="ShallowGPU::terr" ref="a2d65f816e58251bff553ddb20128a9c4" args="" -->
-<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>terr</b></td></tr>
+<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a2d65f816e58251bff553ddb20128a9c4">terr</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to terrain. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8346105b106a59cf89e7418bb5065d29"></a><!-- doxytag: member="ShallowGPU::texHeight" ref="a8346105b106a59cf89e7418bb5065d29" args="" -->
-GLint&#160;</td><td class="memItemRight" valign="bottom"><b>texHeight</b></td></tr>
+GLint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29">texHeight</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">height of simulation area <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc0c9b94d1cd7d6c9a63d1ebe00e38c3"></a><!-- doxytag: member="ShallowGPU::texWidth" ref="acc0c9b94d1cd7d6c9a63d1ebe00e38c3" args="" -->
-GLint&#160;</td><td class="memItemRight" valign="bottom"><b>texWidth</b></td></tr>
+GLint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3">texWidth</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">width of simulation area <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab235ba9ec84d41c9f54f6f78b7291f53"></a><!-- doxytag: member="ShallowGPU::totTime" ref="ab235ba9ec84d41c9f54f6f78b7291f53" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>totTime</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53">totTime</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Variable for time measurements. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="shallow_g_p_u_8h_source.html#l00009">9</a> of file <a class="el" href="shallow_g_p_u_8h_source.html">shallowGPU.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<div class="textblock"><p>Handles the shallow water testcase simulation. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8h_source.html#l00015">15</a> of file <a class="el" href="shallow_g_p_u_8h_source.html">shallowGPU.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a4a76282d73b87928653f99b66444f590"></a><!-- doxytag: member="ShallowGPU::ShallowGPU" ref="a4a76282d73b87928653f99b66444f590" args="(DataHandler *t, std::vector&lt; Flood_Fill_data * &gt; FFDataIn)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shallow_g_p_u.html#a4a76282d73b87928653f99b66444f590">ShallowGPU::ShallowGPU</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt;&#160;</td>
+          <td class="paramname"><em>FFDataIn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constructor for shallowGPU. </p>
+<p>Must take handle to terrain and a floodfill data vector </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8h_source.html#l00091">91</a> of file <a class="el" href="shallow_g_p_u_8h_source.html">shallowGPU.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a3b5ecfae4c8a8f26d11c99131b8ba76d"></a><!-- doxytag: member="ShallowGPU::bindSimGPU" ref="a3b5ecfae4c8a8f26d11c99131b8ba76d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_shallow_g_p_u.html#a3b5ecfae4c8a8f26d11c99131b8ba76d">ShallowGPU::bindSimGPU</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>binds the necessary buffers for rendering (CPU) </p>
+<p>This should be removed </p>
+
+</div>
+</div>
+<a class="anchor" id="a0a82ab4087eb75122c0040cd219086f4"></a><!-- doxytag: member="ShallowGPU::clip" ref="a0a82ab4087eb75122c0040cd219086f4" args="(int n, int lower, int upper)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="class_shallow_g_p_u.html#a0a82ab4087eb75122c0040cd219086f4">ShallowGPU::clip</a> </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>lower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>upper</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>clamps the int value </p>
+<p>Clamps the int value n, between lower and upper. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8cpp_source.html#l00064">64</a> of file <a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a186adafc9a754dec7586e3a982da25c4"></a><!-- doxytag: member="ShallowGPU::clipf" ref="a186adafc9a754dec7586e3a982da25c4" args="(GLfloat n, GLfloat lower, GLfloat upper)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLfloat <a class="el" href="class_shallow_g_p_u.html#a186adafc9a754dec7586e3a982da25c4">ShallowGPU::clipf</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>lower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>upper</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>clamps the float value </p>
+<p>Clamps the float value n, between lower and upper. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8cpp_source.html#l00068">68</a> of file <a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1caaa781b1766c6c19be8408ec8d1afc"></a><!-- doxytag: member="ShallowGPU::floodFill" ref="a1caaa781b1766c6c19be8408ec8d1afc" args="(float *u, int x, int z, float height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_shallow_g_p_u.html#a1caaa781b1766c6c19be8408ec8d1afc">ShallowGPU::floodFill</a> </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Floodfills point x,z to height and saves in heightmap u. </p>
+<p>Data is provided for floodpoints at construction. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8cpp_source.html#l00025">25</a> of file <a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa671fe907df66ea77faa55ef003e1ecc"></a><!-- doxytag: member="ShallowGPU::initFloodFill" ref="aa671fe907df66ea77faa55ef003e1ecc" args="(float *u)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc">ShallowGPU::initFloodFill</a> </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>u</em></td><td>)</td>
+          <td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Runs the floodfill algorithms. </p>
+<p>Data is provided for floodpoints at construction. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8cpp_source.html#l00252">252</a> of file <a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5b7df612a5972b4376f160befd1861e1"></a><!-- doxytag: member="ShallowGPU::Print" ref="a5b7df612a5972b4376f160befd1861e1" args="(GLuint bID, std::string msg, int iter) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1">ShallowGPU::Print</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>bID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>iter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const<code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prints debug info for buffer at bID. </p>
+<p>Prints the message and the iteration aswell. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8cpp_source.html#l00375">375</a> of file <a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a64bbc0e1ded34a276ef7339d18ee1d92"></a><!-- doxytag: member="ShallowGPU::runSimGPU" ref="a64bbc0e1ded34a276ef7339d18ee1d92" args="(GLfloat dt=1.0f/30.0f)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92">ShallowGPU::runSimGPU</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>dt</em> = <code>1.0f/30.0f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Runs the simulation one timestep. </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8cpp_source.html#l00260">260</a> of file <a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a14332c53b854eb679b8074cc3b8af58a"></a><!-- doxytag: member="ShallowGPU::updateSim" ref="a14332c53b854eb679b8074cc3b8af58a" args="(GLfloat)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_shallow_g_p_u.html#a14332c53b854eb679b8074cc3b8af58a">ShallowGPU::updateSim</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>runs the simulation one timestep (CPU) </p>
+<p>This should be removed </p>
+
+</div>
+</div>
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="ae9e5126fe42f4d073f7ad1edf1abdbd6"></a><!-- doxytag: member="ShallowGPU::addProgram" ref="ae9e5126fe42f4d073f7ad1edf1abdbd6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLuint advectWaterProgram GLuint <a class="el" href="class_shallow_g_p_u.html#ae9e5126fe42f4d073f7ad1edf1abdbd6">ShallowGPU::addProgram</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>&lt; shader used for simulation </p>
+<p>shader used for simulation </p>
+
+<p>Definition at line <a class="el" href="shallow_g_p_u_8h_source.html#l00081">81</a> of file <a class="el" href="shallow_g_p_u_8h_source.html">shallowGPU.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="shallow_g_p_u_8h_source.html">shallowGPU.h</a></li>
 <li>src/<a class="el" href="shallow_g_p_u_8cpp_source.html">shallowGPU.cpp</a></li>
 </ul>
@@ -204,7 +520,7 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>totTime</b></td></
     <ul>
       <li class="navelem"><a class="el" href="class_shallow_g_p_u.html">ShallowGPU</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 18:06:55 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 13:05:29 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

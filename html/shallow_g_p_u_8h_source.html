@@ -98,55 +98,80 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/shallowGPU.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef SHALLOWGPU_H</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define SHALLOWGPU_H</span>
-<a name="l00003"></a>00003 <span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html" title="Contains datatypes and functions to handle input terrain.">readData.h</a>&quot;</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;gtc/type_ptr.hpp&quot;</span>
-<a name="l00006"></a>00006 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;<a class="code" href="xml_parsing_8h.html" title="This file implement all the parsing functions for the XML file contents and an generating function fo...">xmlParsing.h</a>&quot;</span>
-<a name="l00008"></a>00008 
-<a name="l00009"></a><a class="code" href="class_shallow_g_p_u.html">00009</a> <span class="keyword">class </span><a class="code" href="class_shallow_g_p_u.html">ShallowGPU</a>{
-<a name="l00010"></a>00010 <span class="keyword">private</span>:
-<a name="l00011"></a>00011   GLint texWidth, texHeight;
-<a name="l00012"></a>00012   
-<a name="l00013"></a>00013   <span class="keywordtype">float</span>* flow;
-<a name="l00014"></a>00014 
-<a name="l00015"></a>00015   <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terr;
-<a name="l00016"></a>00016   GLuint cycle;
-<a name="l00017"></a>00017   
-<a name="l00018"></a>00018   GLuint bufferOut;
-<a name="l00019"></a>00019   <span class="keywordtype">void</span> bindSimGPU();
-<a name="l00020"></a>00020   <span class="keywordtype">int</span> clip(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span> lower, <span class="keywordtype">int</span> upper);
-<a name="l00021"></a>00021   <span class="keywordtype">float</span> clipf(GLfloat n, GLfloat lower, GLfloat upper);
-<a name="l00022"></a>00022   GLfloat totTime;
-<a name="l00023"></a>00023   std::vector&lt;Flood_Fill_data*&gt; flood;
-<a name="l00024"></a>00024   <span class="keywordtype">void</span> initFloodFill(<span class="keywordtype">float</span>* u);
-<a name="l00025"></a>00025   <span class="keywordtype">void</span> floodFill(<span class="keywordtype">float</span>* u, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> z, <span class="keywordtype">float</span> height);
-<a name="l00026"></a>00026   <span class="keywordtype">bool</span> firstTime;
-<a name="l00027"></a>00027   <span class="keywordtype">void</span> Print(GLuint bID, std::string msg, <span class="keywordtype">int</span> iter) <span class="keyword">const</span>;
-<a name="l00028"></a>00028   <span class="keywordtype">void</span> PrintNumber(<span class="keywordtype">float</span> value) <span class="keyword">const</span>;
-<a name="l00029"></a>00029   <span class="keywordtype">void</span> PrintHelper(std::string start_end, std::string msg, <span class="keywordtype">int</span> iter) <span class="keyword">const</span>;
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031 <span class="keyword">public</span>:
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033   <span class="keywordtype">void</span> cycleBuffer();
-<a name="l00034"></a>00034   
-<a name="l00035"></a>00035   GLuint drawBuffers[4];
-<a name="l00036"></a>00036   GLuint advectWaterProgram,addProgram,advectVelocityXProgram,advectVelocityYProgram,updateHeightProgram,updateVelocityProgram;
-<a name="l00037"></a>00037   GLuint shallowBuffers[9];
-<a name="l00038"></a>00038   
-<a name="l00039"></a>00039   <a class="code" href="class_shallow_g_p_u.html">ShallowGPU</a>(<a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a> *t,std::vector&lt;Flood_Fill_data*&gt; FFDataIn) { terr = t; texWidth = t-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(); 
-<a name="l00040"></a>00040   texHeight = t-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>(); totTime = 0.0f; flood = FFDataIn; firstTime = <span class="keyword">true</span>; bufferOut = 0; cycle = 0;};
-<a name="l00041"></a>00041   <span class="keywordtype">void</span> updateSim(GLfloat);
-<a name="l00042"></a>00042 
-<a name="l00043"></a>00043   <span class="keywordtype">void</span> initGPU();
-<a name="l00044"></a>00044   <span class="keywordtype">void</span> runSimGPU(GLfloat dt = 1.0f/30.0f);
-<a name="l00045"></a>00045 };
+<a href="shallow_g_p_u_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 
+<a name="l00005"></a>00005 <span class="preprocessor">#ifndef SHALLOWGPU_H</span>
+<a name="l00006"></a>00006 <span class="preprocessor"></span><span class="preprocessor">#define SHALLOWGPU_H</span>
+<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html" title="Contains datatypes and functions to handle input terrain.">readData.h</a>&quot;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;gtc/type_ptr.hpp&quot;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;<a class="code" href="xml_parsing_8h.html" title="This file implement all the parsing functions for the XML file contents and an generating function fo...">xmlParsing.h</a>&quot;</span>
+<a name="l00012"></a>00012 
+<a name="l00015"></a><a class="code" href="class_shallow_g_p_u.html">00015</a> <span class="keyword">class </span><a class="code" href="class_shallow_g_p_u.html" title="Handles the shallow water testcase simulation.">ShallowGPU</a>{
+<a name="l00016"></a>00016 <span class="keyword">private</span>:
+<a name="l00017"></a><a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3">00017</a>   GLint <a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>; 
+<a name="l00018"></a><a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29">00018</a>   GLint <a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>; 
+<a name="l00019"></a>00019 
+<a name="l00020"></a><a class="code" href="class_shallow_g_p_u.html#ad786dc6e93bff6f9dba490f92d79e42f">00020</a>   <span class="keywordtype">float</span>* <a class="code" href="class_shallow_g_p_u.html#ad786dc6e93bff6f9dba490f92d79e42f" title="Array of added flow per iteration.">flow</a>; 
+<a name="l00021"></a>00021 
+<a name="l00022"></a><a class="code" href="class_shallow_g_p_u.html#a2d65f816e58251bff553ddb20128a9c4">00022</a>   <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* <a class="code" href="class_shallow_g_p_u.html#a2d65f816e58251bff553ddb20128a9c4" title="Handle to terrain.">terr</a>; 
+<a name="l00023"></a><a class="code" href="class_shallow_g_p_u.html#aeb034925673380e571d1907d0d806635">00023</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#aeb034925673380e571d1907d0d806635" title="Cycle used for selecting render output.">cycle</a>; 
+<a name="l00024"></a>00024 
+<a name="l00025"></a><a class="code" href="class_shallow_g_p_u.html#a57500fa07853e38fdcacfb14ecc4d233">00025</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#a57500fa07853e38fdcacfb14ecc4d233" title="Out buffer to be rendered.">bufferOut</a>; 
+<a name="l00026"></a>00026 
+<a name="l00030"></a>00030   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a3b5ecfae4c8a8f26d11c99131b8ba76d" title="binds the necessary buffers for rendering (CPU)">bindSimGPU</a>();
+<a name="l00034"></a>00034   <span class="keywordtype">int</span> <a class="code" href="class_shallow_g_p_u.html#a0a82ab4087eb75122c0040cd219086f4" title="clamps the int value">clip</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span> lower, <span class="keywordtype">int</span> upper);
+<a name="l00035"></a>00035 
+<a name="l00039"></a>00039   <span class="keywordtype">float</span> <a class="code" href="class_shallow_g_p_u.html#a186adafc9a754dec7586e3a982da25c4" title="clamps the float value">clipf</a>(GLfloat n, GLfloat lower, GLfloat upper);
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 
+<a name="l00042"></a><a class="code" href="class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53">00042</a>   GLfloat <a class="code" href="class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53" title="Variable for time measurements.">totTime</a>; 
+<a name="l00043"></a>00043 
+<a name="l00044"></a><a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57">00044</a>   std::vector&lt;Flood_Fill_data*&gt; <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>; 
+<a name="l00045"></a>00045 
 <a name="l00046"></a>00046 
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049 <span class="preprocessor">#endif</span>
+<a name="l00050"></a>00050   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc" title="Runs the floodfill algorithms.">initFloodFill</a>(<span class="keywordtype">float</span>* u);
+<a name="l00051"></a>00051 
+<a name="l00055"></a>00055   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a1caaa781b1766c6c19be8408ec8d1afc" title="Floodfills point x,z to height and saves in heightmap u.">floodFill</a>(<span class="keywordtype">float</span>* u, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> z, <span class="keywordtype">float</span> height);
+<a name="l00056"></a>00056 
+<a name="l00057"></a><a class="code" href="class_shallow_g_p_u.html#a8c6e669711c59bbe2581c1e9a09dab03">00057</a>   <span class="keywordtype">bool</span> <a class="code" href="class_shallow_g_p_u.html#a8c6e669711c59bbe2581c1e9a09dab03" title="First time check (can be removed)">firstTime</a>; 
+<a name="l00058"></a>00058 
+<a name="l00062"></a>00062   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(GLuint bID, std::string msg, <span class="keywordtype">int</span> iter) <span class="keyword">const</span>;
+<a name="l00063"></a>00063 
+<a name="l00066"></a>00066   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378" title="helper function for print.">PrintNumber</a>(<span class="keywordtype">float</span> value) <span class="keyword">const</span>;
+<a name="l00067"></a>00067 
+<a name="l00070"></a>00070   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">PrintHelper</a>(std::string start_end, std::string msg, <span class="keywordtype">int</span> iter) <span class="keyword">const</span>;
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072 <span class="keyword">public</span>:
+<a name="l00073"></a>00073 
+<a name="l00076"></a>00076   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#ad161481171580a04462a1b1b747d6f42" title="change output buffer">cycleBuffer</a>();
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078 
+<a name="l00079"></a><a class="code" href="class_shallow_g_p_u.html#ae1aa23d1c380a2e0c5a09223c4ce0c99">00079</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#ae1aa23d1c380a2e0c5a09223c4ce0c99" title="drawBuffers (can be removed)">drawBuffers</a>[4]; 
+<a name="l00080"></a>00080   GLuint advectWaterProgram 
+<a name="l00081"></a><a class="code" href="class_shallow_g_p_u.html#ae9e5126fe42f4d073f7ad1edf1abdbd6">00081</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#ae9e5126fe42f4d073f7ad1edf1abdbd6" title="&lt; shader used for simulation">addProgram</a>;
+<a name="l00082"></a><a class="code" href="class_shallow_g_p_u.html#a149f44c7be2d828774134b5505ab15d9">00082</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#a149f44c7be2d828774134b5505ab15d9" title="shader used for simulation">advectVelocityXProgram</a>;
+<a name="l00083"></a><a class="code" href="class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d">00083</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d" title="shader used for simulation">advectVelocityYProgram</a>;
+<a name="l00084"></a><a class="code" href="class_shallow_g_p_u.html#a2b0209e0d8d0278ceb4af2f651ef6c52">00084</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#a2b0209e0d8d0278ceb4af2f651ef6c52" title="shader used for simulation">updateHeightProgram</a>; 
+<a name="l00085"></a><a class="code" href="class_shallow_g_p_u.html#a288a836c327b8e27cd136dbaa15ec272">00085</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#a288a836c327b8e27cd136dbaa15ec272" title="shader used for simulation">updateVelocityProgram</a>;
+<a name="l00086"></a><a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351">00086</a>   GLuint <a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[9];
+<a name="l00087"></a>00087 
+<a name="l00091"></a><a class="code" href="class_shallow_g_p_u.html#a4a76282d73b87928653f99b66444f590">00091</a>   <a class="code" href="class_shallow_g_p_u.html#a4a76282d73b87928653f99b66444f590" title="Constructor for shallowGPU.">ShallowGPU</a>(<a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a> *t,std::vector&lt;Flood_Fill_data*&gt; FFDataIn) { <a class="code" href="class_shallow_g_p_u.html#a2d65f816e58251bff553ddb20128a9c4" title="Handle to terrain.">terr</a> = t; <a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> = t-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>();
+<a name="l00092"></a>00092   <a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> = t-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>(); <a class="code" href="class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53" title="Variable for time measurements.">totTime</a> = 0.0f; <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a> = FFDataIn; <a class="code" href="class_shallow_g_p_u.html#a8c6e669711c59bbe2581c1e9a09dab03" title="First time check (can be removed)">firstTime</a> = <span class="keyword">true</span>; <a class="code" href="class_shallow_g_p_u.html#a57500fa07853e38fdcacfb14ecc4d233" title="Out buffer to be rendered.">bufferOut</a> = 0; <a class="code" href="class_shallow_g_p_u.html#aeb034925673380e571d1907d0d806635" title="Cycle used for selecting render output.">cycle</a> = 0;};
+<a name="l00093"></a>00093 
+<a name="l00097"></a>00097   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a14332c53b854eb679b8074cc3b8af58a" title="runs the simulation one timestep (CPU)">updateSim</a>(GLfloat);
+<a name="l00098"></a>00098 
+<a name="l00101"></a>00101   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a902ffc04e7a2b2ce8234d9268e64c907" title="Initializes GPU for simulation.">initGPU</a>();
+<a name="l00102"></a>00102 
+<a name="l00106"></a>00106   <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92" title="Runs the simulation one timestep.">runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a> = 1.0f/30.0f);
+<a name="l00107"></a>00107 };
+<a name="l00108"></a>00108 
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -165,9 +190,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>shallowGPU.h</b>      </li>
+      <li class="navelem"><a class="el" href="shallow_g_p_u_8h.html">shallowGPU.h</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 18:06:54 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

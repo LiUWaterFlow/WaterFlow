@@ -118,21 +118,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00021"></a><a class="code" href="structvoxel.html#a6b8ada8d039a7d1c4b8786e84260645e">00021</a>   int16_t <a class="code" href="structvoxel.html#a6b8ada8d039a7d1c4b8786e84260645e" title="z position of the voxel">z</a>;    
 <a name="l00022"></a>00022 };
 <a name="l00023"></a>00023 
-<a name="l00036"></a>00036 
-<a name="l00037"></a><a class="code" href="structneighs.html">00037</a> <span class="keyword">struct </span><a class="code" href="structneighs.html" title="Struct used for returning a voxel and it&#39;s neighbours.">neighs</a> {
-<a name="l00038"></a>00038     <a class="code" href="structvoxel.html" title="Contains information and data in each voxel.">voxel</a>* voxs[27];
-<a name="l00039"></a>00039 };
-<a name="l00040"></a>00040 
-<a name="l00049"></a><a class="code" href="class_voxelgrid.html">00049</a> <span class="keyword">class </span><a class="code" href="class_voxelgrid.html" title="Handles the representation of the voxelgrid.">Voxelgrid</a>
-<a name="l00050"></a>00050 {
-<a name="l00051"></a>00051 <span class="keyword">private</span>:
-<a name="l00052"></a><a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc">00052</a>   std::vector&lt;std::vector&lt;std::vector&lt;voxel*&gt;*&gt;*&gt;* <a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>; 
-<a name="l00053"></a><a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f">00053</a>   <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>; 
-<a name="l00054"></a>00054 
-<a name="l00055"></a><a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90">00055</a>   std::vector&lt;GLuint&gt;* <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>; 
-<a name="l00056"></a><a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5">00056</a>   GLuint <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a>; 
-<a name="l00057"></a><a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5">00057</a>   GLuint <a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a>; 
-<a name="l00058"></a><a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4">00058</a>   GLuint voxelBuffer, <a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="Buffers and VAOs.">voxelVAO</a>; 
+<a name="l00036"></a><a class="code" href="structneighs.html">00036</a> <span class="keyword">struct </span><a class="code" href="structneighs.html" title="Struct used for returning a voxel and it&#39;s neighbours.">neighs</a> {
+<a name="l00037"></a><a class="code" href="structneighs.html#a6320d0ede46493cdf1485af2d2dfd1ca">00037</a>     <a class="code" href="structvoxel.html" title="Contains information and data in each voxel.">voxel</a>* <a class="code" href="structneighs.html#a6320d0ede46493cdf1485af2d2dfd1ca" title="array of the voxels in the neighbourhood">voxs</a>[27]; 
+<a name="l00038"></a>00038 };
+<a name="l00039"></a>00039 
+<a name="l00048"></a><a class="code" href="class_voxelgrid.html">00048</a> <span class="keyword">class </span><a class="code" href="class_voxelgrid.html" title="Handles the representation of the voxelgrid.">Voxelgrid</a>
+<a name="l00049"></a>00049 {
+<a name="l00050"></a>00050 <span class="keyword">private</span>:
+<a name="l00051"></a><a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc">00051</a>   std::vector&lt;std::vector&lt;std::vector&lt;voxel*&gt;*&gt;*&gt;* <a class="code" href="class_voxelgrid.html#ac8e2a937b3cec954f1ed281c43a379fc" title="Container for the voxel lookup tables.">voxels</a>; 
+<a name="l00052"></a><a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f">00052</a>   <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>; 
+<a name="l00053"></a>00053 
+<a name="l00054"></a><a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90">00054</a>   std::vector&lt;GLuint&gt;* <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>; 
+<a name="l00055"></a><a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5">00055</a>   GLuint <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a>; 
+<a name="l00056"></a><a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5">00056</a>   GLuint <a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a>; 
+<a name="l00057"></a><a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c">00057</a>   GLuint <a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>;
+<a name="l00058"></a><a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4">00058</a>   GLuint <a class="code" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4" title="VAOs for rendering.">voxelVAO</a>; 
 <a name="l00059"></a>00059 
 <a name="l00060"></a><a class="code" href="class_voxelgrid.html#aaec2533e956e065b9d3d4a654b0e9853">00060</a>   std::vector&lt;GLint&gt;* <a class="code" href="class_voxelgrid.html#aaec2533e956e065b9d3d4a654b0e9853" title="The map of height data for the topmost water voxel.">waterHeight</a>; 
 <a name="l00061"></a><a class="code" href="class_voxelgrid.html#a105802faf7a954cac413286276315c2e">00061</a>   GLuint <a class="code" href="class_voxelgrid.html#a105802faf7a954cac413286276315c2e" title="The width of the map, needed for saving data in linear containers.">width</a>; 
@@ -226,7 +226,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>voxel.h</b>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 18:06:54 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

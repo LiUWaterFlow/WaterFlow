@@ -20,6 +20,5 @@ var hierarchy =
     [ "sdlTexture", "classsdl_texture.html", null ],
     [ "ShallowGPU", "class_shallow_g_p_u.html", null ],
     [ "voxel", "structvoxel.html", null ],
-    [ "Voxelgrid", "class_voxelgrid.html", null ],
-    [ "voxelTest::VoxelTest", "classvoxel_test_1_1_voxel_test.html", null ]
+    [ "Voxelgrid", "class_voxelgrid.html", null ]
 ];

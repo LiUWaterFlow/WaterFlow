@@ -18,6 +18,5 @@ var annotated =
     [ "SkyCube", "class_sky_cube.html", "class_sky_cube" ],
     [ "voxel", "structvoxel.html", "structvoxel" ],
     [ "Voxelgrid", "class_voxelgrid.html", "class_voxelgrid" ],
-    [ "voxelTest::VoxelTest", "classvoxel_test_1_1_voxel_test.html", "classvoxel_test_1_1_voxel_test" ],
     [ "Water", "class_water.html", "class_water" ]
 ];

@@ -112,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00017"></a>00017     <span class="keywordtype">float</span> <a class="code" href="struct_light_param.html#ab3ad8c95b263f29b214742032d14d228" title="Specular exponent for the light.">specExp</a>;  
 <a name="l00018"></a>00018 };
 <a name="l00019"></a>00019 
-<a name="l00020"></a>00020 layout(std140, binding = 0) uniform LightInfo {
+<a name="l00020"></a>00020 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a>(std140, binding = 0) uniform LightInfo {
 <a name="l00021"></a>00021     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
 <a name="l00022"></a>00022 };
 <a name="l00023"></a>00023 
@@ -124,7 +124,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030 uniform vec3 camPos;    <span class="comment">// Kamerapositionen.</span>
 <a name="l00031"></a>00031 
-<a name="l00032"></a>00032 uniform vec3 size;
+<a name="l00032"></a>00032 uniform vec3 <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>;
 <a name="l00033"></a>00033 
 <a name="l00034"></a>00034 uniform sampler2D terr_texUnit;
 <a name="l00035"></a>00035 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
@@ -146,7 +146,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00051"></a>00051 <span class="comment">//in float out_Col_i;</span>
 <a name="l00052"></a>00052 <span class="comment">//in float out_Col_j;</span>
 <a name="l00053"></a>00053 
-<a name="l00054"></a>00054 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
+<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="field_shader_8comp.html#acdef7a1fd863a6d3770c1268cb06add3" title="HeightField simulation kernel.">main</a>(<span class="keywordtype">void</span>)
 <a name="l00055"></a>00055 {
 <a name="l00056"></a>00056     <span class="comment">// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.</span>
 <a name="l00057"></a>00057     s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
@@ -205,7 +205,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="terrainshader_8frag.html">terrainshader.frag</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 18:06:54 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
