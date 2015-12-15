@@ -14,6 +14,8 @@ members:
     email: godymirski@gmail.com
   - name: 'Eric Rundcrantz'
     email: ericrundcrantz@gmail.com
+  - name: 'Peter Andersson'
+    email: petan486@student.liu.se
 
 baseurl: /WaterFlow
 email: conrad.wahlen@gmail.com
