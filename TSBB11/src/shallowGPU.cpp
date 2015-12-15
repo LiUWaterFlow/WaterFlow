@@ -13,7 +13,7 @@
 #include <inttypes.h>
 
 
-bool DEBUG = false; ///< Print debug information (should be static member instead)
+bool ShallowGPU::DEBUG = false; 
 
 void ShallowGPU::cycleBuffer(){
 	const static GLuint relBuffers[3] = {0,2,4};

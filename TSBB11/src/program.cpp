@@ -100,7 +100,7 @@ bool Program::init() {
 		else {
 			std::cerr << "This graphics card has too few Shader Storage Buffer bindings" << std::endl;
 			system("pause");
-			return -1;
+			return false;
 		}
 	}if (simCase == 2) {
 		if (numBindings > 12) {
@@ -109,7 +109,7 @@ bool Program::init() {
 		else {
 			std::cerr << "This graphics card has too few Shader Storage Buffer bindings" << std::endl;
 			system("pause");
-			return -1;
+			return false;
 		}
 	}
 
@@ -140,7 +140,7 @@ bool Program::init() {
 	//shallowwatershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	depthshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/depthshader.frag");
 	
-	GLuint sizes[] = { dataHandler->getDataWidth(), dataHandler->getDataHeight() };
+	GLuint sizes[] = {(GLuint)dataHandler->getDataWidth(),(GLuint)dataHandler->getDataHeight() };
     
 	// Create drawables
 	

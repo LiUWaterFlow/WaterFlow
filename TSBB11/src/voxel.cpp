@@ -153,11 +153,11 @@ Voxelgrid::Voxelgrid(DataHandler* dataHandler,int64_t hashSize){
   this->waterHeight = new std::vector<GLint>(width*height, -1);
 
   int i = 0;
-  for (size_t x = -1; x < 2; x++)
+  for (int x = -1; x < 2; x++)
   {
-	  for (size_t y = -1; y < 2; y++)
+	  for (int y = -1; y < 2; y++)
 	  {
-		  for (size_t z = -1; z < 2; z++)
+		  for (int z = -1; z < 2; z++)
 		  {
 			  xoff[i] = x;
 			  yoff[i] = y;
@@ -324,7 +324,7 @@ void Voxelgrid::FloodFill(int x, int z, int height, bool fillDown){
   std::vector<std::vector<int>> queue;
   std::cout << x << std::endl;
 
-  if (datahandler->giveHeight(x, z) < height) {
+  if (datahandler->giveHeight((GLfloat)x, (GLfloat)z) < (GLfloat)height) {
     queue.push_back({x, z});
     setVoxel(x, height, z, true, 0, 0);
   }
@@ -345,7 +345,7 @@ void Voxelgrid::FloodFill(int x, int z, int height, bool fillDown){
     /* Fill voxels beneath current voxel
     */
     height_test = height;
-    terrain_height = (int)datahandler->giveHeight(temp_x, temp_z);
+    terrain_height = (int)datahandler->giveHeight((GLfloat)temp_x, (GLfloat)temp_z);
 
     if(fillDown){
       while(height_test > terrain_height && height_test >= 0){
@@ -362,22 +362,22 @@ above land and have not yet been added to the queue. Before coordinates are adde
 (!= nullptr) thus equivalent to voxel added to cue as used in if-statement.
 */
 // temp_x + 1 < datahandler->getDataWidth() -1 dye to giveHeight not able to give height and edge!!!
-if (temp_x + 1 < datahandler->getDataWidth() - 1 && datahandler->giveHeight(temp_x + 1, temp_z) < height && getVoxel(temp_x + 1, height, temp_z) == nullptr) {
+if (temp_x + 1 < datahandler->getDataWidth() - 1 && datahandler->giveHeight((GLfloat)(temp_x + 1), (GLfloat)temp_z) < height && getVoxel(temp_x + 1, height, temp_z) == nullptr) {
 	setVoxel(temp_x + 1, height, temp_z, true, 0, 0);
 	queue.push_back({ temp_x + 1,temp_z });
 }
 
 
-if (temp_x - 1 > 0 && datahandler->giveHeight(temp_x - 1, temp_z) < height && getVoxel(temp_x - 1, height, temp_z) == nullptr) {
+if (temp_x - 1 > 0 && datahandler->giveHeight((GLfloat)(temp_x - 1), (GLfloat)temp_z) < height && getVoxel(temp_x - 1, height, temp_z) == nullptr) {
 	setVoxel(temp_x - 1, height, temp_z, true, 0, 0);
 	queue.push_back({ temp_x - 1, temp_z });
 }
-if (temp_z + 1 < datahandler->getDataHeight() - 1 && datahandler->giveHeight(temp_x, temp_z + 1) < height && getVoxel(temp_x, height, temp_z + 1) == nullptr) {
+if (temp_z + 1 < datahandler->getDataHeight() - 1 && datahandler->giveHeight((GLfloat)temp_x, (GLfloat)(temp_z + 1)) < height && getVoxel(temp_x, height, temp_z + 1) == nullptr) {
 	setVoxel(temp_x, height, temp_z + 1, true, 0, 0);
 	queue.push_back({ temp_x,temp_z + 1 });
 }
 
-if (temp_z - 1 > 0 && datahandler->giveHeight(temp_x, temp_z - 1) < height && getVoxel(temp_x, height, temp_z - 1) == nullptr) {
+if (temp_z - 1 > 0 && datahandler->giveHeight((GLfloat)temp_x, (GLfloat)(temp_z - 1)) < height && getVoxel(temp_x, height, temp_z - 1) == nullptr) {
 	setVoxel(temp_x, height, temp_z - 1, true, 0, 0);
 	queue.push_back({ temp_x, temp_z - 1 });
 }
@@ -388,14 +388,14 @@ if (temp_z - 1 > 0 && datahandler->giveHeight(temp_x, temp_z - 1) < height && ge
 std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 	std::vector<GLuint> *positions = new std::vector<GLuint>;
 	GLint tempH = 0;
-	for (size_t x = 0; x < width; x++)
+	for (GLuint x = 0; x < width; x++)
 	{
-		for (size_t z = 0; z < height; z++)
+		for (GLuint z = 0; z < height; z++)
 		{
 			tempH = getHeight(x, z);
 			if (tempH != -1) {
 				positions->push_back(x);
-				positions->push_back(tempH);
+				positions->push_back((GLuint)tempH);
 				positions->push_back(z);
 			}
 
@@ -425,7 +425,7 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 
 void Voxelgrid::initDraw() {
 	voxelPositions = getVoxelPositions();
-	numVoxels = voxelPositions->size() / 3;
+	numVoxels = (GLuint)voxelPositions->size() / 3;
 	voxelShader = loadShadersG("src/shaders/simplevoxels.vert", "src/shaders/simplevoxels.frag", "src/shaders/simplevoxels.geom");
 
 	glGenBuffers(1, &voxelBuffer);
@@ -448,7 +448,7 @@ void Voxelgrid::initDraw() {
 void Voxelgrid::updateVoxelrender() {
 	delete voxelPositions;
 	voxelPositions = getVoxelPositions();
-	numVoxels = voxelPositions->size() / 3;
+	numVoxels = (GLuint)voxelPositions->size() / 3;
 
 	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
 	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);

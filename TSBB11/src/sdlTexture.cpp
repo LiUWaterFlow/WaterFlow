@@ -17,7 +17,8 @@ sdlTexture::sdlTexture(std::string tPath, GLuint gTexID)
 	}
 	catch (const char* msg)
 	{
-		//printError("Invalid terrain image path!");
+		printError("Invalid terrain image path!");
+		printError(msg);
 	}
 #endif
 	if (Surface != NULL)

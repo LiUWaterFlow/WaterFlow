@@ -14,6 +14,8 @@
 /// @brief Handles the shallow water testcase simulation.
 class ShallowGPU{
 private:
+
+  static bool DEBUG; ///< Print debug information (should be static member instead)
   GLint texWidth; ///< width of simulation area
   GLint texHeight; ///< height of simulation area
 
@@ -24,10 +26,6 @@ private:
 
   GLuint bufferOut; ///< Out buffer to be rendered.
 
-  /// @brief binds the necessary buffers for rendering (CPU)
-  ///
-  /// This should be removed
-  void bindSimGPU();
   /// @brief clamps the int value
   ///
   /// Clamps the int value n, between lower and upper.
@@ -54,8 +52,6 @@ private:
   /// Data is provided for floodpoints at construction.
   void floodFill(float* u, int x, int z, float height);
 
-  bool firstTime; ///< First time check (can be removed)
-
   /// @brief Prints debug info for buffer at bID.
   ///
   /// Prints the message and the iteration aswell.
@@ -76,8 +72,7 @@ public:
   void cycleBuffer();
 
 
-  GLuint drawBuffers[4]; ///< drawBuffers (can be removed)
-  GLuint advectWaterProgram ///< shader used for simulation
+  GLuint advectWaterProgram; ///< shader used for simulation
   GLuint addProgram;///< shader used for simulation
   GLuint advectVelocityXProgram;///< shader used for simulation
   GLuint advectVelocityYProgram;///< shader used for simulation
@@ -89,12 +84,7 @@ public:
   ///
   /// Must take handle to terrain and a floodfill data vector
   ShallowGPU(DataHandler *t,std::vector<Flood_Fill_data*> FFDataIn) { terr = t; texWidth = t->getDataWidth();
-  texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn; firstTime = true; bufferOut = 0; cycle = 0;};
-
-  /// @brief runs the simulation one timestep (CPU)
-  ///
-  /// This should be removed
-  void updateSim(GLfloat);
+  texHeight = t->getDataHeight(); totTime = 0.0f; flood = FFDataIn; bufferOut = 0; cycle = 0;};
 
   /// @brief Initializes GPU for simulation
   ///

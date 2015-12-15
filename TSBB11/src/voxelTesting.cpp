@@ -39,7 +39,7 @@ namespace voxelTest{
   }
 
   int parseLine(char* line){
-    int i = strlen(line);
+    int i = (int)strlen(line);
     while (*line < '0' || *line > '9') line++;
     line[i-3] = '\0';
     i = atoi(line);
@@ -89,12 +89,12 @@ namespace voxelTest{
 
   void mainTest(DataHandler* data) {
 
-	  Voxelgrid* grid = new Voxelgrid(data, pow(2, 26));
+	  Voxelgrid* grid = new Voxelgrid(data, (int64_t)pow(2, 26));
 
 
 
-	  size_t count = 350;
-	  size_t end = 0;
+	  int count = 350;
+	  int end = 0;
 	  bool testHash = !true;
 	  bool randomRead = !true;
 	  bool neighbours = true;
@@ -105,9 +105,9 @@ namespace voxelTest{
 
 	  if (randomRead){
 		  startClock();
-		  for (size_t x = count; x != end; x--) {
-			  for (size_t y = count; y != end; y--) {
-				  for (size_t z = count; z != end; z--) {
+		  for (int x = count; x != end; x--) {
+			  for (int y = count; y != end; y--) {
+				  for (int z = count; z != end; z--) {
 
 					  xd = randi(count, end);
 					  yd = randi(count, end);
@@ -126,10 +126,10 @@ namespace voxelTest{
 
 		grid->hashInit();
 
-		for (size_t x = count; x != end; x--) {
-			for (size_t y = count; y != end; y--) {
-				for (size_t z = count; z != end; z--) {
-					grid->hashAdd(x, y, z, 1, x, y);
+		for (int16_t x = count; x != end; x--) {
+			for (int16_t y = count; y != end; y--) {
+				for (int16_t z = count; z != end; z--) {
+					grid->hashAdd(x, y, z, 1, (GLfloat)x, (GLfloat)y);
 				}
 			}
 		}
@@ -139,9 +139,9 @@ namespace voxelTest{
 
 		//Read and modify the voxels
 		startClock();
-		for (size_t x = count; x != end; x--) {
-			for (size_t y = count; y != end; y--) {
-				for (size_t z = count; z != end; z--) {
+		for (int x = count; x != end; x--) {
+			for (int y = count; y != end; y--) {
+				for (int z = count; z != end; z--) {
 
 					if (randomRead) {
 						xd = randi(count, end);
@@ -175,10 +175,10 @@ namespace voxelTest{
 	}
 	else{
 
-    for (size_t x = count; x != end; x--) {
-      for (size_t y = count; y != end; y--) {
-        for (size_t z = count; z != end; z--) {
-          grid->setVoxel(x,y,z,1,x,y);
+    for (int16_t x = count; x != end; x--) {
+      for (int16_t y = count; y != end; y--) {
+        for (int16_t z = count; z != end; z--) {
+          grid->setVoxel(x,y,z,1,(GLfloat)x, (GLfloat)y);
         }
       }
     }
@@ -186,9 +186,9 @@ namespace voxelTest{
 
     //Read and modify the voxels
     startClock();
-	for (size_t x = count; x != end; x--) {
-		for (size_t y = count; y != end; y--) {
-			for (size_t z = count; z != end; z--) {
+	for (int x = count; x != end; x--) {
+		for (int y = count; y != end; y--) {
+			for (int z = count; z != end; z--) {
 
 
 				if (randomRead) {

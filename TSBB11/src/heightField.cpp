@@ -63,7 +63,7 @@ void HeightField::floodFill(float* u, int x, int z, float height) {
 void HeightField::initTest() {
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
-			u[i][j] = terr->giveHeight(i*samp, j*samp) - 2;
+			u[i][j] = terr->giveHeight((GLfloat)i*samp, (GLfloat)j*samp) - 2.0f;
 			v[i][j] = 0;
 		}
 	}
@@ -85,7 +85,7 @@ GLfloat HeightField::clipf(GLfloat n, GLfloat lower, GLfloat upper) {
 GLfloat HeightField::getHeight(int i, int j, GLfloat ourHeight) {
 	i = clip(i, 0, width - 1);
 	j = clip(j, 0, height - 1);
-	if (u[i][j] - terr->giveHeight(i*samp, j*samp) < 0.0f) {
+	if (u[i][j] - terr->giveHeight((GLfloat)i*samp, (GLfloat)j*samp) < 0.0f) {
 		return ourHeight;
 	}
 	return u[i][j];
@@ -95,13 +95,13 @@ GLfloat HeightField::getHeight(int i, int j, GLfloat ourHeight) {
 void HeightField::updateSim(GLfloat dt) {
 
 	GLfloat c2 = 1;
-	float max_c = (1.0 / dt);
+	GLfloat max_c = (1.0f / dt);
 	if (c2 > max_c) {
 		printf("C2 too large/ dt too large.");
 	}
 
 	GLfloat h2 = 4;
-	dt = dt*4.9;
+	dt = dt*4.9f;
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 
@@ -112,10 +112,10 @@ void HeightField::updateSim(GLfloat dt) {
 
 			GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * u[i][j]) / h2;
 
-			f = clipf(f, -0.1, 0.1);
+			f = clipf(f, -0.1f, 0.1f);
 			v[i][j] = v[i][j] + f*dt;
 			unew[i][j] = u[i][j] + v[i][j] * dt;
-			v[i][j] *= 0.995;
+			v[i][j] *= 0.995f;
 
 		}
 	}
@@ -133,9 +133,9 @@ std::vector<GLuint> *HeightField::getVoxelPositions() {
 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
-			if (u[i][j] - 1 > terr->giveHeight(i, j)) {
+			if (u[i][j] - 1 > terr->giveHeight((GLfloat)i, (GLfloat)j)) {
 				positions->push_back(i*samp);
-				positions->push_back(round(u[i][j] - 1));
+				positions->push_back((GLuint)round(u[i][j] - 1.0f));
 				positions->push_back(j*samp);
 			}
 		}
@@ -145,7 +145,7 @@ std::vector<GLuint> *HeightField::getVoxelPositions() {
 
 void HeightField::initDraw() {
 	voxelPositions = getVoxelPositions();
-	numVoxels = voxelPositions->size() / 3;
+	numVoxels = (GLuint)voxelPositions->size() / 3;
 	voxelShader = loadShadersG("src/shaders/simplevoxels.vert", "src/shaders/simplevoxels.frag", "src/shaders/simplevoxels.geom");
 
 	glGenBuffers(1, &voxelBuffer);
@@ -169,7 +169,7 @@ void HeightField::updateVoxelrender() {
 	voxelPositions->clear();
 	delete voxelPositions;
 	voxelPositions = getVoxelPositions();
-	numVoxels = voxelPositions->size() / 3;
+	numVoxels = (GLuint)voxelPositions->size() / 3;
 
 	glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
 	glBufferData(GL_ARRAY_BUFFER, numVoxels * 3 * sizeof(GLuint), voxelPositions->data(), GL_STATIC_COPY);
