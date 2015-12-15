@@ -1,3 +1,6 @@
+/// @file shallowGPU.cpp
+/// @brief Implementations of functions sdlTexture.h
+
 #include "shallowGPU.h"
 #include "GL_utilities.h"
 #include "Utilities.h"
@@ -10,15 +13,15 @@
 #include <inttypes.h>
 
 
-bool DEBUG = false;
-	
+bool DEBUG = false; ///< Print debug information (should be static member instead)
+
 void ShallowGPU::cycleBuffer(){
 	const static GLuint relBuffers[3] = {0,2,4};
 	cycle = (cycle +1)%3;
 	bufferOut = relBuffers[cycle];
-	
+
 }
-	
+
 void ShallowGPU::floodFill(float* u, int x, int z,float height){
 
   std::vector<std::vector<int>> queue;
@@ -39,25 +42,25 @@ void ShallowGPU::floodFill(float* u, int x, int z,float height){
 
 	queue.pop_back();
 
-	// create the four neighbours clamp to ensure we don't check outside the map.	
+	// create the four neighbours clamp to ensure we don't check outside the map.
 	int temp_x_plus = clip(temp_x+1,0,texWidth-1);
 	int temp_x_min = clip(temp_x-1,0,texWidth-1);
 	int temp_z_plus = clip(temp_z+1,0,texHeight-1);
 	int temp_z_min = clip(temp_z-1,0,texHeight-1);
-	int offset0 = temp_x + temp_z*texWidth; 	
+	int offset0 = temp_x + temp_z*texWidth;
 	if(u[offset0] != height && terr->getData()[offset0] < height){
-		
+
 		//set height at offset0
 		u[offset0] = height;
 		//add the four neighbours
 		queue.push_back({temp_x_plus,temp_z_min});
-		queue.push_back({temp_x_plus,temp_z_plus});		
-		queue.push_back({temp_x_min,temp_z_min});		
+		queue.push_back({temp_x_plus,temp_z_plus});
+		queue.push_back({temp_x_min,temp_z_min});
 		queue.push_back({temp_x_min,temp_z_plus});
 	}
   }
 }
-	
+
 int ShallowGPU::clip(int n, int lower, int upper) {
 	return std::max(lower, std::min(n, upper));
 }
@@ -78,13 +81,13 @@ void ShallowGPU::initGPU() {
 	float* f = new float[texWidth*texHeight];
 	float* emp = new float[texWidth*texHeight];
 	float* flow = new float[texWidth*texHeight];
-	std::fill_n(vx,texWidth*texHeight,0.0f);	
-	std::fill_n(vy,texWidth*texHeight,0.0f);	
-	std::fill_n(u,texWidth*texHeight,0.0f);	
-	std::fill_n(f,texWidth*texHeight,0.0f);	
+	std::fill_n(vx,texWidth*texHeight,0.0f);
+	std::fill_n(vy,texWidth*texHeight,0.0f);
+	std::fill_n(u,texWidth*texHeight,0.0f);
+	std::fill_n(f,texWidth*texHeight,0.0f);
 	std::fill_n(emp,texWidth*texHeight,0.0f);
 	std::fill_n(flow, texWidth*texHeight, 0.0f);
-	
+
 
 	int upper2 = 180;
 	int lower2 = 70;
@@ -96,30 +99,30 @@ void ShallowGPU::initGPU() {
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
 				f[j*texWidth + i] = 250.0f;
-			
+
 			if( i < 300 && j < 300 ){
 				f[j*texWidth +i] = 0.0f;
 			}
-			
+
 			if( i > 251 && j > 299 && j < 900 && i <299){
 				f[j*texWidth +i] = 0.0f;
 			}
-			
+
 			if( i > 250 && j > 850 && j < 1200 && i < 1500){
 				f[j*texWidth +i] = 0.0f;
 			}
-				
-				
+
+
 		}
 	}
 
-	
+
 	for (int j = 0; j < texHeight; ++j) {
 		for (int i = 0; i < texWidth; ++i) {
 			u[j*texWidth + i] = 0.0f;
 			vx[j*texWidth + i] = 0.0f;
 			vy[j*texWidth + i] = 0.0f;
-			
+
 			if(i < upper2 && i >lower2 && j < upper2 && j > lower2){
 				//add interesting data here
 				u[j*texWidth + i] = 60.0f;
@@ -133,7 +136,7 @@ void ShallowGPU::initGPU() {
 		}
 	}
 	if(DEBUG){
-	u[10 + 10 * texWidth] = 5.0f; 
+	u[10 + 10 * texWidth] = 5.0f;
 	}
 
 
@@ -157,7 +160,7 @@ void ShallowGPU::initGPU() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[1]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 1 * numData, u, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	//Buffer 2, vx 
+	//Buffer 2, vx
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[2]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 1 * numData, vx, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -165,7 +168,7 @@ void ShallowGPU::initGPU() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[3]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 1 * numData, vx, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	
+
 	//Buffer 2, vy
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[4]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat)* 1 * numData, vy, GL_STATIC_DRAW);
@@ -179,18 +182,18 @@ void ShallowGPU::initGPU() {
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[6]);			//use terr->getData() to use terrain
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,f, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	
+
 	//Buffer 8, to renderer
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[7]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData,emp, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	
+
 	//Buffer 9, constant input
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[8]);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(GLfloat) * 1 * numData, flow, GL_STATIC_DRAW);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-	
+
 
 	printError("init Compute Error");
 	printProgramInfoLog(advectWaterProgram, "AdvectWater", NULL, NULL, NULL, NULL);
@@ -204,18 +207,18 @@ void ShallowGPU::initGPU() {
 	printProgramInfoLog(updateHeightProgram, "Add", NULL, NULL, NULL, NULL);
 	printError("init Compute Error");
 	printProgramInfoLog(updateVelocityProgram, "Add", NULL, NULL, NULL, NULL);
-	
-	
+
+
 	float dt = 0.05f;
-	
+
 	glUseProgram(advectWaterProgram);
 	glUniform2i(glGetUniformLocation(advectWaterProgram, "size"), texWidth,texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
-	
+
 	glUseProgram(advectVelocityXProgram);
 	glUniform2i(glGetUniformLocation(advectVelocityXProgram, "size"), texWidth, texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
-	
+
 	glUseProgram(advectVelocityYProgram);
 	glUniform2i(glGetUniformLocation(advectVelocityYProgram, "size"),texWidth, texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
@@ -223,11 +226,11 @@ void ShallowGPU::initGPU() {
 	glUseProgram(addProgram);
 	glUniform2i(glGetUniformLocation(addProgram, "size"),texWidth, texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
-	
+
 	glUseProgram(updateHeightProgram);
 	glUniform2i(glGetUniformLocation(updateHeightProgram, "size"), texWidth,texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
-	
+
 	glUseProgram(updateVelocityProgram);
 	glUniform2i(glGetUniformLocation(updateVelocityProgram, "size"), texWidth, texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
@@ -239,7 +242,7 @@ void ShallowGPU::initGPU() {
 	*/
 	//std::valarray<float> myvalarray(u, texWidth*texHeight);
 	//vol0 = myvalarray.sum();
-	
+
 	delete u;
 	delete vx;
 	delete vy;
@@ -255,10 +258,10 @@ void ShallowGPU::initFloodFill(float* u){
 
 
 void ShallowGPU::runSimGPU(GLfloat dt) {
-	totTime += dt; 
+	totTime += dt;
 	int numPing = 5;
 	if(DEBUG){
-		numPing = 500;	
+		numPing = 500;
 	}
 
 	//Add this one
@@ -275,14 +278,14 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 	for (int i = 0; i < numPing; i++) {
 
 		glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 7, shallowBuffers);
-		
+
 		//select advectWater
 		glUseProgram(advectWaterProgram);
-	
+
 		glDispatchCompute((GLuint)ceil((GLfloat)texWidth / 16.0f), (GLuint)ceil((GLfloat)texHeight / 16.0f), 1);
 		glFinish();
 			if(DEBUG){
-		
+
 			Print(shallowBuffers[1], "HEIGHT AFTER ADVECT WATER", 1);
 			Print(shallowBuffers[2], "VELX AFTER ADVECT WATER", 1);
 			Print(shallowBuffers[4], "VELY AFTER ADVECT WATER", 1);
@@ -290,11 +293,11 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 			}
 		//select velocity advect X
 		glUseProgram(advectVelocityXProgram);
-		
+
 		glDispatchCompute((GLuint)ceil((GLfloat)texWidth / 16.0f), (GLuint)ceil((GLfloat)texHeight / 16.0f), 1);
-		
+
 		glFinish();
-		
+
 			if(DEBUG){
 			Print(shallowBuffers[1], "HEIGHT AFTER ADVECTVELX", 1);
 			Print(shallowBuffers[3], "VELX AFTER ADVECTVELX", 1);
@@ -303,7 +306,7 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 			}
 		//select velocity advect Y
 		glUseProgram(advectVelocityYProgram);
-		
+
 		glDispatchCompute((GLuint)ceil((GLfloat)texWidth / 16.0f), (GLuint)ceil((GLfloat)texHeight / 16.0f), 1);
 		glFinish();
 			if(DEBUG){
@@ -313,7 +316,7 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 			std::getchar();
 			}
 		glUseProgram(updateHeightProgram);
-		
+
 		glDispatchCompute((GLuint)ceil((GLfloat)texWidth / 16.0f), (GLuint)ceil((GLfloat)texHeight / 16.0f), 1);
 		glFinish();
 			if(DEBUG){
@@ -323,9 +326,9 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 			std::getchar();
 			}
 		//
-		
+
 		glUseProgram(updateVelocityProgram);
-		
+
 		glDispatchCompute((GLuint)ceil((GLfloat)texWidth / 16.0f), (GLuint)ceil((GLfloat)texHeight / 16.0f), 1);
 		glFinish();
 			if(DEBUG){
@@ -333,21 +336,21 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 			Print(shallowBuffers[2], "VELX AFTER UPDATE VELOCITY", 1);
 			Print(shallowBuffers[4], "VELY AFTER UPDATE VELOCITY", 1);
 			std::getchar();
-		
-		
+
+
 			Print(shallowBuffers[0], "HEIGHT0 AFTER ALL", 1);
 			Print(shallowBuffers[2], "VELX0 AFTER ALL", 1);
 			Print(shallowBuffers[4], "VELY0 AFTER ALL ", 1);
 			std::getchar();
-		
-		
+
+
 			Print(shallowBuffers[1], "HEIGHT1 AFTER ALL", 1);
 			Print(shallowBuffers[3], "VELX1 AFTER ALL", 1);
 			Print(shallowBuffers[5], "VELY1 AFTER ALL ", 1);
-		
+
 			}
-		
-		
+
+
 		/*
 	std::swap(shallowBuffers[0],shallowBuffers[1]);
 	std::swap(shallowBuffers[3],shallowBuffers[2]);
@@ -365,14 +368,14 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 	glDispatchCompute((GLuint)ceil((GLfloat)texWidth / 16.0f), (GLuint)ceil((GLfloat)texHeight / 16.0f), 1);
 	glFinish();
 	printError("run Sim GPU");
-	
-	
+
+
 }
 
 void ShallowGPU::Print(GLuint bufferID, std::string msg, int iter) const
 {
 	float * arr = new float[texWidth*texHeight];
-	
+
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, bufferID);
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, arr);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -406,5 +409,3 @@ void ShallowGPU::PrintHelper(std::string start_end, std::string msg, int iter) c
 		std::cout << "========== " << start_end << " " << msg << " ==========\n\n";
 	}
 }
-
-

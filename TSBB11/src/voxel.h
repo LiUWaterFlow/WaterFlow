@@ -33,9 +33,8 @@ struct voxel{
 /// @see yoff
 /// @see zoff
 /// @see getNeighbourhood
-
 struct neighs {
-	voxel* voxs[27];
+	voxel* voxs[27]; ///< array of the voxels in the neighbourhood
 };
 
 /// @class Voxelgrid
@@ -55,7 +54,8 @@ private:
   std::vector<GLuint>* voxelPositions; ///<Vector for the position where there are voxels, for drawing purposes.
   GLuint numVoxels; ///< Number of voxels in the voxelPositions.
   GLuint voxelShader; ///< Shader program.
-  GLuint voxelBuffer, voxelVAO; ///< Buffers and VAOs.
+  GLuint voxelBuffer;///< Buffer for rendering
+  GLuint voxelVAO; ///< VAOs for rendering
 
   std::vector<GLint>* waterHeight; ///< The map of height data for the topmost water voxel.
   GLuint width; ///< The width of the map, needed for saving data in linear containers.
