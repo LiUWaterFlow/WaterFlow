@@ -15,7 +15,7 @@ var files =
     [ "src/readData.h", "read_data_8h.html", null ],
     [ "src/sdlTexture.cpp", "sdl_texture_8cpp.html", null ],
     [ "src/sdlTexture.h", "sdl_texture_8h.html", null ],
-    [ "src/shallowGPU.cpp", "shallow_g_p_u_8cpp.html", "shallow_g_p_u_8cpp" ],
+    [ "src/shallowGPU.cpp", "shallow_g_p_u_8cpp.html", null ],
     [ "src/shallowGPU.h", "shallow_g_p_u_8h.html", null ],
     [ "src/Utilities.cpp", "_utilities_8cpp.html", "_utilities_8cpp" ],
     [ "src/Utilities.h", "_utilities_8h.html", "_utilities_8h" ],

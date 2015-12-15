@@ -152,7 +152,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00052"></a>00052     <span class="keywordflow">if</span>(scale  &lt; 0.0f){
 <a name="l00053"></a>00053         position[offset + 1] =  ourTerr;
 <a name="l00054"></a>00054     }<span class="keywordflow">else</span>{
-<a name="l00055"></a>00055         position[offset + 1] =  (ourTerr  &lt;  terr*scale-0.00001f ) ? ourTerr-100.0f  : ourTerr;
+<a name="l00055"></a>00055         position[offset + 1] =  (ourTerr  &lt;  terr*scale ) ? ourTerr-100.0f  : ourTerr;
 <a name="l00056"></a>00056     }
 <a name="l00057"></a>00057     position[offset + 2] = float(y);
 <a name="l00058"></a>00058 
@@ -197,7 +197,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="height_map_8comp.html">heightMap.comp</a>      </li>
 
-    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 17:36:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

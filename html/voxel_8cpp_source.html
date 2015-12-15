@@ -253,11 +253,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00153"></a>00153   this-&gt;<a class="code" href="class_voxelgrid.html#aaec2533e956e065b9d3d4a654b0e9853" title="The map of height data for the topmost water voxel.">waterHeight</a> = <span class="keyword">new</span> std::vector&lt;GLint&gt;(<a class="code" href="class_voxelgrid.html#a105802faf7a954cac413286276315c2e" title="The width of the map, needed for saving data in linear containers.">width</a>*<a class="code" href="class_voxelgrid.html#a08a290f3a661bfa6d9a0bc93dae4feeb" title="The height of the map, needed for voxel extraction.">height</a>, -1);
 <a name="l00154"></a>00154 
 <a name="l00155"></a>00155   <span class="keywordtype">int</span> i = 0;
-<a name="l00156"></a>00156   <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = -1; x &lt; 2; x++)
+<a name="l00156"></a>00156   <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = -1; x &lt; 2; x++)
 <a name="l00157"></a>00157   {
-<a name="l00158"></a>00158       <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = -1; y &lt; 2; y++)
+<a name="l00158"></a>00158       <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = -1; y &lt; 2; y++)
 <a name="l00159"></a>00159       {
-<a name="l00160"></a>00160           <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> z = -1; z &lt; 2; z++)
+<a name="l00160"></a>00160           <span class="keywordflow">for</span> (<span class="keywordtype">int</span> z = -1; z &lt; 2; z++)
 <a name="l00161"></a>00161           {
 <a name="l00162"></a>00162               <a class="code" href="class_voxelgrid.html#a19c3b7448b7e81cd1e00faa3afa31907" title="xoffsets for neighbour extraction.">xoff</a>[i] = x;
 <a name="l00163"></a>00163               <a class="code" href="class_voxelgrid.html#a36abccf98d98a94637134ff80b381d41" title="xoffsets for neighbour extraction.">yoff</a>[i] = y;
@@ -424,7 +424,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00324"></a>00324   std::vector&lt;std::vector&lt;int&gt;&gt; queue;
 <a name="l00325"></a>00325   std::cout &lt;&lt; x &lt;&lt; std::endl;
 <a name="l00326"></a>00326 
-<a name="l00327"></a>00327   <span class="keywordflow">if</span> (<a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(x, z) &lt; <a class="code" href="class_voxelgrid.html#a08a290f3a661bfa6d9a0bc93dae4feeb" title="The height of the map, needed for voxel extraction.">height</a>) {
+<a name="l00327"></a>00327   <span class="keywordflow">if</span> (<a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)x, (GLfloat)z) &lt; (GLfloat)height) {
 <a name="l00328"></a>00328     queue.push_back({x, z});
 <a name="l00329"></a>00329     <a class="code" href="class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da" title="Set value of voxel at x,y,z.">setVoxel</a>(x, height, z, <span class="keyword">true</span>, 0, 0);
 <a name="l00330"></a>00330   }
@@ -445,7 +445,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00345"></a>00345     <span class="comment">/* Fill voxels beneath current voxel</span>
 <a name="l00346"></a>00346 <span class="comment">    */</span>
 <a name="l00347"></a>00347     height_test = <a class="code" href="class_voxelgrid.html#a08a290f3a661bfa6d9a0bc93dae4feeb" title="The height of the map, needed for voxel extraction.">height</a>;
-<a name="l00348"></a>00348     terrain_height = (int)<a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(temp_x, temp_z);
+<a name="l00348"></a>00348     terrain_height = (int)<a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)temp_x, (GLfloat)temp_z);
 <a name="l00349"></a>00349 
 <a name="l00350"></a>00350     <span class="keywordflow">if</span>(fillDown){
 <a name="l00351"></a>00351       <span class="keywordflow">while</span>(height_test &gt; terrain_height &amp;&amp; height_test &gt;= 0){
@@ -462,22 +462,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00362"></a>00362 <span class="comment">(!= nullptr) thus equivalent to voxel added to cue as used in if-statement.</span>
 <a name="l00363"></a>00363 <span class="comment">*/</span>
 <a name="l00364"></a>00364 <span class="comment">// temp_x + 1 &lt; datahandler-&gt;getDataWidth() -1 dye to giveHeight not able to give height and edge!!!</span>
-<a name="l00365"></a>00365 <span class="keywordflow">if</span> (temp_x + 1 &lt; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() - 1 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(temp_x + 1, temp_z) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x + 1, height, temp_z) == <span class="keyword">nullptr</span>) {
+<a name="l00365"></a>00365 <span class="keywordflow">if</span> (temp_x + 1 &lt; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() - 1 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)(temp_x + 1), (GLfloat)temp_z) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x + 1, height, temp_z) == <span class="keyword">nullptr</span>) {
 <a name="l00366"></a>00366     <a class="code" href="class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da" title="Set value of voxel at x,y,z.">setVoxel</a>(temp_x + 1, height, temp_z, <span class="keyword">true</span>, 0, 0);
 <a name="l00367"></a>00367     queue.push_back({ temp_x + 1,temp_z });
 <a name="l00368"></a>00368 }
 <a name="l00369"></a>00369 
 <a name="l00370"></a>00370 
-<a name="l00371"></a>00371 <span class="keywordflow">if</span> (temp_x - 1 &gt; 0 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(temp_x - 1, temp_z) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x - 1, height, temp_z) == <span class="keyword">nullptr</span>) {
+<a name="l00371"></a>00371 <span class="keywordflow">if</span> (temp_x - 1 &gt; 0 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)(temp_x - 1), (GLfloat)temp_z) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x - 1, height, temp_z) == <span class="keyword">nullptr</span>) {
 <a name="l00372"></a>00372     <a class="code" href="class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da" title="Set value of voxel at x,y,z.">setVoxel</a>(temp_x - 1, height, temp_z, <span class="keyword">true</span>, 0, 0);
 <a name="l00373"></a>00373     queue.push_back({ temp_x - 1, temp_z });
 <a name="l00374"></a>00374 }
-<a name="l00375"></a>00375 <span class="keywordflow">if</span> (temp_z + 1 &lt; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() - 1 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(temp_x, temp_z + 1) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x, height, temp_z + 1) == <span class="keyword">nullptr</span>) {
+<a name="l00375"></a>00375 <span class="keywordflow">if</span> (temp_z + 1 &lt; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() - 1 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)temp_x, (GLfloat)(temp_z + 1)) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x, height, temp_z + 1) == <span class="keyword">nullptr</span>) {
 <a name="l00376"></a>00376     <a class="code" href="class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da" title="Set value of voxel at x,y,z.">setVoxel</a>(temp_x, height, temp_z + 1, <span class="keyword">true</span>, 0, 0);
 <a name="l00377"></a>00377     queue.push_back({ temp_x,temp_z + 1 });
 <a name="l00378"></a>00378 }
 <a name="l00379"></a>00379 
-<a name="l00380"></a>00380 <span class="keywordflow">if</span> (temp_z - 1 &gt; 0 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(temp_x, temp_z - 1) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x, height, temp_z - 1) == <span class="keyword">nullptr</span>) {
+<a name="l00380"></a>00380 <span class="keywordflow">if</span> (temp_z - 1 &gt; 0 &amp;&amp; <a class="code" href="class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f" title="Handle to the datahandler and thus the model data.">datahandler</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)temp_x, (GLfloat)(temp_z - 1)) &lt; height &amp;&amp; <a class="code" href="class_voxelgrid.html#ac022b2447398ecb774b5c0bda2e5be05" title="Get value of voxel at x,y,z.">getVoxel</a>(temp_x, height, temp_z - 1) == <span class="keyword">nullptr</span>) {
 <a name="l00381"></a>00381     <a class="code" href="class_voxelgrid.html#a93d44bc37f7f6f74ea79eb55b8b0e6da" title="Set value of voxel at x,y,z.">setVoxel</a>(temp_x, height, temp_z - 1, <span class="keyword">true</span>, 0, 0);
 <a name="l00382"></a>00382     queue.push_back({ temp_x, temp_z - 1 });
 <a name="l00383"></a>00383 }
@@ -488,14 +488,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00388"></a><a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5">00388</a> std::vector&lt;GLuint&gt; *<a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5" title="Create a data pointer to all existing voxels.">Voxelgrid::getVoxelPositions</a>() {
 <a name="l00389"></a>00389     std::vector&lt;GLuint&gt; *positions = <span class="keyword">new</span> std::vector&lt;GLuint&gt;;
 <a name="l00390"></a>00390     GLint tempH = 0;
-<a name="l00391"></a>00391     <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; <a class="code" href="class_voxelgrid.html#a105802faf7a954cac413286276315c2e" title="The width of the map, needed for saving data in linear containers.">width</a>; x++)
+<a name="l00391"></a>00391     <span class="keywordflow">for</span> (GLuint x = 0; x &lt; <a class="code" href="class_voxelgrid.html#a105802faf7a954cac413286276315c2e" title="The width of the map, needed for saving data in linear containers.">width</a>; x++)
 <a name="l00392"></a>00392     {
-<a name="l00393"></a>00393         <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> z = 0; z &lt; <a class="code" href="class_voxelgrid.html#a08a290f3a661bfa6d9a0bc93dae4feeb" title="The height of the map, needed for voxel extraction.">height</a>; z++)
+<a name="l00393"></a>00393         <span class="keywordflow">for</span> (GLuint z = 0; z &lt; <a class="code" href="class_voxelgrid.html#a08a290f3a661bfa6d9a0bc93dae4feeb" title="The height of the map, needed for voxel extraction.">height</a>; z++)
 <a name="l00394"></a>00394         {
 <a name="l00395"></a>00395             tempH = <a class="code" href="class_voxelgrid.html#ab8b1778e2dd0264e724f18509665373b" title="Gets the height in waterHeight.">getHeight</a>(x, z);
 <a name="l00396"></a>00396             <span class="keywordflow">if</span> (tempH != -1) {
 <a name="l00397"></a>00397                 positions-&gt;push_back(x);
-<a name="l00398"></a>00398                 positions-&gt;push_back(tempH);
+<a name="l00398"></a>00398                 positions-&gt;push_back((GLuint)tempH);
 <a name="l00399"></a>00399                 positions-&gt;push_back(z);
 <a name="l00400"></a>00400             }
 <a name="l00401"></a>00401 
@@ -525,7 +525,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00425"></a>00425 
 <a name="l00426"></a><a class="code" href="class_voxelgrid.html#a3cb4da20aae77258b01efa9059ff319d">00426</a> <span class="keywordtype">void</span> <a class="code" href="class_voxelgrid.html#a3cb4da20aae77258b01efa9059ff319d" title="Initialize Voxelgrid for drawing.">Voxelgrid::initDraw</a>() {
 <a name="l00427"></a>00427     <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a> = <a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5" title="Create a data pointer to all existing voxels.">getVoxelPositions</a>();
-<a name="l00428"></a>00428     <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> = <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;size() / 3;
+<a name="l00428"></a>00428     <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> = (GLuint)<a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;size() / 3;
 <a name="l00429"></a>00429     <a class="code" href="class_voxelgrid.html#a056b801cec260ef17190e677caec62d5" title="Shader program.">voxelShader</a> = loadShadersG(<span class="stringliteral">&quot;src/shaders/simplevoxels.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/simplevoxels.frag&quot;</span>, <span class="stringliteral">&quot;src/shaders/simplevoxels.geom&quot;</span>);
 <a name="l00430"></a>00430 
 <a name="l00431"></a>00431     glGenBuffers(1, &amp;<a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
@@ -548,7 +548,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00448"></a><a class="code" href="class_voxelgrid.html#aba1fc356880f274cd827403e74a4500f">00448</a> <span class="keywordtype">void</span> <a class="code" href="class_voxelgrid.html#aba1fc356880f274cd827403e74a4500f" title="Updates the buffer on the GPU.">Voxelgrid::updateVoxelrender</a>() {
 <a name="l00449"></a>00449     <span class="keyword">delete</span> <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>;
 <a name="l00450"></a>00450     <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a> = <a class="code" href="class_voxelgrid.html#a8229f910b45c9a217a086f11926210c5" title="Create a data pointer to all existing voxels.">getVoxelPositions</a>();
-<a name="l00451"></a>00451     <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> = <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;size() / 3;
+<a name="l00451"></a>00451     <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> = (GLuint)<a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;size() / 3;
 <a name="l00452"></a>00452 
 <a name="l00453"></a>00453     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c" title="Buffer for rendering.">voxelBuffer</a>);
 <a name="l00454"></a>00454     glBufferData(GL_ARRAY_BUFFER, <a class="code" href="class_voxelgrid.html#ad7b79a816a33916281f73d6b81e401a5" title="Number of voxels in the voxelPositions.">numVoxels</a> * 3 * <span class="keyword">sizeof</span>(GLuint), <a class="code" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90" title="Vector for the position where there are voxels, for drawing purposes.">voxelPositions</a>-&gt;data(), GL_STATIC_COPY);
@@ -608,7 +608,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>voxel.cpp</b>      </li>
 
-    <li class="footer">Generated on Tue Dec 15 2015 13:05:28 for Waterflow by
+    <li class="footer">Generated on Tue Dec 15 2015 17:36:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
