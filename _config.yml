@@ -19,6 +19,7 @@ baseurl: /WaterFlow
 email: conrad.wahlen@gmail.com
 url: https://liuwaterflow.github.io/WaterFlow
 git_url: https://github.com/LiUWaterFlow/WaterFlow
+scien_url: http://scienvisic.se/
 description: "Project site for a water visiualization program, created by students at Linköping University."
 
 # Color settings (hex-codes without the leading hash-tag)
@@ -33,6 +34,10 @@ footer: LiUWaterFlow
 social:
   - title: github
     url: https://github.com/LiUWaterFlow/WaterFlow
+
+# Images used
+  - title: Figure1
+  	
 
 # Build settings
 markdown: kramdown
