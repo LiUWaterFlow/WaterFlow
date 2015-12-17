@@ -3,6 +3,8 @@ var files =
     [ "main.cpp", null, null ],
     [ "src/camera.cpp", null, null ],
     [ "src/camera.h", null, null ],
+    [ "src/fileHandler.cpp", "file_handler_8cpp.html", null ],
+    [ "src/fileHandler.h", "file_handler_8h.html", null ],
     [ "src/flowSource.cpp", null, null ],
     [ "src/flowSource.h", "flow_source_8h.html", null ],
     [ "src/heightField.cpp", "height_field_8cpp.html", null ],

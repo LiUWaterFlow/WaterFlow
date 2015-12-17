@@ -130,97 +130,98 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00030"></a>00030 <span class="preprocessor">#include &quot;voxel.h&quot;</span>
 <a name="l00031"></a>00031 <span class="preprocessor">#include &quot;<a class="code" href="height_field_8h.html" title="Contains the CPU and GPU implementation of heightfield.">heightField.h</a>&quot;</span>
 <a name="l00032"></a>00032 <span class="preprocessor">#include &quot;<a class="code" href="xml_parsing_8h.html" title="This file implement all the parsing functions for the XML file contents and an generating function fo...">xmlParsing.h</a>&quot;</span>
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034 <span class="preprocessor">#include &quot;AntTweakBar.h&quot;</span>
-<a name="l00035"></a>00035 
-<a name="l00041"></a><a class="code" href="class_program.html">00041</a> <span class="keyword">class </span><a class="code" href="class_program.html" title="Main structure of the program.">Program</a> {
-<a name="l00042"></a>00042 <span class="keyword">private</span>:
-<a name="l00043"></a>00043     <span class="comment">// Screen stuff</span>
-<a name="l00044"></a><a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c">00044</a>     SDL_Window *<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>;         
-<a name="l00045"></a><a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490">00045</a>     SDL_GLContext <a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490" title="SDL openGL context.">glcontext</a>;    
-<a name="l00046"></a>00046 
-<a name="l00047"></a><a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2">00047</a>     <span class="keywordtype">int</span> <a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>; 
-<a name="l00048"></a><a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94">00048</a>     <span class="keywordtype">int</span> <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>; 
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     <span class="comment">// States</span>
-<a name="l00051"></a><a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26">00051</a>     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a>;     
-<a name="l00052"></a><a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb">00052</a>     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>;   
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054     <span class="comment">// Time variables</span>
-<a name="l00055"></a><a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf">00055</a>     GLfloat <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a>;    
-<a name="l00056"></a><a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284">00056</a>     GLfloat <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>;      
-<a name="l00057"></a><a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a">00057</a>     GLfloat <a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a" title="Current frames per second (based on deltaTime)">FPS</a>;            
-<a name="l00058"></a>00058 
-<a name="l00059"></a><a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503">00059</a>     GLfloat <a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503" title="dT to use in heightfield simulation">dtSim</a>;          
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061     <span class="comment">//AntTweakBar variabels</span>
-<a name="l00062"></a><a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537">00062</a>     TwBar *<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>;              
-<a name="l00063"></a><a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15">00063</a>     <span class="keywordtype">float</span> <a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15" title="Terrain height at the comera position.">heightAtPos</a>;          
-<a name="l00064"></a><a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a">00064</a>     <span class="keywordtype">float</span> <a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a>;    
-<a name="l00065"></a><a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45">00065</a>     <span class="keywordtype">float</span> <a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a>;     
-<a name="l00066"></a><a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406">00066</a>     <span class="keywordtype">double</span> <a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>;                
-<a name="l00067"></a><a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171">00067</a>     <span class="keywordtype">double</span> <a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>;                
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069     <span class="comment">// myDrawables:</span>
-<a name="l00070"></a><a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b">00070</a>     <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> *<a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b" title="Skycube model.">skycube</a>;        
-<a name="l00071"></a><a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b">00071</a>     <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> *<a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>;        
-<a name="l00072"></a><a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb">00072</a>     <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> *<a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>;   
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074     <span class="comment">// Datahandler for terrain data</span>
-<a name="l00075"></a><a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7">00075</a>     <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>;   
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077     <span class="comment">//Voxgrid</span>
-<a name="l00078"></a><a class="code" href="class_program.html#ae794815f232982f2720a92eec1ce4ad5">00078</a>     <a class="code" href="class_voxelgrid.html" title="Handles the representation of the voxelgrid.">Voxelgrid</a>* <a class="code" href="class_program.html#ae794815f232982f2720a92eec1ce4ad5" title="A voxelgrid, not currently used.">voxs</a>;    
-<a name="l00079"></a>00079     <span class="comment">//HeightField</span>
-<a name="l00080"></a><a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b">00080</a>     <a class="code" href="class_height_field.html" title="handles the heightfield simulation">HeightField</a>* <a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b" title="Heightfield for water simulation.">hf</a>;    
-<a name="l00081"></a>00081     <span class="comment">//ShallowWater</span>
-<a name="l00082"></a><a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df">00082</a>     <a class="code" href="class_shallow_g_p_u.html" title="Handles the shallow water testcase simulation.">ShallowGPU</a>* <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a>;   
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084     <span class="comment">// References to shader programs:</span>
-<a name="l00085"></a><a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0">00085</a>     GLuint <a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>;       
-<a name="l00086"></a><a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18">00086</a>     GLuint <a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a>;           
-<a name="l00087"></a><a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e">00087</a>     GLuint <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>;         
-<a name="l00088"></a><a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35">00088</a>     GLuint <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a>;         
-<a name="l00089"></a><a class="code" href="class_program.html#a94e352a7762cf519e2dfd062c2143334">00089</a>     GLuint <a class="code" href="class_program.html#a94e352a7762cf519e2dfd062c2143334" title="Shaders used for rendering water in the shallow water simulation.">shallowwatershader</a>;  
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091     <span class="comment">// Camera variables:</span>
-<a name="l00092"></a><a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24">00092</a>     <a class="code" href="class_camera.html">Camera</a>* <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>; 
-<a name="l00093"></a>00093 
-<a name="l00094"></a><a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897">00094</a>     GLuint <a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a>; 
-<a name="l00095"></a>00095     
-<a name="l00096"></a><a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856">00096</a>     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>; 
-<a name="l00097"></a>00097 
-<a name="l00098"></a>00098 <span class="keyword">public</span>:
-<a name="l00101"></a>00101     <a class="code" href="class_program.html#a098584c44f1088a4ea2213e1f4c6b609" title="Simple constructor that selects which type of simulation to use.">Program</a>(GLuint <a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a>);
-<a name="l00102"></a>00102 
-<a name="l00104"></a>00104     <a class="code" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549" title="Simple destructor that just cleans up.">~Program</a>();
-<a name="l00105"></a>00105 
-<a name="l00111"></a>00111     <span class="keywordtype">int</span> <a class="code" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928" title="Main entry for running the program.">exec</a>();
-<a name="l00112"></a>00112     
-<a name="l00118"></a>00118     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init</a>();
-<a name="l00119"></a>00119     
-<a name="l00127"></a>00127     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b" title="Takes care of all events since last main loop iteration.">handleEvent</a>(SDL_Event* event);
-<a name="l00128"></a>00128 
-<a name="l00134"></a>00134     <span class="keywordtype">void</span> <a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">handleKeypress</a>(SDL_Event* event);
-<a name="l00135"></a>00135 
-<a name="l00142"></a>00142     <span class="keywordtype">void</span> <a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">handleMouseMove</a>(SDL_Event* event);
-<a name="l00143"></a>00143 
-<a name="l00152"></a>00152     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">handleMouseButton</a>(SDL_Event* event);
-<a name="l00153"></a>00153 
-<a name="l00160"></a>00160     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys</a>();
-<a name="l00161"></a>00161 
-<a name="l00166"></a>00166     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37" title="Updates the time.">timeUpdate</a>();
-<a name="l00167"></a>00167 
-<a name="l00172"></a>00172     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95" title="Updates the simulation and camera.">update</a>();
-<a name="l00173"></a>00173 
-<a name="l00177"></a>00177     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4" title="All rendering commands are sent here.">display</a>();
-<a name="l00178"></a>00178 
-<a name="l00182"></a>00182     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4" title="Makes sure the program exits cleanly.">clean</a>();
-<a name="l00183"></a>00183 
-<a name="l00185"></a>00185     <span class="keywordtype">int</span> <a class="code" href="class_program.html#a19c0940ec20dc55d130873dbf53e9dd3" title="Run a test program for the voxelgrid.">testVoxels</a>();
-<a name="l00186"></a>00186 };
-<a name="l00187"></a>00187 
-<a name="l00188"></a>00188 <span class="preprocessor">#endif // PROGRAM_H</span>
+<a name="l00033"></a>00033 <span class="preprocessor">#include &quot;<a class="code" href="file_handler_8h.html" title="Loads and stores float arrays.">fileHandler.h</a>&quot;</span>
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035 <span class="preprocessor">#include &quot;AntTweakBar.h&quot;</span>
+<a name="l00036"></a>00036 
+<a name="l00042"></a><a class="code" href="class_program.html">00042</a> <span class="keyword">class </span><a class="code" href="class_program.html" title="Main structure of the program.">Program</a> {
+<a name="l00043"></a>00043 <span class="keyword">private</span>:
+<a name="l00044"></a>00044     <span class="comment">// Screen stuff</span>
+<a name="l00045"></a><a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c">00045</a>     SDL_Window *<a class="code" href="class_program.html#acd61da34f87f7393d04c4b46a820b26c" title="Handle for the SDL window.">screen</a>;         
+<a name="l00046"></a><a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490">00046</a>     SDL_GLContext <a class="code" href="class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490" title="SDL openGL context.">glcontext</a>;    
+<a name="l00047"></a>00047 
+<a name="l00048"></a><a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2">00048</a>     <span class="keywordtype">int</span> <a class="code" href="class_program.html#a34d0a54618d68052932de029a455adc2" title="Screen width.">screenW</a>; 
+<a name="l00049"></a><a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94">00049</a>     <span class="keywordtype">int</span> <a class="code" href="class_program.html#af9413b3bee4a475a1f326fe27f301a94" title="Screen height.">screenH</a>; 
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051     <span class="comment">// States</span>
+<a name="l00052"></a><a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26">00052</a>     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26" title="True as long as the program is running, set to false to quit.">isRunning</a>;     
+<a name="l00053"></a><a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb">00053</a>     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>;   
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055     <span class="comment">// Time variables</span>
+<a name="l00056"></a><a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf">00056</a>     GLfloat <a class="code" href="class_program.html#a2bf878628281f945c58bc372c37baccf" title="Total time since program started.">currentTime</a>;    
+<a name="l00057"></a><a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284">00057</a>     GLfloat <a class="code" href="class_program.html#a8ded976bf91549da8748447d6779e284" title="Time for last frame.">deltaTime</a>;      
+<a name="l00058"></a><a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a">00058</a>     GLfloat <a class="code" href="class_program.html#ad1f15a546df461c2260031eed5f9119a" title="Current frames per second (based on deltaTime)">FPS</a>;            
+<a name="l00059"></a>00059 
+<a name="l00060"></a><a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503">00060</a>     GLfloat <a class="code" href="class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503" title="dT to use in heightfield simulation">dtSim</a>;          
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062     <span class="comment">//AntTweakBar variabels</span>
+<a name="l00063"></a><a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537">00063</a>     TwBar *<a class="code" href="class_program.html#ae567a36cf97946d2229c48760425b537" title="Handle for AntTweakBar GUI window.">antBar</a>;              
+<a name="l00064"></a><a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15">00064</a>     <span class="keywordtype">float</span> <a class="code" href="class_program.html#a493aa34bec63c94238a09278d7053a15" title="Terrain height at the comera position.">heightAtPos</a>;          
+<a name="l00065"></a><a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a">00065</a>     <span class="keywordtype">float</span> <a class="code" href="class_program.html#a38ceb7490b608f5fe62d86ddedfa971a" title="Terrain height at the clicked position.">heightAtClickData</a>;    
+<a name="l00066"></a><a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45">00066</a>     <span class="keywordtype">float</span> <a class="code" href="class_program.html#af0f53e1a52b9e22d303d9e9aa3be4d45" title="Terrain/water height at the clicked position.">heighAtClickProj</a>;     
+<a name="l00067"></a><a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406">00067</a>     <span class="keywordtype">double</span> <a class="code" href="class_program.html#a38c65b8abc1780fd560f4565f7313406" title="Terrain x coordinate at clicked position.">objX</a>;                
+<a name="l00068"></a><a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171">00068</a>     <span class="keywordtype">double</span> <a class="code" href="class_program.html#a190f4114c3854d8dd401941388e54171" title="Terrain z coordinate at clicked position.">objZ</a>;                
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070     <span class="comment">// myDrawables:</span>
+<a name="l00071"></a><a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b">00071</a>     <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> *<a class="code" href="class_program.html#a053a892600e9e86a71f1c25eb20a1e4b" title="Skycube model.">skycube</a>;        
+<a name="l00072"></a><a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b">00072</a>     <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> *<a class="code" href="class_program.html#a8cda0569981a64436eda879c336dd37b" title="Terrain model.">terrain</a>;        
+<a name="l00073"></a><a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb">00073</a>     <a class="code" href="classmy_drawable.html" title="Contains functions for drawing and updating an entity.">myDrawable</a> *<a class="code" href="class_program.html#a695cace84c7c72e8a5e339c5b536ddfb" title="Water model.">waterTerrain</a>;   
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075     <span class="comment">// Datahandler for terrain data</span>
+<a name="l00076"></a><a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7">00076</a>     <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* <a class="code" href="class_program.html#af12f89dbec45930ea3f3a73266e443a7" title="Holds data about the terrain.">dataHandler</a>;   
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078     <span class="comment">//Voxgrid</span>
+<a name="l00079"></a><a class="code" href="class_program.html#ae794815f232982f2720a92eec1ce4ad5">00079</a>     <a class="code" href="class_voxelgrid.html" title="Handles the representation of the voxelgrid.">Voxelgrid</a>* <a class="code" href="class_program.html#ae794815f232982f2720a92eec1ce4ad5" title="A voxelgrid, not currently used.">voxs</a>;    
+<a name="l00080"></a>00080     <span class="comment">//HeightField</span>
+<a name="l00081"></a><a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b">00081</a>     <a class="code" href="class_height_field.html" title="handles the heightfield simulation">HeightField</a>* <a class="code" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b" title="Heightfield for water simulation.">hf</a>;    
+<a name="l00082"></a>00082     <span class="comment">//ShallowWater</span>
+<a name="l00083"></a><a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df">00083</a>     <a class="code" href="class_shallow_g_p_u.html" title="Handles the shallow water testcase simulation.">ShallowGPU</a>* <a class="code" href="class_program.html#af6d4f3298f16f35e5d90c08939b736df" title="Shallow water simulation.">sgpu</a>;   
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085     <span class="comment">// References to shader programs:</span>
+<a name="l00086"></a><a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0">00086</a>     GLuint <a class="code" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0" title="Shaders used for rendering terrain.">terrainshader</a>;       
+<a name="l00087"></a><a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18">00087</a>     GLuint <a class="code" href="class_program.html#a06284fec165e78abfa63778bb6712d18" title="Shaders used for rendering the skybox.">skyshader</a>;           
+<a name="l00088"></a><a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e">00088</a>     GLuint <a class="code" href="class_program.html#a06e8b1ba11857e6c13fa26fbd3186d9e" title="Shaders used for rendering the water.">watershader</a>;         
+<a name="l00089"></a><a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35">00089</a>     GLuint <a class="code" href="class_program.html#af2e129519cc65348320bf3f36aeafa35" title="Shaders used for rendering a depthmap of the water.">depthshader</a>;         
+<a name="l00090"></a><a class="code" href="class_program.html#a94e352a7762cf519e2dfd062c2143334">00090</a>     GLuint <a class="code" href="class_program.html#a94e352a7762cf519e2dfd062c2143334" title="Shaders used for rendering water in the shallow water simulation.">shallowwatershader</a>;  
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092     <span class="comment">// Camera variables:</span>
+<a name="l00093"></a><a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24">00093</a>     <a class="code" href="class_camera.html">Camera</a>* <a class="code" href="class_program.html#ab397a2824b4eb543be9fed5acc21ac24" title="Camera for moving in 3D.">cam</a>; 
+<a name="l00094"></a>00094 
+<a name="l00095"></a><a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897">00095</a>     GLuint <a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a>; 
+<a name="l00096"></a>00096     
+<a name="l00097"></a><a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856">00097</a>     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#abc6c730e4bf3f2e09f2547ca7b984856" title="Determines if the simulation is paused or not.">sim</a>; 
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 <span class="keyword">public</span>:
+<a name="l00102"></a>00102     <a class="code" href="class_program.html#a098584c44f1088a4ea2213e1f4c6b609" title="Simple constructor that selects which type of simulation to use.">Program</a>(GLuint <a class="code" href="class_program.html#a9be10e8a6d395386725ac96b014f9897" title="Which simulation is to be run.">simCase</a>);
+<a name="l00103"></a>00103 
+<a name="l00105"></a>00105     <a class="code" href="class_program.html#a986aef1c50e1d338a3315a47ba6df549" title="Simple destructor that just cleans up.">~Program</a>();
+<a name="l00106"></a>00106 
+<a name="l00112"></a>00112     <span class="keywordtype">int</span> <a class="code" href="class_program.html#ac6bc1a3542199a9e37bb4c2dd6f06928" title="Main entry for running the program.">exec</a>();
+<a name="l00113"></a>00113     
+<a name="l00119"></a>00119     <span class="keywordtype">bool</span> <a class="code" href="class_program.html#af90b1259f253f244467ab8ad486a27c6" title="All one time initializations for the program is done here.">init</a>();
+<a name="l00120"></a>00120     
+<a name="l00128"></a>00128     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a8f3b3316b781a8db4d53097ef07df91b" title="Takes care of all events since last main loop iteration.">handleEvent</a>(SDL_Event* event);
+<a name="l00129"></a>00129 
+<a name="l00135"></a>00135     <span class="keywordtype">void</span> <a class="code" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">handleKeypress</a>(SDL_Event* event);
+<a name="l00136"></a>00136 
+<a name="l00143"></a>00143     <span class="keywordtype">void</span> <a class="code" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">handleMouseMove</a>(SDL_Event* event);
+<a name="l00144"></a>00144 
+<a name="l00153"></a>00153     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">handleMouseButton</a>(SDL_Event* event);
+<a name="l00154"></a>00154 
+<a name="l00161"></a>00161     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys</a>();
+<a name="l00162"></a>00162 
+<a name="l00167"></a>00167     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a653227b05df05ddcbb7b74ed6b1dfc37" title="Updates the time.">timeUpdate</a>();
+<a name="l00168"></a>00168 
+<a name="l00173"></a>00173     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95" title="Updates the simulation and camera.">update</a>();
+<a name="l00174"></a>00174 
+<a name="l00178"></a>00178     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a3c1399ac5ed69e5c152f1a2cc1e644d4" title="All rendering commands are sent here.">display</a>();
+<a name="l00179"></a>00179 
+<a name="l00183"></a>00183     <span class="keywordtype">void</span> <a class="code" href="class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4" title="Makes sure the program exits cleanly.">clean</a>();
+<a name="l00184"></a>00184 
+<a name="l00186"></a>00186     <span class="keywordtype">int</span> <a class="code" href="class_program.html#a19c0940ec20dc55d130873dbf53e9dd3" title="Run a test program for the voxelgrid.">testVoxels</a>();
+<a name="l00187"></a>00187 };
+<a name="l00188"></a>00188 
+<a name="l00189"></a>00189 <span class="preprocessor">#endif // PROGRAM_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -241,7 +242,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="program_8h.html">program.h</a>      </li>
 
-    <li class="footer">Generated on Tue Dec 15 2015 17:36:38 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
