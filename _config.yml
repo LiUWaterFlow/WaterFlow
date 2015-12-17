@@ -37,10 +37,6 @@ social:
   - title: github
     url: https://github.com/LiUWaterFlow/WaterFlow
 
-# Images used
-  - title: Figure1
-  	
-
 # Build settings
 markdown: kramdown
 permalink: pretty
