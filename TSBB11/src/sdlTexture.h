@@ -38,4 +38,4 @@ public:
 	GLuint getTexID();
 };
 
-#endif // READDATA_H
+#endif // SDLTEXTURE_H

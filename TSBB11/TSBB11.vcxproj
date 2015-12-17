@@ -154,6 +154,7 @@
     <ClCompile Include="src\common\LoadTGA.c" />
     <ClCompile Include="src\common\Windows\glew.c" />
     <ClCompile Include="src\common\xml\pugixml.cpp" />
+    <ClCompile Include="src\fileHandler.cpp" />
     <ClCompile Include="src\flowSource.cpp" />
     <ClCompile Include="src\heightField.cpp" />
     <ClCompile Include="src\myDrawable.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="src\common\Windows\wglew.h" />
     <ClInclude Include="src\common\xml\pugiconfig.hpp" />
     <ClInclude Include="src\common\xml\pugixml.h" />
+    <ClInclude Include="src\fileHandler.h" />
     <ClInclude Include="src\flowSource.h" />
     <ClInclude Include="src\heightField.h" />
     <ClInclude Include="src\myDrawable.h" />

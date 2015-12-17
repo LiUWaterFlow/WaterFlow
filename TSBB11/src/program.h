@@ -30,6 +30,7 @@
 #include "voxel.h"
 #include "heightField.h"
 #include "xmlParsing.h"
+#include "fileHandler.h"
 
 #include "AntTweakBar.h"
 

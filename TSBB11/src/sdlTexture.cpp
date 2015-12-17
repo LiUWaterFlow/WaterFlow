@@ -3,7 +3,7 @@
 
 #include "sdlTexture.h"
 
-// ===== Constructor
+// ===== Constructor =====
 
 sdlTexture::sdlTexture(std::string tPath, GLuint gTexID)
 {
