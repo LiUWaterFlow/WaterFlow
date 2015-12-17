@@ -113,31 +113,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00018"></a><a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b">00018</a>   std::vector&lt;float&gt; <a class="code" href="class_flow_source.html#abe1e9b1f66c59188326167d1059d0e0b" title="&quot;-1&quot; specifies an infinite source.">pressureTime</a>; 
 <a name="l00019"></a>00019 
 <a name="l00020"></a><a class="code" href="class_flow_source.html#a2d84b034ba95f365e185cf25b5ebd6cb">00020</a>   std::vector&lt;float&gt; <a class="code" href="class_flow_source.html#a2d84b034ba95f365e185cf25b5ebd6cb" title="Vector containing pressure values.">pressure</a>; 
-<a name="l00021"></a><a class="code" href="class_flow_source.html#a9635d50a05d0cb2f89f3380bb59fc6a5">00021</a>   <span class="keywordtype">int</span> xpos, ypos, <a class="code" href="class_flow_source.html#a9635d50a05d0cb2f89f3380bb59fc6a5" title="The position of the source given by the parameters x, y and z/.">zpos</a>; 
-<a name="l00022"></a><a class="code" href="class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a">00022</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a" title="The total water of the source.">totalWater</a>; 
-<a name="l00023"></a><a class="code" href="class_flow_source.html#a0fa7b53fc621d46afbe53125fec56ab7">00023</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a0fa7b53fc621d46afbe53125fec56ab7" title="The radius of the source.">radius</a>; 
-<a name="l00024"></a><a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb">00024</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>; 
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 <span class="keyword">public</span>:
-<a name="l00027"></a>00027   <span class="keywordtype">float</span> currPres;
-<a name="l00029"></a><a class="code" href="class_flow_source.html#abd2a071fb63ddec10639f2b6d31d1222">00029</a>   <a class="code" href="class_flow_source.html#abd2a071fb63ddec10639f2b6d31d1222" title="Initializes an epty source with time set to zero, it sould be populated with data using the set* func...">FlowSource</a>() {<a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> = 0; currPres = 0;};
-<a name="l00031"></a>00031   <a class="code" href="class_flow_source.html#aa8113478385748c2d50b228cf55ffb9b" title="default destructor for now.">~FlowSource</a>() = <span class="keywordflow">default</span>;
-<a name="l00036"></a>00036   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a52620b99484ff3d28cab045b9c3e831a" title="Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values...">setPressure</a>(std::vector&lt;float&gt; P, std::vector&lt;float&gt; t);
-<a name="l00041"></a>00041   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a5bad4132d2adcd6c0661bf7d06f71b28" title="This function expects a vector filled with vectors that hold 3 values, xyz, and a time vector that sp...">setNormal</a>(std::vector&lt; std::vector&lt;float&gt; &gt; N, std::vector&lt;int&gt; t);
-<a name="l00046"></a>00046   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#aecc7891570af30b5fc70dfe8bfd4637b" title="This function expects three ints symbolizing the 3D space cordinates of the source expressed in voxel...">setPosition</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z);
-<a name="l00050"></a>00050   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716" title="This sets a float symbolising the total water in a source.">setTotalWater</a>(<span class="keywordtype">float</span> tot);
-<a name="l00053"></a>00053   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09" title="Sets the radius of the source.">setRadius</a>(<span class="keywordtype">float</span> r);
-<a name="l00056"></a>00056   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">update</a>(<span class="keywordtype">float</span> dt);
-<a name="l00059"></a>00059   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393" title="This function finds the curent pressure depandeing on the internal time set by the update function...">getPressure</a>();
-<a name="l00062"></a>00062   std::vector&lt;float&gt; <a class="code" href="class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801" title="This function finds a thee valued vector with xyz defining the Normal direction at the internal time ...">getNormal</a>();
-<a name="l00065"></a>00065   std::vector&lt;int&gt; <a class="code" href="class_flow_source.html#a3cf14642f55c4d082a1ba91d2948fa92" title="Gets the position of the flow source.">getPosition</a>();
-<a name="l00068"></a>00068   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a22a5f067cec60e4db23be237d15a56e2" title="Gets the water left in the flow source as descriebed by totalWater.">getWaterLeft</a>();
-<a name="l00071"></a>00071   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#ac3563fd62ddc0068eaf86035654ea721" title="Gets the radius of the flow source.">getRadius</a>();
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073   <span class="keywordtype">bool</span> getChange(<span class="keywordtype">float</span> dt);
-<a name="l00074"></a>00074 };
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076 <span class="preprocessor">#endif</span>
+<a name="l00021"></a><a class="code" href="class_flow_source.html#adb3bdaeaf28846562dcd80f42707e417">00021</a>   <span class="keywordtype">int</span> <a class="code" href="class_flow_source.html#adb3bdaeaf28846562dcd80f42707e417" title="The x position of the source.">xpos</a>; 
+<a name="l00022"></a><a class="code" href="class_flow_source.html#acbe39fd6b4c3df0fe26325edcc39c8a8">00022</a>   <span class="keywordtype">int</span> <a class="code" href="class_flow_source.html#acbe39fd6b4c3df0fe26325edcc39c8a8" title="The y position of the source.">ypos</a>; 
+<a name="l00023"></a><a class="code" href="class_flow_source.html#a9635d50a05d0cb2f89f3380bb59fc6a5">00023</a>   <span class="keywordtype">int</span> <a class="code" href="class_flow_source.html#a9635d50a05d0cb2f89f3380bb59fc6a5" title="The z position of the source.">zpos</a>; 
+<a name="l00024"></a><a class="code" href="class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a">00024</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a" title="The total water of the source.">totalWater</a>; 
+<a name="l00025"></a><a class="code" href="class_flow_source.html#a0fa7b53fc621d46afbe53125fec56ab7">00025</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a0fa7b53fc621d46afbe53125fec56ab7" title="The radius of the source.">radius</a>; 
+<a name="l00026"></a><a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb">00026</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a>; 
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028 <span class="keyword">public</span>:
+<a name="l00029"></a><a class="code" href="class_flow_source.html#abb1c018deab5511c3d41440831842b99">00029</a>   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#abb1c018deab5511c3d41440831842b99">currPres</a>; 
+<a name="l00030"></a>00030 
+<a name="l00031"></a><a class="code" href="class_flow_source.html#abd2a071fb63ddec10639f2b6d31d1222">00031</a>   <a class="code" href="class_flow_source.html#abd2a071fb63ddec10639f2b6d31d1222" title="Initializes an epty source with time set to zero, it sould be populated with data using the set* func...">FlowSource</a>() {<a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> = 0; <a class="code" href="class_flow_source.html#abb1c018deab5511c3d41440831842b99">currPres</a> = 0;};
+<a name="l00033"></a>00033   <a class="code" href="class_flow_source.html#aa8113478385748c2d50b228cf55ffb9b" title="default destructor for now.">~FlowSource</a>() = <span class="keywordflow">default</span>;
+<a name="l00038"></a>00038   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a52620b99484ff3d28cab045b9c3e831a" title="Sets the pressure vector and the pressure time vector. This functoin expects pressure and time values...">setPressure</a>(std::vector&lt;float&gt; P, std::vector&lt;float&gt; t);
+<a name="l00043"></a>00043   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a5bad4132d2adcd6c0661bf7d06f71b28" title="This function expects a vector filled with vectors that hold 3 values, xyz, and a time vector that sp...">setNormal</a>(std::vector&lt; std::vector&lt;float&gt; &gt; N, std::vector&lt;int&gt; t);
+<a name="l00048"></a>00048   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#aecc7891570af30b5fc70dfe8bfd4637b" title="This function expects three ints symbolizing the 3D space cordinates of the source expressed in voxel...">setPosition</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> z);
+<a name="l00052"></a>00052   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716" title="This sets a float symbolising the total water in a source.">setTotalWater</a>(<span class="keywordtype">float</span> tot);
+<a name="l00055"></a>00055   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09" title="Sets the radius of the source.">setRadius</a>(<span class="keywordtype">float</span> r);
+<a name="l00058"></a>00058   <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">update</a>(<span class="keywordtype">float</span> <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>);
+<a name="l00061"></a>00061   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393" title="This function finds the curent pressure depandeing on the internal time set by the update function...">getPressure</a>();
+<a name="l00064"></a>00064   std::vector&lt;float&gt; <a class="code" href="class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801" title="This function finds a thee valued vector with xyz defining the Normal direction at the internal time ...">getNormal</a>();
+<a name="l00067"></a>00067   std::vector&lt;int&gt; <a class="code" href="class_flow_source.html#a3cf14642f55c4d082a1ba91d2948fa92" title="Gets the position of the flow source.">getPosition</a>();
+<a name="l00070"></a>00070   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#a22a5f067cec60e4db23be237d15a56e2" title="Gets the water left in the flow source as descriebed by totalWater.">getWaterLeft</a>();
+<a name="l00073"></a>00073   <span class="keywordtype">float</span> <a class="code" href="class_flow_source.html#ac3563fd62ddc0068eaf86035654ea721" title="Gets the radius of the flow source.">getRadius</a>();
+<a name="l00074"></a>00074 
+<a name="l00078"></a>00078   <span class="keywordtype">bool</span> <a class="code" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49" title="Checks for changes in pressure after performing an update on the source.">getChange</a>(<span class="keywordtype">float</span> <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>);
+<a name="l00079"></a>00079 };
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -158,7 +161,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="flow_source_8h.html">flowSource.h</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:17 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

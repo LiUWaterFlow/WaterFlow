@@ -163,7 +163,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00063"></a><a class="code" href="class_height_field.html#a24a0541061bf79f26c3a66a5ee47cbc1">00063</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a24a0541061bf79f26c3a66a5ee47cbc1" title="Initializes the predefines test data for the CPU.">HeightField::initTest</a>() {
 <a name="l00064"></a>00064     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
 <a name="l00065"></a>00065         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
-<a name="l00066"></a>00066             <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>, j*samp) - 2;
+<a name="l00066"></a>00066             <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>, (GLfloat)j*samp) - 2.0f;
 <a name="l00067"></a>00067             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] = 0;
 <a name="l00068"></a>00068         }
 <a name="l00069"></a>00069     }
@@ -185,23 +185,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00085"></a><a class="code" href="class_height_field.html#a25160f1206fb2874614ed79e7981117b">00085</a> GLfloat <a class="code" href="class_height_field.html#a25160f1206fb2874614ed79e7981117b" title="Modified getHeight for use with heightfield.">HeightField::getHeight</a>(<span class="keywordtype">int</span> i, <span class="keywordtype">int</span> j, GLfloat ourHeight) {
 <a name="l00086"></a>00086     i = <a class="code" href="class_height_field.html#ab0d5db208e2e2a46b675a25862a9ad1a" title="clamp (or clip) data between two values.">clip</a>(i, 0, <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a> - 1);
 <a name="l00087"></a>00087     j = <a class="code" href="class_height_field.html#ab0d5db208e2e2a46b675a25862a9ad1a" title="clamp (or clip) data between two values.">clip</a>(j, 0, <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a> - 1);
-<a name="l00088"></a>00088     <span class="keywordflow">if</span> (<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>, j*samp) &lt; 0.0f) {
+<a name="l00088"></a>00088     <span class="keywordflow">if</span> (<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>, (GLfloat)j*samp) &lt; 0.0f) {
 <a name="l00089"></a>00089         <span class="keywordflow">return</span> ourHeight;
 <a name="l00090"></a>00090     }
 <a name="l00091"></a>00091     <span class="keywordflow">return</span> <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j];
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093 }
 <a name="l00094"></a>00094 
-<a name="l00095"></a><a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c">00095</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c" title="updateSim">HeightField::updateSim</a>(GLfloat dt) {
+<a name="l00095"></a><a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c">00095</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c" title="updateSim">HeightField::updateSim</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
 <a name="l00096"></a>00096 
 <a name="l00097"></a>00097     GLfloat c2 = 1;
-<a name="l00098"></a>00098     <span class="keywordtype">float</span> max_c = (1.0 / dt);
+<a name="l00098"></a>00098     GLfloat max_c = (1.0f / <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>);
 <a name="l00099"></a>00099     <span class="keywordflow">if</span> (c2 &gt; max_c) {
 <a name="l00100"></a>00100         printf(<span class="stringliteral">&quot;C2 too large/ dt too large.&quot;</span>);
 <a name="l00101"></a>00101     }
 <a name="l00102"></a>00102 
 <a name="l00103"></a>00103     GLfloat h2 = 4;
-<a name="l00104"></a>00104     dt = dt*4.9;
+<a name="l00104"></a>00104     dt = dt*4.9f;
 <a name="l00105"></a>00105     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
 <a name="l00106"></a>00106         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
 <a name="l00107"></a>00107 
@@ -212,10 +212,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00112"></a>00112 
 <a name="l00113"></a>00113             GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j]) / h2;
 <a name="l00114"></a>00114 
-<a name="l00115"></a>00115             f = <a class="code" href="class_height_field.html#acb7b5ae6061bf9611ddb0ed1e8286744" title="clamp (or clip) data between two values.">clipf</a>(f, -0.1, 0.1);
-<a name="l00116"></a>00116             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] = <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] + f*dt;
-<a name="l00117"></a>00117             <a class="code" href="class_height_field.html#a5c3fd828f346a99a1e249a0a4f7af735" title="Secondary heightmap used for CPU testing.">unew</a>[i][j] = <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] + <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] * dt;
-<a name="l00118"></a>00118             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] *= 0.995;
+<a name="l00115"></a>00115             f = <a class="code" href="class_height_field.html#acb7b5ae6061bf9611ddb0ed1e8286744" title="clamp (or clip) data between two values.">clipf</a>(f, -0.1f, 0.1f);
+<a name="l00116"></a>00116             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] = <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] + f*<a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00117"></a>00117             <a class="code" href="class_height_field.html#a5c3fd828f346a99a1e249a0a4f7af735" title="Secondary heightmap used for CPU testing.">unew</a>[i][j] = <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] + <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] * <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00118"></a>00118             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>[i][j] *= 0.995f;
 <a name="l00119"></a>00119 
 <a name="l00120"></a>00120         }
 <a name="l00121"></a>00121     }
@@ -233,9 +233,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00133"></a>00133 
 <a name="l00134"></a>00134     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b" title="Width used for CPU test case.">width</a>; i++) {
 <a name="l00135"></a>00135         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_height_field.html#addc7857ab7504c670271722457660bb3" title="Height used for CPU test case.">height</a>; j++) {
-<a name="l00136"></a>00136             <span class="keywordflow">if</span> (<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - 1 &gt; <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(i, j)) {
+<a name="l00136"></a>00136             <span class="keywordflow">if</span> (<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - 1 &gt; <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>((GLfloat)i, (GLfloat)j)) {
 <a name="l00137"></a>00137                 positions-&gt;push_back(i*<a class="code" href="class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f" title="sample rate used for CPU testing.">samp</a>);
-<a name="l00138"></a>00138                 positions-&gt;push_back(round(<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - 1));
+<a name="l00138"></a>00138                 positions-&gt;push_back((GLuint)round(<a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>[i][j] - 1.0f));
 <a name="l00139"></a>00139                 positions-&gt;push_back(j*samp);
 <a name="l00140"></a>00140             }
 <a name="l00141"></a>00141         }
@@ -245,17 +245,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00145"></a>00145 
 <a name="l00146"></a><a class="code" href="class_height_field.html#a7b3fbdb7763fbc6cd33d96ad38aa4694">00146</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a7b3fbdb7763fbc6cd33d96ad38aa4694" title="Initializes the necessary components for rendering the CPU tests.">HeightField::initDraw</a>() {
 <a name="l00147"></a>00147     <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a> = <a class="code" href="class_height_field.html#a05f20fbc114835aede30d1f4e9c51ab2" title="Returns the voxels to be rendered&#39;s positions.">getVoxelPositions</a>();
-<a name="l00148"></a>00148     <a class="code" href="class_height_field.html#a74824d24d3ef1d1a9cbcb873fa7e4804" title="Number of voxels in the voxelPositions.">numVoxels</a> = <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;size() / 3;
+<a name="l00148"></a>00148     <a class="code" href="class_height_field.html#a74824d24d3ef1d1a9cbcb873fa7e4804" title="Number of voxels in the voxelPositions.">numVoxels</a> = (GLuint)<a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;size() / 3;
 <a name="l00149"></a>00149     <a class="code" href="class_height_field.html#a49504aef5a63f521d589ea15b25fcb0c" title="Shader program.">voxelShader</a> = loadShadersG(<span class="stringliteral">&quot;src/shaders/simplevoxels.vert&quot;</span>, <span class="stringliteral">&quot;src/shaders/simplevoxels.frag&quot;</span>, <span class="stringliteral">&quot;src/shaders/simplevoxels.geom&quot;</span>);
 <a name="l00150"></a>00150 
-<a name="l00151"></a>00151     glGenBuffers(1, &amp;voxelBuffer);
-<a name="l00152"></a>00152     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+<a name="l00151"></a>00151     glGenBuffers(1, &amp;<a class="code" href="class_height_field.html#a46f7d2831f9d2b33a6477ff1a8e32156" title="Buffer for CPU voxels.">voxelBuffer</a>);
+<a name="l00152"></a>00152     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_field.html#a46f7d2831f9d2b33a6477ff1a8e32156" title="Buffer for CPU voxels.">voxelBuffer</a>);
 <a name="l00153"></a>00153     glBufferData(GL_ARRAY_BUFFER, <a class="code" href="class_height_field.html#a74824d24d3ef1d1a9cbcb873fa7e4804" title="Number of voxels in the voxelPositions.">numVoxels</a> * 3 * <span class="keyword">sizeof</span>(GLuint), <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;data(), GL_STATIC_COPY);
 <a name="l00154"></a>00154     glBindBuffer(GL_ARRAY_BUFFER, 0);
 <a name="l00155"></a>00155 
-<a name="l00156"></a>00156     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-<a name="l00157"></a>00157     glGenVertexArrays(1, &amp;<a class="code" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6" title="Buffers and VAOs.">voxelVAO</a>);
-<a name="l00158"></a>00158     glBindVertexArray(<a class="code" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6" title="Buffers and VAOs.">voxelVAO</a>);
+<a name="l00156"></a>00156     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_field.html#a46f7d2831f9d2b33a6477ff1a8e32156" title="Buffer for CPU voxels.">voxelBuffer</a>);
+<a name="l00157"></a>00157     glGenVertexArrays(1, &amp;<a class="code" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6" title="VAO for CPU voxels.">voxelVAO</a>);
+<a name="l00158"></a>00158     glBindVertexArray(<a class="code" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6" title="VAO for CPU voxels.">voxelVAO</a>);
 <a name="l00159"></a>00159 
 <a name="l00160"></a>00160     GLuint posAttrib = glGetAttribLocation(<a class="code" href="class_height_field.html#a49504aef5a63f521d589ea15b25fcb0c" title="Shader program.">voxelShader</a>, <span class="stringliteral">&quot;posValue&quot;</span>);
 <a name="l00161"></a>00161     glEnableVertexAttribArray(posAttrib);
@@ -269,17 +269,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00169"></a>00169     <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;clear();
 <a name="l00170"></a>00170     <span class="keyword">delete</span> <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>;
 <a name="l00171"></a>00171     <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a> = <a class="code" href="class_height_field.html#a05f20fbc114835aede30d1f4e9c51ab2" title="Returns the voxels to be rendered&#39;s positions.">getVoxelPositions</a>();
-<a name="l00172"></a>00172     <a class="code" href="class_height_field.html#a74824d24d3ef1d1a9cbcb873fa7e4804" title="Number of voxels in the voxelPositions.">numVoxels</a> = <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;size() / 3;
+<a name="l00172"></a>00172     <a class="code" href="class_height_field.html#a74824d24d3ef1d1a9cbcb873fa7e4804" title="Number of voxels in the voxelPositions.">numVoxels</a> = (GLuint)<a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;size() / 3;
 <a name="l00173"></a>00173 
-<a name="l00174"></a>00174     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
+<a name="l00174"></a>00174     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_field.html#a46f7d2831f9d2b33a6477ff1a8e32156" title="Buffer for CPU voxels.">voxelBuffer</a>);
 <a name="l00175"></a>00175     glBufferData(GL_ARRAY_BUFFER, <a class="code" href="class_height_field.html#a74824d24d3ef1d1a9cbcb873fa7e4804" title="Number of voxels in the voxelPositions.">numVoxels</a> * 3 * <span class="keyword">sizeof</span>(GLuint), <a class="code" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9" title="array of voxels that are to be rendered (legacy).">voxelPositions</a>-&gt;data(), GL_STATIC_COPY);
 <a name="l00176"></a>00176     glBindBuffer(GL_ARRAY_BUFFER, 0);
 <a name="l00177"></a>00177 }
 <a name="l00178"></a>00178 
 <a name="l00179"></a><a class="code" href="class_height_field.html#a330b234df5f99c510f9ac02d7f5d1229">00179</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a330b234df5f99c510f9ac02d7f5d1229" title="Draws all current voxels (CPU implementation).">HeightField::drawVoxels</a>(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 <a name="l00180"></a>00180     glUseProgram(<a class="code" href="class_height_field.html#a49504aef5a63f521d589ea15b25fcb0c" title="Shader program.">voxelShader</a>);
-<a name="l00181"></a>00181     glBindBuffer(GL_ARRAY_BUFFER, voxelBuffer);
-<a name="l00182"></a>00182     glBindVertexArray(<a class="code" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6" title="Buffers and VAOs.">voxelVAO</a>);
+<a name="l00181"></a>00181     glBindBuffer(GL_ARRAY_BUFFER, <a class="code" href="class_height_field.html#a46f7d2831f9d2b33a6477ff1a8e32156" title="Buffer for CPU voxels.">voxelBuffer</a>);
+<a name="l00182"></a>00182     glBindVertexArray(<a class="code" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6" title="VAO for CPU voxels.">voxelVAO</a>);
 <a name="l00183"></a>00183     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="class_height_field.html#a49504aef5a63f521d589ea15b25fcb0c" title="Shader program.">voxelShader</a>, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 <a name="l00184"></a>00184     glUniformMatrix4fv(glGetUniformLocation(<a class="code" href="class_height_field.html#a49504aef5a63f521d589ea15b25fcb0c" title="Shader program.">voxelShader</a>, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 <a name="l00185"></a>00185 
@@ -304,12 +304,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00204"></a>00204     std::fill_n(f, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, 0.0f);
 <a name="l00205"></a>00205 
 <a name="l00206"></a>00206     <a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362" title="Floodfills the simulation based on the values provided by the xml document.">initFloodFill</a>(u);
-<a name="l00207"></a>00207     
+<a name="l00207"></a>00207 
 <a name="l00208"></a>00208     std::valarray&lt;float&gt; fvalarray(<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f" title="Get a pointer to the mapdata data.">getData</a>(), <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>);
 <a name="l00209"></a>00209     fvalarray = fvalarray - 0.0001f;
 <a name="l00210"></a>00210     
-<a name="l00211"></a>00211     fieldProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/fieldShader.comp&quot;</span>); 
-<a name="l00212"></a>00212     addProgram = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/addFlowShader.comp&quot;</span>);
+<a name="l00211"></a>00211     <a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a> = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/fieldShader.comp&quot;</span>); 
+<a name="l00212"></a>00212     <a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a> = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/addFlowShader.comp&quot;</span>);
 <a name="l00213"></a>00213 
 <a name="l00214"></a>00214     <span class="comment">//create buffers</span>
 <a name="l00215"></a>00215     glGenBuffers(5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
@@ -336,7 +336,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00236"></a>00236     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00237"></a>00237 
 <a name="l00238"></a>00238     printError(<span class="stringliteral">&quot;init Compute Error&quot;</span>);
-<a name="l00239"></a>00239     printProgramInfoLog(fieldProgram, <span class="stringliteral">&quot;field Init&quot;</span>, NULL, NULL, NULL, NULL);
+<a name="l00239"></a>00239     printProgramInfoLog(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;field Init&quot;</span>, NULL, NULL, NULL, NULL);
 <a name="l00240"></a>00240 
 <a name="l00241"></a>00241     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
 <a name="l00242"></a>00242     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <span class="keyword">sizeof</span>(GLfloat)*<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, u);
@@ -355,8 +355,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00255"></a>00255     }
 <a name="l00256"></a>00256 }
 <a name="l00257"></a>00257 
-<a name="l00258"></a><a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">00258</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">HeightField::runSimGPU</a>(GLfloat dt) {
-<a name="l00259"></a>00259     <a class="code" href="class_height_field.html#adf2337321b3499e7bf203b1270557334" title="Time taken for the CPU testing.">totTime</a> += dt;
+<a name="l00258"></a><a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">00258</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">HeightField::runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
+<a name="l00259"></a>00259     <a class="code" href="class_height_field.html#adf2337321b3499e7bf203b1270557334" title="Time taken for the CPU testing.">totTime</a> += <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
 <a name="l00260"></a>00260     <span class="keywordtype">int</span> numPing = 20;
 <a name="l00261"></a>00261     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
 <a name="l00262"></a>00262 
@@ -376,16 +376,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00276"></a>00276     }
 <a name="l00277"></a>00277 
 <a name="l00278"></a>00278 
-<a name="l00279"></a>00279     glUseProgram(fieldProgram);
-<a name="l00280"></a>00280     glUniform2i(glGetUniformLocation(fieldProgram, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
-<a name="l00281"></a>00281     glUniform1f(glGetUniformLocation(fieldProgram, <span class="stringliteral">&quot;dt&quot;</span>), dt);
+<a name="l00279"></a>00279     glUseProgram(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>);
+<a name="l00280"></a>00280     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
+<a name="l00281"></a>00281     glUniform1f(glGetUniformLocation(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;dt&quot;</span>), dt);
 <a name="l00282"></a>00282 
-<a name="l00283"></a>00283     glUseProgram(addProgram);
-<a name="l00284"></a>00284     glUniform2i(glGetUniformLocation(addProgram, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
+<a name="l00283"></a>00283     glUseProgram(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>);
+<a name="l00284"></a>00284     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
 <a name="l00285"></a>00285 
 <a name="l00286"></a>00286     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
 <a name="l00287"></a>00287 
-<a name="l00288"></a>00288     glUseProgram(addProgram);
+<a name="l00288"></a>00288     glUseProgram(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>);
 <a name="l00289"></a>00289     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() / 16.0f), 1);
 <a name="l00290"></a>00290 
 <a name="l00291"></a>00291 
@@ -394,7 +394,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00294"></a>00294         glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
 <a name="l00295"></a>00295 
 <a name="l00296"></a>00296 
-<a name="l00297"></a>00297         glUseProgram(fieldProgram);
+<a name="l00297"></a>00297         glUseProgram(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>);
 <a name="l00298"></a>00298         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() / 16.0f), 1);
 <a name="l00299"></a>00299         std::swap(<a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0], <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[1]);
 <a name="l00300"></a>00300     }
@@ -451,7 +451,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="height_field_8cpp.html">heightField.cpp</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:17 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

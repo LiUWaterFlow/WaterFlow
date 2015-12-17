@@ -98,38 +98,41 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/shaders/depthshader.frag</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#version 150</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span>
-<a name="l00003"></a>00003 in vec2 out_TexCoord;
-<a name="l00004"></a>00004 in vec3 out_ObjPos;
-<a name="l00005"></a>00005 
-<a name="l00006"></a>00006 out vec4 out_Color;
-<a name="l00007"></a>00007 
-<a name="l00008"></a>00008 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
-<a name="l00009"></a>00009 
-<a name="l00010"></a>00010 uniform vec3 size;          <span class="comment">// Height scale.</span>
-<a name="l00011"></a>00011 uniform <span class="keywordtype">float</span> maxDepth;
+<a href="depthshader_8frag.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 <span class="preprocessor">#version 150</span>
+<a name="l00005"></a>00005 <span class="preprocessor"></span>
+<a name="l00006"></a>00006 in vec2 out_TexCoord;
+<a name="l00007"></a>00007 in vec3 out_ObjPos;
+<a name="l00008"></a>00008 
+<a name="l00009"></a>00009 out vec4 out_Color;
+<a name="l00010"></a>00010 
+<a name="l00011"></a>00011 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
 <a name="l00012"></a>00012 
-<a name="l00013"></a>00013 <span class="comment">// Underwater triangulation components.</span>
-<a name="l00014"></a>00014 <span class="keywordtype">float</span> depth;
+<a name="l00013"></a>00013 uniform vec3 <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>;          <span class="comment">// Height scale.</span>
+<a name="l00014"></a>00014 uniform <span class="keywordtype">float</span> maxDepth;
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016 <span class="comment">// Texture lookups.</span>
-<a name="l00017"></a>00017 vec4 terrainDataUnderSurface;
+<a name="l00016"></a>00016 <span class="comment">// Underwater triangulation components.</span>
+<a name="l00017"></a>00017 <span class="keywordtype">float</span> depth;
 <a name="l00018"></a>00018 
-<a name="l00019"></a>00019 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
-<a name="l00020"></a>00020 {
-<a name="l00021"></a>00021     <span class="comment">// Texture lookup at fragment.</span>
-<a name="l00022"></a>00022     terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
-<a name="l00023"></a>00023 
-<a name="l00024"></a>00024     <span class="comment">// Depth at fragment.</span>
-<a name="l00025"></a>00025     depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
-<a name="l00026"></a>00026     
-<a name="l00027"></a>00027     <span class="keywordflow">if</span> (depth &lt; 0 || out_ObjPos.z &lt; 1 || out_ObjPos.x &lt; 1 ){
-<a name="l00028"></a>00028         discard;
-<a name="l00029"></a>00029     }
-<a name="l00030"></a>00030     
-<a name="l00031"></a>00031     out_Color = vec4(vec3(1.0, 1.0, 1.0) * (1 - depth / maxDepth), 1.0);
-<a name="l00032"></a>00032 }
+<a name="l00019"></a>00019 <span class="comment">// Texture lookups.</span>
+<a name="l00020"></a>00020 vec4 terrainDataUnderSurface;
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022 <span class="keywordtype">void</span> <a class="code" href="field_shader_8comp.html#acdef7a1fd863a6d3770c1268cb06add3" title="HeightField simulation kernel.">main</a>(<span class="keywordtype">void</span>)
+<a name="l00023"></a>00023 {
+<a name="l00024"></a>00024     <span class="comment">// Texture lookup at fragment.</span>
+<a name="l00025"></a>00025     terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027     <span class="comment">// Depth at fragment.</span>
+<a name="l00028"></a>00028     depth = out_ObjPos.y - <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y * terrainDataUnderSurface.a;
+<a name="l00029"></a>00029     
+<a name="l00030"></a>00030     <span class="keywordflow">if</span> (depth &lt; 0 || out_ObjPos.z &lt; 1 || out_ObjPos.x &lt; 1 ){
+<a name="l00031"></a>00031         discard;
+<a name="l00032"></a>00032     }
+<a name="l00033"></a>00033     
+<a name="l00034"></a>00034     out_Color = vec4(vec3(1.0, 1.0, 1.0) * (1 - depth / maxDepth), 1.0);
+<a name="l00035"></a>00035 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -148,9 +151,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>depthshader.frag</b>      </li>
+      <li class="navelem"><a class="el" href="depthshader_8frag.html">depthshader.frag</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -98,90 +98,93 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/shaders/terrainshader.frag</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#version 430</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span>
-<a name="l00003"></a>00003 <span class="comment">// ===== Uniform Buffers =====</span>
-<a name="l00004"></a>00004 
-<a name="l00005"></a>00005 <span class="keyword">struct </span><a class="code" href="struct_light_param.html">LightParam</a> {
-<a name="l00006"></a>00006     vec3 pos;
-<a name="l00007"></a>00007     <span class="keywordtype">float</span> isDir;
-<a name="l00008"></a>00008     vec3 color;
-<a name="l00009"></a>00009     <span class="keywordtype">float</span> specExp;
-<a name="l00010"></a>00010 };
-<a name="l00011"></a>00011 
-<a name="l00012"></a>00012 layout(std140, binding = 0) uniform LightInfo {
-<a name="l00013"></a>00013     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
-<a name="l00014"></a>00014 };
-<a name="l00015"></a>00015 
-<a name="l00016"></a>00016 in vec3 out_Normal;
-<a name="l00017"></a>00017 in vec2 out_TexCoord;<span class="comment">// not currently used</span>
-<a name="l00018"></a>00018 in vec3 out_ObjPos;
+<a href="terrainshader_8frag.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 <span class="preprocessor">#version 430</span>
+<a name="l00005"></a>00005 <span class="preprocessor"></span>
+<a name="l00006"></a>00006 <span class="comment">// ===== Uniform Buffers =====</span>
+<a name="l00007"></a>00007 
+<a name="l00013"></a>00013 <span class="keyword">struct </span><a class="code" href="struct_light_param.html">LightParam</a> {
+<a name="l00014"></a>00014     vec3 <a class="code" href="struct_light_param.html#adfbe9e72effb9033d1cba1d67c072c06" title="Position of the light.">pos</a>;       
+<a name="l00015"></a>00015     <span class="keywordtype">float</span> <a class="code" href="struct_light_param.html#a41d5735172cd50396e8a8ac6d49530c0" title="Is the light directional or not.">isDir</a>;    
+<a name="l00016"></a>00016     vec3 <a class="code" href="struct_light_param.html#a1162fe85cffdbf791838c610b92ba7a8" title="Color of the light.">color</a>;     
+<a name="l00017"></a>00017     <span class="keywordtype">float</span> <a class="code" href="struct_light_param.html#ab3ad8c95b263f29b214742032d14d228" title="Specular exponent for the light.">specExp</a>;  
+<a name="l00018"></a>00018 };
 <a name="l00019"></a>00019 
-<a name="l00020"></a>00020 out vec4 out_Color;
-<a name="l00021"></a>00021 
-<a name="l00022"></a>00022 uniform vec3 camPos;    <span class="comment">// Kamerapositionen.</span>
+<a name="l00020"></a>00020 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a>(std140, binding = 0) uniform LightInfo {
+<a name="l00021"></a>00021     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
+<a name="l00022"></a>00022 };
 <a name="l00023"></a>00023 
-<a name="l00024"></a>00024 uniform vec3 size;
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 uniform sampler2D terr_texUnit;
-<a name="l00027"></a>00027 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029 vec3 r;
-<a name="l00030"></a>00030 vec3 s;             <span class="comment">// Infallande ljus.</span>
-<a name="l00031"></a>00031 vec3 eye;           <span class="comment">// Vektor fr�n objektet till kameran.</span>
-<a name="l00032"></a>00032 
+<a name="l00024"></a>00024 in vec3 out_Normal;
+<a name="l00025"></a>00025 in vec2 out_TexCoord;<span class="comment">// not currently used</span>
+<a name="l00026"></a>00026 in vec3 out_ObjPos;
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028 out vec4 out_Color;
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030 uniform vec3 camPos;    <span class="comment">// Kamerapositionen.</span>
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032 uniform vec3 <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>;
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034 <span class="comment">// Phong-modellen:</span>
-<a name="l00035"></a>00035 <span class="keywordtype">float</span> kamb;
-<a name="l00036"></a>00036 <span class="keywordtype">float</span> kdiff;
-<a name="l00037"></a>00037 <span class="keywordtype">float</span> kspec;
-<a name="l00038"></a>00038 vec3 ambLight;      <span class="comment">// Ambient.</span>
-<a name="l00039"></a>00039 vec3 diffLight;     <span class="comment">// Diffuse.</span>
-<a name="l00040"></a>00040 vec3 specLight;     <span class="comment">// Specular.</span>
-<a name="l00041"></a>00041 vec3 totalLight;    <span class="comment">// Totalt ljus.</span>
-<a name="l00042"></a>00042 
-<a name="l00043"></a>00043 <span class="comment">//in float out_Col_i;</span>
-<a name="l00044"></a>00044 <span class="comment">//in float out_Col_j;</span>
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
-<a name="l00047"></a>00047 {
-<a name="l00048"></a>00048     <span class="comment">// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.</span>
-<a name="l00049"></a>00049     s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
-<a name="l00050"></a>00050     r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052     <span class="comment">// eye-vektorn ber�knas.</span>
-<a name="l00053"></a>00053     eye = normalize(camPos - out_ObjPos);
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055     <span class="comment">// Ljus enligt Phong-modellen:</span>
-<a name="l00056"></a>00056     kamb = 0.1;
-<a name="l00057"></a>00057     kdiff = 0.5;
-<a name="l00058"></a>00058     kspec = 0.5;
-<a name="l00059"></a>00059     ambLight = kamb * vec3(1.0, 1.0, 1.0);
-<a name="l00060"></a>00060     diffLight = vec3(0.0, 0.0, 0.0);
-<a name="l00061"></a>00061     specLight = vec3(0.0, 0.0, 0.0);
-<a name="l00062"></a>00062     <span class="comment">// Diffuse-ljus ber�knas.</span>
-<a name="l00063"></a>00063     diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(out_Normal)));
-<a name="l00064"></a>00064     <span class="comment">// Spekul�rt ljus.</span>
-<a name="l00065"></a>00065     specLight += kspec * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067     totalLight = vec3(0.0, 0.0, 0.0);
-<a name="l00068"></a>00068     <span class="comment">// De olika ljuskomponenterna adderas till det totala ljuset.</span>
-<a name="l00069"></a>00069     totalLight += ambLight;
-<a name="l00070"></a>00070     totalLight += diffLight;
-<a name="l00071"></a>00071     totalLight += specLight;
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073     <span class="comment">//out_Color = vec4(out_Col_j + out_Col_i, 0,0,0.8);</span>
+<a name="l00034"></a>00034 uniform sampler2D terr_texUnit;
+<a name="l00035"></a>00035 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037 vec3 r;
+<a name="l00038"></a>00038 vec3 s;             <span class="comment">// Infallande ljus.</span>
+<a name="l00039"></a>00039 vec3 eye;           <span class="comment">// Vektor fr�n objektet till kameran.</span>
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042 <span class="comment">// Phong-modellen:</span>
+<a name="l00043"></a>00043 <span class="keywordtype">float</span> kamb;
+<a name="l00044"></a>00044 <span class="keywordtype">float</span> kdiff;
+<a name="l00045"></a>00045 <span class="keywordtype">float</span> kspec;
+<a name="l00046"></a>00046 vec3 ambLight;      <span class="comment">// Ambient.</span>
+<a name="l00047"></a>00047 vec3 diffLight;     <span class="comment">// Diffuse.</span>
+<a name="l00048"></a>00048 vec3 specLight;     <span class="comment">// Specular.</span>
+<a name="l00049"></a>00049 vec3 totalLight;    <span class="comment">// Totalt ljus.</span>
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051 <span class="comment">//in float out_Col_i;</span>
+<a name="l00052"></a>00052 <span class="comment">//in float out_Col_j;</span>
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="field_shader_8comp.html#acdef7a1fd863a6d3770c1268cb06add3" title="HeightField simulation kernel.">main</a>(<span class="keywordtype">void</span>)
+<a name="l00055"></a>00055 {
+<a name="l00056"></a>00056     <span class="comment">// Infallande och reflekterat ljus ber�knas f�r alla ljusk�llor.</span>
+<a name="l00057"></a>00057     s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
+<a name="l00058"></a>00058     r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     <span class="comment">// eye-vektorn ber�knas.</span>
+<a name="l00061"></a>00061     eye = normalize(camPos - out_ObjPos);
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063     <span class="comment">// Ljus enligt Phong-modellen:</span>
+<a name="l00064"></a>00064     kamb = 0.1;
+<a name="l00065"></a>00065     kdiff = 0.5;
+<a name="l00066"></a>00066     kspec = 0.5;
+<a name="l00067"></a>00067     ambLight = kamb * vec3(1.0, 1.0, 1.0);
+<a name="l00068"></a>00068     diffLight = vec3(0.0, 0.0, 0.0);
+<a name="l00069"></a>00069     specLight = vec3(0.0, 0.0, 0.0);
+<a name="l00070"></a>00070     <span class="comment">// Diffuse-ljus ber�knas.</span>
+<a name="l00071"></a>00071     diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(out_Normal)));
+<a name="l00072"></a>00072     <span class="comment">// Spekul�rt ljus.</span>
+<a name="l00073"></a>00073     specLight += kspec * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
 <a name="l00074"></a>00074 
-<a name="l00075"></a>00075     <span class="comment">// Just to check that the terrain data texture is working</span>
-<a name="l00076"></a>00076     vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight;
-<a name="l00077"></a>00077     out_Color = vec4(terrainData, 1.0f);
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079     <span class="comment">// test</span>
-<a name="l00080"></a>00080     <span class="comment">//out_Color = vec4(vec3(texture(height_texUnit, out_TexCoord).a), 1.0f);</span>
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082     <span class="comment">// test 2</span>
-<a name="l00083"></a>00083     <span class="comment">//out_Color = vec4(lights[1].color, 1.0f);</span>
-<a name="l00084"></a>00084 }
+<a name="l00075"></a>00075     totalLight = vec3(0.0, 0.0, 0.0);
+<a name="l00076"></a>00076     <span class="comment">// De olika ljuskomponenterna adderas till det totala ljuset.</span>
+<a name="l00077"></a>00077     totalLight += ambLight;
+<a name="l00078"></a>00078     totalLight += diffLight;
+<a name="l00079"></a>00079     totalLight += specLight;
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081     <span class="comment">//out_Color = vec4(out_Col_j + out_Col_i, 0,0,0.8);</span>
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083     <span class="comment">// Just to check that the terrain data texture is working</span>
+<a name="l00084"></a>00084     vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight;
+<a name="l00085"></a>00085     out_Color = vec4(terrainData, 1.0f);
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087     <span class="comment">// test</span>
+<a name="l00088"></a>00088     <span class="comment">//out_Color = vec4(vec3(texture(height_texUnit, out_TexCoord).a), 1.0f);</span>
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090     <span class="comment">// test 2</span>
+<a name="l00091"></a>00091     <span class="comment">//out_Color = vec4(lights[1].color, 1.0f);</span>
+<a name="l00092"></a>00092 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -200,9 +203,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>terrainshader.frag</b>      </li>
+      <li class="navelem"><a class="el" href="terrainshader_8frag.html">terrainshader.frag</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

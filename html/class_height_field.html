@@ -107,12 +107,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="HeightField" -->
+<p>handles the heightfield simulation  
+ <a href="class_height_field.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="height_field_8h_source.html">heightField.h</a>&gt;</code></p>
+
 <p><a href="class_height_field-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab3e57c9efa72338c5cb66d2235d37ee9">HeightField</a> (<a class="el" href="class_data_handler.html">DataHandler</a> *t, std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt; FFDataIn, std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt; FlowsourcesIN)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructore for the <a class="el" href="class_height_field.html">HeightField</a>.  <a href="#ab3e57c9efa72338c5cb66d2235d37ee9"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructore for the <a class="el" href="class_height_field.html" title="handles the heightfield simulation">HeightField</a>.  <a href="#ab3e57c9efa72338c5cb66d2235d37ee9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a7c94a902fde8859a097fbd50ad683ccf">floodFill</a> (float *<a class="el" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab">u</a>, int x, int z, float <a class="el" href="class_height_field.html#addc7857ab7504c670271722457660bb3">height</a>)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">floodfills the specified point up to the height specified.  <a href="#a7c94a902fde8859a097fbd50ad683ccf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a25160f1206fb2874614ed79e7981117b">getHeight</a> (int i, int j, GLfloat ourHeight)</td></tr>
@@ -122,22 +127,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the buffers and data necessary for the GPU simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e">measureVolume</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the current volume of the water in the simulation.  <a href="#a21ddcec75d83caa4d4ba78c370d1fd9e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">runSimGPU</a> (GLfloat dt=1.0f/30.0f)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">runSimGPU</a> (GLfloat <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>=1.0f/30.0f)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the simulation with the specified dt.  <a href="#ab0c5d603c8708c079dc8deb158cd6b96"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0cd974793f5f81f9523cea994ecaf91c"></a><!-- doxytag: member="HeightField::addProgram" ref="a0cd974793f5f81f9523cea994ecaf91c" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>addProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c">addProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shader used for simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d4be2c57805460e33176eb13c1eb95"></a><!-- doxytag: member="HeightField::addShader" ref="ac7d4be2c57805460e33176eb13c1eb95" args="" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ac7d4be2c57805460e33176eb13c1eb95">addShader</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">assortment of shader references <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shader used for simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a529964a715b61fb1ce2d6a83a6ed5897"></a><!-- doxytag: member="HeightField::fieldBuffers" ref="a529964a715b61fb1ce2d6a83a6ed5897" args="[5]" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897">fieldBuffers</a> [5]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffers used for the GPU simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ee0f4638e8538f75e9e13c8e48f2fa4"></a><!-- doxytag: member="HeightField::fieldProgram" ref="a7ee0f4638e8538f75e9e13c8e48f2fa4" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>fieldProgram</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4">fieldProgram</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shader used for simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c1dc47bb71bfd432a8bff7f63b63cc8"></a><!-- doxytag: member="HeightField::fieldShader" ref="a2c1dc47bb71bfd432a8bff7f63b63cc8" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>fieldShader</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a2c1dc47bb71bfd432a8bff7f63b63cc8">fieldShader</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shader used for simulation. <br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab0d5db208e2e2a46b675a25862a9ad1a">clip</a> (int n, int lower, int upper)</td></tr>
@@ -196,7 +204,8 @@ GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a34bf452233cb494e6b1be00cfe854e39">vol0</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial volume. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46f7d2831f9d2b33a6477ff1a8e32156"></a><!-- doxytag: member="HeightField::voxelBuffer" ref="a46f7d2831f9d2b33a6477ff1a8e32156" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>voxelBuffer</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a46f7d2831f9d2b33a6477ff1a8e32156">voxelBuffer</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer for CPU voxels. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a029a88f6a4e267c968fac4fd4d1668e9"></a><!-- doxytag: member="HeightField::voxelPositions" ref="a029a88f6a4e267c968fac4fd4d1668e9" args="" -->
 std::vector&lt; GLuint &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a029a88f6a4e267c968fac4fd4d1668e9">voxelPositions</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">array of voxels that are to be rendered (legacy). <br/></td></tr>
@@ -205,7 +214,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shader program. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a757bf243e37984ff11d17810f9819ba6"></a><!-- doxytag: member="HeightField::voxelVAO" ref="a757bf243e37984ff11d17810f9819ba6" args="" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a757bf243e37984ff11d17810f9819ba6">voxelVAO</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffers and VAOs. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">VAO for CPU voxels. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4e2c642db2d01a8dde982adb9e2b139"></a><!-- doxytag: member="HeightField::xmlFlow" ref="af4e2c642db2d01a8dde982adb9e2b139" args="" -->
 std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139">xmlFlow</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Flow sources. <br/></td></tr>
@@ -222,8 +231,10 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Width used for CPU test case. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="height_field_8h_source.html#l00013">13</a> of file <a class="el" href="height_field_8h_source.html">heightField.h</a>.</p>
+<div class="textblock"><p>handles the heightfield simulation </p>
+<p>  </p>
+
+<p>Definition at line <a class="el" href="height_field_8h_source.html#l00015">15</a> of file <a class="el" href="height_field_8h_source.html">heightField.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab3e57c9efa72338c5cb66d2235d37ee9"></a><!-- doxytag: member="HeightField::HeightField" ref="ab3e57c9efa72338c5cb66d2235d37ee9" args="(DataHandler *t, std::vector&lt; Flood_Fill_data * &gt; FFDataIn, std::vector&lt; FlowSource * &gt; FlowsourcesIN)" -->
 <div class="memitem">
@@ -256,7 +267,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </div>
 <div class="memdoc">
 
-<p>Constructore for the <a class="el" href="class_height_field.html">HeightField</a>. </p>
+<p>Constructore for the <a class="el" href="class_height_field.html" title="handles the heightfield simulation">HeightField</a>. </p>
 <p>Takes a pointer to the datahandler for the terrain and the two vectors for flows and floodfill data. </p>
 
 <p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00012">12</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
@@ -410,12 +421,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <div class="memdoc">
 
 <p>floodfills the specified point up to the height specified. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">u</td><td>the array of floats u is the height that will be uploaded to the GPU. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>the array of floats u is the height that will be uploaded to the GPU. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362" title="Floodfills the simulation based on the values provided by the xml document.">initFloodFill</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00022">22</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
@@ -680,7 +686,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
     <ul>
       <li class="navelem"><a class="el" href="class_height_field.html">HeightField</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -188,7 +188,8 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_voxelgrid.html#adf4a71324fbce8af29609cbe1e35e523">rehashTresh</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Rehash treshhold. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94dba65e26fa50a6affdd3596e201d9c"></a><!-- doxytag: member="Voxelgrid::voxelBuffer" ref="a94dba65e26fa50a6affdd3596e201d9c" args="" -->
-GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>voxelBuffer</b></td></tr>
+GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_voxelgrid.html#a94dba65e26fa50a6affdd3596e201d9c">voxelBuffer</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer for rendering. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d87ab3c7a5dc37fe091e0a15ed3ed90"></a><!-- doxytag: member="Voxelgrid::voxelPositions" ref="a8d87ab3c7a5dc37fe091e0a15ed3ed90" args="" -->
 std::vector&lt; GLuint &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_voxelgrid.html#a8d87ab3c7a5dc37fe091e0a15ed3ed90">voxelPositions</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector for the position where there are voxels, for drawing purposes. <br/></td></tr>
@@ -201,7 +202,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shader program. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a7e86537dd18e535344b214f8f0cfa4"></a><!-- doxytag: member="Voxelgrid::voxelVAO" ref="a3a7e86537dd18e535344b214f8f0cfa4" args="" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4">voxelVAO</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffers and VAOs. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">VAOs for rendering. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaec2533e956e065b9d3d4a654b0e9853"></a><!-- doxytag: member="Voxelgrid::waterHeight" ref="aaec2533e956e065b9d3d4a654b0e9853" args="" -->
 std::vector&lt; GLint &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_voxelgrid.html#aaec2533e956e065b9d3d4a654b0e9853">waterHeight</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The map of height data for the topmost water voxel. <br/></td></tr>
@@ -222,7 +223,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <div class="textblock"><p>Handles the representation of the voxelgrid. </p>
 <p>The class is used to construct the voxelgrid used for simulation and visualization. It places a voxel for each point in the base area (x times z) and uses N number of voxels in the precision from the lowest point in the model to the heighest peak. Note voxels outside of highest possible, however not negative voxel coordinates. The class implements a rudimentary sparse voxelgrid. </p>
 
-<p>Definition at line <a class="el" href="voxel_8h_source.html#l00049">49</a> of file <a class="el" href="voxel_8h_source.html">voxel.h</a>.</p>
+<p>Definition at line <a class="el" href="voxel_8h_source.html#l00048">48</a> of file <a class="el" href="voxel_8h_source.html">voxel.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9bb0e7809a3bc8a0c7dfe40570906e61"></a><!-- doxytag: member="Voxelgrid::Voxelgrid" ref="a9bb0e7809a3bc8a0c7dfe40570906e61" args="(DataHandler *handle, int64_t hashSize)" -->
 <div class="memitem">
@@ -918,7 +919,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
     <ul>
       <li class="navelem"><a class="el" href="class_voxelgrid.html">Voxelgrid</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:12 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

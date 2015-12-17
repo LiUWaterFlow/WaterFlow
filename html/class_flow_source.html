@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8113478385748c2d50b228cf55ffb9b"></a><!-- doxytag: member="FlowSource::~FlowSource" ref="aa8113478385748c2d50b228cf55ffb9b" args="()" -->
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#aa8113478385748c2d50b228cf55ffb9b">~FlowSource</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">default destructor for now. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aac4ba810fbbe8810fa58a9990d946a49"></a><!-- doxytag: member="FlowSource::getChange" ref="aac4ba810fbbe8810fa58a9990d946a49" args="(float dt)" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getChange</b> (float dt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49">getChange</a> (float <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for changes in pressure after performing an update on the source.  <a href="#aac4ba810fbbe8810fa58a9990d946a49"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a9c25ddeeba1243c9255c015ae2b47801">getNormal</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function finds a thee valued vector with xyz defining the Normal direction at the internal time specified by the update function.  <a href="#a9c25ddeeba1243c9255c015ae2b47801"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a3cf14642f55c4d082a1ba91d2948fa92">getPosition</a> ()</td></tr>
@@ -142,12 +142,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>getChange</b> (float 
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the radius of the source.  <a href="#ac1a40c4629c8dcd35ddc693858167f09"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a95330ff99fa4812be760dbdc7f94a716">setTotalWater</a> (float tot)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This sets a float symbolising the total water in a source.  <a href="#a95330ff99fa4812be760dbdc7f94a716"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d">update</a> (float dt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d">update</a> (float <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function updates the source by progressing the internal source time. this should be called regularly by the simulation.  <a href="#a70cbe7c173437ef03d7eec12f500199d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb1c018deab5511c3d41440831842b99"></a><!-- doxytag: member="FlowSource::currPres" ref="abb1c018deab5511c3d41440831842b99" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>currPres</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#abb1c018deab5511c3d41440831842b99">currPres</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf058a78d303e23fa3a0bf7da10e24cb"></a><!-- doxytag: member="FlowSource::currTime" ref="abf058a78d303e23fa3a0bf7da10e24cb" args="" -->
@@ -170,12 +169,14 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a">totalWater</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The total water of the source. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb3bdaeaf28846562dcd80f42707e417"></a><!-- doxytag: member="FlowSource::xpos" ref="adb3bdaeaf28846562dcd80f42707e417" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>xpos</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#adb3bdaeaf28846562dcd80f42707e417">xpos</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The x position of the source. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbe39fd6b4c3df0fe26325edcc39c8a8"></a><!-- doxytag: member="FlowSource::ypos" ref="acbe39fd6b4c3df0fe26325edcc39c8a8" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>ypos</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#acbe39fd6b4c3df0fe26325edcc39c8a8">ypos</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The y position of the source. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9635d50a05d0cb2f89f3380bb59fc6a5"></a><!-- doxytag: member="FlowSource::zpos" ref="a9635d50a05d0cb2f89f3380bb59fc6a5" args="" -->
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_flow_source.html#a9635d50a05d0cb2f89f3380bb59fc6a5">zpos</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the source given by the parameters x, y and z/. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The z position of the source. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains the parameters of a flow source.. </p>
@@ -183,6 +184,34 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Definition at line <a class="el" href="flow_source_8h_source.html#l00014">14</a> of file <a class="el" href="flow_source_8h_source.html">flowSource.h</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="aac4ba810fbbe8810fa58a9990d946a49"></a><!-- doxytag: member="FlowSource::getChange" ref="aac4ba810fbbe8810fa58a9990d946a49" args="(float dt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49">FlowSource::getChange</a> </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Checks for changes in pressure after performing an update on the source. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time given as float to be used for advancing the currTime value of the source. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>True if the currPres value has changed after update, false otherwise. </dd></dl>
+
+<p>Definition at line <a class="el" href="flow_source_8cpp_source.html#l00094">94</a> of file <a class="el" href="flow_source_8cpp_source.html">flowSource.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a9c25ddeeba1243c9255c015ae2b47801"></a><!-- doxytag: member="FlowSource::getNormal" ref="a9c25ddeeba1243c9255c015ae2b47801" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -490,6 +519,22 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="abb1c018deab5511c3d41440831842b99"></a><!-- doxytag: member="FlowSource::currPres" ref="abb1c018deab5511c3d41440831842b99" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="class_flow_source.html#abb1c018deab5511c3d41440831842b99">FlowSource::currPres</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>The current pressure in the source. </p>
+
+<p>Definition at line <a class="el" href="flow_source_8h_source.html#l00029">29</a> of file <a class="el" href="flow_source_8h_source.html">flowSource.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a7881befa051a1e5c2238a65ecec851f4"></a><!-- doxytag: member="FlowSource::normalTime" ref="a7881befa051a1e5c2238a65ecec851f4" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -550,7 +595,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
     <ul>
       <li class="navelem"><a class="el" href="class_flow_source.html">FlowSource</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

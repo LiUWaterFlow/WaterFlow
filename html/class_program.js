@@ -20,7 +20,6 @@ var class_program =
     [ "dataHandler", "class_program.html#af12f89dbec45930ea3f3a73266e443a7", null ],
     [ "deltaTime", "class_program.html#a8ded976bf91549da8748447d6779e284", null ],
     [ "depthshader", "class_program.html#af2e129519cc65348320bf3f36aeafa35", null ],
-    [ "depthWater", "class_program.html#ad9fcf98c3da71b91b7733641bf1d044b", null ],
     [ "dtSim", "class_program.html#a32e5a7fa5e4c98370e69ccabc1b99503", null ],
     [ "FPS", "class_program.html#ad1f15a546df461c2260031eed5f9119a", null ],
     [ "glcontext", "class_program.html#ac17eb47523bd8f13dacd0cd0b5dfe490", null ],

@@ -116,23 +116,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct that contains information about a location to be filled.  <a href="struct_flood___fill__data.html#details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinit___data__struct.html">init_Data_struct</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Encapsulating struct for all objects read from XML file.  <a href="structinit___data__struct.html#details">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#af56f09b13f2870063e6c632e4dde426c">deleteAllFlows</a> (std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt; srces)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes flowSources to free up memory.  <a href="#af56f09b13f2870063e6c632e4dde426c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff279980788f8efb845e1062089be5a0"></a><!-- doxytag: member="xmlParsing.h::flowChange" ref="aff279980788f8efb845e1062089be5a0" args="(std::vector&lt; FlowSource * &gt; flows, float dt)" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>flowChange</b> (std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt; flows, float dt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#aff279980788f8efb845e1062089be5a0">flowChange</a> (std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt; flows, float <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function progresses the pressure time for the flowsources provided and checks if there has ocured a change in pressure.  <a href="#aff279980788f8efb845e1062089be5a0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a0de587f4a597747382371f3546a3976e">fStrToVector</a> (std::string str)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a string with CSV to a vector with floats.  <a href="#a0de587f4a597747382371f3546a3976e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#ad07366eb0018d98b50a2d948080ca729">iStrToVector</a> (std::string str)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a string with CSV to a vector with int.  <a href="#ad07366eb0018d98b50a2d948080ca729"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60274f38c64eb7c805e921e32c1472a1"></a><!-- doxytag: member="xmlParsing.h::loadFFData" ref="a60274f38c64eb7c805e921e32c1472a1" args="(const char *xmlFile)" -->
-std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadFFData</b> (const char *xmlFile)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a60274f38c64eb7c805e921e32c1472a1">loadFFData</a> (const char *xmlFile)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads all flood objects given in the floods node from a XML file to a vector.  <a href="#a60274f38c64eb7c805e921e32c1472a1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a5bb94de317ebdd420db4ceb9bc680b75">loadFlows</a> (const char *xmlFile)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function creates and populates <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> objects from a given XML file. The XML file is expected to be formated and contain pre defined nodes and attributes.  <a href="#a5bb94de317ebdd420db4ceb9bc680b75"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a831a30cc46acb983cb45cfacc21486b1"></a><!-- doxytag: member="xmlParsing.h::loadMapPath" ref="a831a30cc46acb983cb45cfacc21486b1" args="(const char *xmlFile)" -->
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b> (const char *xmlFile)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a831a30cc46acb983cb45cfacc21486b1">loadMapPath</a> (const char *xmlFile)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a path given in the data node from a XML file.  <a href="#a831a30cc46acb983cb45cfacc21486b1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a6e35121f61218a4aa715dbe4eaf28066">parseNormal</a> (<a class="el" href="class_flow_source.html">FlowSource</a> *obj, pugi::xml_node norm, pugi::xml_node time)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function parses the normals data in the given xml nodes.  <a href="#a6e35121f61218a4aa715dbe4eaf28066"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#aeed36cfb6e61afc083de19e3a4149d5b">parsePosition</a> (<a class="el" href="class_flow_source.html">FlowSource</a> *obj, pugi::xml_node node)</td></tr>
@@ -167,12 +169,51 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
 <p>This function removes flowSources to free up memory. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">Vector</td><td>with pointers to flowSource objects to be deleted. </td></tr>
+    <tr><td class="paramname">srces</td><td>Vector with pointers to flowSource objects to be deleted. </td></tr>
   </table>
   </dd>
 </dl>
 
 <p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00152">152</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aff279980788f8efb845e1062089be5a0"></a><!-- doxytag: member="xmlParsing.h::flowChange" ref="aff279980788f8efb845e1062089be5a0" args="(std::vector&lt; FlowSource * &gt; flows, float dt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="xml_parsing_8h.html#aff279980788f8efb845e1062089be5a0">flowChange</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt;&#160;</td>
+          <td class="paramname"><em>flows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>This function progresses the pressure time for the flowsources provided and checks if there has ocured a change in pressure. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flows</td><td>Vector with pointers to flowSource objects to be updated and and checked for changes. </td></tr>
+    <tr><td class="paramname">dt</td><td>Time unit to advance the internal source time with given as a foat. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>If any source has changed is pressure this function will return true. Otherwise the return will be false. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00118">118</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -232,6 +273,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
 
 </div>
 </div>
+<a class="anchor" id="a60274f38c64eb7c805e921e32c1472a1"></a><!-- doxytag: member="xmlParsing.h::loadFFData" ref="a60274f38c64eb7c805e921e32c1472a1" args="(const char *xmlFile)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a>*&gt; <a class="el" href="xml_parsing_8h.html#a60274f38c64eb7c805e921e32c1472a1">loadFFData</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>xmlFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Loads all flood objects given in the floods node from a XML file to a vector. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlFile</td><td>Relative path to the XML file containing the floods to fill the terrain with. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A vector containing pointers to Flood_Fill_Data objects created from flood nodes. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00136">136</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a5bb94de317ebdd420db4ceb9bc680b75"></a><!-- doxytag: member="xmlParsing.h::loadFlows" ref="a5bb94de317ebdd420db4ceb9bc680b75" args="(const char *xmlFile)" -->
 <div class="memitem">
 <div class="memproto">
@@ -257,6 +326,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
 <dl class="return"><dt><b>Returns:</b></dt><dd>A vector filled with pointers to flowSource objects containing data given by an XML file. </dd></dl>
 
 <p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00099">99</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a831a30cc46acb983cb45cfacc21486b1"></a><!-- doxytag: member="xmlParsing.h::loadMapPath" ref="a831a30cc46acb983cb45cfacc21486b1" args="(const char *xmlFile)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="xml_parsing_8h.html#a831a30cc46acb983cb45cfacc21486b1">loadMapPath</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>xmlFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Loads a path given in the data node from a XML file. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlFile</td><td>relative path to the XML file containing the terrain map to be loaded. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>string containing relative path to the dem data file used for terrain generatrion. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00128">128</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -295,8 +392,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">obj</td><td>pointer to <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> object that normal data will be writen to. </td></tr>
-    <tr><td class="paramname">norm</td><td>xml node with child nodes containing normals defined by the attributes: "x", "y" and " "z".
-    @param time xml node containing time values as CSV in attribute "t". </td></tr>
+    <tr><td class="paramname">norm</td><td>xml node with child nodes containing normals defined by the attributes: "x", "y" and "z". </td></tr>
+    <tr><td class="paramname">time</td><td>xml node containing time values as CSV in attribute "t". </td></tr>
   </table>
   </dd>
 </dl>
@@ -484,7 +581,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadMapPath</b
     <ul>
       <li class="navelem"><a class="el" href="xml_parsing_8h.html">xmlParsing.h</a>      </li>
 
-    <li class="footer">Generated on Sat Dec 12 2015 00:04:18 for Waterflow by
+    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
