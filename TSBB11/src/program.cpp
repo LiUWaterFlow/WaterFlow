@@ -203,8 +203,8 @@ bool Program::init() {
 	TwAddVarRO(antBar, "Camera Height", TW_TYPE_FLOAT, &cam->getPos()->y, "group=Info");
 	TwAddVarRO(antBar, "Terrain Height", TW_TYPE_FLOAT, &heightAtPos, "help= 'Shows terrain height at camera position' group=Info");
 
-	TwAddVarRO(antBar, "Terrain Height (Proj)", TW_TYPE_FLOAT, &heighAtClickProj, "group=Click help= 'Shows terrain height at click using inverse projection' ");
-	TwAddVarRO(antBar, "Terrain Height (Data)", TW_TYPE_FLOAT, &heightAtClickData, "group=Click help= 'Shows terrain height at click using terrain data for height' ");
+	TwAddVarRO(antBar, "Terrain Height (Water / Terrain)", TW_TYPE_FLOAT, &heighAtClickProj, "group=Click help= 'Shows water/terrain height at click using inverse projection' ");
+	TwAddVarRO(antBar, "Terrain Height (Terrain)", TW_TYPE_FLOAT, &heightAtClickData, "group=Click help= 'Shows terrain height at click using terrain data for height' ");
 	TwAddVarRO(antBar, "Terrain X", TW_TYPE_DOUBLE, &objX, "group=Click help= 'Shows terrain x at click' ");
 	TwAddVarRO(antBar, "Terrain Z", TW_TYPE_DOUBLE, &objZ, "group=Click help= 'Shows terrain z at click' ");
 
