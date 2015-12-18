@@ -96,9 +96,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
 <div id="doc-content">
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">fileHandler Class Reference</div>  </div>
 </div><!--header-->
@@ -108,244 +105,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="classfile_handler.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="file_handler_8h_source.html">fileHandler.h</a>&gt;</code></p>
-
-<p><a href="classfile_handler-members.html">List of all members.</a></p>
-<table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#a1891416631c135be41a531f986a4acc0">fileHandler</a> (std::string path)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, takes file path as parameter.  <a href="#a1891416631c135be41a531f986a4acc0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#a5effeaf662bab42afa44f4cd2fb132bb">GetArray</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the stored float array.  <a href="#a5effeaf662bab42afa44f4cd2fb132bb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#ac9a716ec91df3167c38f2e59c07259ea">GetArrayLength</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the stored float array length.  <a href="#ac9a716ec91df3167c38f2e59c07259ea"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#aa413fd070557076245bf537429fbd3b8">GetDataHeight</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the data height.  <a href="#aa413fd070557076245bf537429fbd3b8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#af0c58a7f085878cf53641465aa52628a">GetDataWidth</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the data width.  <a href="#af0c58a7f085878cf53641465aa52628a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#ab6601b49c0db41e0f6caea14a1a7ce0a">LoadData</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads data from a file specified by fPath into the object.  <a href="#ab6601b49c0db41e0f6caea14a1a7ce0a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#a14ae3e6c780754a0332b16fecc34eefb">SaveData</a> (float fArr[], int aSize, int dWidth, int dHeight)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores data, both as variables in the object and as a file.  <a href="#a14ae3e6c780754a0332b16fecc34eefb"></a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac23b0a4901fd02f2f7f9114c2fca728e"></a><!-- doxytag: member="fileHandler::arrayLength" ref="ac23b0a4901fd02f2f7f9114c2fca728e" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#ac23b0a4901fd02f2f7f9114c2fca728e">arrayLength</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the float array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a219d8b92d5236d93ced055c83f2cf3"></a><!-- doxytag: member="fileHandler::fArray" ref="a4a219d8b92d5236d93ced055c83f2cf3" args="" -->
-float *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#a4a219d8b92d5236d93ced055c83f2cf3">fArray</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the float array. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc6021a2dcbb9497af692c44bdd8a64f"></a><!-- doxytag: member="fileHandler::fPath" ref="afc6021a2dcbb9497af692c44bdd8a64f" args="" -->
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#afc6021a2dcbb9497af692c44bdd8a64f">fPath</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Path to the data file. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8be8bf549ed28b0199dcc43afabc8693"></a><!-- doxytag: member="fileHandler::height" ref="a8be8bf549ed28b0199dcc43afabc8693" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#a8be8bf549ed28b0199dcc43afabc8693">height</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Height (side information). <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a42106c3068617f7f42ffff03f7d295e3"></a><!-- doxytag: member="fileHandler::width" ref="a42106c3068617f7f42ffff03f7d295e3" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile_handler.html#a42106c3068617f7f42ffff03f7d295e3">width</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Width (side information). <br/></td></tr>
-</table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Used to store float arrays, and/or load them from files. </p>
-<p>Use the <a class="el" href="classfile_handler.html" title="Used to store float arrays, and/or load them from files.">fileHandler</a> class to either store a generic float array, with some side information, or to load side information and a float array from the specified path. When attempting to load a file that does not exist, <a class="el" href="classfile_handler.html#ab6601b49c0db41e0f6caea14a1a7ce0a" title="Loads data from a file specified by fPath into the object.">LoadData()</a> returns -1, otherwise 0. </p>
-
-<p>Definition at line <a class="el" href="file_handler_8h_source.html#l00018">18</a> of file <a class="el" href="file_handler_8h_source.html">fileHandler.h</a>.</p>
-</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a1891416631c135be41a531f986a4acc0"></a><!-- doxytag: member="fileHandler::fileHandler" ref="a1891416631c135be41a531f986a4acc0" args="(std::string path)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classfile_handler.html#a1891416631c135be41a531f986a4acc0">fileHandler::fileHandler</a> </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Constructor, takes file path as parameter. </p>
-<p>path must either point to a file saved with this class, or towards a location where data should be saved. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>path to data file. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classfile_handler.html#a14ae3e6c780754a0332b16fecc34eefb" title="Stores data, both as variables in the object and as a file.">SaveData()</a> </dd>
-<dd>
-<a class="el" href="classfile_handler.html#ab6601b49c0db41e0f6caea14a1a7ce0a" title="Loads data from a file specified by fPath into the object.">LoadData()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00008">8</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a5effeaf662bab42afa44f4cd2fb132bb"></a><!-- doxytag: member="fileHandler::GetArray" ref="a5effeaf662bab42afa44f4cd2fb132bb" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float * <a class="el" href="classfile_handler.html#a5effeaf662bab42afa44f4cd2fb132bb">fileHandler::GetArray</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Getter for the stored float array. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the float array. </dd></dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00074">74</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac9a716ec91df3167c38f2e59c07259ea"></a><!-- doxytag: member="fileHandler::GetArrayLength" ref="ac9a716ec91df3167c38f2e59c07259ea" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classfile_handler.html#ac9a716ec91df3167c38f2e59c07259ea">fileHandler::GetArrayLength</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Getter for the stored float array length. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>length of the float array. </dd></dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00079">79</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa413fd070557076245bf537429fbd3b8"></a><!-- doxytag: member="fileHandler::GetDataHeight" ref="aa413fd070557076245bf537429fbd3b8" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classfile_handler.html#aa413fd070557076245bf537429fbd3b8">fileHandler::GetDataHeight</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Getter for the data height. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>height (side information). </dd></dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00088">88</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af0c58a7f085878cf53641465aa52628a"></a><!-- doxytag: member="fileHandler::GetDataWidth" ref="af0c58a7f085878cf53641465aa52628a" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classfile_handler.html#af0c58a7f085878cf53641465aa52628a">fileHandler::GetDataWidth</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Getter for the data width. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>width (side information). </dd></dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00084">84</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab6601b49c0db41e0f6caea14a1a7ce0a"></a><!-- doxytag: member="fileHandler::LoadData" ref="ab6601b49c0db41e0f6caea14a1a7ce0a" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classfile_handler.html#ab6601b49c0db41e0f6caea14a1a7ce0a">fileHandler::LoadData</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Loads data from a file specified by fPath into the object. </p>
-<p>Note that this method simply interprets a file as if it were saved with <a class="el" href="classfile_handler.html#a14ae3e6c780754a0332b16fecc34eefb" title="Stores data, both as variables in the object and as a file.">SaveData()</a>. If the file specified by fPath is of another origin, the data loaded could be flagged as being correctly loaded, but in reality make little sense. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>0 if data was correctly loaded, -1 if the file could not be read. </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classfile_handler.html#a14ae3e6c780754a0332b16fecc34eefb" title="Stores data, both as variables in the object and as a file.">SaveData()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00037">37</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a14ae3e6c780754a0332b16fecc34eefb"></a><!-- doxytag: member="fileHandler::SaveData" ref="a14ae3e6c780754a0332b16fecc34eefb" args="(float fArr[], int aSize, int dWidth, int dHeight)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classfile_handler.html#a14ae3e6c780754a0332b16fecc34eefb">fileHandler::SaveData</a> </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fArr</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>aSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>dWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>dHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Stores data, both as variables in the object and as a file. </p>
-<p>specified by fPath. Note that the file indicated by fPath will be created if it does not exist, and it will be overwritten if it does exist. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fArr</td><td>float array to store. </td></tr>
-    <tr><td class="paramname">aSize</td><td>length of the float array. </td></tr>
-    <tr><td class="paramname">dWidth</td><td>width (side information to store). </td></tr>
-    <tr><td class="paramname">dHeight</td><td>height (side information to store). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="file_handler_8cpp_source.html#l00015">15</a> of file <a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<p>Use the <a class="el" href="classfile_handler.html" title="Used to store float arrays, and/or load them from files.">fileHandler</a> class to either store a generic float array, with some side information, or to load side information and a float array from the specified path. When attempting to load a file that does not exist, LoadData() returns -1, otherwise 0. </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/<a class="el" href="file_handler_8h_source.html">fileHandler.h</a></li>
-<li>src/<a class="el" href="file_handler_8cpp_source.html">fileHandler.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div>
@@ -367,7 +131,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
     <ul>
       <li class="navelem"><a class="el" href="classfile_handler.html">fileHandler</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

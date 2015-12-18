@@ -132,9 +132,17 @@ Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_flood___fill__data.html">Flood_Fill_data</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a60274f38c64eb7c805e921e32c1472a1">loadFFData</a> (const char *xmlFile)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads all flood objects given in the floods node from a XML file to a vector.  <a href="#a60274f38c64eb7c805e921e32c1472a1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_flow_source.html">FlowSource</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a5bb94de317ebdd420db4ceb9bc680b75">loadFlows</a> (const char *xmlFile)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function creates and populates <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> objects from a given XML file. The XML file is expected to be formated and contain pre defined nodes and attributes.  <a href="#a5bb94de317ebdd420db4ceb9bc680b75"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function creates and populates <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> objects from a given XML file.  <a href="#a5bb94de317ebdd420db4ceb9bc680b75"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a28b6a1436acecac86bfea5e9ffed2b8f">loadHeightLoadPath</a> (const char *xmlFile)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a path given in the data node from a XML file.  <a href="#a28b6a1436acecac86bfea5e9ffed2b8f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a8631972bf5bbd9cfbdbc0a2a4b506cd6">loadHeightSavePath</a> (const char *xmlFile)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a path given in the data node from a XML file.  <a href="#a8631972bf5bbd9cfbdbc0a2a4b506cd6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a831a30cc46acb983cb45cfacc21486b1">loadMapPath</a> (const char *xmlFile)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a path given in the data node from a XML file.  <a href="#a831a30cc46acb983cb45cfacc21486b1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a0a84cc25343bf95d7b849834c4ede0a2">loadVelLoadPath</a> (const char *xmlFile)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a path given in the data node from a XML file.  <a href="#a0a84cc25343bf95d7b849834c4ede0a2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#ab1971c06335eb8dd55e667b285e012d8">loadVelSavePath</a> (const char *xmlFile)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a path given in the data node from a XML file.  <a href="#ab1971c06335eb8dd55e667b285e012d8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#a6e35121f61218a4aa715dbe4eaf28066">parseNormal</a> (<a class="el" href="class_flow_source.html">FlowSource</a> *obj, pugi::xml_node norm, pugi::xml_node time)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function parses the normals data in the given xml nodes.  <a href="#a6e35121f61218a4aa715dbe4eaf28066"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="xml_parsing_8h.html#aeed36cfb6e61afc083de19e3a4149d5b">parsePosition</a> (<a class="el" href="class_flow_source.html">FlowSource</a> *obj, pugi::xml_node node)</td></tr>
@@ -174,7 +182,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00152">152</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00190">190</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -213,7 +221,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>If any source has changed is pressure this function will return true. Otherwise the return will be false. </dd></dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00118">118</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00124">124</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -241,7 +249,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>vector of floats with the values from the input string. </dd></dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00021">21</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00027">27</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -269,7 +277,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>vector of ints with the values from the input string. </dd></dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00036">36</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00042">42</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +305,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>A vector containing pointers to Flood_Fill_Data objects created from flood nodes. </dd></dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00136">136</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00174">174</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -316,7 +324,8 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>This function creates and populates <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> objects from a given XML file. The XML file is expected to be formated and contain pre defined nodes and attributes. </p>
+<p>This function creates and populates <a class="el" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a> objects from a given XML file. </p>
+<p>The XML file is expected to be formated and contain pre defined nodes and attributes. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">xmlFile</td><td>relative path to an xml file containing flow sources data. </td></tr>
@@ -325,7 +334,63 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>A vector filled with pointers to flowSource objects containing data given by an XML file. </dd></dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00099">99</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00105">105</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a28b6a1436acecac86bfea5e9ffed2b8f"></a><!-- doxytag: member="xmlParsing.h::loadHeightLoadPath" ref="a28b6a1436acecac86bfea5e9ffed2b8f" args="(const char *xmlFile)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="xml_parsing_8h.html#a28b6a1436acecac86bfea5e9ffed2b8f">loadHeightLoadPath</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>xmlFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Loads a path given in the data node from a XML file. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlFile</td><td>relative path to the XML file containing the height. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>string containing relative path to the data file to be saved. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00150">150</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8631972bf5bbd9cfbdbc0a2a4b506cd6"></a><!-- doxytag: member="xmlParsing.h::loadHeightSavePath" ref="a8631972bf5bbd9cfbdbc0a2a4b506cd6" args="(const char *xmlFile)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="xml_parsing_8h.html#a8631972bf5bbd9cfbdbc0a2a4b506cd6">loadHeightSavePath</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>xmlFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Loads a path given in the data node from a XML file. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlFile</td><td>relative path to the XML file containing the filepath for the file to be saved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>string containing relative path to the height data file used for saving. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00166">166</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -353,7 +418,63 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>string containing relative path to the dem data file used for terrain generatrion. </dd></dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00128">128</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00134">134</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0a84cc25343bf95d7b849834c4ede0a2"></a><!-- doxytag: member="xmlParsing.h::loadVelLoadPath" ref="a0a84cc25343bf95d7b849834c4ede0a2" args="(const char *xmlFile)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="xml_parsing_8h.html#a0a84cc25343bf95d7b849834c4ede0a2">loadVelLoadPath</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>xmlFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Loads a path given in the data node from a XML file. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlFile</td><td>relative path to the XML file containing the velocity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>string containing relative path to the data file to be saved. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00142">142</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab1971c06335eb8dd55e667b285e012d8"></a><!-- doxytag: member="xmlParsing.h::loadVelSavePath" ref="ab1971c06335eb8dd55e667b285e012d8" args="(const char *xmlFile)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="xml_parsing_8h.html#ab1971c06335eb8dd55e667b285e012d8">loadVelSavePath</a> </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>xmlFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Loads a path given in the data node from a XML file. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xmlFile</td><td>relative path to the XML file containing the filepath for the file to be saved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>string containing relative path to the velocity data file used for saving. </dd></dl>
+
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00158">158</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -398,7 +519,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00069">69</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00075">75</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -436,7 +557,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00060">60</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00066">66</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -481,7 +602,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00051">51</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00057">57</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -519,7 +640,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00092">92</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00098">98</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -557,7 +678,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00086">86</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
+<p>Definition at line <a class="el" href="xml_parsing_8cpp_source.html#l00092">92</a> of file <a class="el" href="xml_parsing_8cpp_source.html">xmlParsing.cpp</a>.</p>
 
 </div>
 </div>
@@ -581,7 +702,7 @@ Functions</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="xml_parsing_8h.html">xmlParsing.h</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

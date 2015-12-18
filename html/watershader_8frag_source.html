@@ -112,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00017"></a>00017     <span class="keywordtype">float</span> <a class="code" href="struct_light_param.html#ab3ad8c95b263f29b214742032d14d228" title="Specular exponent for the light.">specExp</a>;  
 <a name="l00018"></a>00018 };
 <a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a>(std140, binding = 0) uniform LightInfo {
+<a name="l00020"></a>00020 <a class="code" href="field_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d" title="This should be a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.">layout</a>(std140, binding = 0) uniform LightInfo {
 <a name="l00021"></a>00021     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
 <a name="l00022"></a>00022 };
 <a name="l00023"></a>00023 
@@ -126,7 +126,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00031"></a>00031 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
 <a name="l00032"></a>00032 uniform samplerCube sky_texUnit;    <span class="comment">// Skybox texture.</span>
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034 uniform vec3 <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>;
+<a name="l00034"></a>00034 uniform vec3 size;
 <a name="l00035"></a>00035 
 <a name="l00036"></a>00036 uniform <span class="keywordtype">float</span> time;
 <a name="l00037"></a>00037 
@@ -198,7 +198,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00103"></a>00103 <span class="keyword">const</span> <span class="keywordtype">float</span> airRefInd = 1.0;
 <a name="l00104"></a>00104 <span class="keyword">const</span> vec3 up = vec3(0.0, 1.0, 0.0);
 <a name="l00105"></a>00105 
-<a name="l00106"></a>00106 <span class="keywordtype">void</span> <a class="code" href="field_shader_8comp.html#acdef7a1fd863a6d3770c1268cb06add3" title="HeightField simulation kernel.">main</a>(<span class="keywordtype">void</span>)
+<a name="l00106"></a>00106 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
 <a name="l00107"></a>00107 {
 <a name="l00108"></a>00108     <span class="comment">// eye vector is calculated.</span>
 <a name="l00109"></a>00109     eye = camPos - out_ObjPos;
@@ -208,7 +208,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00113"></a>00113     
 <a name="l00114"></a>00114     <span class="comment">// Modelling surface waves.</span>
 <a name="l00115"></a>00115     <span class="keywordtype">float</span> rho1 = sqrt(pow(out_ObjPos.x, 2) + pow(out_ObjPos.z, 2));
-<a name="l00116"></a>00116     <span class="keywordtype">float</span> rho2 = sqrt(pow((<a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x - <span class="keywordtype">float</span>(out_ObjPos.x)), 2) + pow(out_ObjPos.z, 2));
+<a name="l00116"></a>00116     <span class="keywordtype">float</span> rho2 = sqrt(pow((size.x - <span class="keywordtype">float</span>(out_ObjPos.x)), 2) + pow(out_ObjPos.z, 2));
 <a name="l00117"></a>00117     <span class="keywordtype">float</span> xwave = sin(0.1 * time + out_ObjPos.x) + sin(-0.01 * time + out_ObjPos.x);
 <a name="l00118"></a>00118     <span class="keywordtype">float</span> ywave = sin(0.2 * time + out_ObjPos.z) + sin(-0.3 * time + out_ObjPos.z);
 <a name="l00119"></a>00119     <span class="keywordtype">float</span> rhowave1 = sin(0.05 * time + 0.5 + rho1) + 0.2 * sin(-0.01 * time + rho1);
@@ -242,7 +242,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00147"></a>00147     terrainDataUnderSurface = texture(height_texUnit, out_TexCoord);
 <a name="l00148"></a>00148 
 <a name="l00149"></a>00149     <span class="comment">// Depth at fragment.</span>
-<a name="l00150"></a>00150     depth = out_ObjPos.y - <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y * terrainDataUnderSurface.a;
+<a name="l00150"></a>00150     depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
 <a name="l00151"></a>00151     
 <a name="l00152"></a>00152     <span class="keywordflow">if</span> (depth &lt; 0 || out_ObjPos.z &lt; 1 || out_ObjPos.x &lt; 1 ){
 <a name="l00153"></a>00153         discard;
@@ -258,11 +258,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00163"></a>00163 
 <a name="l00164"></a>00164 
 <a name="l00165"></a>00165     <span class="comment">// Texture lookup at approximation.</span>
-<a name="l00166"></a>00166     terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x, displacement1.z / <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.z));
+<a name="l00166"></a>00166     terrainDataAtDis1 = texture(height_texUnit, out_TexCoord + vec2(displacement1.x / size.x, displacement1.z / size.z));
 <a name="l00167"></a>00167 
 <a name="l00168"></a>00168     <span class="comment">// To minimize negative depth values, a better approximation is made.</span>
 <a name="l00169"></a>00169     <span class="comment">// &quot;Depth&quot; at approximation.</span>
-<a name="l00170"></a>00170     depthAtDis1 = out_ObjPos.y - <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y * terrainDataAtDis1.a;
+<a name="l00170"></a>00170     depthAtDis1 = out_ObjPos.y - size.y * terrainDataAtDis1.a;
 <a name="l00171"></a>00171     <span class="comment">// Height at approximation (y distance from fragment bottom to approximation bottom).</span>
 <a name="l00172"></a>00172     h = depth - depthAtDis1;
 <a name="l00173"></a>00173     <span class="comment">// Better approximation</span>
@@ -272,14 +272,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00177"></a>00177 
 <a name="l00178"></a>00178 
 <a name="l00179"></a>00179     <span class="comment">// Texture lookups at better approximation</span>
-<a name="l00180"></a>00180     terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x, displacement2.z / <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.z));
+<a name="l00180"></a>00180     terrainDataAtBottom = texture(height_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
 <a name="l00181"></a>00181 
 <a name="l00182"></a>00182 
 <a name="l00183"></a>00183 
 <a name="l00184"></a>00184 
-<a name="l00185"></a>00185     texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.x, displacement2.z / <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.z));
+<a name="l00185"></a>00185     texDataAtBottom = texture(terr_texUnit, out_TexCoord + vec2(displacement2.x / size.x, displacement2.z / size.z));
 <a name="l00186"></a>00186     <span class="comment">// &quot;Depth&quot; at better approximation</span>
-<a name="l00187"></a>00187     depthAtDis2 = out_ObjPos.y - <a class="code" href="field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width and height of the arrays">size</a>.y * terrainDataAtBottom.a;
+<a name="l00187"></a>00187     depthAtDis2 = out_ObjPos.y - size.y * terrainDataAtBottom.a;
 <a name="l00188"></a>00188 
 <a name="l00189"></a>00189     <span class="comment">// Coordinates and normal of seen position of bottom.</span>
 <a name="l00190"></a>00190     bottomPos = out_ObjPos + displacement2 - vec3(0, depthAtDis2, 0);
@@ -385,7 +385,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="watershader_8frag.html">watershader.frag</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

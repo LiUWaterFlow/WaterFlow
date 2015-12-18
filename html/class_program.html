@@ -181,9 +181,15 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a493aa34bec63c94238a09278d7053a15"></a><!-- doxytag: member="Program::heightAtPos" ref="a493aa34bec63c94238a09278d7053a15" args="" -->
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a493aa34bec63c94238a09278d7053a15">heightAtPos</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain height at the comera position. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bff2ab94a0a9f6f9514fd050bd946e5"></a><!-- doxytag: member="Program::heightData" ref="a2bff2ab94a0a9f6f9514fd050bd946e5" args="" -->
+<a class="el" href="class_file_handler.html">FileHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a2bff2ab94a0a9f6f9514fd050bd946e5">heightData</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a> height data to save/load. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab591e6f2678a46d92eed5ac346a89c9b"></a><!-- doxytag: member="Program::hf" ref="ab591e6f2678a46d92eed5ac346a89c9b" args="" -->
 <a class="el" href="class_height_field.html">HeightField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ab591e6f2678a46d92eed5ac346a89c9b">hf</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Heightfield for water simulation. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69af6cc02cb01f3037705299dd9fa2fc"></a><!-- doxytag: member="Program::init_data" ref="a69af6cc02cb01f3037705299dd9fa2fc" args="" -->
+<a class="el" href="structinit___data__struct.html">init_Data_struct</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a69af6cc02cb01f3037705299dd9fa2fc">init_data</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds data collected from XML. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71dc4ccfa65beb8173109a07f3990f26"></a><!-- doxytag: member="Program::isRunning" ref="a71dc4ccfa65beb8173109a07f3990f26" args="" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#a71dc4ccfa65beb8173109a07f3990f26">isRunning</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">True as long as the program is running, set to false to quit. <br/></td></tr>
@@ -229,6 +235,9 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac099ca345b6e89c18be9d204ecf7b2a0"></a><!-- doxytag: member="Program::terrainshader" ref="ac099ca345b6e89c18be9d204ecf7b2a0" args="" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ac099ca345b6e89c18be9d204ecf7b2a0">terrainshader</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shaders used for rendering terrain. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeefa3fe4b39a625462bf91324f02e58f"></a><!-- doxytag: member="Program::velocityData" ref="aeefa3fe4b39a625462bf91324f02e58f" args="" -->
+<a class="el" href="class_file_handler.html">FileHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#aeefa3fe4b39a625462bf91324f02e58f">velocityData</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_water.html" title="Specialized version of height map that handles multiple drawing programs.">Water</a> velocity data to save/load. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae794815f232982f2720a92eec1ce4ad5"></a><!-- doxytag: member="Program::voxs" ref="ae794815f232982f2720a92eec1ce4ad5" args="" -->
 <a class="el" href="class_voxelgrid.html">Voxelgrid</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_program.html#ae794815f232982f2720a92eec1ce4ad5">voxs</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A voxelgrid, not currently used. <br/></td></tr>
@@ -291,7 +300,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>This is for events that requires buttons to be held down for longer periods of time. Currently used mainly for moving the camera around in the 3D environment. For single event keypresses use <a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">handleKeypress()</a> </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_program.html#aa3565718658a8e8b1331516cf9a252ad" title="Handles Keyboard presses that should only happen once.">handleKeypress</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00410">410</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00414">414</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -312,7 +321,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Makes sure the program exits cleanly. </p>
 <p>Closes the SDL OpenGL context correctly and closes the AntTweakBar. </p>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00305">305</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00300">300</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -333,7 +342,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>All rendering commands are sent here. </p>
 <p>Sends the rendering commands to all drawables and uploads the camera uniforms to the programs. </p>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00266">266</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00261">261</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -387,7 +396,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dd>
 <a class="el" href="class_program.html#accf66aa172a27d0ed4263d78da35c51c" title="Handles movements of the mouse.">handleMouseMove</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00313">313</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00308">308</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -415,7 +424,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00348">348</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00343">343</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +453,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00392">392</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00396">396</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -473,7 +482,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_program.html#a3410448e2325bd75c6e31bc455d6edb8" title="Checks which keys are held down each iteration.">checkKeys</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00385">385</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00389">389</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -515,7 +524,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Updates the time. </p>
 <p>Calculates the last frame time and updates the FPS and current time. This is not part of update since we want the same time delta for events as for the update. </p>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00232">232</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00227">227</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -536,7 +545,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Updates the simulation and camera. </p>
 <p>This is where the simulation is updated currently. After the simulation the model for the water is updated. </p>
 
-<p>Definition at line <a class="el" href="program_8cpp_source.html#l00239">239</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
+<p>Definition at line <a class="el" href="program_8cpp_source.html#l00234">234</a> of file <a class="el" href="program_8cpp_source.html">program.cpp</a>.</p>
 
 </div>
 </div>
@@ -564,7 +573,7 @@ GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
     <ul>
       <li class="navelem"><a class="el" href="class_program.html">Program</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

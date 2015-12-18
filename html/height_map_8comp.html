@@ -110,19 +110,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38d7d2d84fb7cc382da7b98797a4c70d"></a><!-- doxytag: member="heightMap.comp::layout" ref="a38d7d2d84fb7cc382da7b98797a4c70d" args="(local_size_x=16, local_size_y=16) in" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (local_size_x=16, local_size_y=16) in</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a753059b14cd0c0a592618a10916762cb"></a><!-- doxytag: member="heightMap.comp::layout" ref="a753059b14cd0c0a592618a10916762cb" args="(std430, binding=0) writeonly buffer Pos" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (std430, binding=0) writeonly buffer Pos</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="height_map_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d">layout</a> (local_size_x=16, local_size_y=16) in</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of calculation kernels on GPU, preferably power of 2. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="height_map_8comp.html#a753059b14cd0c0a592618a10916762cb">layout</a> (std430, binding=0) writeonly buffer Pos</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; Position of vertices to be written, y will be set to lower values if a WATER height is to be modeled and the WATER is under the surface.  <a href="#a753059b14cd0c0a592618a10916762cb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f60bf5467c86ceafb7c843bbacc7207"></a><!-- doxytag: member="heightMap.comp::layout" ref="a2f60bf5467c86ceafb7c843bbacc7207" args="(rgba32f, binding=0) readonly uniform image2D textureOut" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (rgba32f, binding=0) readonly uniform image2D textureOut</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdef7a1fd863a6d3770c1268cb06add3"></a><!-- doxytag: member="heightMap.comp::main" ref="acdef7a1fd863a6d3770c1268cb06add3" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="height_map_8comp.html#a2f60bf5467c86ceafb7c843bbacc7207">layout</a> (rgba32f, binding=0) readonly uniform image2D textureOut</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Texture which can be used to read height in other shaders. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="height_map_8comp.html#acdef7a1fd863a6d3770c1268cb06add3">main</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5187c9a95c7c5872f2ea96ca3a0ef68"></a><!-- doxytag: member="heightMap.comp::scale" ref="ab5187c9a95c7c5872f2ea96ca3a0ef68" args="" -->
-uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b></td></tr>
+uniform float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="height_map_8comp.html#ab5187c9a95c7c5872f2ea96ca3a0ef68">scale</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">height scale for terrain <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed22e6adc3355ad6b2430d85fd5c481e"></a><!-- doxytag: member="heightMap.comp::size" ref="aed22e6adc3355ad6b2430d85fd5c481e" args="" -->
-uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="height_map_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e">size</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">width height <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Calculates vertex data. </p>
@@ -130,7 +133,76 @@ uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="normals_8comp.html" title="Calculates normals from a height map.">normals.comp</a> </dd></dl>
 
 <p>Definition in file <a class="el" href="height_map_8comp_source.html">heightMap.comp</a>.</p>
-</div></div><!-- contents -->
+</div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a753059b14cd0c0a592618a10916762cb"></a><!-- doxytag: member="heightMap.comp::layout" ref="a753059b14cd0c0a592618a10916762cb" args="(std430, binding=0) writeonly buffer Pos" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="normals_8comp.html#a1e0dd28726a49d42b329eb1a431af970">layout</a> </td>
+          <td>(</td>
+          <td class="paramtype">std430&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">binding&#160;</td>
+          <td class="paramname"> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>&lt; Position of vertices to be written, y will be set to lower values if a WATER height is to be modeled and the WATER is under the surface. </p>
+<p>&lt; the terrheight which is used to create the model.</p>
+<p>&lt; indices to be written.</p>
+<p>&lt; Texcoords to be written </p>
+
+<p>Definition at line <a class="el" href="height_map_8comp_source.html#l00013">13</a> of file <a class="el" href="height_map_8comp_source.html">heightMap.comp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acdef7a1fd863a6d3770c1268cb06add3"></a><!-- doxytag: member="heightMap.comp::main" ref="acdef7a1fd863a6d3770c1268cb06add3" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="normals_8comp.html#a6288eba0f8e8ad3ab1544ad731eb7667">main</a> </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>&lt; x,y global ID (i.e. which thread).</p>
+<p>&lt; x - clamped to working interval</p>
+<p>&lt; y - clamped to working interval</p>
+<p>&lt; x + 1 - clamped to working interval</p>
+<p>&lt; x - 1 - clamped to working interval</p>
+<p>&lt; y + 1 - clamped to working interval</p>
+<p>&lt; y - 1 - clamped to working interval</p>
+<p>&lt; writing offset for arrays</p>
+<p>&lt; Terrain height used when constructing water model</p>
+<p>&lt; The height of the current model</p>
+<p>&lt; Array offset</p>
+<p>&lt; The first vertex</p>
+<p>&lt; The second vertex</p>
+<p>&lt; The third vertex</p>
+<p>&lt; The fourth vertex </p>
+
+<p>Definition at line <a class="el" href="height_map_8comp_source.html#l00037">37</a> of file <a class="el" href="height_map_8comp_source.html">heightMap.comp</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -150,7 +222,7 @@ uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td
     <ul>
       <li class="navelem"><a class="el" href="height_map_8comp.html">heightMap.comp</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

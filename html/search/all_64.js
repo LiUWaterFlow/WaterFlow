@@ -2,7 +2,7 @@ var searchData=
 [
   ['data',['data',['../structmapdata.html#a49b47176e25692a214895d405b9a20a1',1,'mapdata']]],
   ['data_5ffilename',['data_filename',['../structinit___data__struct.html#afe43e9d13577f09d4b13bd7ae65ea378',1,'init_Data_struct']]],
-  ['datahandler',['DataHandler',['../class_data_handler.html',1,'DataHandler'],['../class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f',1,'Voxelgrid::datahandler()'],['../class_program.html#af12f89dbec45930ea3f3a73266e443a7',1,'Program::dataHandler()'],['../class_data_handler.html#ae56b7b5637d3d66f33d60b9baf482bc7',1,'DataHandler::DataHandler()']]],
+  ['datahandler',['DataHandler',['../class_data_handler.html',1,'DataHandler'],['../class_data_handler.html#ae56b7b5637d3d66f33d60b9baf482bc7',1,'DataHandler::DataHandler()'],['../class_voxelgrid.html#aa1ab86249a3f9bbbab1a374afd6c778f',1,'Voxelgrid::datahandler()'],['../class_program.html#af12f89dbec45930ea3f3a73266e443a7',1,'Program::dataHandler()']]],
   ['dataheight',['dataHeight',['../class_height_map.html#a0de6b2ca5b6696dc8acf83318e095e64',1,'HeightMap']]],
   ['dataterrainheight',['dataTerrainHeight',['../class_height_map.html#abaf0c18b42ca96077c255f965be5dfd4',1,'HeightMap']]],
   ['datawidth',['dataWidth',['../class_height_map.html#ac805cda7f140372e4e80dc2735d6e8e5',1,'HeightMap']]],

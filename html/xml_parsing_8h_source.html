@@ -117,38 +117,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00020"></a>00020 };
 <a name="l00021"></a>00021 
 <a name="l00024"></a><a class="code" href="structinit___data__struct.html">00024</a> <span class="keyword">struct </span><a class="code" href="structinit___data__struct.html" title="Encapsulating struct for all objects read from XML file.">init_Data_struct</a> {
-<a name="l00026"></a>00026   <a class="code" href="structinit___data__struct.html#af47b94af894188f5f23dddc7da28d572" title="Simple constructor for initialization.">init_Data_struct</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* XMLfile);
-<a name="l00027"></a><a class="code" href="structinit___data__struct.html#afe43e9d13577f09d4b13bd7ae65ea378">00027</a>   std::string <a class="code" href="structinit___data__struct.html#afe43e9d13577f09d4b13bd7ae65ea378" title="path and name of dem data to be used for terrain generation.">data_filename</a>;    
-<a name="l00028"></a><a class="code" href="structinit___data__struct.html#a80802edabf0a3b43960d67f4dc5e33a6">00028</a>   std::vector&lt;FlowSource*&gt; <a class="code" href="structinit___data__struct.html#a80802edabf0a3b43960d67f4dc5e33a6" title="Vector containing pointers to the Sources used for generating time varying water flows.">Flowsources</a>; 
-<a name="l00029"></a><a class="code" href="structinit___data__struct.html#aab5f1591b2f96413addf23b568685e66">00029</a>   std::vector&lt;Flood_Fill_data*&gt; <a class="code" href="structinit___data__struct.html#aab5f1591b2f96413addf23b568685e66" title="Vctor containing pionters to flood fill structs used for creating large scale lakes.">FFData</a>; 
-<a name="l00030"></a>00030 };
-<a name="l00031"></a>00031 
-<a name="l00035"></a>00035 std::vector&lt;float&gt; fStrToVector(std::string str);
-<a name="l00036"></a>00036 
-<a name="l00040"></a>00040 std::vector&lt;int&gt; iStrToVector(std::string str);
-<a name="l00041"></a>00041 
-<a name="l00046"></a>00046 <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time);
-<a name="l00047"></a>00047 
-<a name="l00051"></a>00051 <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
-<a name="l00052"></a>00052 
-<a name="l00057"></a>00057 <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time);
-<a name="l00058"></a>00058 
-<a name="l00062"></a>00062 <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
-<a name="l00063"></a>00063 
-<a name="l00067"></a>00067 <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
-<a name="l00068"></a>00068 
-<a name="l00073"></a>00073 std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 
-<a name="l00080"></a>00080 <span class="keywordtype">bool</span> flowChange(std::vector&lt;FlowSource*&gt; flows, <span class="keywordtype">float</span> <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>);
-<a name="l00081"></a>00081 
-<a name="l00085"></a>00085 std::string loadMapPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00026"></a>00026     <a class="code" href="structinit___data__struct.html#af47b94af894188f5f23dddc7da28d572" title="Simple constructor for initialization.">init_Data_struct</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* XMLfile);
+<a name="l00027"></a><a class="code" href="structinit___data__struct.html#afe43e9d13577f09d4b13bd7ae65ea378">00027</a>     std::string <a class="code" href="structinit___data__struct.html#afe43e9d13577f09d4b13bd7ae65ea378" title="path and name of dem data to be used for terrain generation.">data_filename</a>;      
+<a name="l00028"></a><a class="code" href="structinit___data__struct.html#a6f0ae56ec7e6e4412b6b948eef7ce4ec">00028</a>     std::string <a class="code" href="structinit___data__struct.html#a6f0ae56ec7e6e4412b6b948eef7ce4ec" title="path and name of height data to be saved">height_save_path</a>;   
+<a name="l00029"></a><a class="code" href="structinit___data__struct.html#a3ea7f2898ada45053ac8420cc5bf62dd">00029</a>     std::string <a class="code" href="structinit___data__struct.html#a3ea7f2898ada45053ac8420cc5bf62dd" title="path and name of height data to load">height_load_path</a>;   
+<a name="l00030"></a><a class="code" href="structinit___data__struct.html#a6c5ad4c26226c4c2608b807541c94d03">00030</a>     std::string <a class="code" href="structinit___data__struct.html#a6c5ad4c26226c4c2608b807541c94d03" title="path and name of velocity data to be saved">velocity_save_path</a>; 
+<a name="l00031"></a><a class="code" href="structinit___data__struct.html#a8485cc5a09e64042063b12c6c4ad55b2">00031</a>     std::string <a class="code" href="structinit___data__struct.html#a8485cc5a09e64042063b12c6c4ad55b2" title="path and name of velocity data to load">velocity_load_path</a>; 
+<a name="l00032"></a><a class="code" href="structinit___data__struct.html#a80802edabf0a3b43960d67f4dc5e33a6">00032</a>     std::vector&lt;FlowSource*&gt; <a class="code" href="structinit___data__struct.html#a80802edabf0a3b43960d67f4dc5e33a6" title="Vector containing pointers to the Sources used for generating time varying water flows.">Flowsources</a>; 
+<a name="l00033"></a><a class="code" href="structinit___data__struct.html#aab5f1591b2f96413addf23b568685e66">00033</a>     std::vector&lt;Flood_Fill_data*&gt; <a class="code" href="structinit___data__struct.html#aab5f1591b2f96413addf23b568685e66" title="Vctor containing pionters to flood fill structs used for creating large scale lakes.">FFData</a>; 
+<a name="l00034"></a>00034 };
+<a name="l00035"></a>00035 
+<a name="l00039"></a>00039 std::vector&lt;float&gt; fStrToVector(std::string str);
+<a name="l00040"></a>00040 
+<a name="l00044"></a>00044 std::vector&lt;int&gt; iStrToVector(std::string str);
+<a name="l00045"></a>00045 
+<a name="l00050"></a>00050 <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time);
+<a name="l00051"></a>00051 
+<a name="l00055"></a>00055 <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
+<a name="l00056"></a>00056 
+<a name="l00061"></a>00061 <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time);
+<a name="l00062"></a>00062 
+<a name="l00066"></a>00066 <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
+<a name="l00067"></a>00067 
+<a name="l00071"></a>00071 <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
+<a name="l00072"></a>00072 
+<a name="l00078"></a>00078 std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080 
+<a name="l00085"></a>00085 <span class="keywordtype">bool</span> flowChange(std::vector&lt;FlowSource*&gt; flows, <span class="keywordtype">float</span> <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>);
 <a name="l00086"></a>00086 
-<a name="l00090"></a>00090 std::vector&lt;Flood_Fill_data*&gt; loadFFData(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00090"></a>00090 std::string loadMapPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00091"></a>00091 
-<a name="l00094"></a>00094 <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces);
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096 <span class="preprocessor">#endif</span>
+<a name="l00095"></a>00095 std::string loadVelSavePath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00096"></a>00096 
+<a name="l00100"></a>00100 std::string loadHeightSavePath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00101"></a>00101 
+<a name="l00105"></a>00105 std::string loadVelLoadPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00106"></a>00106 
+<a name="l00110"></a>00110 std::string loadHeightLoadPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00111"></a>00111 
+<a name="l00115"></a>00115 std::vector&lt;Flood_Fill_data*&gt; loadFFData(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00116"></a>00116 
+<a name="l00119"></a>00119 <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces);
+<a name="l00120"></a>00120 
+<a name="l00121"></a>00121 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -169,7 +181,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="xml_parsing_8h.html">xmlParsing.h</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

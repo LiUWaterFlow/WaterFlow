@@ -2,7 +2,8 @@ var annotated =
 [
     [ "Camera", "class_camera.html", "class_camera" ],
     [ "DataHandler", "class_data_handler.html", "class_data_handler" ],
-    [ "fileHandler", "classfile_handler.html", "classfile_handler" ],
+    [ "FileHandler", "class_file_handler.html", "class_file_handler" ],
+    [ "fileHandler", "classfile_handler.html", null ],
     [ "Flood_Fill_data", "struct_flood___fill__data.html", "struct_flood___fill__data" ],
     [ "FlowSource", "class_flow_source.html", "class_flow_source" ],
     [ "HeightField", "class_height_field.html", "class_height_field" ],

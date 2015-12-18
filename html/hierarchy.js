@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "Camera", "class_camera.html", null ],
     [ "DataHandler", "class_data_handler.html", null ],
+    [ "FileHandler", "class_file_handler.html", null ],
     [ "fileHandler", "classfile_handler.html", null ],
     [ "Flood_Fill_data", "struct_flood___fill__data.html", null ],
     [ "FlowSource", "class_flow_source.html", null ],

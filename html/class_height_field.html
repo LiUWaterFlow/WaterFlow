@@ -122,13 +122,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">floodfills the specified point up to the height specified.  <a href="#a7c94a902fde8859a097fbd50ad683ccf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a25160f1206fb2874614ed79e7981117b">getHeight</a> (int i, int j, GLfloat ourHeight)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Modified getHeight for use with heightfield.  <a href="#a25160f1206fb2874614ed79e7981117b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fc86d3af00a510e9727be4653d3c40c"></a><!-- doxytag: member="HeightField::initGPU" ref="a0fc86d3af00a510e9727be4653d3c40c" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c">initGPU</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f6f3b58a2ffa29ee3d2f18bf61b5f87"></a><!-- doxytag: member="HeightField::initGPU" ref="a7f6f3b58a2ffa29ee3d2f18bf61b5f87" args="(float **heightArray, float **velocityArray)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a7f6f3b58a2ffa29ee3d2f18bf61b5f87">initGPU</a> (float **heightArray, float **velocityArray)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the buffers and data necessary for the GPU simulation. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e">measureVolume</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the current volume of the water in the simulation.  <a href="#a21ddcec75d83caa4d4ba78c370d1fd9e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">runSimGPU</a> (GLfloat <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>=1.0f/30.0f)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the simulation with the specified dt.  <a href="#ab0c5d603c8708c079dc8deb158cd6b96"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a384363f6e93e314073af10e1ab5a6e84">saveData</a> (float **heightArray, float **velocityArray)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the current simulation.  <a href="#a384363f6e93e314073af10e1ab5a6e84"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0cd974793f5f81f9523cea994ecaf91c"></a><!-- doxytag: member="HeightField::addProgram" ref="a0cd974793f5f81f9523cea994ecaf91c" args="" -->
@@ -526,9 +528,9 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 
 <p>Floodfills the simulation based on the values provided by the xml document. </p>
 <p>This function floodfills the simulation based on the XML document provided. And is automatically called from initGPU. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html#a7f6f3b58a2ffa29ee3d2f18bf61b5f87" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00252">252</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
+<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00261">261</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
 
 </div>
 </div>
@@ -570,7 +572,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>Measures the current volume of the water in the simulation. </p>
 <dl class="warning"><dt><b>Warning:</b></dt><dd>This function is not properly implemented and doesn't handle added water. and has been known to give performance issues on certain systems. </dd></dl>
 
-<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00306">306</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
+<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00315">315</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
 
 </div>
 </div>
@@ -612,9 +614,47 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 
 <p>Runs the simulation with the specified dt. </p>
 <dl class="note"><dt><b>Note:</b></dt><dd>Must be initialized by initGPU </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html#a7f6f3b58a2ffa29ee3d2f18bf61b5f87" title="Initializes the buffers and data necessary for the GPU simulation.">initGPU</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00258">258</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
+<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00267">267</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a384363f6e93e314073af10e1ab5a6e84"></a><!-- doxytag: member="HeightField::saveData" ref="a384363f6e93e314073af10e1ab5a6e84" args="(float **heightArray, float **velocityArray)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_height_field.html#a384363f6e93e314073af10e1ab5a6e84">HeightField::saveData</a> </td>
+          <td>(</td>
+          <td class="paramtype">float **&#160;</td>
+          <td class="paramname"><em>heightArray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float **&#160;</td>
+          <td class="paramname"><em>velocityArray</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Saves the current simulation. </p>
+<p>Neccesary data for simulation (height and velocity) is saved to the input path </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file</td><td>to save the data to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00334">334</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
 
 </div>
 </div>
@@ -686,7 +726,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
     <ul>
       <li class="navelem"><a class="el" href="class_height_field.html">HeightField</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

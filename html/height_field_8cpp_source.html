@@ -294,143 +294,169 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00194"></a>00194 }
 <a name="l00195"></a>00195 
 <a name="l00196"></a>00196 
-<a name="l00197"></a><a class="code" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c">00197</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a0fc86d3af00a510e9727be4653d3c40c" title="Initializes the buffers and data necessary for the GPU simulation.">HeightField::initGPU</a>() {
+<a name="l00197"></a><a class="code" href="class_height_field.html#a7f6f3b58a2ffa29ee3d2f18bf61b5f87">00197</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a7f6f3b58a2ffa29ee3d2f18bf61b5f87" title="Initializes the buffers and data necessary for the GPU simulation.">HeightField::initGPU</a>(<span class="keywordtype">float</span>** heightArray, <span class="keywordtype">float</span>** velocityArray) {
 <a name="l00198"></a>00198 
-<a name="l00199"></a>00199     <span class="keywordtype">float</span>* <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a> = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
-<a name="l00200"></a>00200     <span class="keywordtype">float</span>* <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a> = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
-<a name="l00201"></a>00201     <span class="keywordtype">float</span>* f = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
-<a name="l00202"></a>00202     std::fill_n(u, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>, 0.0f);
-<a name="l00203"></a>00203     std::fill_n(v, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, 0.0f);
-<a name="l00204"></a>00204     std::fill_n(f, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, 0.0f);
-<a name="l00205"></a>00205 
-<a name="l00206"></a>00206     <a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362" title="Floodfills the simulation based on the values provided by the xml document.">initFloodFill</a>(u);
-<a name="l00207"></a>00207 
-<a name="l00208"></a>00208     std::valarray&lt;float&gt; fvalarray(<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f" title="Get a pointer to the mapdata data.">getData</a>(), <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>);
-<a name="l00209"></a>00209     fvalarray = fvalarray - 0.0001f;
+<a name="l00199"></a>00199     
+<a name="l00200"></a>00200     <span class="keywordtype">float</span>* <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a> = (*heightArray != <span class="keyword">nullptr</span>) ? *heightArray : <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
+<a name="l00201"></a>00201     <span class="keywordtype">float</span>* <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a> = (*velocityArray != <span class="keyword">nullptr</span>) ? *velocityArray : <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
+<a name="l00202"></a>00202     <span class="keywordtype">float</span>* f = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
+<a name="l00203"></a>00203     
+<a name="l00204"></a>00204     <span class="keywordflow">if</span>(*heightArray == <span class="keyword">nullptr</span>)
+<a name="l00205"></a>00205         std::fill_n(u, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>, 0.0f);
+<a name="l00206"></a>00206     
+<a name="l00207"></a>00207     <span class="keywordflow">if</span>(*velocityArray == <span class="keyword">nullptr</span>)
+<a name="l00208"></a>00208         std::fill_n(v, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, 0.0f);
+<a name="l00209"></a>00209     
 <a name="l00210"></a>00210     
-<a name="l00211"></a>00211     <a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a> = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/fieldShader.comp&quot;</span>); 
-<a name="l00212"></a>00212     <a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a> = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/addFlowShader.comp&quot;</span>);
-<a name="l00213"></a>00213 
-<a name="l00214"></a>00214     <span class="comment">//create buffers</span>
-<a name="l00215"></a>00215     glGenBuffers(5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
-<a name="l00216"></a>00216     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
-<a name="l00217"></a>00217 
-<a name="l00218"></a>00218     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
-<a name="l00219"></a>00219     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, u, GL_STATIC_DRAW);
-<a name="l00220"></a>00220     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00221"></a>00221 
-<a name="l00222"></a>00222     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[1]);
-<a name="l00223"></a>00223     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, u, GL_STATIC_DRAW);
-<a name="l00224"></a>00224     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00225"></a>00225 
-<a name="l00226"></a>00226     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[2]);
-<a name="l00227"></a>00227     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, v, GL_STATIC_DRAW);
-<a name="l00228"></a>00228     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00229"></a>00229 
-<a name="l00230"></a>00230     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[3]);
-<a name="l00231"></a>00231     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, &amp;fvalarray[0], GL_STATIC_DRAW);
-<a name="l00232"></a>00232     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[4]);
-<a name="l00235"></a>00235     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, f, GL_STATIC_DRAW);
-<a name="l00236"></a>00236     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00237"></a>00237 
-<a name="l00238"></a>00238     printError(<span class="stringliteral">&quot;init Compute Error&quot;</span>);
-<a name="l00239"></a>00239     printProgramInfoLog(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;field Init&quot;</span>, NULL, NULL, NULL, NULL);
+<a name="l00211"></a>00211     std::fill_n(f, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, 0.0f);
+<a name="l00212"></a>00212 
+<a name="l00213"></a>00213     <a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362" title="Floodfills the simulation based on the values provided by the xml document.">initFloodFill</a>(u);
+<a name="l00214"></a>00214 
+<a name="l00215"></a>00215     std::valarray&lt;float&gt; fvalarray(<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a21b8d03927e699113554021fa3303b8f" title="Get a pointer to the mapdata data.">getData</a>(), <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>);
+<a name="l00216"></a>00216     fvalarray = fvalarray - 0.0001f;
+<a name="l00217"></a>00217     
+<a name="l00218"></a>00218     <a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a> = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/fieldShader.comp&quot;</span>); 
+<a name="l00219"></a>00219     <a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a> = <a class="code" href="_utilities_8cpp.html#a56a274995f2d0158f42ad88c8c87b705" title="Compiles a compute shader.">compileComputeShader</a>(<span class="stringliteral">&quot;src/shaders/addFlowShader.comp&quot;</span>);
+<a name="l00220"></a>00220 
+<a name="l00221"></a>00221     <span class="comment">//create buffers</span>
+<a name="l00222"></a>00222     glGenBuffers(5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
+<a name="l00223"></a>00223     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
+<a name="l00224"></a>00224 
+<a name="l00225"></a>00225     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
+<a name="l00226"></a>00226     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, u, GL_STATIC_DRAW);
+<a name="l00227"></a>00227     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00228"></a>00228 
+<a name="l00229"></a>00229     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[1]);
+<a name="l00230"></a>00230     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, u, GL_STATIC_DRAW);
+<a name="l00231"></a>00231     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00232"></a>00232 
+<a name="l00233"></a>00233     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[2]);
+<a name="l00234"></a>00234     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, v, GL_STATIC_DRAW);
+<a name="l00235"></a>00235     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00236"></a>00236 
+<a name="l00237"></a>00237     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[3]);
+<a name="l00238"></a>00238     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, &amp;fvalarray[0], GL_STATIC_DRAW);
+<a name="l00239"></a>00239     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00240"></a>00240 
-<a name="l00241"></a>00241     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
-<a name="l00242"></a>00242     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <span class="keyword">sizeof</span>(GLfloat)*<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, u);
+<a name="l00241"></a>00241     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[4]);
+<a name="l00242"></a>00242     glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, f, GL_STATIC_DRAW);
 <a name="l00243"></a>00243     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00244"></a>00244 
-<a name="l00245"></a>00245 
-<a name="l00246"></a>00246     <span class="keyword">delete</span> <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>;
-<a name="l00247"></a>00247     <span class="keyword">delete</span> <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>;
-<a name="l00248"></a>00248     <span class="keyword">delete</span> f;
-<a name="l00249"></a>00249 
-<a name="l00250"></a>00250 }
+<a name="l00245"></a>00245     printError(<span class="stringliteral">&quot;init Compute Error&quot;</span>);
+<a name="l00246"></a>00246     printProgramInfoLog(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;field Init&quot;</span>, NULL, NULL, NULL, NULL);
+<a name="l00247"></a>00247 
+<a name="l00248"></a>00248     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
+<a name="l00249"></a>00249     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <span class="keyword">sizeof</span>(GLfloat)*<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*texHeight, u);
+<a name="l00250"></a>00250     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 <a name="l00251"></a>00251 
-<a name="l00252"></a><a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362">00252</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362" title="Floodfills the simulation based on the values provided by the xml document.">HeightField::initFloodFill</a>(<span class="keywordtype">float</span>* u) {
-<a name="l00253"></a>00253     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.size(); i++) {
-<a name="l00254"></a>00254         <a class="code" href="class_height_field.html#a7c94a902fde8859a097fbd50ad683ccf" title="floodfills the specified point up to the height specified.">floodFill</a>(u, <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.at(i)-&gt;x, <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.at(i)-&gt;z, <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.at(i)-&gt;height);
-<a name="l00255"></a>00255     }
-<a name="l00256"></a>00256 }
-<a name="l00257"></a>00257 
-<a name="l00258"></a><a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">00258</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">HeightField::runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
-<a name="l00259"></a>00259     <a class="code" href="class_height_field.html#adf2337321b3499e7bf203b1270557334" title="Time taken for the CPU testing.">totTime</a> += <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
-<a name="l00260"></a>00260     <span class="keywordtype">int</span> numPing = 20;
-<a name="l00261"></a>00261     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
-<a name="l00262"></a>00262 
-<a name="l00263"></a>00263     <span class="keywordflow">if</span> (flowChange(<a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>, dt)) {
-<a name="l00264"></a>00264         GLfloat* f = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
-<a name="l00265"></a>00265         std::fill_n(f, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>, 0.0f);
-<a name="l00266"></a>00266         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.size(); i++) {
-<a name="l00267"></a>00267             std::vector&lt;int&gt; flowPos = <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.at(i)-&gt;getPosition();
-<a name="l00268"></a>00268             f[flowPos[0] + flowPos[2] * <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>] = <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.at(i)-&gt;currPres;
-<a name="l00269"></a>00269             printf(<span class="stringliteral">&quot;Pressure %f \n&quot;</span>, <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.at(i)-&gt;currPres);
-<a name="l00270"></a>00270         }
-<a name="l00271"></a>00271         glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[4]);
-<a name="l00272"></a>00272         glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, f, GL_STATIC_DRAW);
-<a name="l00273"></a>00273         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-<a name="l00274"></a>00274 
-<a name="l00275"></a>00275         <span class="keyword">delete</span> f;
-<a name="l00276"></a>00276     }
-<a name="l00277"></a>00277 
-<a name="l00278"></a>00278 
-<a name="l00279"></a>00279     glUseProgram(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>);
-<a name="l00280"></a>00280     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
-<a name="l00281"></a>00281     glUniform1f(glGetUniformLocation(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;dt&quot;</span>), dt);
-<a name="l00282"></a>00282 
-<a name="l00283"></a>00283     glUseProgram(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>);
-<a name="l00284"></a>00284     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
-<a name="l00285"></a>00285 
-<a name="l00286"></a>00286     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
+<a name="l00252"></a>00252     <span class="keywordflow">if</span>(*heightArray == <span class="keyword">nullptr</span>)
+<a name="l00253"></a>00253         <span class="keyword">delete</span> <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>;
+<a name="l00254"></a>00254     <span class="keywordflow">if</span>(*velocityArray == <span class="keyword">nullptr</span>)
+<a name="l00255"></a>00255         <span class="keyword">delete</span> <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing.">v</a>;
+<a name="l00256"></a>00256     
+<a name="l00257"></a>00257     <span class="keyword">delete</span> f;
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259 }
+<a name="l00260"></a>00260 
+<a name="l00261"></a><a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362">00261</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ace18eb2da691c51dfe7666e075e2f362" title="Floodfills the simulation based on the values provided by the xml document.">HeightField::initFloodFill</a>(<span class="keywordtype">float</span>* u) {
+<a name="l00262"></a>00262     <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.size(); i++) {
+<a name="l00263"></a>00263         <a class="code" href="class_height_field.html#a7c94a902fde8859a097fbd50ad683ccf" title="floodfills the specified point up to the height specified.">floodFill</a>(u, <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.at(i)-&gt;x, <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.at(i)-&gt;z, <a class="code" href="class_height_field.html#a737352de651344d06dcc981d3ca8d864" title="Vector containing the location info of the initial floodfills.">flood</a>.at(i)-&gt;height);
+<a name="l00264"></a>00264     }
+<a name="l00265"></a>00265 }
+<a name="l00266"></a>00266 
+<a name="l00267"></a><a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">00267</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">HeightField::runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
+<a name="l00268"></a>00268     <a class="code" href="class_height_field.html#adf2337321b3499e7bf203b1270557334" title="Time taken for the CPU testing.">totTime</a> += <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00269"></a>00269     <span class="keywordtype">int</span> numPing = 20;
+<a name="l00270"></a>00270     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272     <span class="keywordflow">if</span> (flowChange(<a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>, dt)) {
+<a name="l00273"></a>00273         GLfloat* f = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
+<a name="l00274"></a>00274         std::fill_n(f, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>, 0.0f);
+<a name="l00275"></a>00275         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.size(); i++) {
+<a name="l00276"></a>00276             std::vector&lt;int&gt; flowPos = <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.at(i)-&gt;getPosition();
+<a name="l00277"></a>00277             f[flowPos[0] + flowPos[2] * <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>] = <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.at(i)-&gt;currPres;
+<a name="l00278"></a>00278             printf(<span class="stringliteral">&quot;Pressure %f \n&quot;</span>, <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.at(i)-&gt;currPres);
+<a name="l00279"></a>00279         }
+<a name="l00280"></a>00280         glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[4]);
+<a name="l00281"></a>00281         glBufferData(GL_SHADER_STORAGE_BUFFER, <span class="keyword">sizeof</span>(GLfloat) * 1 * numData, f, GL_STATIC_DRAW);
+<a name="l00282"></a>00282         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00283"></a>00283 
+<a name="l00284"></a>00284         <span class="keyword">delete</span> f;
+<a name="l00285"></a>00285     }
+<a name="l00286"></a>00286 
 <a name="l00287"></a>00287 
-<a name="l00288"></a>00288     glUseProgram(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>);
-<a name="l00289"></a>00289     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() / 16.0f), 1);
-<a name="l00290"></a>00290 
+<a name="l00288"></a>00288     glUseProgram(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>);
+<a name="l00289"></a>00289     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
+<a name="l00290"></a>00290     glUniform1f(glGetUniformLocation(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>, <span class="stringliteral">&quot;dt&quot;</span>), dt);
 <a name="l00291"></a>00291 
-<a name="l00292"></a>00292     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numPing; i++) {
-<a name="l00293"></a>00293 
-<a name="l00294"></a>00294         glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
-<a name="l00295"></a>00295 
+<a name="l00292"></a>00292     glUseProgram(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>);
+<a name="l00293"></a>00293     glUniform2i(glGetUniformLocation(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>(), <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>());
+<a name="l00294"></a>00294 
+<a name="l00295"></a>00295     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
 <a name="l00296"></a>00296 
-<a name="l00297"></a>00297         glUseProgram(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>);
-<a name="l00298"></a>00298         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() / 16.0f), 1);
-<a name="l00299"></a>00299         std::swap(<a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0], <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[1]);
-<a name="l00300"></a>00300     }
-<a name="l00301"></a>00301 
-<a name="l00302"></a>00302     printError(<span class="stringliteral">&quot;run Sim GPU&quot;</span>);
-<a name="l00303"></a>00303 }
+<a name="l00297"></a>00297     glUseProgram(<a class="code" href="class_height_field.html#a0cd974793f5f81f9523cea994ecaf91c" title="Shader used for simulation.">addProgram</a>);
+<a name="l00298"></a>00298     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() / 16.0f), 1);
+<a name="l00299"></a>00299 
+<a name="l00300"></a>00300 
+<a name="l00301"></a>00301     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numPing; i++) {
+<a name="l00302"></a>00302 
+<a name="l00303"></a>00303         glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 5, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>);
 <a name="l00304"></a>00304 
 <a name="l00305"></a>00305 
-<a name="l00306"></a><a class="code" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e">00306</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e" title="Measures the current volume of the water in the simulation.">HeightField::measureVolume</a>() {
-<a name="l00307"></a>00307 
-<a name="l00308"></a>00308     <span class="keywordtype">float</span>* <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a> = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
-<a name="l00309"></a>00309 
-<a name="l00310"></a>00310     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
-<a name="l00311"></a>00311     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>*<span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), u);
-<a name="l00312"></a>00312     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00306"></a>00306         glUseProgram(<a class="code" href="class_height_field.html#a7ee0f4638e8538f75e9e13c8e48f2fa4" title="Shader used for simulation.">fieldProgram</a>);
+<a name="l00307"></a>00307         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>() / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>() / 16.0f), 1);
+<a name="l00308"></a>00308         std::swap(<a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0], <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[1]);
+<a name="l00309"></a>00309     }
+<a name="l00310"></a>00310 
+<a name="l00311"></a>00311     printError(<span class="stringliteral">&quot;run Sim GPU&quot;</span>);
+<a name="l00312"></a>00312 }
 <a name="l00313"></a>00313 
-<a name="l00314"></a>00314     std::valarray&lt;float&gt; myvalarray(u, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>);
-<a name="l00315"></a>00315     <span class="keywordtype">float</span> vol1 = myvalarray.sum();
+<a name="l00314"></a>00314 
+<a name="l00315"></a><a class="code" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e">00315</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e" title="Measures the current volume of the water in the simulation.">HeightField::measureVolume</a>() {
 <a name="l00316"></a>00316 
-<a name="l00317"></a>00317 
-<a name="l00318"></a>00318     std::cout &lt;&lt; <span class="stringliteral">&quot;Volume difference is: &quot;</span> &lt;&lt; vol1 - <a class="code" href="class_height_field.html#a34bf452233cb494e6b1be00cfe854e39" title="Initial volume.">vol0</a> &lt;&lt; std::endl;
-<a name="l00319"></a>00319     myvalarray.resize(0);
-<a name="l00320"></a>00320     <span class="keyword">delete</span> <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>;
-<a name="l00321"></a>00321 
-<a name="l00322"></a>00322 }
-<a name="l00323"></a>00323 
-<a name="l00324"></a>00324 
+<a name="l00317"></a>00317     <span class="keywordtype">float</span>* <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a> = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
+<a name="l00318"></a>00318 
+<a name="l00319"></a>00319     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
+<a name="l00320"></a>00320     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>*<span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), u);
+<a name="l00321"></a>00321     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00322"></a>00322 
+<a name="l00323"></a>00323     std::valarray&lt;float&gt; myvalarray(u, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>);
+<a name="l00324"></a>00324     <span class="keywordtype">float</span> vol1 = myvalarray.sum();
 <a name="l00325"></a>00325 
 <a name="l00326"></a>00326 
-<a name="l00327"></a>00327 
-<a name="l00328"></a>00328 
-<a name="l00329"></a>00329 
+<a name="l00327"></a>00327     std::cout &lt;&lt; <span class="stringliteral">&quot;Volume difference is: &quot;</span> &lt;&lt; vol1 - <a class="code" href="class_height_field.html#a34bf452233cb494e6b1be00cfe854e39" title="Initial volume.">vol0</a> &lt;&lt; std::endl;
+<a name="l00328"></a>00328     myvalarray.resize(0);
+<a name="l00329"></a>00329     <span class="keyword">delete</span> <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing.">u</a>;
 <a name="l00330"></a>00330 
-<a name="l00331"></a>00331 
+<a name="l00331"></a>00331 }
 <a name="l00332"></a>00332 
 <a name="l00333"></a>00333 
+<a name="l00334"></a><a class="code" href="class_height_field.html#a384363f6e93e314073af10e1ab5a6e84">00334</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a384363f6e93e314073af10e1ab5a6e84" title="Saves the current simulation.">HeightField::saveData</a>(<span class="keywordtype">float</span>** u, <span class="keywordtype">float</span>** v){
+<a name="l00335"></a>00335     *u = (*u != <span class="keyword">nullptr</span>) ? *u : (<span class="keywordtype">float</span>*)malloc(<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>*<span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));       
+<a name="l00336"></a>00336     *v = (*v != <span class="keyword">nullptr</span>) ? *v : (<span class="keywordtype">float</span>*)malloc(<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>*<span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));
+<a name="l00337"></a>00337 
+<a name="l00338"></a>00338     
+<a name="l00339"></a>00339     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[0]);
+<a name="l00340"></a>00340     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>*<span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), *u);
+<a name="l00341"></a>00341     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00342"></a>00342     
+<a name="l00343"></a>00343     
+<a name="l00344"></a>00344     glBindBuffer(GL_SHADER_STORAGE_BUFFER, <a class="code" href="class_height_field.html#a529964a715b61fb1ce2d6a83a6ed5897" title="The buffers used for the GPU simulation.">fieldBuffers</a>[2]);
+<a name="l00345"></a>00345     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>*<span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), *v);
+<a name="l00346"></a>00346     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00347"></a>00347     
+<a name="l00348"></a>00348 }
+<a name="l00349"></a>00349 
+<a name="l00350"></a>00350 
+<a name="l00351"></a>00351 
+<a name="l00352"></a>00352 
+<a name="l00353"></a>00353 
+<a name="l00354"></a>00354 
+<a name="l00355"></a>00355 
+<a name="l00356"></a>00356 
+<a name="l00357"></a>00357 
+<a name="l00358"></a>00358 
+<a name="l00359"></a>00359 
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -451,7 +477,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="height_field_8cpp.html">heightField.cpp</a>      </li>
 
-    <li class="footer">Generated on Thu Dec 17 2015 05:32:11 for Waterflow by
+    <li class="footer">Generated on Fri Dec 18 2015 16:12:30 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

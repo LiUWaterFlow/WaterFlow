@@ -7,5 +7,5 @@ var searchData=
   ['advectvelocityyprogram',['advectVelocityYProgram',['../class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d',1,'ShallowGPU']]],
   ['advectwaterprogram',['advectWaterProgram',['../class_shallow_g_p_u.html#a675afa38097d77e9482b9230ff2759c5',1,'ShallowGPU']]],
   ['antbar',['antBar',['../class_program.html#ae567a36cf97946d2229c48760425b537',1,'Program']]],
-  ['arraylength',['arrayLength',['../classfile_handler.html#ac23b0a4901fd02f2f7f9114c2fca728e',1,'fileHandler']]]
+  ['arraylength',['arrayLength',['../class_file_handler.html#af7a77d4c88ec1b7f3881aec7115c0462',1,'FileHandler']]]
 ];
