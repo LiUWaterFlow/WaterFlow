@@ -22,11 +22,15 @@ struct Flood_Fill_data{
 /// @struct init_Data_struct
 /// @brief Encapsulating struct for all objects read from XML file.
 struct init_Data_struct {
-  /// @brief Simple constructor for initialization
-  init_Data_struct(const char* XMLfile);
-  std::string data_filename;	///< path and name of dem data to be used for terrain generation.
-  std::vector<FlowSource*> Flowsources; ///< Vector containing pointers to the Sources used for generating time varying water flows.
-  std::vector<Flood_Fill_data*> FFData; ///< Vctor containing pionters to flood fill structs used for creating large scale lakes. 
+	/// @brief Simple constructor for initialization
+	init_Data_struct(const char* XMLfile);
+	std::string data_filename;		///< path and name of dem data to be used for terrain generation.
+	std::string height_save_path;	///< path and name of height data to be saved
+	std::string height_load_path;	///< path and name of height data to load
+	std::string velocity_save_path;	///< path and name of velocity data to be saved
+	std::string velocity_load_path;	///< path and name of velocity data to load
+	std::vector<FlowSource*> Flowsources; ///< Vector containing pointers to the Sources used for generating time varying water flows.
+	std::vector<Flood_Fill_data*> FFData; ///< Vctor containing pionters to flood fill structs used for creating large scale lakes. 
 };
 
 /// @brief Converts a string with CSV to a vector with floats.
@@ -67,6 +71,7 @@ void parseTotalWater(FlowSource* obj, pugi::xml_node node);
 void parseRadius(FlowSource* obj, pugi::xml_node node);
 
 /// @brief This function creates and populates FlowSource objects from a given XML file.
+///
 /// The XML file is expected to be formated and contain pre defined nodes and attributes.
 /// @param xmlFile relative path to an xml file containing flow sources data.
 /// @return A vector filled with pointers to flowSource objects containing data given by an XML file.
@@ -83,6 +88,26 @@ bool flowChange(std::vector<FlowSource*> flows, float dt);
 /// @param xmlFile relative path to the XML file containing the terrain map to be loaded.
 /// @return string containing relative path to the dem data file used for terrain generatrion.
 std::string loadMapPath(const char* xmlFile);
+
+/// @brief Loads a path given in the data node from a XML file.
+/// @param xmlFile relative path to the XML file containing the filepath for the file to be saved.
+/// @return string containing relative path to the velocity data file used for saving.
+std::string loadVelSavePath(const char* xmlFile);
+
+/// @brief Loads a path given in the data node from a XML file.
+/// @param xmlFile relative path to the XML file containing the filepath for the file to be saved.
+/// @return string containing relative path to the height data file used for saving.
+std::string loadHeightSavePath(const char* xmlFile);
+
+/// @brief Loads a path given in the data node from a XML file.
+/// @param xmlFile relative path to the XML file containing the velocity.
+/// @return string containing relative path to the data file to be saved.
+std::string loadVelLoadPath(const char* xmlFile);
+
+/// @brief Loads a path given in the data node from a XML file.
+/// @param xmlFile relative path to the XML file containing the height.
+/// @return string containing relative path to the data file to be saved.
+std::string loadHeightLoadPath(const char* xmlFile);
 
 /// @brief Loads all flood objects given in the floods node from a XML file to a vector.
 /// @param xmlFile Relative path to the XML file containing the floods to fill the terrain with.

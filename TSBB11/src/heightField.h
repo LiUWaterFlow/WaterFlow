@@ -123,7 +123,7 @@ public:
 	HeightField(DataHandler *t, std::vector<Flood_Fill_data*> FFDataIn, std::vector<FlowSource*> FlowsourcesIN);
 
 	/// @brief Initializes the buffers and data necessary for the GPU simulation.
-	void initGPU();
+	void initGPU(float** heightArray, float** velocityArray);
 	/// @brief Runs the simulation with the specified dt
 	///
 	///
@@ -137,5 +137,13 @@ public:
 	/// and [0,height-1] for j.
 	/// @return Returns ourHeight if the height at i,j (clipped) is lower than the terrain height.
 	GLfloat getHeight(int i, int j, GLfloat ourHeight);
+	
+	/// @brief Saves the current simulation
+	///
+	/// Neccesary data for simulation (height and velocity) is saved to the input path
+	/// @param file to save the data to
+	void saveData(float** heightArray, float** velocityArray);
+	
+	
 };
 #endif

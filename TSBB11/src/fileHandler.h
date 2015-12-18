@@ -15,10 +15,9 @@
 /// Use the fileHandler class to either store a generic float array, with some side information,
 /// or to load side information and a float array from the specified path.
 /// When attempting to load a file that does not exist, LoadData() returns -1, otherwise 0.
-class fileHandler
+class FileHandler
 {
 private:
-	std::string fPath; 			///< Path to the data file.
 	float* fArray;				///< Pointer to the float array.
 	int arrayLength;			///< Length of the float array.
 	int width;					///< Width (side information).
@@ -31,7 +30,7 @@ public:
 	/// @param path path to data file.
 	/// @see SaveData()
 	/// @see LoadData()
-	fileHandler(std::string path);
+	FileHandler(int dWidth, int dHeight);
 
 	/// @brief Stores data, both as variables in the object and as a file
 	///
@@ -41,7 +40,7 @@ public:
 	/// @param aSize length of the float array.
 	/// @param dWidth width (side information to store).
 	/// @param dHeight height (side information to store).
-	void SaveData(float fArr[], int aSize, int dWidth, int dHeight);
+	void SaveData(std::string path);
 
 	/// @brief Loads data from a file specified by fPath into the object.
 	///
@@ -50,11 +49,11 @@ public:
 	/// as being correctly loaded, but in reality make little sense.
 	/// @return 0 if data was correctly loaded, -1 if the file could not be read.
 	/// @see SaveData()
-	int LoadData();
+	int LoadData(std::string path);
 
 	/// @brief Getter for the stored float array.
 	/// @return pointer to the float array.
-	float* GetArray();
+	float** GetArray();
 
 	/// @brief Getter for the stored float array length.
 	/// @return length of the float array.

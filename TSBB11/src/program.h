@@ -74,6 +74,12 @@ private:
 
 	// Datahandler for terrain data
 	DataHandler* dataHandler;	///< Holds data about the terrain
+	//XML data
+	init_Data_struct* init_data;	///< Holds data collected from XML
+
+	// File handlers for save and load simulation data
+	FileHandler* heightData;	///< Water height data to save/load
+	FileHandler* velocityData;	///< Water velocity data to save/load
 
 	//Voxgrid
 	Voxelgrid* voxs;	///< A voxelgrid, not currently used

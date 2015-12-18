@@ -2,6 +2,10 @@
 <Profile FormatVersion="1">
   <Data>
     <MapName path="resources/output.min.asc"/>
+    <VelSave path="resources/outVel.asc"/>
+    <VelLoad path="resources/inVel.asc"/>
+    <HeightSave path="resources/outHeight.asc"/>
+    <HeightLoad path="resources/inHeight.asc"/>
   </Data>
   <Sources>
     <Source Name="Hill">

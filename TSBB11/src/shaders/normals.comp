@@ -3,24 +3,24 @@
 
 #version 430
 
-layout(local_size_x = 16, local_size_y = 16) in;
+layout(local_size_x = 16, local_size_y = 16) in; ///< Size of calculation kernels on GPU, preferably power of 2.
 
-layout (std430, binding = 0) readonly buffer height0
+layout (std430, binding = 0) readonly buffer height0  ///< Position of vertices to be written, y will be set to lower values if a WATER height is to be modeled and the WATER is under the surface.
 {
 	float terrHeight[];
 };
 
-layout (std430, binding = 1) writeonly buffer inNormals
+layout (std430, binding = 1) writeonly buffer inNormals ///< Normals to be written.
 {
 	float normals[];
 };
 
-uniform ivec2 size;
+uniform ivec2 size; ///< width, height. 
 
 void main(void)
 {	
 
-	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy); ///< x,y globalid i.e. the thread location.
 
 	int x = clamp(storePos.x, 0, size.x-1); 
 	int y = clamp(storePos.y, 0, size.y-1); 

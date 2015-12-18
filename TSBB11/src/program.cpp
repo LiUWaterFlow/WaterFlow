@@ -117,14 +117,21 @@ bool Program::init() {
 
 
 	dumpInfo();
-	/* Functions below read start values and source-files form XML-file into a struct init_Data. Data from this
+	/* Functions below read start values and source-files form XML-file into a struct init_data-> Data from this
 	is then used as startdata.
 	*/
 	const char* xmlfile = "src/xml/xgconsole.xml";
 
-	init_Data_struct init_data(xmlfile);
+	init_data = new init_Data_struct(xmlfile);
 	// Load terrain data.
-	dataHandler = new DataHandler(init_data.data_filename.c_str());
+	dataHandler = new DataHandler(init_data->data_filename.c_str());
+
+	// Load previous simulation
+	heightData = new FileHandler(dataHandler->getDataWidth(), dataHandler->getDataHeight());
+	velocityData = new FileHandler(dataHandler->getDataWidth(), dataHandler->getDataHeight());
+
+	heightData->LoadData(init_data->height_load_path.c_str());
+	velocityData->LoadData(init_data->velocity_load_path.c_str());
 
 	// Initial placement of camera.
 	int xzLim = 250; // Maximal distance (x and z) between terrain and camera
@@ -132,58 +139,46 @@ bool Program::init() {
 	int yLimHi = 500; // yLimHi + dataHandler->getTerrainScale() = maximal distance (y) between camera and terrain
 	cam = new Camera(glm::vec3(0.0f, 500.0f, 0.0f), &screenW, &screenH, dataHandler->getDataWidth(), dataHandler->getDataHeight(), xzLim, yLimLo, yLimHi, dataHandler);
 	
-
 	printError("After hf init");
+	
 	// Load and compile shaders.
 	terrainshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/terrainshader.frag");
 	skyshader = loadShaders("src/shaders/skyshader.vert", "src/shaders/skyshader.frag");
-	//shallowwatershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
 	depthshader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/depthshader.frag");
 	
-	GLuint sizes[] = {(GLuint)dataHandler->getDataWidth(),(GLuint)dataHandler->getDataHeight() };
-    
+	GLuint sizes[] = {(GLuint)dataHandler->getDataWidth(),(GLuint)dataHandler->getDataHeight() };		
+	    
 	// Create drawables
-	
 	myDrawable::setLights();
 	myDrawable::setTextures(sizes);
-	
-	
-	
-	
 
-	
-	
-	
-	if (simCase == 1)
-	{
+	if (simCase == 1) {
 		terrain = new HeightMap(terrainshader, sizes, dataHandler->getTerrainScale(), dataHandler->getHeightBuffer());
 		terrain->update();
 		dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
 		
 		printError("Created Terrain");
 	
-		
-		
 		watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/watershader.frag");
+
 		// Initialize water simulation
-		hf = new HeightField(dataHandler, init_data.FFData, init_data.Flowsources);
-		hf->initGPU();
+		hf = new HeightField(dataHandler, init_data->FFData, init_data->Flowsources);
+		hf->initGPU(heightData->GetArray(), velocityData->GetArray());
 
 		GLuint shaders[2] = { watershader, depthshader };
 		waterTerrain = new Water(shaders, sizes, dataHandler->getTerrainScale(), hf->fieldBuffers[0]);
-	}else if(simCase == 2)
-	{
+	} else if(simCase == 2)	{
 		terrain = new HeightMap(terrainshader, sizes, -1.0f, dataHandler->getHeightBuffer());
 		terrain->update();
 		dynamic_cast<HeightMap*>(terrain)->generateHeightTexture();
 		
 		printError("Created Terrain");
 	
-
 		watershader = loadShaders("src/shaders/terrainshader.vert", "src/shaders/shallowwatershader.frag");
 		cam->unlock();
+
 		// Initialize water simulation
-		sgpu = new ShallowGPU(dataHandler, init_data.FFData);
+		sgpu = new ShallowGPU(dataHandler, init_data->FFData);
 		sgpu->initGPU();
 
 		GLuint shaders[2] = { watershader, depthshader };
@@ -367,6 +362,15 @@ void Program::handleKeypress(SDL_Event* event) {
 			TwDefine(" UIinfo iconified=true");
 		} else {
 			TwDefine(" UIinfo iconified=false");
+		}
+		break;
+		
+	case SDLK_k:
+		if(simCase == 1){
+			hf->saveData(heightData->GetArray(),velocityData->GetArray());
+			heightData->SaveData(init_data->height_save_path.c_str()); //Standards are good, thus, everyone has their own. 
+			velocityData->SaveData(init_data->velocity_save_path.c_str()); //Standards are good, thus, everyone has their own. 
+			
 		}
 		break;
 	case SDLK_p:

@@ -13,6 +13,12 @@ Flood_Fill_data::Flood_Fill_data(int in_x, int in_z, float in_height)
 init_Data_struct::init_Data_struct(const char* XMLfile)
 {
   this->data_filename = loadMapPath(XMLfile);
+  
+  this->velocity_save_path = loadVelSavePath(XMLfile);
+  this->velocity_load_path = loadVelLoadPath(XMLfile);
+  this->height_save_path = loadHeightSavePath(XMLfile);
+  this->height_load_path = loadHeightLoadPath(XMLfile);
+  
   this->Flowsources = loadFlows(XMLfile);
   this->FFData = loadFFData(XMLfile);
 }
@@ -130,6 +136,38 @@ std::string loadMapPath(const char* xmlFile){
   if(!doc.load_file(xmlFile)) return "No XML file";
   std::cout << "Load success" << std::endl;
   std::string path = doc.child("Profile").child("Data").child("MapName").attribute("path").value();
+  return path;
+}
+
+std::string loadVelLoadPath(const char* xmlFile){
+  pugi::xml_document doc;
+  if(!doc.load_file(xmlFile)) return "No XML file";
+  std::cout << "Load success" << std::endl;
+  std::string path = doc.child("Profile").child("Data").child("VelLoad").attribute("path").value();
+  return path;
+}
+
+std::string loadHeightLoadPath(const char* xmlFile){
+  pugi::xml_document doc;
+  if(!doc.load_file(xmlFile)) return "No XML file";
+  std::cout << "Load success" << std::endl;
+  std::string path = doc.child("Profile").child("Data").child("HeightLoad").attribute("path").value();
+  return path;
+}
+
+std::string loadVelSavePath(const char* xmlFile){
+  pugi::xml_document doc;
+  if(!doc.load_file(xmlFile)) return "No XML file";
+  std::cout << "Load success" << std::endl;
+  std::string path = doc.child("Profile").child("Data").child("VelSave").attribute("path").value();
+  return path;
+}
+
+std::string loadHeightSavePath(const char* xmlFile){
+  pugi::xml_document doc;
+  if(!doc.load_file(xmlFile)) return "No XML file";
+  std::cout << "Load success" << std::endl;
+  std::string path = doc.child("Profile").child("Data").child("HeightSave").attribute("path").value();
   return path;
 }
 

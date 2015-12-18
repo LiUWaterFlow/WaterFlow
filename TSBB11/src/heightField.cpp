@@ -194,13 +194,20 @@ void HeightField::drawVoxels(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
 }
 
 
-void HeightField::initGPU() {
+void HeightField::initGPU(float** heightArray, float** velocityArray) {
 
-	float* u = new float[texWidth*texHeight];
-	float* v = new float[texWidth*texHeight];
+	
+	float* u = (*heightArray != nullptr) ? *heightArray : new float[texWidth*texHeight];
+	float* v = (*velocityArray != nullptr) ? *velocityArray : new float[texWidth*texHeight];
 	float* f = new float[texWidth*texHeight];
-	std::fill_n(u, texWidth*texHeight, 0.0f);
-	std::fill_n(v, texWidth*texHeight, 0.0f);
+	
+	if(*heightArray == nullptr)
+		std::fill_n(u, texWidth*texHeight, 0.0f);
+	
+	if(*velocityArray == nullptr)
+		std::fill_n(v, texWidth*texHeight, 0.0f);
+	
+	
 	std::fill_n(f, texWidth*texHeight, 0.0f);
 
 	initFloodFill(u);
@@ -242,9 +249,11 @@ void HeightField::initGPU() {
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-
-	delete u;
-	delete v;
+	if(*heightArray == nullptr)
+		delete u;
+	if(*velocityArray == nullptr)
+		delete v;
+	
 	delete f;
 
 }
@@ -319,6 +328,23 @@ void HeightField::measureVolume() {
 	myvalarray.resize(0);
 	delete u;
 
+}
+
+
+void HeightField::saveData(float** u, float** v){
+	*u = (*u != nullptr) ? *u : (float*)malloc(texWidth*texHeight*sizeof(float));   	
+	*v = (*v != nullptr) ? *v : (float*)malloc(texWidth*texHeight*sizeof(float));
+
+	
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[0]);
+	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, texWidth*texHeight*sizeof(float), *u);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	
+	
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, fieldBuffers[2]);
+	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, texWidth*texHeight*sizeof(float), *v);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	
 }
 
 
