@@ -36,7 +36,7 @@ before_script:
   - git checkout gh-pages
   -
   - # Go to directory for make
-  - cd ../TSBB11/
+  - cd ../code/
 
 script: make docs
 
