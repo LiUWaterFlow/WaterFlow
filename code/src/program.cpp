@@ -201,10 +201,10 @@ bool Program::init() {
 	TwAddVarRO(antBar, "CameraZ", TW_TYPE_FLOAT, &cam->getPos()->z, "group=Info");
 
 	TwAddVarRO(antBar, "Camera Height", TW_TYPE_FLOAT, &cam->getPos()->y, "group=Info");
-	TwAddVarRO(antBar, "Terrain Height", TW_TYPE_FLOAT, &heightAtPos, "help= 'Shows terrain height at camera position' group=Info");
+	TwAddVarRO(antBar, "TerrainHeightCamera", TW_TYPE_FLOAT, &heightAtPos, " label='Terrain Height' help= 'Shows terrain height at camera position' group=Info");
 
-	TwAddVarRO(antBar, "Terrain Height (Water / Terrain)", TW_TYPE_FLOAT, &heighAtClickProj, "group=Click help= 'Shows water/terrain height at click using inverse projection' ");
-	TwAddVarRO(antBar, "Terrain Height (Terrain)", TW_TYPE_FLOAT, &heightAtClickData, "group=Click help= 'Shows terrain height at click using terrain data for height' ");
+	TwAddVarRO(antBar, "Water Depth", TW_TYPE_FLOAT, &heighAtClickProj, "group=Click help= 'Shows water depth at click using inverse projection' ");
+	TwAddVarRO(antBar, "Terrain Height", TW_TYPE_FLOAT, &heightAtClickData, "group=Click help= 'Shows terrain height at click using terrain data for height' ");
 	TwAddVarRO(antBar, "Terrain X", TW_TYPE_DOUBLE, &objX, "group=Click help= 'Shows terrain x at click' ");
 	TwAddVarRO(antBar, "Terrain Z", TW_TYPE_DOUBLE, &objZ, "group=Click help= 'Shows terrain z at click' ");
 
@@ -406,8 +406,8 @@ void Program::handleMouseButton(SDL_Event* event) {
 		GLdouble objY = 0.0;
 		gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
-		heighAtClickProj = (GLfloat)objY;
 		heightAtClickData = dataHandler->giveHeight((GLfloat)objX, (GLfloat)objZ);
+		heighAtClickProj = (GLfloat)objY - heightAtClickData;
 	}
 }
 
