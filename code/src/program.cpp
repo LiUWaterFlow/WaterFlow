@@ -72,7 +72,7 @@ bool Program::init() {
 #endif
 
 
-	screen = SDL_CreateWindow("TSBB11, Waterflow visualization (SDL)", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenW, screenH, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	screen = SDL_CreateWindow("WaterFlow", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenW, screenH, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	if (screen == 0) {
 		fprintf(stderr, "Failed to set Video Mode: %s", SDL_GetError());
 		return false;

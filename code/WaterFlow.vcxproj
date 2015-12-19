@@ -17,7 +17,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{492A4FA5-6ADE-40ED-A564-20ADD198714E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>TSBB11</RootNamespace>
+    <RootNamespace>WaterFlow</RootNamespace>
+    <ProjectName>WaterFlowMain</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

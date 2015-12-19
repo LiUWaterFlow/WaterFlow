@@ -106,7 +106,6 @@ std::vector<FlowSource*> loadFlows(const char* xmlFile) {
   pugi::xml_document doc;
   std::vector<FlowSource*> srces;
   if (!doc.load_file(xmlFile)) return srces;
-  std::cout << "Load success" << std::endl;
   pugi::xml_node sources = doc.child("Profile").child("Sources");
   for (pugi::xml_node_iterator it = sources.begin(); it != sources.end(); ++it){
       FlowSource* fsp;
@@ -134,7 +133,7 @@ bool flowChange(std::vector<FlowSource*> flows, float dt){
 std::string loadMapPath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";
-  std::cout << "Load success" << std::endl;
+  std::cout << "XML load success" << std::endl;
   std::string path = doc.child("Profile").child("Data").child("MapName").attribute("path").value();
   return path;
 }
@@ -142,7 +141,6 @@ std::string loadMapPath(const char* xmlFile){
 std::string loadVelLoadPath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";
-  std::cout << "Load success" << std::endl;
   std::string path = doc.child("Profile").child("Data").child("VelLoad").attribute("path").value();
   return path;
 }
@@ -150,7 +148,6 @@ std::string loadVelLoadPath(const char* xmlFile){
 std::string loadHeightLoadPath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";
-  std::cout << "Load success" << std::endl;
   std::string path = doc.child("Profile").child("Data").child("HeightLoad").attribute("path").value();
   return path;
 }
@@ -158,7 +155,6 @@ std::string loadHeightLoadPath(const char* xmlFile){
 std::string loadVelSavePath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";
-  std::cout << "Load success" << std::endl;
   std::string path = doc.child("Profile").child("Data").child("VelSave").attribute("path").value();
   return path;
 }
@@ -166,7 +162,6 @@ std::string loadVelSavePath(const char* xmlFile){
 std::string loadHeightSavePath(const char* xmlFile){
   pugi::xml_document doc;
   if(!doc.load_file(xmlFile)) return "No XML file";
-  std::cout << "Load success" << std::endl;
   std::string path = doc.child("Profile").child("Data").child("HeightSave").attribute("path").value();
   return path;
 }
