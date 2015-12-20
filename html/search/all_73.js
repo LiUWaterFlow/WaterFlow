@@ -35,7 +35,7 @@ var searchData=
   ['simplevoxels_2egeom',['simplevoxels.geom',['../simplevoxels_8geom.html',1,'']]],
   ['simplevoxels_2evert',['simplevoxels.vert',['../simplevoxels_8vert.html',1,'']]],
   ['size',['size',['../field_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e',1,'size():&#160;fieldShader.comp'],['../height_map_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e',1,'size():&#160;heightMap.comp'],['../normals_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e',1,'size():&#160;normals.comp']]],
-  ['skycube',['SkyCube',['../class_sky_cube.html',1,'SkyCube'],['../class_program.html#a053a892600e9e86a71f1c25eb20a1e4b',1,'Program::skycube()'],['../class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db',1,'SkyCube::SkyCube()']]],
+  ['skycube',['SkyCube',['../class_sky_cube.html',1,'SkyCube'],['../class_sky_cube.html#a13067d5a23500fa99d8254ed9a2652db',1,'SkyCube::SkyCube()'],['../class_program.html#a053a892600e9e86a71f1c25eb20a1e4b',1,'Program::skycube()']]],
   ['skyshader',['skyshader',['../class_program.html#a06284fec165e78abfa63778bb6712d18',1,'Program']]],
   ['skyshader_2efrag',['skyshader.frag',['../skyshader_8frag.html',1,'']]],
   ['skyshader_2evert',['skyshader.vert',['../skyshader_8vert.html',1,'']]],
