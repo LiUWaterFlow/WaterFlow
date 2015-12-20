@@ -5,7 +5,9 @@ Visit the [project webpage](https://liuwaterflow.github.io/WaterFlow/) for a lit
 
 ## License
 
-This project is released as Beer-Ware and may be used by anyone for any purpose, as long as some form of acknowledgement to the original authors remain. If you happen to meet one of the original project members (below) they will happily accept a beer if you had use of the project.
+This project is released as Beer-Ware and may be used by anyone for any purpose, as long as some form of acknowledgement to the original authors remain. If you happen to meet one of the original project members (below) they will happily accept a beer if you have use of the project.
+
+All third party software is included and redistributed under their respective original licenses and it's up to each individual who use this software to investigate and ensure that the thrid party licenses suit your purposes. 
 
 ### Members
 
@@ -24,5 +26,5 @@ This project is released as Beer-Ware and may be used by anyone for any purpose,
 * [pugixml](http://pugixml.org/)
 * [GLEW](http://glew.sourceforge.net/)
 * [AntTweakBar](http://anttweakbar.sourceforge.net/doc/)
-* OpenGL helper files and .obj and .tga loader made by Ingemar Ragnemalm
-* Camera code by Gustav Svensk
+* OpenGL helper files and .obj and .tga loader made by Ingemar Ragnemalm (released under no license currently)
+* Camera code by Gustav Svensk (gathered with permission to use, modify and redistribute as long as the note about the origin is left untouched).
