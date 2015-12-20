@@ -368,8 +368,8 @@ void Program::handleKeypress(SDL_Event* event) {
 	case SDLK_k:
 		if(simCase == 1){
 			hf->saveData(heightData->GetArray(),velocityData->GetArray());
-			heightData->SaveData(init_data->height_save_path.c_str()); //Standards are good, thus, everyone has their own. 
-			velocityData->SaveData(init_data->velocity_save_path.c_str()); //Standards are good, thus, everyone has their own. 
+			heightData->SaveData(init_data->height_save_path.c_str()); 
+			velocityData->SaveData(init_data->velocity_save_path.c_str()); 
 			
 		}
 		break;
