@@ -14,31 +14,12 @@ int ShallowWaterCPU::runDebug()
 	//Add Water
 	AddWaterHeight(5, 10, 10);
 
-	/*Maybe print so it is as it should be*/
-	//PrintWaterHeight();
-	//PrintTerrainHeight();
-	//PrintWaterHeightSum();
-	//Pause(); //first pause is ignored because reasons (probably because we use a cin << getChar() from Program.cpp and the enter key carries through or something)
 	Pause("Running Shallow Water 2");
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
-		//if(i%500 == 0)
-		//{
-		/*Print velocity y for each iteration maybe*/
-		//PrintWaterBool(i);
-		//PrintWaterFillLevel(i);
-		//PrintTerrainHeight(i);
-		//PrintVelocity_X(i);
-		//PrintVelocity_Y(i);
-		//PrintWaterHeightSum(i);
-		/*and pause so we see what happens*/
-		//Pause();
-		//}
 	}
-	/*then print again*/
-	//PrintWaterHeight();
-	//PrintWaterHeightSum();
+
 	/*maybe a pause with a message so we know WHY we paused*/
 	Pause("Last Pause before termination");
 
@@ -307,7 +288,6 @@ void ShallowWaterCPU::RunSimulation(const float dt)
 	iter++;
 
 	PrintWaterHeightSum();
-	//SetReflectBoundary();
 	ResetTemp();
 }
 
@@ -394,13 +374,11 @@ void ShallowWaterCPU::Pause() const
 {
 	std::string dummy;
 	std::getline(std::cin, dummy);
-	//std::getchar();
 }
 void ShallowWaterCPU::Pause(std::string msg) const
 {
 	std::cout << msg << std::endl;
 	Pause();
-	//std::getchar();
 }
 
 void ShallowWaterCPU::PrintWaterHeightSum(int iter)
@@ -415,8 +393,6 @@ void ShallowWaterCPU::PrintWaterHeightSum(int iter)
 		std::cout << " Iteration: " << iter;
 	}
 	std::cout << " Percentage difference: " << SumDifference << " \n" << std::endl;
-
-	//oldSumArray/
 }
 /*
  *=========================================================
@@ -748,25 +724,6 @@ void ShallowWaterCPU::AddTerrainHeight(float value)
 		}
 	}
 }
-
-// slope surface (topograpgy) with or without wall
-/*
-void ShallowWaterCPU::AddTerrainHeight(float value)
-{
-	for (unsigned int x = 0; x < m_sizeX; x++)
-	{
-		for (unsigned int y = 0; y < m_sizeY; y++)
-		{
-			const unsigned int index = x + y*m_sizeX;
-			m_terrain_height.at(index) += value-0.01*x; //testing
-		}
-	}
-	//for (unsigned int y = 3; y < m_sizeY-3; y++)
-	//{
-	//	const unsigned int index = (m_sizeX-2) + y*m_sizeX;
-	//	m_terrain_height.at(index) += 3;
-	//}
-}*/
 
 void ShallowWaterCPU::AddVelocity_X(float value)
 {
