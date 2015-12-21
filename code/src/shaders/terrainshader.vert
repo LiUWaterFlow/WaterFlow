@@ -5,20 +5,10 @@
 
 #version 430
 
-// ===== Uniform Buffers =====
-
-layout (std430,binding = 6) buffer velocity
-{
-	float v[];
-	
-};
-
-
 // ===== Uniforms =====
 
 uniform mat4 WTVMatrix;				///< World-to-view matrix.
 uniform mat4 VTPMatrix;				///< View-to-projection matrix.
-
 
 // ===== In/Out params =====
 
@@ -29,7 +19,6 @@ in vec3 in_Position;				///< Vertex position.
 out vec3 out_Normal;				///< Fragment normal.
 out vec2 out_TexCoord;				///< Fragment texture coordinates.
 out vec3 out_ObjPos;				///< Fragment position.
-
 
 void main(void)
 {
