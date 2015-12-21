@@ -335,180 +335,165 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00235"></a>00235     glUniform2i(glGetUniformLocation(<a class="code" href="class_shallow_g_p_u.html#a288a836c327b8e27cd136dbaa15ec272" title="shader used for simulation">updateVelocityProgram</a>, <span class="stringliteral">&quot;size&quot;</span>), <a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>, texHeight);
 <a name="l00236"></a>00236     glUniform1f(glGetUniformLocation(<a class="code" href="class_shallow_g_p_u.html#a675afa38097d77e9482b9230ff2759c5" title="shader used for simulation">advectWaterProgram</a>, <span class="stringliteral">&quot;dt&quot;</span>), dt);
 <a name="l00237"></a>00237 
-<a name="l00238"></a>00238     <span class="comment">/*</span>
-<a name="l00239"></a>00239 <span class="comment">    glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[0]);</span>
-<a name="l00240"></a>00240 <span class="comment">    glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);</span>
-<a name="l00241"></a>00241 <span class="comment">    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);</span>
-<a name="l00242"></a>00242 <span class="comment">    */</span>
-<a name="l00243"></a>00243     <span class="comment">//std::valarray&lt;float&gt; myvalarray(u, texWidth*texHeight);</span>
-<a name="l00244"></a>00244     <span class="comment">//vol0 = myvalarray.sum();</span>
-<a name="l00245"></a>00245 
-<a name="l00246"></a>00246     <span class="keyword">delete</span> u;
-<a name="l00247"></a>00247     <span class="keyword">delete</span> vx;
-<a name="l00248"></a>00248     <span class="keyword">delete</span> vy;
-<a name="l00249"></a>00249     <span class="keyword">delete</span> <a class="code" href="class_shallow_g_p_u.html#ad786dc6e93bff6f9dba490f92d79e42f" title="Array of added flow per iteration.">flow</a>;
-<a name="l00250"></a>00250 }
+<a name="l00238"></a>00238     <span class="keyword">delete</span> u;
+<a name="l00239"></a>00239     <span class="keyword">delete</span> vx;
+<a name="l00240"></a>00240     <span class="keyword">delete</span> vy;
+<a name="l00241"></a>00241     <span class="keyword">delete</span> <a class="code" href="class_shallow_g_p_u.html#ad786dc6e93bff6f9dba490f92d79e42f" title="Array of added flow per iteration.">flow</a>;
+<a name="l00242"></a>00242 }
+<a name="l00243"></a>00243 
+<a name="l00244"></a><a class="code" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc">00244</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc" title="Runs the floodfill algorithms.">ShallowGPU::initFloodFill</a>(<span class="keywordtype">float</span>* u){
+<a name="l00245"></a>00245     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.size(); i++){
+<a name="l00246"></a>00246             <a class="code" href="class_shallow_g_p_u.html#a1caaa781b1766c6c19be8408ec8d1afc" title="Floodfills point x,z to height and saves in heightmap u.">floodFill</a>(u, <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.at(i)-&gt;x, <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.at(i)-&gt;z,<a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.at(i)-&gt;height);
+<a name="l00247"></a>00247     }
+<a name="l00248"></a>00248 }
+<a name="l00249"></a>00249 
+<a name="l00250"></a>00250 
 <a name="l00251"></a>00251 
-<a name="l00252"></a><a class="code" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc">00252</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#aa671fe907df66ea77faa55ef003e1ecc" title="Runs the floodfill algorithms.">ShallowGPU::initFloodFill</a>(<span class="keywordtype">float</span>* u){
-<a name="l00253"></a>00253     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.size(); i++){
-<a name="l00254"></a>00254             <a class="code" href="class_shallow_g_p_u.html#a1caaa781b1766c6c19be8408ec8d1afc" title="Floodfills point x,z to height and saves in heightmap u.">floodFill</a>(u, <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.at(i)-&gt;x, <a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.at(i)-&gt;z,<a class="code" href="class_shallow_g_p_u.html#a9f10d59a26bb7105b9e0f32148454c57" title="Floodfill data structure.">flood</a>.at(i)-&gt;height);
-<a name="l00255"></a>00255     }
-<a name="l00256"></a>00256 }
-<a name="l00257"></a>00257 
+<a name="l00252"></a><a class="code" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92">00252</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92" title="Runs the simulation one timestep.">ShallowGPU::runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
+<a name="l00253"></a>00253     <a class="code" href="class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53" title="Variable for time measurements.">totTime</a> += <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00254"></a>00254     <span class="keywordtype">int</span> numPing = 5;
+<a name="l00255"></a>00255     <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00256"></a>00256         numPing = 500;
+<a name="l00257"></a>00257     }
 <a name="l00258"></a>00258 
-<a name="l00259"></a>00259 
-<a name="l00260"></a><a class="code" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92">00260</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a64bbc0e1ded34a276ef7339d18ee1d92" title="Runs the simulation one timestep.">ShallowGPU::runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
-<a name="l00261"></a>00261     <a class="code" href="class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53" title="Variable for time measurements.">totTime</a> += <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
-<a name="l00262"></a>00262     <span class="keywordtype">int</span> numPing = 5;
-<a name="l00263"></a>00263     <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
-<a name="l00264"></a>00264         numPing = 500;
-<a name="l00265"></a>00265     }
-<a name="l00266"></a>00266 
-<a name="l00267"></a>00267     <span class="comment">//Add this one</span>
-<a name="l00268"></a>00268     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 1, &amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0]);
-<a name="l00269"></a>00269     <span class="comment">//and this one.</span>
-<a name="l00270"></a>00270     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 10, 1, &amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[8]);
-<a name="l00271"></a>00271     <span class="comment">//write to this one.</span>
-<a name="l00272"></a>00272     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 11, 1, &amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1]);
-<a name="l00273"></a>00273     glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a3bdd11068c77906c513082fd1ca6675e" title="shader used for simulation">addProgram</a>);
-<a name="l00274"></a>00274     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00275"></a>00275     glFinish();
-<a name="l00276"></a>00276     <span class="comment">// Initiate ping ponging.</span>
-<a name="l00277"></a>00277     std::swap(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1]);
-<a name="l00278"></a>00278     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numPing; i++) {
-<a name="l00279"></a>00279 
-<a name="l00280"></a>00280         glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 7, <a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>);
-<a name="l00281"></a>00281 
-<a name="l00282"></a>00282         <span class="comment">//select advectWater</span>
-<a name="l00283"></a>00283         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a675afa38097d77e9482b9230ff2759c5" title="shader used for simulation">advectWaterProgram</a>);
-<a name="l00284"></a>00284 
-<a name="l00285"></a>00285         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00286"></a>00286         glFinish();
-<a name="l00287"></a>00287             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00259"></a>00259     <span class="comment">//Add this one</span>
+<a name="l00260"></a>00260     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 1, &amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0]);
+<a name="l00261"></a>00261     <span class="comment">//and this one.</span>
+<a name="l00262"></a>00262     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 10, 1, &amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[8]);
+<a name="l00263"></a>00263     <span class="comment">//write to this one.</span>
+<a name="l00264"></a>00264     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 11, 1, &amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1]);
+<a name="l00265"></a>00265     glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a3bdd11068c77906c513082fd1ca6675e" title="shader used for simulation">addProgram</a>);
+<a name="l00266"></a>00266     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00267"></a>00267     glFinish();
+<a name="l00268"></a>00268     <span class="comment">// Initiate ping ponging.</span>
+<a name="l00269"></a>00269     std::swap(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1]);
+<a name="l00270"></a>00270     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numPing; i++) {
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272         glBindBuffersBase(GL_SHADER_STORAGE_BUFFER, 4, 7, <a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>);
+<a name="l00273"></a>00273 
+<a name="l00274"></a>00274         <span class="comment">//select advectWater</span>
+<a name="l00275"></a>00275         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a675afa38097d77e9482b9230ff2759c5" title="shader used for simulation">advectWaterProgram</a>);
+<a name="l00276"></a>00276 
+<a name="l00277"></a>00277         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00278"></a>00278         glFinish();
+<a name="l00279"></a>00279             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00280"></a>00280 
+<a name="l00281"></a>00281             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT AFTER ADVECT WATER&quot;</span>, 1);
+<a name="l00282"></a>00282             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[2], <span class="stringliteral">&quot;VELX AFTER ADVECT WATER&quot;</span>, 1);
+<a name="l00283"></a>00283             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY AFTER ADVECT WATER&quot;</span>, 1);
+<a name="l00284"></a>00284             std::getchar();
+<a name="l00285"></a>00285             }
+<a name="l00286"></a>00286         <span class="comment">//select velocity advect X</span>
+<a name="l00287"></a>00287         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a149f44c7be2d828774134b5505ab15d9" title="shader used for simulation">advectVelocityXProgram</a>);
 <a name="l00288"></a>00288 
-<a name="l00289"></a>00289             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT AFTER ADVECT WATER&quot;</span>, 1);
-<a name="l00290"></a>00290             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[2], <span class="stringliteral">&quot;VELX AFTER ADVECT WATER&quot;</span>, 1);
-<a name="l00291"></a>00291             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY AFTER ADVECT WATER&quot;</span>, 1);
-<a name="l00292"></a>00292             std::getchar();
-<a name="l00293"></a>00293             }
-<a name="l00294"></a>00294         <span class="comment">//select velocity advect X</span>
-<a name="l00295"></a>00295         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a149f44c7be2d828774134b5505ab15d9" title="shader used for simulation">advectVelocityXProgram</a>);
-<a name="l00296"></a>00296 
-<a name="l00297"></a>00297         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00298"></a>00298 
-<a name="l00299"></a>00299         glFinish();
-<a name="l00300"></a>00300 
-<a name="l00301"></a>00301             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
-<a name="l00302"></a>00302             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT AFTER ADVECTVELX&quot;</span>, 1);
-<a name="l00303"></a>00303             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX AFTER ADVECTVELX&quot;</span>, 1);
-<a name="l00304"></a>00304             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY AFTER ADVECTVELX&quot;</span>, 1);
-<a name="l00305"></a>00305             std::getchar();
-<a name="l00306"></a>00306             }
-<a name="l00307"></a>00307         <span class="comment">//select velocity advect Y</span>
-<a name="l00308"></a>00308         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d" title="shader used for simulation">advectVelocityYProgram</a>);
-<a name="l00309"></a>00309 
-<a name="l00310"></a>00310         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00311"></a>00311         glFinish();
-<a name="l00312"></a>00312             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
-<a name="l00313"></a>00313             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT AFTER ADVECT ADVECTVELY&quot;</span>, 1);
-<a name="l00314"></a>00314             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX AFTER ADVECT ADVECTVELY&quot;</span>, 1);
-<a name="l00315"></a>00315             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[5], <span class="stringliteral">&quot;VELY AFTER ADVECT ADVECTVELY&quot;</span>, 1);
-<a name="l00316"></a>00316             std::getchar();
-<a name="l00317"></a>00317             }
-<a name="l00318"></a>00318         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a2b0209e0d8d0278ceb4af2f651ef6c52" title="shader used for simulation">updateHeightProgram</a>);
-<a name="l00319"></a>00319 
-<a name="l00320"></a>00320         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00321"></a>00321         glFinish();
-<a name="l00322"></a>00322             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
-<a name="l00323"></a>00323             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <span class="stringliteral">&quot;HEIGHT AFTER UPDATE HEIGHT&quot;</span>, 1);
-<a name="l00324"></a>00324             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX AFTER UPDATE HEIGHT&quot;</span>, 1);
-<a name="l00325"></a>00325             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[5], <span class="stringliteral">&quot;VELY AFTER UPDATE HEIGHT&quot;</span>, 1);
-<a name="l00326"></a>00326             std::getchar();
-<a name="l00327"></a>00327             }
-<a name="l00328"></a>00328         <span class="comment">//</span>
-<a name="l00329"></a>00329 
-<a name="l00330"></a>00330         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a288a836c327b8e27cd136dbaa15ec272" title="shader used for simulation">updateVelocityProgram</a>);
+<a name="l00289"></a>00289         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00290"></a>00290 
+<a name="l00291"></a>00291         glFinish();
+<a name="l00292"></a>00292 
+<a name="l00293"></a>00293             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00294"></a>00294             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT AFTER ADVECTVELX&quot;</span>, 1);
+<a name="l00295"></a>00295             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX AFTER ADVECTVELX&quot;</span>, 1);
+<a name="l00296"></a>00296             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY AFTER ADVECTVELX&quot;</span>, 1);
+<a name="l00297"></a>00297             std::getchar();
+<a name="l00298"></a>00298             }
+<a name="l00299"></a>00299         <span class="comment">//select velocity advect Y</span>
+<a name="l00300"></a>00300         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d" title="shader used for simulation">advectVelocityYProgram</a>);
+<a name="l00301"></a>00301 
+<a name="l00302"></a>00302         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00303"></a>00303         glFinish();
+<a name="l00304"></a>00304             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00305"></a>00305             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT AFTER ADVECT ADVECTVELY&quot;</span>, 1);
+<a name="l00306"></a>00306             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX AFTER ADVECT ADVECTVELY&quot;</span>, 1);
+<a name="l00307"></a>00307             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[5], <span class="stringliteral">&quot;VELY AFTER ADVECT ADVECTVELY&quot;</span>, 1);
+<a name="l00308"></a>00308             std::getchar();
+<a name="l00309"></a>00309             }
+<a name="l00310"></a>00310         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a2b0209e0d8d0278ceb4af2f651ef6c52" title="shader used for simulation">updateHeightProgram</a>);
+<a name="l00311"></a>00311 
+<a name="l00312"></a>00312         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00313"></a>00313         glFinish();
+<a name="l00314"></a>00314             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00315"></a>00315             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <span class="stringliteral">&quot;HEIGHT AFTER UPDATE HEIGHT&quot;</span>, 1);
+<a name="l00316"></a>00316             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX AFTER UPDATE HEIGHT&quot;</span>, 1);
+<a name="l00317"></a>00317             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[5], <span class="stringliteral">&quot;VELY AFTER UPDATE HEIGHT&quot;</span>, 1);
+<a name="l00318"></a>00318             std::getchar();
+<a name="l00319"></a>00319             }
+<a name="l00320"></a>00320         <span class="comment">//</span>
+<a name="l00321"></a>00321 
+<a name="l00322"></a>00322         glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a288a836c327b8e27cd136dbaa15ec272" title="shader used for simulation">updateVelocityProgram</a>);
+<a name="l00323"></a>00323 
+<a name="l00324"></a>00324         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00325"></a>00325         glFinish();
+<a name="l00326"></a>00326             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
+<a name="l00327"></a>00327             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <span class="stringliteral">&quot;HEIGHT AFTER UPDATE VELOCITY&quot;</span>, 1);
+<a name="l00328"></a>00328             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[2], <span class="stringliteral">&quot;VELX AFTER UPDATE VELOCITY&quot;</span>, 1);
+<a name="l00329"></a>00329             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY AFTER UPDATE VELOCITY&quot;</span>, 1);
+<a name="l00330"></a>00330             std::getchar();
 <a name="l00331"></a>00331 
-<a name="l00332"></a>00332         glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00333"></a>00333         glFinish();
-<a name="l00334"></a>00334             <span class="keywordflow">if</span>(<a class="code" href="class_shallow_g_p_u.html#a0edfbfd82ef59074b914ff6cc9fb3474" title="Print debug information (should be static member instead)">DEBUG</a>){
-<a name="l00335"></a>00335             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <span class="stringliteral">&quot;HEIGHT AFTER UPDATE VELOCITY&quot;</span>, 1);
-<a name="l00336"></a>00336             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[2], <span class="stringliteral">&quot;VELX AFTER UPDATE VELOCITY&quot;</span>, 1);
-<a name="l00337"></a>00337             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY AFTER UPDATE VELOCITY&quot;</span>, 1);
-<a name="l00338"></a>00338             std::getchar();
-<a name="l00339"></a>00339 
-<a name="l00340"></a>00340 
-<a name="l00341"></a>00341             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <span class="stringliteral">&quot;HEIGHT0 AFTER ALL&quot;</span>, 1);
-<a name="l00342"></a>00342             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[2], <span class="stringliteral">&quot;VELX0 AFTER ALL&quot;</span>, 1);
-<a name="l00343"></a>00343             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY0 AFTER ALL &quot;</span>, 1);
-<a name="l00344"></a>00344             std::getchar();
+<a name="l00332"></a>00332 
+<a name="l00333"></a>00333             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[0], <span class="stringliteral">&quot;HEIGHT0 AFTER ALL&quot;</span>, 1);
+<a name="l00334"></a>00334             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[2], <span class="stringliteral">&quot;VELX0 AFTER ALL&quot;</span>, 1);
+<a name="l00335"></a>00335             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[4], <span class="stringliteral">&quot;VELY0 AFTER ALL &quot;</span>, 1);
+<a name="l00336"></a>00336             std::getchar();
+<a name="l00337"></a>00337 
+<a name="l00338"></a>00338 
+<a name="l00339"></a>00339             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT1 AFTER ALL&quot;</span>, 1);
+<a name="l00340"></a>00340             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX1 AFTER ALL&quot;</span>, 1);
+<a name="l00341"></a>00341             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[5], <span class="stringliteral">&quot;VELY1 AFTER ALL &quot;</span>, 1);
+<a name="l00342"></a>00342 
+<a name="l00343"></a>00343             }
+<a name="l00344"></a>00344     }
 <a name="l00345"></a>00345 
-<a name="l00346"></a>00346 
-<a name="l00347"></a>00347             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[1], <span class="stringliteral">&quot;HEIGHT1 AFTER ALL&quot;</span>, 1);
-<a name="l00348"></a>00348             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[3], <span class="stringliteral">&quot;VELX1 AFTER ALL&quot;</span>, 1);
-<a name="l00349"></a>00349             <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">Print</a>(<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[5], <span class="stringliteral">&quot;VELY1 AFTER ALL &quot;</span>, 1);
-<a name="l00350"></a>00350 
-<a name="l00351"></a>00351             }
-<a name="l00352"></a>00352 
-<a name="l00353"></a>00353 
-<a name="l00354"></a>00354         <span class="comment">/*</span>
-<a name="l00355"></a>00355 <span class="comment">    std::swap(shallowBuffers[0],shallowBuffers[1]);</span>
-<a name="l00356"></a>00356 <span class="comment">    std::swap(shallowBuffers[3],shallowBuffers[2]);</span>
-<a name="l00357"></a>00357 <span class="comment">    std::swap(shallowBuffers[4],shallowBuffers[5]);</span>
-<a name="l00358"></a>00358 <span class="comment">    */</span>
-<a name="l00359"></a>00359     }
-<a name="l00360"></a>00360 
-<a name="l00361"></a>00361     <span class="comment">//Bind input data(to render)</span>
-<a name="l00362"></a>00362     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,4,1,&amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[<a class="code" href="class_shallow_g_p_u.html#a57500fa07853e38fdcacfb14ecc4d233" title="Out buffer to be rendered.">bufferOut</a>]);
-<a name="l00363"></a>00363     <span class="comment">//Bind terrain</span>
-<a name="l00364"></a>00364     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,10,1,&amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[6]);
-<a name="l00365"></a>00365     <span class="comment">//bind output</span>
-<a name="l00366"></a>00366     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,11,1,&amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[7]);
-<a name="l00367"></a>00367     glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a3bdd11068c77906c513082fd1ca6675e" title="shader used for simulation">addProgram</a>);
-<a name="l00368"></a>00368     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
-<a name="l00369"></a>00369     glFinish();
-<a name="l00370"></a>00370     printError(<span class="stringliteral">&quot;run Sim GPU&quot;</span>);
-<a name="l00371"></a>00371 
-<a name="l00372"></a>00372 
-<a name="l00373"></a>00373 }
-<a name="l00374"></a>00374 
-<a name="l00375"></a><a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1">00375</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">ShallowGPU::Print</a>(GLuint bufferID, std::string msg, <span class="keywordtype">int</span> iter)<span class="keyword"> const</span>
-<a name="l00376"></a>00376 <span class="keyword"></span>{
-<a name="l00377"></a>00377     <span class="keywordtype">float</span> * arr = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>*<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>];
-<a name="l00378"></a>00378 
-<a name="l00379"></a>00379     glBindBuffer(GL_SHADER_STORAGE_BUFFER, bufferID);
-<a name="l00380"></a>00380     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <span class="keyword">sizeof</span>(GLfloat)*<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>*<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>, arr);
-<a name="l00381"></a>00381     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00346"></a>00346     <span class="comment">//Bind input data(to render)</span>
+<a name="l00347"></a>00347     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,4,1,&amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[<a class="code" href="class_shallow_g_p_u.html#a57500fa07853e38fdcacfb14ecc4d233" title="Out buffer to be rendered.">bufferOut</a>]);
+<a name="l00348"></a>00348     <span class="comment">//Bind terrain</span>
+<a name="l00349"></a>00349     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,10,1,&amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[6]);
+<a name="l00350"></a>00350     <span class="comment">//bind output</span>
+<a name="l00351"></a>00351     glBindBuffersBase(GL_SHADER_STORAGE_BUFFER,11,1,&amp;<a class="code" href="class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351" title="Buffers used for passing data between shaders.">shallowBuffers</a>[7]);
+<a name="l00352"></a>00352     glUseProgram(<a class="code" href="class_shallow_g_p_u.html#a3bdd11068c77906c513082fd1ca6675e" title="shader used for simulation">addProgram</a>);
+<a name="l00353"></a>00353     glDispatchCompute((GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a> / 16.0f), (GLuint)ceil((GLfloat)<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a> / 16.0f), 1);
+<a name="l00354"></a>00354     glFinish();
+<a name="l00355"></a>00355     printError(<span class="stringliteral">&quot;run Sim GPU&quot;</span>);
+<a name="l00356"></a>00356 
+<a name="l00357"></a>00357 
+<a name="l00358"></a>00358 }
+<a name="l00359"></a>00359 
+<a name="l00360"></a><a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1">00360</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a5b7df612a5972b4376f160befd1861e1" title="Prints debug info for buffer at bID.">ShallowGPU::Print</a>(GLuint bufferID, std::string msg, <span class="keywordtype">int</span> iter)<span class="keyword"> const</span>
+<a name="l00361"></a>00361 <span class="keyword"></span>{
+<a name="l00362"></a>00362     <span class="keywordtype">float</span> * arr = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>*<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>];
+<a name="l00363"></a>00363 
+<a name="l00364"></a>00364     glBindBuffer(GL_SHADER_STORAGE_BUFFER, bufferID);
+<a name="l00365"></a>00365     glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, <span class="keyword">sizeof</span>(GLfloat)*<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>*<a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>, arr);
+<a name="l00366"></a>00366     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+<a name="l00367"></a>00367 
+<a name="l00368"></a>00368     <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">PrintHelper</a>(<span class="stringliteral">&quot;BEGIN&quot;</span>, msg, iter);
+<a name="l00369"></a>00369     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>; j++)
+<a name="l00370"></a>00370     {
+<a name="l00371"></a>00371         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>; i++)
+<a name="l00372"></a>00372         {
+<a name="l00373"></a>00373 
+<a name="l00374"></a>00374             <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index = i + j*<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>;
+<a name="l00375"></a>00375             <a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378" title="helper function for print.">PrintNumber</a>(arr[index]);
+<a name="l00376"></a>00376         }
+<a name="l00377"></a>00377         std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;
+<a name="l00378"></a>00378     }
+<a name="l00379"></a>00379     <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">PrintHelper</a>(<span class="stringliteral">&quot;END&quot;</span>, msg, iter);
+<a name="l00380"></a>00380     std::cout &lt;&lt; std::flush;
+<a name="l00381"></a>00381 }
 <a name="l00382"></a>00382 
-<a name="l00383"></a>00383     <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">PrintHelper</a>(<span class="stringliteral">&quot;BEGIN&quot;</span>, msg, iter);
-<a name="l00384"></a>00384     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="class_shallow_g_p_u.html#a8346105b106a59cf89e7418bb5065d29" title="height of simulation area">texHeight</a>; j++)
-<a name="l00385"></a>00385     {
-<a name="l00386"></a>00386         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>; i++)
-<a name="l00387"></a>00387         {
-<a name="l00388"></a>00388 
-<a name="l00389"></a>00389             <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index = i + j*<a class="code" href="class_shallow_g_p_u.html#acc0c9b94d1cd7d6c9a63d1ebe00e38c3" title="width of simulation area">texWidth</a>;
-<a name="l00390"></a>00390             <a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378" title="helper function for print.">PrintNumber</a>(arr[index]);
-<a name="l00391"></a>00391         }
-<a name="l00392"></a>00392         std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;
-<a name="l00393"></a>00393     }
-<a name="l00394"></a>00394     <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">PrintHelper</a>(<span class="stringliteral">&quot;END&quot;</span>, msg, iter);
-<a name="l00395"></a>00395     std::cout &lt;&lt; std::flush;
+<a name="l00383"></a><a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378">00383</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378" title="helper function for print.">ShallowGPU::PrintNumber</a>(<span class="keywordtype">float</span> value)<span class="keyword"> const</span>
+<a name="l00384"></a>00384 <span class="keyword"></span>{
+<a name="l00385"></a>00385     std::cout &lt;&lt; std::fixed &lt;&lt; std::setw(7) &lt;&lt; std::setprecision(3) &lt;&lt; value &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+<a name="l00386"></a>00386 }
+<a name="l00387"></a>00387 
+<a name="l00388"></a><a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e">00388</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">ShallowGPU::PrintHelper</a>(std::string start_end, std::string msg, <span class="keywordtype">int</span> iter)<span class="keyword"> const</span>
+<a name="l00389"></a>00389 <span class="keyword"></span>{
+<a name="l00390"></a>00390     <span class="keywordflow">if</span> (iter != -1) {
+<a name="l00391"></a>00391         std::cout &lt;&lt; <span class="stringliteral">&quot;========== &quot;</span> &lt;&lt; start_end &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; iter &lt;&lt; <span class="stringliteral">&quot; ==========\n\n&quot;</span>;
+<a name="l00392"></a>00392     }
+<a name="l00393"></a>00393     <span class="keywordflow">else</span> {
+<a name="l00394"></a>00394         std::cout &lt;&lt; <span class="stringliteral">&quot;========== &quot;</span> &lt;&lt; start_end &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot; ==========\n\n&quot;</span>;
+<a name="l00395"></a>00395     }
 <a name="l00396"></a>00396 }
-<a name="l00397"></a>00397 
-<a name="l00398"></a><a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378">00398</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a9f121c744393233c909104d5a770e378" title="helper function for print.">ShallowGPU::PrintNumber</a>(<span class="keywordtype">float</span> value)<span class="keyword"> const</span>
-<a name="l00399"></a>00399 <span class="keyword"></span>{
-<a name="l00400"></a>00400     std::cout &lt;&lt; std::fixed &lt;&lt; std::setw(7) &lt;&lt; std::setprecision(3) &lt;&lt; value &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
-<a name="l00401"></a>00401 }
-<a name="l00402"></a>00402 
-<a name="l00403"></a><a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e">00403</a> <span class="keywordtype">void</span> <a class="code" href="class_shallow_g_p_u.html#a237a7ac2da280f24bd37278dfef6237e" title="helper function for print.">ShallowGPU::PrintHelper</a>(std::string start_end, std::string msg, <span class="keywordtype">int</span> iter)<span class="keyword"> const</span>
-<a name="l00404"></a>00404 <span class="keyword"></span>{
-<a name="l00405"></a>00405     <span class="keywordflow">if</span> (iter != -1) {
-<a name="l00406"></a>00406         std::cout &lt;&lt; <span class="stringliteral">&quot;========== &quot;</span> &lt;&lt; start_end &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; iter &lt;&lt; <span class="stringliteral">&quot; ==========\n\n&quot;</span>;
-<a name="l00407"></a>00407     }
-<a name="l00408"></a>00408     <span class="keywordflow">else</span> {
-<a name="l00409"></a>00409         std::cout &lt;&lt; <span class="stringliteral">&quot;========== &quot;</span> &lt;&lt; start_end &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; msg &lt;&lt; <span class="stringliteral">&quot; ==========\n\n&quot;</span>;
-<a name="l00410"></a>00410     }
-<a name="l00411"></a>00411 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -529,7 +514,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="shallow_g_p_u_8cpp.html">shallowGPU.cpp</a>      </li>
 
-    <li class="footer">Generated on Sun Dec 20 2015 11:52:40 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
