@@ -1,18 +1,18 @@
 /// @file simplevoxels.geom
 /// @brief Geometry shader to draw a simple representation of the voxel grid.
 ///
-/// Creates billboards from each point in the voxel grid
+/// Creates billboards that look at the camera from each point in the voxel grid
 
 #version 150 
 
-layout(points) in;
-layout(triangle_strip, max_vertices = 4) out;
+layout(points) in; ///< We get points as input
+layout(triangle_strip, max_vertices = 4) out; ///< We output a triangle strip
 
-out vec2 texValue;
-out vec3 exNormal;
-out vec4 outPosition;
+out vec2 texValue; ///< Texture coordinates for the output billboard vertice
+out vec3 exNormal; ///< Normal of the output billboard vertice
+out vec4 outPosition; ///< Position of the vertice
 
-uniform mat4 VTPMatrix;
+uniform mat4 VTPMatrix; ///< Transformation matrix from View to Projection space
 
 void main()
 {

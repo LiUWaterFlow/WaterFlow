@@ -3,7 +3,7 @@
 
 #version 150
 
-out vec4 outColor;
+out vec4 outColor; ///< The color to be set
 
 void main()
 {

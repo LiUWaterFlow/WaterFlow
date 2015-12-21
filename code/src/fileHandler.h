@@ -9,7 +9,7 @@
 #include <vector>
 #include <cstdint>
 
-/// @class fileHandler
+/// @class FileHandler
 /// @brief Used to store float arrays, and/or load them from files.
 ///
 /// Use the fileHandler class to either store a generic float array, with some side information,
@@ -27,7 +27,8 @@ public:
 	///
 	/// path must either point to a file saved with this class,
 	/// or towards a location where data should be saved.
-	/// @param path path to data file.
+	/// @param dWidth Width of the data to save, these are also set automatically when loading)
+	/// @param dHeight Height of the data to save, these are also set automatically when loading)
 	/// @see SaveData()
 	/// @see LoadData()
 	FileHandler(int dWidth, int dHeight);
@@ -36,10 +37,7 @@ public:
 	///
 	/// specified by fPath. Note that the file indicated by fPath will be
 	/// created if it does not exist, and it will be overwritten if it does exist.
-	/// @param fArr float array to store.
-	/// @param aSize length of the float array.
-	/// @param dWidth width (side information to store).
-	/// @param dHeight height (side information to store).
+	/// @param path Path to the file to save, should be specified in the XML file
 	void SaveData(std::string path);
 
 	/// @brief Loads data from a file specified by fPath into the object.

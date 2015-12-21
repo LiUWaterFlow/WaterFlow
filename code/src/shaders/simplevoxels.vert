@@ -3,9 +3,9 @@
 
 #version 150
 
-in vec3 posValue;
+in vec3 posValue; ///< Input point position
 
-uniform mat4 WTVMatrix;
+uniform mat4 WTVMatrix; ///< Transformation matrix from World to View space
 
 void main()
 {	
