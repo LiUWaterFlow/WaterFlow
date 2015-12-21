@@ -1,15 +1,16 @@
+/// @file fileHandler.cpp
+/// @brief Implementations of functions FileHandler.h
 // Written by Gustav Svensk, acquired from
-// https://github.com/DrDante/TSBK03Project/
+// https://github.com/DrDante/TSBK03/
 // with permission, 2015-09-24.
 
 #include "camera.h"
-
-
 #include "gtc/type_ptr.hpp"
 #include "gtx/rotate_vector.hpp"
-
 #include <cmath>
 #include <iostream>
+
+// ===== Constructor =====
 
 Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler* terr)
 {
@@ -40,66 +41,49 @@ Camera::Camera(glm::vec3 startPos, int* initScreenW, int* initScreenH, int tH, i
 	updateVTP();
 }
 
-glm::mat4* Camera::getWTV() {
-	return &WTVMatrix;
-}
-glm::mat4* Camera::getVTP() {
-	return &VTPMatrix;
-}
-glm::vec3* Camera::getPos() {
-	return &position;
-}
-GLfloat Camera::getSpeed() {
-	return speed;
-}
-GLfloat* Camera::getSpeedPtr() {
-	return &speed;
-}
-GLfloat Camera::getRotSpeed() {
-	return rotSpeed;
-}
-GLfloat* Camera::getRotSpeedPtr() {
-	return &rotSpeed;
-}
+// ===== Methods =====
 
-void Camera::toggleFrozen() {
-	isFrozen = !isFrozen;
-}
-
-void Camera::uploadCamData(GLuint program)
+bool Camera::isInCollisionBox(glm::vec3 transVec, bool xz)
 {
-    // Upload camera matrix here
-	glUseProgram(program);
-	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(VTPMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(WTVMatrix));
-    glUniform3fv(glGetUniformLocation(program, "camPos"), 1, glm::value_ptr(position));
+	if (unlocked) {
+		return true;
+	}
+	glm::vec3 testVec = glm::vec3(glm::translate(glm::mat4(1.0f), transVec) * glm::vec4(position, 1));
+	bool okToMove = true;
+	if (xz)
+	{
+		// Check x.
+		okToMove = okToMove && testVec.x > -xzLim && testVec.x < terrH + xzLim;
+		// Check z.
+		okToMove = okToMove && testVec.z > -xzLim && testVec.z < terrW + xzLim;
+	}
+	else
+	{
+		// Check y.
+		okToMove = okToMove && testVec.y >= terrain->giveHeight(testVec.x, testVec.z) + yLimLo && testVec.y < terrain->getTerrainScale() + yLimHi;
+	}
+	return okToMove;
 }
 
-void Camera::updateWTV()
-{
-	WTVMatrix = glm::lookAt(position, lookAtPos, up);
-}
-
-void Camera::updateVTP() {
-	float ratio = (GLfloat)(*screenW) / (GLfloat)(*screenH);
-	VTPMatrix = glm::perspective((GLfloat)M_PI / 2, ratio, 1.0f, drawDistance);
+void Camera::unlock(){
+	unlocked = true;
 }
 
 void Camera::rotate(char direction, GLfloat angle)
 {
-    switch (direction){
-        case 'x':
-			lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(1, 0, 0));
-            break;
-        case 'y':
-			lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 1, 0));
-            break;
-        case 'z':
-			lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 0, 1));
-            break;
-    }
-   
-    updateWTV();
+	switch (direction){
+	case 'x':
+		lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(1, 0, 0));
+		break;
+	case 'y':
+		lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 1, 0));
+		break;
+	case 'z':
+		lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 0, 1));
+		break;
+	}
+
+	updateWTV();
 }
 
 void Camera::translate(GLfloat dx, GLfloat dy, GLfloat dz)
@@ -134,17 +118,17 @@ void Camera::translate(GLfloat dx, GLfloat dy, GLfloat dz)
 void Camera::forward(GLfloat d)
 {
 	glm::vec3 forward_vec = lookAtPos - position;
-    forward_vec = speed * d * forward_vec;
-    translate(forward_vec.x, forward_vec.y, forward_vec.z);
+	forward_vec = speed * d * forward_vec;
+	translate(forward_vec.x, forward_vec.y, forward_vec.z);
 }
 
 void Camera::strafe(GLfloat d)
 {
 	glm::vec3 strafe_vec = lookAtPos - position;
-    strafe_vec = glm::cross(up, strafe_vec);
-    strafe_vec = glm::normalize(strafe_vec);
+	strafe_vec = glm::cross(up, strafe_vec);
+	strafe_vec = glm::normalize(strafe_vec);
 	strafe_vec = speed * d * strafe_vec;
-    translate(strafe_vec.x, strafe_vec.y, strafe_vec.z);
+	translate(strafe_vec.x, strafe_vec.y, strafe_vec.z);
 }
 
 void Camera::jump(GLfloat d) {
@@ -154,6 +138,28 @@ void Camera::jump(GLfloat d) {
 	jump_vec = glm::normalize(jump_vec);
 	jump_vec = speed * d * jump_vec;
 	translate(jump_vec.x, jump_vec.y, jump_vec.z);
+}
+
+void Camera::updateWTV()
+{
+	WTVMatrix = glm::lookAt(position, lookAtPos, up);
+}
+
+void Camera::updateVTP() {
+	float ratio = (GLfloat)(*screenW) / (GLfloat)(*screenH);
+	VTPMatrix = glm::perspective((GLfloat)M_PI / 2, ratio, 1.0f, drawDistance);
+}
+
+void Camera::uploadCamData(GLuint program)
+{
+	glUseProgram(program);
+	glUniformMatrix4fv(glGetUniformLocation(program, "VTPMatrix"), 1, GL_FALSE, glm::value_ptr(VTPMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(program, "WTVMatrix"), 1, GL_FALSE, glm::value_ptr(WTVMatrix));
+	glUniform3fv(glGetUniformLocation(program, "camPos"), 1, glm::value_ptr(position));
+}
+
+void Camera::toggleFrozen() {
+	isFrozen = !isFrozen;
 }
 
 void Camera::changeLookAtPos(int xrel, int yrel)
@@ -175,25 +181,26 @@ void Camera::changeLookAtPos(int xrel, int yrel)
 	}
 }
 
-void Camera::unlock(){
-	unlocked = true;
-}
+// ===== Getters =====
 
-bool Camera::isInCollisionBox(glm::vec3 transVec, bool xz)
-{
-	if (unlocked) {
-		return true;
-	}
-	glm::vec3 testVec = glm::vec3(glm::translate(glm::mat4(1.0f), transVec) * glm::vec4(position, 1));
-	bool okToMove = true;
-	if (xz)
-	{
-		okToMove = okToMove && testVec.x > -xzLim && testVec.x < terrH + xzLim; // Check x
-		okToMove = okToMove && testVec.z > -xzLim && testVec.z < terrW + xzLim; // Check z
-	}
-	else
-	{
-		okToMove = okToMove && testVec.y >= terrain->giveHeight(testVec.x, testVec.z) + yLimLo && testVec.y < terrain->getTerrainScale() + yLimHi; // Check y
-	}
-	return okToMove;
+glm::mat4* Camera::getWTV() {
+	return &WTVMatrix;
+}
+glm::mat4* Camera::getVTP() {
+	return &VTPMatrix;
+}
+glm::vec3* Camera::getPos() {
+	return &position;
+}
+GLfloat Camera::getSpeed() {
+	return speed;
+}
+GLfloat* Camera::getSpeedPtr() {
+	return &speed;
+}
+GLfloat Camera::getRotSpeed() {
+	return rotSpeed;
+}
+GLfloat* Camera::getRotSpeedPtr() {
+	return &rotSpeed;
 }
