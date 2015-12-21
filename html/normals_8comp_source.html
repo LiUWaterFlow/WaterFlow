@@ -117,48 +117,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00017"></a>00017 
 <a name="l00018"></a>00018 uniform ivec2 size; 
 <a name="l00019"></a>00019 
-<a name="l00020"></a><a class="code" href="normals_8comp.html#a6288eba0f8e8ad3ab1544ad731eb7667">00020</a> <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
-<a name="l00021"></a>00021 {   
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023     ivec2 storePos = ivec2(gl_GlobalInvocationID.xy); 
-<a name="l00024"></a>00024 
-<a name="l00025"></a>00025     <span class="keywordtype">int</span> x = clamp(storePos.x, 0, size.x-1); 
-<a name="l00026"></a>00026     <span class="keywordtype">int</span> y = clamp(storePos.y, 0, size.y-1); 
-<a name="l00027"></a>00027     <span class="keywordtype">int</span> xplus = clamp(x + 1, 0, size.x-1); 
-<a name="l00028"></a>00028     <span class="keywordtype">int</span> xminus = clamp(x - 1, 0, size.x-1); 
-<a name="l00029"></a>00029     <span class="keywordtype">int</span> yplus = clamp(y + 1, 0, size.y-1); 
-<a name="l00030"></a>00030     <span class="keywordtype">int</span> yminus = clamp(y - 1, 0, size.y-1);  
-<a name="l00031"></a>00031     
-<a name="l00032"></a>00032     <span class="keywordtype">float</span> sobelX = 0;
-<a name="l00033"></a>00033     <span class="keywordtype">float</span> sobelZ = 0;
-<a name="l00034"></a>00034     
-<a name="l00035"></a>00035     <span class="comment">// Sobel x</span>
-<a name="l00036"></a>00036     sobelX += 2.0 * terrHeight[xplus + y*size.x]; <span class="comment">//  texture(texUnit, outTexCoord + vec2(+offsetX, 0)).y;</span>
-<a name="l00037"></a>00037     sobelX += 1.0 * terrHeight[xplus + yplus*size.x];
-<a name="l00038"></a>00038     sobelX += 1.0 * terrHeight[xplus + yminus*size.x];
-<a name="l00039"></a>00039     sobelX -= 2.0 * terrHeight[xminus + y*size.x];
-<a name="l00040"></a>00040     sobelX -= 1.0 * terrHeight[xminus + yplus*size.x];
-<a name="l00041"></a>00041     sobelX -= 1.0 * terrHeight[xminus + yminus*size.x]; 
-<a name="l00042"></a>00042     <span class="comment">// Sobel z</span>
-<a name="l00043"></a>00043     sobelZ += 2.0 * terrHeight[x + yplus*size.x]; 
-<a name="l00044"></a>00044     sobelZ += 1.0 * terrHeight[xplus + yplus*size.x];
-<a name="l00045"></a>00045     sobelZ += 1.0 * terrHeight[xminus + yplus*size.x];
-<a name="l00046"></a>00046     sobelZ -= 2.0 * terrHeight[x + yminus*size.x];
-<a name="l00047"></a>00047     sobelZ -= 1.0 * terrHeight[xplus + yminus*size.x];
-<a name="l00048"></a>00048     sobelZ -= 1.0 * terrHeight[xminus + yminus*size.x];
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     <span class="comment">// Height scaling (0.005f is an  arbitrary value)</span>
-<a name="l00051"></a>00051     <span class="keywordtype">float</span> heightScale = 5.0f;
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053     <span class="comment">// Combine to normal</span>
-<a name="l00054"></a>00054     vec3 normal = normalize(vec3(-sobelX, heightScale, -sobelZ));
-<a name="l00055"></a>00055     
-<a name="l00056"></a>00056     <span class="keywordtype">int</span> offset = (x + y*size.x)*3;  
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058     normals[offset +0] = normal.x;
-<a name="l00059"></a>00059     normals[offset +1] = normal.y;
-<a name="l00060"></a>00060     normals[offset +2] = normal.z;
-<a name="l00061"></a>00061 }
+<a name="l00020"></a><a class="code" href="normals_8comp.html#a6288eba0f8e8ad3ab1544ad731eb7667">00020</a> <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>) {   
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022     ivec2 storePos = ivec2(gl_GlobalInvocationID.xy); 
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024     <span class="keywordtype">int</span> x = clamp(storePos.x, 0, size.x-1); 
+<a name="l00025"></a>00025     <span class="keywordtype">int</span> y = clamp(storePos.y, 0, size.y-1); 
+<a name="l00026"></a>00026     <span class="keywordtype">int</span> xplus = clamp(x + 1, 0, size.x-1); 
+<a name="l00027"></a>00027     <span class="keywordtype">int</span> xminus = clamp(x - 1, 0, size.x-1); 
+<a name="l00028"></a>00028     <span class="keywordtype">int</span> yplus = clamp(y + 1, 0, size.y-1); 
+<a name="l00029"></a>00029     <span class="keywordtype">int</span> yminus = clamp(y - 1, 0, size.y-1);  
+<a name="l00030"></a>00030     
+<a name="l00031"></a>00031     <span class="keywordtype">float</span> sobelX = 0;
+<a name="l00032"></a>00032     <span class="keywordtype">float</span> sobelZ = 0;
+<a name="l00033"></a>00033     
+<a name="l00034"></a>00034     <span class="comment">// Sobel x</span>
+<a name="l00035"></a>00035     sobelX += 2.0 * terrHeight[xplus + y*size.x]; <span class="comment">//  texture(texUnit, outTexCoord + vec2(+offsetX, 0)).y;</span>
+<a name="l00036"></a>00036     sobelX += 1.0 * terrHeight[xplus + yplus*size.x];
+<a name="l00037"></a>00037     sobelX += 1.0 * terrHeight[xplus + yminus*size.x];
+<a name="l00038"></a>00038     sobelX -= 2.0 * terrHeight[xminus + y*size.x];
+<a name="l00039"></a>00039     sobelX -= 1.0 * terrHeight[xminus + yplus*size.x];
+<a name="l00040"></a>00040     sobelX -= 1.0 * terrHeight[xminus + yminus*size.x]; 
+<a name="l00041"></a>00041     <span class="comment">// Sobel z</span>
+<a name="l00042"></a>00042     sobelZ += 2.0 * terrHeight[x + yplus*size.x]; 
+<a name="l00043"></a>00043     sobelZ += 1.0 * terrHeight[xplus + yplus*size.x];
+<a name="l00044"></a>00044     sobelZ += 1.0 * terrHeight[xminus + yplus*size.x];
+<a name="l00045"></a>00045     sobelZ -= 2.0 * terrHeight[x + yminus*size.x];
+<a name="l00046"></a>00046     sobelZ -= 1.0 * terrHeight[xplus + yminus*size.x];
+<a name="l00047"></a>00047     sobelZ -= 1.0 * terrHeight[xminus + yminus*size.x];
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049     <span class="comment">// Height scaling (0.005f is an  arbitrary value)</span>
+<a name="l00050"></a>00050     <span class="keywordtype">float</span> heightScale = 5.0f;
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052     <span class="comment">// Combine to normal</span>
+<a name="l00053"></a>00053     vec3 normal = normalize(vec3(-sobelX, heightScale, -sobelZ));
+<a name="l00054"></a>00054     
+<a name="l00055"></a>00055     <span class="keywordtype">int</span> offset = (x + y*size.x)*3;  
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     normals[offset +0] = normal.x;
+<a name="l00058"></a>00058     normals[offset +1] = normal.y;
+<a name="l00059"></a>00059     normals[offset +2] = normal.z;
+<a name="l00060"></a>00060 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -179,7 +178,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="normals_8comp.html">normals.comp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

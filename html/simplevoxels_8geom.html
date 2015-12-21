@@ -110,25 +110,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ababb901a0b8e6f569760cb90d5292d76"></a><!-- doxytag: member="simplevoxels.geom::layout" ref="ababb901a0b8e6f569760cb90d5292d76" args="(points) in" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (points) in</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simplevoxels_8geom.html#ababb901a0b8e6f569760cb90d5292d76">layout</a> (points) in</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">We get points as input. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7588a72a58e83eb07b44ec1fbbb86e5f"></a><!-- doxytag: member="simplevoxels.geom::layout" ref="a7588a72a58e83eb07b44ec1fbbb86e5f" args="(triangle_strip, max_vertices=4) out" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (triangle_strip, max_vertices=4) out</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simplevoxels_8geom.html#a7588a72a58e83eb07b44ec1fbbb86e5f">layout</a> (triangle_strip, max_vertices=4) out</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">We output a triangle strip. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdef7a1fd863a6d3770c1268cb06add3"></a><!-- doxytag: member="simplevoxels.geom::main" ref="acdef7a1fd863a6d3770c1268cb06add3" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e56a5053c6fc24af8ece9286d995632"></a><!-- doxytag: member="simplevoxels.geom::exNormal" ref="a6e56a5053c6fc24af8ece9286d995632" args="" -->
-out vec3&#160;</td><td class="memItemRight" valign="bottom"><b>exNormal</b></td></tr>
+out vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simplevoxels_8geom.html#a6e56a5053c6fc24af8ece9286d995632">exNormal</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Normal of the output billboard vertice. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0299c0e50ceaf3013a6ff39698f3f33"></a><!-- doxytag: member="simplevoxels.geom::outPosition" ref="ae0299c0e50ceaf3013a6ff39698f3f33" args="" -->
-out vec4&#160;</td><td class="memItemRight" valign="bottom"><b>outPosition</b></td></tr>
+out vec4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simplevoxels_8geom.html#ae0299c0e50ceaf3013a6ff39698f3f33">outPosition</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Position of the vertice. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b2b286de7c33bac6c181713dea774d7"></a><!-- doxytag: member="simplevoxels.geom::texValue" ref="a0b2b286de7c33bac6c181713dea774d7" args="" -->
-out vec2&#160;</td><td class="memItemRight" valign="bottom"><b>texValue</b></td></tr>
+out vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simplevoxels_8geom.html#a0b2b286de7c33bac6c181713dea774d7">texValue</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Texture coordinates for the output billboard vertice. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23771147f91ecedb051e874da9020129"></a><!-- doxytag: member="simplevoxels.geom::VTPMatrix" ref="a23771147f91ecedb051e874da9020129" args="" -->
-uniform mat4&#160;</td><td class="memItemRight" valign="bottom"><b>VTPMatrix</b></td></tr>
+uniform mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129">VTPMatrix</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation matrix from View to Projection space. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Geometry shader to draw a simple representation of the voxel grid. </p>
-<p>Creates billboards from each point in the voxel grid </p>
+<p>Creates billboards that look at the camera from each point in the voxel grid </p>
 
 <p>Definition in file <a class="el" href="simplevoxels_8geom_source.html">simplevoxels.geom</a>.</p>
 </div></div><!-- contents -->
@@ -151,7 +157,7 @@ uniform mat4&#160;</td><td class="memItemRight" valign="bottom"><b>VTPMatrix</b>
     <ul>
       <li class="navelem"><a class="el" href="simplevoxels_8geom.html">simplevoxels.geom</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

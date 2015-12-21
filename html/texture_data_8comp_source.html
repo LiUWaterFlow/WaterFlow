@@ -106,21 +106,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00006"></a>00006 
 <a name="l00007"></a>00007 <span class="preprocessor">#version 430</span>
 <a name="l00008"></a>00008 <span class="preprocessor"></span>
-<a name="l00009"></a>00009 layout(local_size_x = 16, local_size_y = 16) in;
+<a name="l00009"></a>00009 layout(local_size_x = 16, local_size_y = 16) in; 
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 layout (std430, binding = 0) readonly buffer inHeight
+<a name="l00011"></a><a class="code" href="texture_data_8comp.html#a318d9fa32ef93dcc099b67bac8e678ec">00011</a> layout (std430, binding = 0) readonly buffer inHeight 
 <a name="l00012"></a>00012 {
 <a name="l00013"></a>00013     <span class="keywordtype">float</span> terrHeight[];
 <a name="l00014"></a>00014 };
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016 layout (std430, binding = 1) readonly buffer inNormals
+<a name="l00016"></a>00016 layout (std430, binding = 1) readonly buffer inNormals 
 <a name="l00017"></a>00017 {
 <a name="l00018"></a>00018     <span class="keywordtype">float</span> normals[];
 <a name="l00019"></a>00019 };
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021 layout (rgba32f, binding = 0) writeonly uniform image2D textureOut;
-<a name="l00022"></a>00022 uniform ivec2 size;
-<a name="l00023"></a>00023 uniform <span class="keywordtype">float</span> maxHeight;
+<a name="l00021"></a>00021 layout (rgba32f, binding = 0) writeonly uniform image2D textureOut; 
+<a name="l00022"></a><a class="code" href="texture_data_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e">00022</a> uniform ivec2 size; 
+<a name="l00023"></a><a class="code" href="texture_data_8comp.html#af2a3886f096a157bb6b6f0fd7e10b8cf">00023</a> uniform <span class="keywordtype">float</span> <a class="code" href="texture_data_8comp.html#af2a3886f096a157bb6b6f0fd7e10b8cf" title="The maximum height of the data.">maxHeight</a>; 
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 <span class="keywordtype">void</span> main () {
 <a name="l00026"></a>00026     ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
@@ -130,7 +130,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00030"></a>00030     <span class="keywordtype">int</span> offset = x + size.x * y;
 <a name="l00031"></a>00031 
 <a name="l00032"></a>00032     vec3 normal = vec3(normals[offset*3], normals[offset*3 + 1], normals[offset*3 + 2]);
-<a name="l00033"></a>00033     <span class="keywordtype">float</span> height = terrHeight[offset] / maxHeight;
+<a name="l00033"></a>00033     <span class="keywordtype">float</span> height = terrHeight[offset] / <a class="code" href="texture_data_8comp.html#af2a3886f096a157bb6b6f0fd7e10b8cf" title="The maximum height of the data.">maxHeight</a>; <span class="comment">// divide by max height since textures work with normalized (0-1) values</span>
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035     imageStore(textureOut, storePos, vec4(normal, height));
 <a name="l00036"></a>00036 
@@ -155,7 +155,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="texture_data_8comp.html">textureData.comp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

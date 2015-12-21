@@ -266,8 +266,8 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>Takes a pointer to the datahandler for the terrain and the two vectors for flows and floodfill data. The sequence below is how to properly setup a heightfield </p>
 <div class="fragment"><pre class="fragment"> {.cpp}
     <span class="comment">// Load previous simulation</span>
- heightData = <span class="keyword">new</span> <a class="code" href="class_file_handler.html">FileHandler</a>(dataHandler-&gt;getDataWidth(), dataHandler-&gt;getDataHeight());
- velocityData = <span class="keyword">new</span> <a class="code" href="class_file_handler.html">FileHandler</a>(dataHandler-&gt;getDataWidth(), dataHandler-&gt;getDataHeight());
+ heightData = <span class="keyword">new</span> <a class="code" href="class_file_handler.html" title="Used to store float arrays, and/or load them from files.">FileHandler</a>(dataHandler-&gt;getDataWidth(), dataHandler-&gt;getDataHeight());
+ velocityData = <span class="keyword">new</span> <a class="code" href="class_file_handler.html" title="Used to store float arrays, and/or load them from files.">FileHandler</a>(dataHandler-&gt;getDataWidth(), dataHandler-&gt;getDataHeight());
 
  heightData-&gt;<a class="code" href="class_file_handler.html#ac5e48eb872d460a786398fa815db15a0" title="Loads data from a file specified by fPath into the object.">LoadData</a>(init_data-&gt;height_load_path.c_str());
  velocityData-&gt;<a class="code" href="class_file_handler.html#ac5e48eb872d460a786398fa815db15a0" title="Loads data from a file specified by fPath into the object.">LoadData</a>(init_data-&gt;velocity_load_path.c_str());
@@ -568,8 +568,8 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>Initializes the buffers and data necessary for the GPU simulation. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">heightArray</td><td>A pointer to the raw memory block which the <a class="el" href="classfile_handler.html" title="Used to store float arrays, and/or load them from files.">fileHandler</a> will use to load the simulation state </td></tr>
-    <tr><td class="paramname">velocityArray</td><td>A pointer to the raw memory block which the <a class="el" href="classfile_handler.html" title="Used to store float arrays, and/or load them from files.">fileHandler</a> will use to load the simulation state</td></tr>
+    <tr><td class="paramname">heightArray</td><td>A pointer to the raw memory block which the fileHandler will use to load the simulation state </td></tr>
+    <tr><td class="paramname">velocityArray</td><td>A pointer to the raw memory block which the fileHandler will use to load the simulation state</td></tr>
   </table>
   </dd>
 </dl>
@@ -775,7 +775,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
     <ul>
       <li class="navelem"><a class="el" href="class_height_field.html">HeightField</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

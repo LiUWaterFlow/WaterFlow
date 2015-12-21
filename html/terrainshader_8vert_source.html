@@ -111,7 +111,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00011"></a>00011     
 <a name="l00012"></a>00012 };
 <a name="l00013"></a>00013 
-<a name="l00014"></a>00014 in vec3 in_Position;
+<a name="l00014"></a>00014 in vec3 <a class="code" href="skyshader_8vert.html#affd81139dd5666ee11605b5993847112" title="Input vertex position.">in_Position</a>;
 <a name="l00015"></a>00015 in vec3 in_Normal;      <span class="comment">// Vertex-normal.</span>
 <a name="l00016"></a>00016 in vec2 in_TexCoord; <span class="comment">//not currently used</span>
 <a name="l00017"></a>00017 
@@ -119,8 +119,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019 out vec2 out_TexCoord;<span class="comment">// not currently used</span>
 <a name="l00020"></a>00020 out vec3 out_ObjPos;
 <a name="l00021"></a>00021 
-<a name="l00022"></a>00022 uniform mat4 WTVMatrix;
-<a name="l00023"></a>00023 uniform mat4 VTPMatrix;
+<a name="l00022"></a>00022 uniform mat4 <a class="code" href="simplevoxels_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1" title="Transformation matrix from World to View space.">WTVMatrix</a>;
+<a name="l00023"></a>00023 uniform mat4 <a class="code" href="simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129" title="Transformation matrix from View to Projection space.">VTPMatrix</a>;
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 <span class="comment">//out float out_Col_i;</span>
 <a name="l00026"></a>00026 <span class="comment">//out float out_Col_j;</span>
@@ -154,9 +154,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00054"></a>00054     
 <a name="l00055"></a>00055     out_Normal = in_Normal;
 <a name="l00056"></a>00056     out_TexCoord = in_TexCoord; <span class="comment">// not currently used</span>
-<a name="l00057"></a>00057     out_ObjPos = in_Position;
+<a name="l00057"></a>00057     out_ObjPos = <a class="code" href="skyshader_8vert.html#affd81139dd5666ee11605b5993847112" title="Input vertex position.">in_Position</a>;
 <a name="l00058"></a>00058 
-<a name="l00059"></a>00059     gl_Position = VTPMatrix * WTVMatrix * vec4(in_Position, 1.0);
+<a name="l00059"></a>00059     gl_Position = <a class="code" href="simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129" title="Transformation matrix from View to Projection space.">VTPMatrix</a> * <a class="code" href="simplevoxels_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1" title="Transformation matrix from World to View space.">WTVMatrix</a> * vec4(<a class="code" href="skyshader_8vert.html#affd81139dd5666ee11605b5993847112" title="Input vertex position.">in_Position</a>, 1.0);
 <a name="l00060"></a>00060 }
 </pre></div></div><!-- contents -->
 </div>
@@ -178,7 +178,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="terrainshader_8vert.html">terrainshader.vert</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
