@@ -192,10 +192,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093 }
 <a name="l00094"></a>00094 
-<a name="l00095"></a><a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c">00095</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c" title="updateSim (CPU)">HeightField::updateSim</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
+<a name="l00095"></a><a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c">00095</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#a149455f0f29210c9c63253241609e56c" title="updateSim (CPU)">HeightField::updateSim</a>(GLfloat <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>) {
 <a name="l00096"></a>00096 
 <a name="l00097"></a>00097     GLfloat c2 = 1;
-<a name="l00098"></a>00098     GLfloat max_c = (1.0f / <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>);
+<a name="l00098"></a>00098     GLfloat max_c = (1.0f / <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>);
 <a name="l00099"></a>00099     <span class="keywordflow">if</span> (c2 &gt; max_c) {
 <a name="l00100"></a>00100         printf(<span class="stringliteral">&quot;C2 too large/ dt too large.&quot;</span>);
 <a name="l00101"></a>00101     }
@@ -213,8 +213,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00113"></a>00113             GLfloat f = c2*(height_west + height_east + height_south + height_north - 4 * <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing (CPU)">u</a>[i][j]) / h2;
 <a name="l00114"></a>00114 
 <a name="l00115"></a>00115             f = <a class="code" href="class_height_field.html#acb7b5ae6061bf9611ddb0ed1e8286744" title="clamp (or clip) data between two values.">clipf</a>(f, -0.1f, 0.1f);
-<a name="l00116"></a>00116             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] = <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] + f*<a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
-<a name="l00117"></a>00117             <a class="code" href="class_height_field.html#a5c3fd828f346a99a1e249a0a4f7af735" title="Secondary heightmap used for CPU testing (CPU)">unew</a>[i][j] = <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing (CPU)">u</a>[i][j] + <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] * <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00116"></a>00116             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] = <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] + f*<a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>;
+<a name="l00117"></a>00117             <a class="code" href="class_height_field.html#a5c3fd828f346a99a1e249a0a4f7af735" title="Secondary heightmap used for CPU testing (CPU)">unew</a>[i][j] = <a class="code" href="class_height_field.html#ae4ec5f4751c190e626dca82ad6ab6fab" title="The heightmap used for CPU testing (CPU)">u</a>[i][j] + <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] * <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>;
 <a name="l00118"></a>00118             <a class="code" href="class_height_field.html#a62c777dbe247908d2021ce09b3b5d793" title="Velocity field used for CPU testing. (CPU)">v</a>[i][j] *= 0.995f;
 <a name="l00119"></a>00119 
 <a name="l00120"></a>00120         }
@@ -364,8 +364,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00264"></a>00264     }
 <a name="l00265"></a>00265 }
 <a name="l00266"></a>00266 
-<a name="l00267"></a><a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">00267</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">HeightField::runSimGPU</a>(GLfloat <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
-<a name="l00268"></a>00268     <a class="code" href="class_height_field.html#adf2337321b3499e7bf203b1270557334" title="Time taken for the CPU testing. (CPU)">totTime</a> += <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00267"></a><a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">00267</a> <span class="keywordtype">void</span> <a class="code" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96" title="Runs the simulation with the specified dt.">HeightField::runSimGPU</a>(GLfloat <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>) {
+<a name="l00268"></a>00268     <a class="code" href="class_height_field.html#adf2337321b3499e7bf203b1270557334" title="Time taken for the CPU testing. (CPU)">totTime</a> += <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>;
 <a name="l00269"></a>00269     <span class="keywordtype">int</span> numPing = 20;
 <a name="l00270"></a>00270     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
 <a name="l00271"></a>00271 
@@ -477,7 +477,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="height_field_8cpp.html">heightField.cpp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

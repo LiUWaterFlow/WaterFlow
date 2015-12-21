@@ -110,23 +110,62 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38d7d2d84fb7cc382da7b98797a4c70d"></a><!-- doxytag: member="updateHeightShader.comp::layout" ref="a38d7d2d84fb7cc382da7b98797a4c70d" args="(local_size_x=16, local_size_y=16) in" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (local_size_x=16, local_size_y=16) in</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78b8d4ffe21db9389b26b290297f9bfc"></a><!-- doxytag: member="updateHeightShader.comp::layout" ref="a78b8d4ffe21db9389b26b290297f9bfc" args="(std430, binding=4) writeonly buffer height0" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>layout</b> (std430, binding=4) writeonly buffer height0</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="update_height_shader_8comp.html#a38d7d2d84fb7cc382da7b98797a4c70d">layout</a> (local_size_x=16, local_size_y=16) in</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This should be a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="update_height_shader_8comp.html#a78b8d4ffe21db9389b26b290297f9bfc">layout</a> (std430, binding=4) writeonly buffer height0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; height write buffer  <a href="#a78b8d4ffe21db9389b26b290297f9bfc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdef7a1fd863a6d3770c1268cb06add3"></a><!-- doxytag: member="updateHeightShader.comp::main" ref="acdef7a1fd863a6d3770c1268cb06add3" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a97357e98eaffc814a4a8996e8811ee20"></a><!-- doxytag: member="updateHeightShader.comp::dt" ref="a97357e98eaffc814a4a8996e8811ee20" args="" -->
-uniform float&#160;</td><td class="memItemRight" valign="bottom"><b>dt</b></td></tr>
+uniform float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="update_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">simulation timestep <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed22e6adc3355ad6b2430d85fd5c481e"></a><!-- doxytag: member="updateHeightShader.comp::size" ref="aed22e6adc3355ad6b2430d85fd5c481e" args="" -->
-uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="update_height_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e">size</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">width height <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Compute shader for updating the height. </p>
 
 <p>Definition in file <a class="el" href="update_height_shader_8comp_source.html">updateHeightShader.comp</a>.</p>
-</div></div><!-- contents -->
+</div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a78b8d4ffe21db9389b26b290297f9bfc"></a><!-- doxytag: member="updateHeightShader.comp::layout" ref="a78b8d4ffe21db9389b26b290297f9bfc" args="(std430, binding=4) writeonly buffer height0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="update_velocity_shader_8comp.html#a8773c6d6832641afeed0e424c35db29b">layout</a> </td>
+          <td>(</td>
+          <td class="paramtype">std430&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">binding&#160;</td>
+          <td class="paramname"> = <code>4</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>&lt; height write buffer </p>
+<p>&lt; Terrain height buffer</p>
+<p>&lt; VelocityY buffer</p>
+<p>&lt; VelocityX buffer</p>
+<p>&lt; height read buffer </p>
+
+<p>Definition at line <a class="el" href="update_height_shader_8comp_source.html#l00013">13</a> of file <a class="el" href="update_height_shader_8comp_source.html">updateHeightShader.comp</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -146,7 +185,7 @@ uniform ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td
     <ul>
       <li class="navelem"><a class="el" href="update_height_shader_8comp.html">updateHeightShader.comp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

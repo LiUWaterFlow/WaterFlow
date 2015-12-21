@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the buffers and data necessary for the GPU simulation.  <a href="#a7f6f3b58a2ffa29ee3d2f18bf61b5f87"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a21ddcec75d83caa4d4ba78c370d1fd9e">measureVolume</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures the current volume of the water in the simulation.  <a href="#a21ddcec75d83caa4d4ba78c370d1fd9e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">runSimGPU</a> (GLfloat <a class="el" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>=1.0f/30.0f)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#ab0c5d603c8708c079dc8deb158cd6b96">runSimGPU</a> (GLfloat <a class="el" href="update_velocity_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20">dt</a>=1.0f/30.0f)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the simulation with the specified dt.  <a href="#ab0c5d603c8708c079dc8deb158cd6b96"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_height_field.html#a384363f6e93e314073af10e1ab5a6e84">saveData</a> (float **heightArray, float **velocityArray)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the current simulation.  <a href="#a384363f6e93e314073af10e1ab5a6e84"></a><br/></td></tr>
@@ -274,7 +274,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
  <span class="comment">// Initialize water simulation</span>
     hf = <span class="keyword">new</span> <a class="code" href="class_height_field.html#ab3e57c9efa72338c5cb66d2235d37ee9" title="Constructor for the HeightField.">HeightField</a>(dataHandler, init_data-&gt;FFData, init_data-&gt;Flowsources);
     hf-&gt;initGPU(heightData-&gt;GetArray(), velocityData-&gt;<a class="code" href="class_file_handler.html#ac08c9c7059e4aaf68cc6e8d686542fa0" title="Getter for the stored float array.">GetArray</a>());
-</pre></div> <dl class="see"><dt><b>See also:</b></dt><dd>fileHandler::GetArray </dd></dl>
+</pre></div> <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_file_handler.html#ac08c9c7059e4aaf68cc6e8d686542fa0" title="Getter for the stored float array.">FileHandler::GetArray()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00012">12</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
 
@@ -573,7 +573,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
   </table>
   </dd>
 </dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html" title="handles the heightfield simulation. Members marked with (CPU), were used during the CPU trials and ar...">HeightField</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_height_field.html#ab3e57c9efa72338c5cb66d2235d37ee9" title="Constructor for the HeightField.">HeightField()</a>; </dd></dl>
 
 <p>Definition at line <a class="el" href="height_field_8cpp_source.html#l00197">197</a> of file <a class="el" href="height_field_8cpp_source.html">heightField.cpp</a>.</p>
 
@@ -698,7 +698,8 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </pre></div><p> Necessary data for simulation (height and velocity) is saved to the input paths specified by XML. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">pointers</td><td>to raw memory where the data will be saved. </td></tr>
+    <tr><td class="paramname">heightArray</td><td>pointer to raw memory where the data will be saved. </td></tr>
+    <tr><td class="paramname">velocityArray</td><td>pointer to raw memory where the data will be saved. </td></tr>
   </table>
   </dd>
 </dl>
@@ -775,7 +776,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
     <ul>
       <li class="navelem"><a class="el" href="class_height_field.html">HeightField</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

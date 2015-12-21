@@ -137,8 +137,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00037"></a>00037 }
 <a name="l00038"></a>00038 
 <a name="l00039"></a>00039 <span class="comment">// This function updates the internal time of the source idealy this should be called att constant intervals e.g. onece evry loop of simulation. It could be expanded with calculating remaining water.</span>
-<a name="l00040"></a><a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d">00040</a> <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">FlowSource::update</a>(<span class="keywordtype">float</span> <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>){
-<a name="l00041"></a>00041   <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> = <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> + <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>;
+<a name="l00040"></a><a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d">00040</a> <span class="keywordtype">void</span> <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">FlowSource::update</a>(<span class="keywordtype">float</span> <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>){
+<a name="l00041"></a>00041   <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> = <a class="code" href="class_flow_source.html#abf058a78d303e23fa3a0bf7da10e24cb" title="The current internal source time, this should be linear maped to simulation time.">currTime</a> + <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>;
 <a name="l00042"></a>00042 }
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044 <span class="comment">// This function returns the curent pressure depending on the internal time set by the update function.</span>
@@ -191,7 +191,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00091"></a>00091 }
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093 
-<a name="l00094"></a><a class="code" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49">00094</a> <span class="keywordtype">bool</span> <a class="code" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49" title="Checks for changes in pressure after performing an update on the source.">FlowSource::getChange</a>(<span class="keywordtype">float</span> <a class="code" href="field_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="timestep for simulation.">dt</a>) {
+<a name="l00094"></a><a class="code" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49">00094</a> <span class="keywordtype">bool</span> <a class="code" href="class_flow_source.html#aac4ba810fbbe8810fa58a9990d946a49" title="Checks for changes in pressure after performing an update on the source.">FlowSource::getChange</a>(<span class="keywordtype">float</span> <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>) {
 <a name="l00095"></a>00095   <span class="comment">//currPres = FlowSource::getPressure();</span>
 <a name="l00096"></a>00096   <a class="code" href="class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d" title="This function updates the source by progressing the internal source time. this should be called regul...">FlowSource::update</a>(dt);
 <a name="l00097"></a>00097   <span class="keywordtype">float</span> newPre = <a class="code" href="class_flow_source.html#a8bfe33f49781c093cdee9fef53270393" title="This function finds the curent pressure depandeing on the internal time set by the update function...">FlowSource::getPressure</a>();
@@ -223,7 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>flowSource.cpp</b>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

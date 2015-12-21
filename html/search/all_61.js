@@ -10,5 +10,6 @@ var searchData=
   ['advectwaterprogram',['advectWaterProgram',['../class_shallow_g_p_u.html#a675afa38097d77e9482b9230ff2759c5',1,'ShallowGPU']]],
   ['advectwatershader_2ecomp',['advectWaterShader.comp',['../advect_water_shader_8comp.html',1,'']]],
   ['antbar',['antBar',['../class_program.html#ae567a36cf97946d2229c48760425b537',1,'Program']]],
-  ['arraylength',['arrayLength',['../class_file_handler.html#af7a77d4c88ec1b7f3881aec7115c0462',1,'FileHandler']]]
+  ['arraylength',['arrayLength',['../class_file_handler.html#af7a77d4c88ec1b7f3881aec7115c0462',1,'FileHandler']]],
+  ['average',['average',['../advect_velocity_x_shader_8comp.html#a92ca4d1d9776009ec7acf592a60ad35d',1,'average(int i, int j):&#160;advectVelocityXShader.comp'],['../advect_water_shader_8comp.html#a92ca4d1d9776009ec7acf592a60ad35d',1,'average(int i, int j):&#160;advectWaterShader.comp']]]
 ];
