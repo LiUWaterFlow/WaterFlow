@@ -4,55 +4,57 @@
 
 #version 430
 
-layout(local_size_x = 16, local_size_y = 16) in;
+layout(local_size_x = 16, local_size_y = 16) in; ///< This should be a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.
 
-layout  (std430,binding = 4) readonly buffer height0
+layout  (std430,binding = 4) readonly buffer height0 ///< height ping buffer
 {
 	float water0[];
 	
 };
 
-layout (std430, binding = 5) writeonly buffer height1
+layout (std430, binding = 5) writeonly buffer height1 ///< height pong buffer
 {
 	float water1[];	
 };
 
-layout (std430,binding = 6) readonly buffer velocityX
+layout (std430,binding = 6) readonly buffer velocityX ///< VelocityX ping buffer
 {
 	float vxin[];
 	
 };
 
-layout (std430,binding = 7) readonly buffer velocityXout
+layout (std430,binding = 7) readonly buffer velocityXout ///< VelocityX pong buffer
 {
 	float vxout[];
 	
 };
 
 
-layout (std430,binding = 8) readonly buffer velocityY
+layout (std430,binding = 8) readonly buffer velocityY ///< VelocityY ping buffer
 {	
 	float vyin[];
 	
 };
 
 
-layout (std430,binding = 9) readonly buffer velocityYout
+layout (std430,binding = 9) readonly buffer velocityYout ///< VelocityY pong buffer
 {	
 	float vyout[];
 	
 };
 
-layout (std430,binding = 10) readonly buffer Terrain
+layout (std430,binding = 10) readonly buffer Terrain ///< Terrain height
 {	
 	float terr[];
 	
 };
 
 
-uniform ivec2 size; //width height
-uniform float dt;
-
+uniform ivec2 size; ///< width height
+uniform float dt; ///< simulation dt
+///@brief function for calculating averages of surrounding neighbours
+///
+///
 float average(int i, int j){ 
 	i = clamp(i,0,size.x-1);
 	j = clamp(j,0,size.y-1);
@@ -70,7 +72,9 @@ float average(int i, int j){
 	return 0.2f*(water0[offset] +water0[offsete] +water0[offsetw] +water0[offsetn] +water0[offsets]); 
 
 }
-
+///@brief function for calculating averages (by bilinearInterpolation) of surrounding neighbours
+///
+///
 float bilinjearInterpolation(float point_x, float point_y)
 {
 	//picking out the nearby points

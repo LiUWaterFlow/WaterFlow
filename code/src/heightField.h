@@ -177,7 +177,8 @@ public:
 	/// velocityData->SaveData(init_data->velocity_save_path.c_str());
 	/// @endcode
 	/// Necessary data for simulation (height and velocity) is saved to the input paths specified by XML.
-	/// @param pointers to raw memory where the data will be saved.
+	/// @param heightArray pointer to raw memory where the data will be saved.
+	/// @param velocityArray pointer to raw memory where the data will be saved.
 	void saveData(float** heightArray, float** velocityArray);
 };
 #endif

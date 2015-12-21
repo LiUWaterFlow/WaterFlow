@@ -4,56 +4,56 @@
 
 #version 430
 
-layout(local_size_x = 16, local_size_y = 16) in;
+layout(local_size_x = 16, local_size_y = 16) in; ///< This should be a nxn, where n is power of 2, however next step would result in 32x32, 1024 threads which is not always supported.
 
-layout  (std430,binding = 4) readonly buffer height0
+layout  (std430,binding = 4) readonly buffer height0 ///< height ping buffer
 {
 	float water0[];
 	
 };
 
-layout (std430, binding = 5) readonly buffer height1
+layout (std430, binding = 5) readonly buffer height1///< height pong buffer
 {
 	float water1[];	
 };
 
 //Since in previous step, (advectVelocity) we used this as inbuffer and vxout as out. Now we are interested in the new data and want to save it to a out buffer. vin cotains nothing of value anymore. use it as out data. DO NOT SWAP IN CPP.
 
-layout (std430,binding = 6) writeonly buffer velocityX
+layout (std430,binding = 6) writeonly buffer velocityX ///< VelocityX write buffer
 {
 	float vxin[];
 	
 };
 
-layout (std430,binding = 7) readonly buffer velocityXout
+layout (std430,binding = 7) readonly buffer velocityXout ///< VelocityX read buffer
 {
 	float vxout[];
 	
 };
 
 
-layout (std430,binding = 8) writeonly buffer velocityY
+layout (std430,binding = 8) writeonly buffer velocityY ///< VelocityY write buffer
 {	
 	float vyin[];
 	
 };
 
 
-layout (std430,binding = 9) readonly buffer velocityYout
+layout (std430,binding = 9) readonly buffer velocityYout ///< VelocityY read buffer
 {	
 	float vyout[];
 	
 };
 
-layout (std430,binding = 10) readonly buffer Terrain
+layout (std430,binding = 10) readonly buffer Terrain ///< Terrain height read buffer
 {	
 	float terr[];
 	
 };
 
 
-uniform ivec2 size; //width height
-uniform float dt;
+uniform ivec2 size; ///<width height
+uniform float dt; ///< simulation dt
 
 void main(){
 
