@@ -407,7 +407,7 @@ void Program::handleMouseButton(SDL_Event* event) {
 		gluUnProject((GLdouble)x, (GLdouble)(viewport[3] - y), (GLdouble)depth, glm::value_ptr((glm::dmat4)*cam->getWTV()), glm::value_ptr((glm::dmat4)*cam->getVTP()), viewport, &objX, &objY, &objZ);
 
 		heightAtClickData = dataHandler->giveHeight((GLfloat)objX, (GLfloat)objZ);
-		heighAtClickProj = (GLfloat)objY - heightAtClickData;
+		heighAtClickProj = fmax((GLfloat)objY - heightAtClickData, 0.0f);
 	}
 }
 

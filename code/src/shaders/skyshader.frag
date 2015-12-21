@@ -5,11 +5,10 @@
 
 #version 150
 
-in vec3 Position;
-uniform samplerCube cube_texture;
-out vec4 out_Color;
+in vec3 Position; ///< Input position
+uniform samplerCube cube_texture; ///< The cube texture (a cube map)
+out vec4 out_Color; ///< The output color
 
-void main(void)
-{
+void main(void) {
     out_Color = texture(cube_texture, Position);
 }

@@ -6,21 +6,21 @@
 
 #version 430
 
-layout(local_size_x = 16, local_size_y = 16) in;
+layout(local_size_x = 16, local_size_y = 16) in; ///< Size of calculation kernels on GPU, preferably multiple of 32.
 
-layout (std430, binding = 0) readonly buffer inHeight
+layout (std430, binding = 0) readonly buffer inHeight ///< Input heightmap buffer
 {
 	float terrHeight[];
 };
 
-layout (std430, binding = 1) readonly buffer inNormals
+layout (std430, binding = 1) readonly buffer inNormals ///< Input normals buffer
 {
 	float normals[];
 };
 
-layout (rgba32f, binding = 0) writeonly uniform image2D textureOut;
-uniform ivec2 size;
-uniform float maxHeight;
+layout (rgba32f, binding = 0) writeonly uniform image2D textureOut; ///< Combine the height and normals and output to this texture
+uniform ivec2 size; ///< Width, Height of the data
+uniform float maxHeight; ///< The maximum height of the data
 
 void main () {
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
@@ -30,7 +30,7 @@ void main () {
 	int offset = x + size.x * y;
 
 	vec3 normal = vec3(normals[offset*3], normals[offset*3 + 1], normals[offset*3 + 2]);
-	float height = terrHeight[offset] / maxHeight;
+	float height = terrHeight[offset] / maxHeight; // divide by max height since textures work with normalized (0-1) values
 
 	imageStore(textureOut, storePos, vec4(normal, height));
 
