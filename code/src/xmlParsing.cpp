@@ -1,3 +1,6 @@
+/// @file xmlParsing.cpp
+/// @brief Implementations of functions xmlParsing.h
+
 #include "xmlParsing.h"
 
 // This file implement all the parsing functions for the XML file contents and an generating function for the Flowsource class.

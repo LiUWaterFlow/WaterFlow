@@ -1,7 +1,7 @@
-#include "flowSource.h"
+/// @file flowSource.cpp
+/// @brief This file contains the implementation for the methods of the flowSource.h file
 
-// This file contains the implementation for the methods of the flowSource class
-//-----------------------------------------------------------------------------
+#include "flowSource.h"
 
 // This functoin expects pressure and time values in two seperates vectors with a N to N corespondence,
 // where N is the vector position.
@@ -11,7 +11,6 @@ void FlowSource::setPressure(std::vector<float> P, std::vector<float> time){
   pressure = P;
   pressureTime = time;
 }
-
 
 // This function expects a vector filled with vectors that hold 3 values, xyz, and a time vector that specifies when to change the Normal direction. this time vector can be independent from the one used for pressure.
 void FlowSource::setNormal(std::vector< std::vector<float> > N, std::vector<int> time){

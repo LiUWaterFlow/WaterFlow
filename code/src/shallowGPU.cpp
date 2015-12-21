@@ -1,5 +1,5 @@
 /// @file shallowGPU.cpp
-/// @brief Implementations of functions sdlTexture.h
+/// @brief Implementations of functions shallowGPU.h
 
 #include "shallowGPU.h"
 #include "GL_utilities.h"

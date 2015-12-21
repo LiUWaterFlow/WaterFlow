@@ -1,5 +1,5 @@
 /// @file heightField.cpp
-/// @brief Implementations of functions in heightfield.h
+/// @brief Implementations of functions in heightField.h
 
 #include "heightField.h"
 #include "GL_utilities.h"

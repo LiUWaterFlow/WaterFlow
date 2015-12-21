@@ -1,5 +1,5 @@
 /// @file fileHandler.cpp
-/// @brief Implementations of functions FileHandler.h
+/// @brief Implementations of functions fileHandler.h
 
 #include "fileHandler.h"
 #include <iostream>

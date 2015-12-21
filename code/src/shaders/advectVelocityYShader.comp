@@ -1,6 +1,5 @@
-/// @file advectVelocityXShader.comp
+/// @file advectVelocityYShader.comp
 /// @brief Compute shader for advecting velocity for Y component.
-///
 
 #version 430
 
@@ -9,7 +8,6 @@ layout(local_size_x = 16, local_size_y = 16) in; ///< This should be a nxn, wher
 layout  (std430,binding = 4) readonly buffer height0 ///< height Ping buffer
 {
 	float water0[];
-	
 };
 
 layout (std430, binding = 5) readonly buffer height1 ///< height Ping buffer
@@ -20,34 +18,26 @@ layout (std430, binding = 5) readonly buffer height1 ///< height Ping buffer
 layout (std430,binding = 6) readonly buffer velocityX ///< VelocityX read buffer
 {
 	float vxin[];
-	
 };
 
 layout (std430,binding = 7) writeonly buffer velocityXout ///< VelocityX write buffer
 {
 	float vxout[];
-	
 };
-
-
 
 layout (std430,binding = 8) readonly buffer velocityY ///< VelocityY read buffer
 {	
 	float vyin[];
-	
 };
-
 
 layout (std430,binding = 9) writeonly buffer velocityYout ///< VelocityY write buffer
 {	
 	float vyout[];
-	
 };
 
 layout (std430,binding = 10) readonly buffer Terrain ///< Terrain height
 {	
 	float terr[];
-	
 };
 
 

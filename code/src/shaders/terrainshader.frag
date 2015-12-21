@@ -22,64 +22,69 @@ layout(std140, binding = 0) uniform LightInfo ///< All the lights are stored in 
 	LightParam lights[2];
 };
 
-in vec3 out_Normal;
-in vec2 out_TexCoord;// not currently used
-in vec3 out_ObjPos;
 
-out vec4 out_Color;
+// ===== Uniforms =====
 
-uniform vec3 camPos;	// Kamerapositionen.
-
-uniform vec3 size;
-
-uniform sampler2D terr_texUnit;
-uniform sampler2D height_texUnit;	// Terrain normal and height texture.
-
-vec3 r;
-vec3 s;				// Incomming light.
-vec3 eye;			// vector from object to camera.
+uniform vec3 camPos;				///< Camera position.
+uniform vec3 size;					///< Data size.
+uniform sampler2D terr_texUnit;		///< Terrain (color) texture.
+uniform sampler2D height_texUnit;	///< Terrain geometry (normal and height) texture.
 
 
-// Phong-modellen:
-float kamb;
-float kdiff;
-float kspec;
-vec3 ambLight;		// Ambient.
-vec3 diffLight;		// Diffuse.
-vec3 specLight;		// Specular.
-vec3 totalLight;	// total light.
+// ===== In/Out params =====
 
-//in float out_Col_i;
-//in float out_Col_j;
+in vec3 out_Normal;					///< Fragment normal.
+in vec2 out_TexCoord;				///< Fragment texture coordinate.
+in vec3 out_ObjPos;					///< Fragment position.
+
+out vec4 out_Color;					///< Fragment (out) pixel value.
+
+
+// ===== Variables needed =====
+
+// Light vectors
+vec3 r;								///< Reflected light vector.
+vec3 s;								///< Incident light vector.
+vec3 eye;							///< Vector from the fragment to the camera.
+
+// Lighting (the Phong model).
+float kamb;							///< Ambient light coefficient.
+float kdiff;						///< Diffuse light coefficient.
+float kspec;						///< Specular light coefficient.
+
+vec3 ambLight;						///< Ambient light color.
+vec3 diffLight;						///< Diffuse light color.
+vec3 specLight;						///< Specular light color.
+vec3 totalLight;					///< Total light color.
+
 
 void main(void)
 {
-	// Incomming and reflecting light is calculated for every lightsource
+	// Incident and reflected light is calculated for the light source.
 	s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
-	r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
+	r = normalize(2 * out_Normal * dot(s, normalize(out_Normal)) - s);
 
-	// eye-vector is calculated.
+	// eye vector is calculated.
 	eye = normalize(camPos - out_ObjPos);
 
-	// Light according to phong model
+	// Light according to the Phong model.
 	kamb = 0.1;
 	kdiff = 0.5;
 	kspec = 0.5;
 	ambLight = kamb * vec3(1.0, 1.0, 1.0);
 	diffLight = vec3(0.0, 0.0, 0.0);
 	specLight = vec3(0.0, 0.0, 0.0);
-	// Diffuse-light calculated
+	// Diffuse light.
 	diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(out_Normal)));
-	// Specular light calculated
+	// Specular light.
 	specLight += kspec * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
 
 	totalLight = vec3(0.0, 0.0, 0.0);
-	// the different light components is added to total light
+	// The different light components are added to the total light.
 	totalLight += ambLight;
 	totalLight += diffLight;
 	totalLight += specLight;
 
-	// Just to check that the terrain data texture is working
 	vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight;
 	out_Color = vec4(terrainData, 1.0f);
 }
