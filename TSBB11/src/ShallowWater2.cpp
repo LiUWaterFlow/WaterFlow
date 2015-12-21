@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <stdbool.h> //so bools can be passed with typename in printValue
 
-int ShallowWater2::run()
+int ShallowWater2::runDebug()
 {
 	/*Start by setting data*/
 	AddTerrainHeight(0.0f);
@@ -611,7 +611,7 @@ void ShallowWater2::SetTerrainHeight(float value)
 		}
 	}
 }
-void ShallowWater2::setVelocity_X(float value)
+void ShallowWater2::SetVelocity_X(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -651,7 +651,7 @@ void ShallowWater2::SetTerrainHeight(float value, unsigned int x, unsigned int y
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) = value;
 }
-void ShallowWater2::setVelocity_X(float value, unsigned int x, unsigned int y)
+void ShallowWater2::SetVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -694,7 +694,7 @@ void ShallowWater2::SetTerrainHeight(float value, unsigned int from_x, unsigned 
 		}
 	}
 }
-void ShallowWater2::setVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWater2::SetVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)

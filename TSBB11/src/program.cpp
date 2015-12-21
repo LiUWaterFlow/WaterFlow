@@ -63,17 +63,17 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	if (choice == 1)
 	{
 		HeightFieldCPU newton(size_x, size_y);
-		return newton.run();
+		return newton.runDebug();
 	}
 	else if (choice == 2)
 	{
 		ShallowWater2 navier(size_x, size_y);
-		return navier.run();
+		return navier.runDebug();
 	}
 	else if (choice == 3)
 	{
 		ShallowWater3 shallow(size_x, size_y);
-		return shallow.run();
+		return shallow.runDebug();
 	}
 	else
 	{

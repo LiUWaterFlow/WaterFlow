@@ -72,7 +72,7 @@ public:
 	/*This is a temporary function that is called from the main program
 	*Everything except gridSize can be manipulated here. If grid size wants
 	*to be manipulated do that in main.cpp*/
-	int run();
+	int runDebug();
 
 
 	/*functions for setting all values to a specific value*/

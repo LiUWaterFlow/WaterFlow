@@ -15,7 +15,7 @@ ShallowWater3::~ShallowWater3()
 	m_temp.clear();
 }
 
-int ShallowWater3::run()
+int ShallowWater3::runDebug()
 {
 	/*Start by setting data*/
 	AddTerrainHeight(10.0f);

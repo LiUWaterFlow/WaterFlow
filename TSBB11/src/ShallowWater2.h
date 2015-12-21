@@ -16,7 +16,7 @@ public:
 	/*This is a temporary function that is called from the main program
 	 *Everything except gridSize can be manipulated here. If grid size wants
 	 *to be manipulated do that in main.cpp*/
-	int run();
+	int runDebug();
 
 	/*Run the simulation*/
 	void RunSimulation(const float dt);
@@ -24,17 +24,17 @@ public:
 	/*functions for setting all values to a specific value*/
 	void SetWaterHeight(float value);
 	void SetTerrainHeight(float value);
-	void setVelocity_X(float value);
+	void SetVelocity_X(float value);
 	void SetVelocity_Y(float value);
 	/*functions for setting a specific value at a specific place*/
 	void SetWaterHeight(float value, unsigned int x, unsigned int y);
 	void SetTerrainHeight(float value, unsigned int x, unsigned int y);
-	void setVelocity_X(float value, unsigned int x, unsigned int y);
+	void SetVelocity_X(float value, unsigned int x, unsigned int y);
 	void SetVelocity_Y(float value, unsigned int x, unsigned int y);
 	/*functions for setting a specific value to a range*/
 	void SetWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y);
 	void SetTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y);
-	void setVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y);
+	void SetVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y);
 	void SetVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y);
 
 	/*functions for adding a value to all positions*/

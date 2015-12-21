@@ -9,41 +9,21 @@
 #include <iostream>
 #include <iomanip>
 
-int HeightFieldCPU::run()
+int HeightFieldCPU::runDebug()
 {
 	/*Start by setting data*/
 	AddTerrainHeight(0.0f);
-	AddVelocity_X(0);
+	AddVelocity_Z(0);
 
 	//Add Water
-	AddWaterHeight(5, 10, 10);
+	AddWaterHeight(5, m_sizeX/2, m_sizeY/2);
 
-	/*Maybe print so it is as it should be*/
-	//PrintWaterHeight();
-	//PrintTerrainHeight();
-	//PrintWaterHeightSum();
-	//Pause(); //first pause is ignored because reasons (probably because we use a cin << getChar() from Program.cpp and the enter key carries through or something)
-	Pause("Running Shallow Water 2");
+	Pause("Running HeightFieldCPU");
 	for (unsigned int i = 0; i < 100000; i++) //maybe run the simulation 5 times
 	{
 		RunSimulation(0.05f);
-		//if(i%500 == 0)
-		//{
-		/*Print velocity y for each iteration maybe*/
-		//PrintWaterBool(i);
-		//PrintWaterFillLevel(i);
-		//PrintTerrainHeight(i);
-		//PrintVelocity_X(i);
-		//PrintVelocity_Y(i);
-		//PrintWaterHeightSum(i);
-		/*and pause so we see what happens*/
-		//Pause();
-		//}
 	}
-	/*then print again*/
-	//PrintWaterHeight();
-	//PrintWaterHeightSum();
-	/*maybe a pause with a message so we know WHY we paused*/
+	
 	Pause("Last Pause before termination");
 
 	return 1; //then end it here
@@ -56,12 +36,12 @@ float HeightFieldCPU::getHeight(int i, int j, float ourWater, float ourTot) {
 
 	i = glm::clamp(i, 0, (int)m_sizeX - 1);
 	j = glm::clamp(j, 0, (int)m_sizeY - 1);
-	//float theirTot = u0[i + j*size.x];
+
 	float theirTerr = m_terrain_height[i + j*m_sizeX];
 	float theirWater = m_water_height[i + j*m_sizeX];
 	float theirTot = theirTerr + theirWater;
-	float diff = theirTot - ourTot;//ourTot - theirTot;
-	//
+	float diff = theirTot - ourTot;
+
 	return glm::clamp(diff, -ourWater / 4.0f, theirWater / 4.0f);
 }
 
@@ -95,8 +75,6 @@ void HeightFieldCPU::RunSimulation(float dt) {
 
 }
 
-///////////////////////////////////////////////////////7
-////////////////////////////////////////////////////////
 float HeightFieldCPU::SumArray(std::vector<float>& arr) const
 {
 	float sum = 0.0f;
@@ -186,7 +164,6 @@ void HeightFieldCPU::PrintWaterHeightSum(int iter)
 	}
 	std::cout << " Percentage difference: " << SumDifference << " \n" << std::endl;
 
-	//oldSumArray/
 }
 /*
 *=========================================================
@@ -202,7 +179,7 @@ void HeightFieldCPU::PrintTerrainHeight(int iteration) const
 {
 	Print(m_terrain_height, "TERRAIN_HEIGHT", iteration);
 }
-void HeightFieldCPU::PrintVelocity_X(int iteration) const
+void HeightFieldCPU::PrintVelocity_Z(int iteration) const
 {
 	Print(m_velocity_z, "VELOCITY_X", iteration);
 }
@@ -227,7 +204,7 @@ void HeightFieldCPU::PrintTerrainHeight(unsigned int x, unsigned int y) const
 	PrintNumber(m_terrain_height.at(index));
 	std::cout << std::flush;
 }
-void HeightFieldCPU::PrintVelocity_X(unsigned int x, unsigned int y) const
+void HeightFieldCPU::PrintVelocity_Z(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -267,7 +244,7 @@ void HeightFieldCPU::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, 
 	}
 	std::cout << std::flush;
 }
-void HeightFieldCPU::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void HeightFieldCPU::PrintVelocity_Z(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -308,7 +285,7 @@ void HeightFieldCPU::SetTerrainHeight(float value)
 		}
 	}
 }
-void HeightFieldCPU::setVelocity_X(float value)
+void HeightFieldCPU::SetVelocity_Z(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -337,7 +314,7 @@ void HeightFieldCPU::SetTerrainHeight(float value, unsigned int x, unsigned int 
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) = value;
 }
-void HeightFieldCPU::setVelocity_X(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SetVelocity_Z(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -374,7 +351,7 @@ void HeightFieldCPU::SetTerrainHeight(float value, unsigned int from_x, unsigned
 		}
 	}
 }
-void HeightFieldCPU::setVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SetVelocity_Z(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -417,7 +394,7 @@ void HeightFieldCPU::AddTerrainHeight(float value)
 	}
 }
 
-void HeightFieldCPU::AddVelocity_X(float value)
+void HeightFieldCPU::AddVelocity_Z(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -447,7 +424,7 @@ void HeightFieldCPU::AddTerrainHeight(float value, unsigned int x, unsigned int 
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) += value;
 }
-void HeightFieldCPU::AddVelocity_X(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::AddVelocity_Z(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -483,7 +460,7 @@ void HeightFieldCPU::AddTerrainHeight(float value, unsigned int from_x, unsigned
 		}
 	}
 }
-void HeightFieldCPU::AddVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::AddVelocity_Z(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -509,9 +486,9 @@ void HeightFieldCPU::SubTerrainHeight(float value)
 {
 	AddTerrainHeight(-value);
 }
-void HeightFieldCPU::SubVelocity_X(float value)
+void HeightFieldCPU::SubVelocity_Z(float value)
 {
-	AddVelocity_X(-value);
+	AddVelocity_Z(-value);
 }
 /*
 *=========================================================
@@ -527,9 +504,9 @@ void HeightFieldCPU::SubTerrainHeight(float value, unsigned int x, unsigned int 
 {
 	AddTerrainHeight(-value, x, y);
 }
-void HeightFieldCPU::SubVelocity_X(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SubVelocity_Z(float value, unsigned int x, unsigned int y)
 {
-	AddVelocity_X(-value, x, y);
+	AddVelocity_Z(-value, x, y);
 }
 /*
 *=========================================================
@@ -545,9 +522,9 @@ void HeightFieldCPU::SubTerrainHeight(float value, unsigned int from_x, unsigned
 {
 	AddTerrainHeight(-value, from_x, to_x, from_y, to_y);
 }
-void HeightFieldCPU::SubVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SubVelocity_Z(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
-	AddVelocity_X(-value, from_x, to_x, from_y, to_y);
+	AddVelocity_Z(-value, from_x, to_x, from_y, to_y);
 }
 
 
