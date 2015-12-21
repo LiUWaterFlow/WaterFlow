@@ -143,7 +143,7 @@ public:
 	///	hf->initGPU(heightData->GetArray(), velocityData->GetArray());
 	///
 	/// @endcode
-	/// @see fileHandler::GetArray
+	/// @see FileHandler::GetArray()
 	
 	HeightField(DataHandler *t, std::vector<Flood_Fill_data*> FFDataIn, std::vector<FlowSource*> FlowsourcesIN);
 
@@ -152,7 +152,7 @@ public:
 	/// @param heightArray A pointer to the raw memory block which the fileHandler will use to load the simulation state
 	/// @param velocityArray A pointer to the raw memory block which the fileHandler will use to load the simulation state
 	/// 
-	/// @see HeightField
+	/// @see HeightField();
 	void initGPU(float** heightArray, float** velocityArray);
 
 	/// @brief Runs the simulation with the specified dt
