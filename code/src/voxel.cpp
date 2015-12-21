@@ -402,24 +402,6 @@ std::vector<GLuint> *Voxelgrid::getVoxelPositions() {
 		}
 	}
 
-
-	/*
-	for (GLuint x = 0; x < voxels->size(); x++) {
-		if ((*voxels)[x] != nullptr) {
-			for (GLuint y = 0; y < (*voxels)[x]->size(); y++) {
-				if ((*(*voxels)[x])[y] != nullptr) {
-					for (GLuint z = 0; z < (*(*voxels)[x])[y]->size(); z++) {
-						if ((*(*(*voxels)[x])[y])[z] != nullptr && (*(*(*voxels)[x])[y])[z]->filled) {
-							positions->push_back(x - 10);
-							positions->push_back(y - 10);
-							positions->push_back(z - 10);
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
 	return positions;
 }
 

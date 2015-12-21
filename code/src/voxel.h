@@ -135,12 +135,6 @@ public:
   /// @return Returns a pointer to the voxel (i.e. changes can be made.) If no voxel exists a nullpointer is returned.
   voxel* getVoxel(int16_t x, int16_t y, int16_t z);
 
-  /*
-  std::vector<std::array<int, 2>>* LayerFloodFill(int init_x, int init_z, int height);
-
-  void LayerFloodFill_Rec(int x, int z, int height, std::vector<std::array<int, 2>>* filled_coords);
-  */
-
   ///@brief Floodfills pixels at the specified position and height.
   ///
   /// Floodfills at height, stopping when hitting terrain which is heigher than
