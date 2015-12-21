@@ -235,14 +235,6 @@ void ShallowGPU::initGPU() {
 	glUniform2i(glGetUniformLocation(updateVelocityProgram, "size"), texWidth, texHeight);
 	glUniform1f(glGetUniformLocation(advectWaterProgram, "dt"), dt);
 
-	/*
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, shallowBuffers[0]);
-	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(GLfloat)*texWidth*texHeight, u);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	*/
-	//std::valarray<float> myvalarray(u, texWidth*texHeight);
-	//vol0 = myvalarray.sum();
-
 	delete u;
 	delete vx;
 	delete vy;
@@ -349,13 +341,6 @@ void ShallowGPU::runSimGPU(GLfloat dt) {
 			Print(shallowBuffers[5], "VELY1 AFTER ALL ", 1);
 
 			}
-
-
-		/*
-	std::swap(shallowBuffers[0],shallowBuffers[1]);
-	std::swap(shallowBuffers[3],shallowBuffers[2]);
-	std::swap(shallowBuffers[4],shallowBuffers[5]);
-	*/
 	}
 
 	//Bind input data(to render)
