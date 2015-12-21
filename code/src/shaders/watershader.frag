@@ -5,8 +5,8 @@
 
 // ===== Uniform Buffers =====
 
-/// @ struct LightParam
-/// @ brief Struct that contains one light source
+/// @struct LightParam
+/// @brief Struct that contains one light source
 ///
 /// Load an array of light params as a uniform buffer, that makes it possible to
 /// upload the lights only once.
