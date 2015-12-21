@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['in_5fposition',['in_Position',['../skyshader_8vert.html#affd81139dd5666ee11605b5993847112',1,'skyshader.vert']]],
+  ['in_5fnormal',['in_Normal',['../terrainshader_8vert.html#a9436a0613bb4c74f27e7f94a374e123e',1,'terrainshader.vert']]],
+  ['in_5fposition',['in_Position',['../skyshader_8vert.html#affd81139dd5666ee11605b5993847112',1,'in_Position():&#160;skyshader.vert'],['../terrainshader_8vert.html#affd81139dd5666ee11605b5993847112',1,'in_Position():&#160;terrainshader.vert']]],
+  ['in_5ftexcoord',['in_TexCoord',['../terrainshader_8vert.html#a139de302a9ea6329632f3b6a726904cf',1,'terrainshader.vert']]],
   ['init',['init',['../class_program.html#af90b1259f253f244467ab8ad486a27c6',1,'Program']]],
   ['init_5fdata',['init_data',['../class_program.html#a69af6cc02cb01f3037705299dd9fa2fc',1,'Program']]],
   ['init_5fdata_5fstruct',['init_Data_struct',['../structinit___data__struct.html',1,'init_Data_struct'],['../structinit___data__struct.html#af47b94af894188f5f23dddc7da28d572',1,'init_Data_struct::init_Data_struct()']]],

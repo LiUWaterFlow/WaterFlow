@@ -1,7 +1,7 @@
 var searchData=
 [
   ['terr',['terr',['../class_height_field.html#a0f02cb289183bf7857113ef1dc0707be',1,'HeightField::terr()'],['../class_shallow_g_p_u.html#a2d65f816e58251bff553ddb20128a9c4',1,'ShallowGPU::terr()']]],
-  ['terr_5ftexunit',['terr_texUnit',['../watershader_8frag.html#af0de3ce9fcc74174d2a9d0591a3f5475',1,'watershader.frag']]],
+  ['terr_5ftexunit',['terr_texUnit',['../terrainshader_8frag.html#af0de3ce9fcc74174d2a9d0591a3f5475',1,'terr_texUnit():&#160;terrainshader.frag'],['../watershader_8frag.html#af0de3ce9fcc74174d2a9d0591a3f5475',1,'terr_texUnit():&#160;watershader.frag']]],
   ['terrain',['terrain',['../class_camera.html#a6d29631b17e1a26aed28079d2aae00fe',1,'Camera::terrain()'],['../class_program.html#a8cda0569981a64436eda879c336dd37b',1,'Program::terrain()']]],
   ['terrainbufferid',['terrainBufferID',['../class_data_handler.html#a0075dfbc2fc9fefa294f182d966b6a04',1,'DataHandler']]],
   ['terraindataatbottom',['terrainDataAtBottom',['../watershader_8frag.html#aa253094664bd31dbe7fd68caac764bdc',1,'watershader.frag']]],
@@ -23,6 +23,7 @@ var searchData=
   ['theta1',['theta1',['../watershader_8frag.html#a7011209d6553df74d513f0a6c956e7e1',1,'watershader.frag']]],
   ['theta2',['theta2',['../watershader_8frag.html#a6f55ee205d99fea441d78d90faddd2b4',1,'watershader.frag']]],
   ['time',['time',['../watershader_8frag.html#a251125d5d29683e1458005f28de9845f',1,'watershader.frag']]],
+  ['totallight',['totalLight',['../terrainshader_8frag.html#adba80f4b1c58676c872524e10e341cfd',1,'terrainshader.frag']]],
   ['totalwater',['totalWater',['../class_flow_source.html#a7a4d74ebd43f9bc207833411a70f433a',1,'FlowSource']]],
   ['tottime',['totTime',['../class_height_field.html#adf2337321b3499e7bf203b1270557334',1,'HeightField::totTime()'],['../class_shallow_g_p_u.html#ab235ba9ec84d41c9f54f6f78b7291f53',1,'ShallowGPU::totTime()']]],
   ['transparency',['transparency',['../class_water.html#a1e7d6b9bf03667954a04e61016ed8ac8',1,'Water::transparency()'],['../watershader_8frag.html#aa274fe21beb00a2b7c2d82c030c856d0',1,'transparency():&#160;watershader.frag']]]

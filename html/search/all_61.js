@@ -11,7 +11,7 @@ var searchData=
   ['advectwatershader_2ecomp',['advectWaterShader.comp',['../advect_water_shader_8comp.html',1,'']]],
   ['airrefind',['airRefInd',['../watershader_8frag.html#ac7b706a6ddcead1759d995bc262a84b6',1,'watershader.frag']]],
   ['alpha',['alpha',['../watershader_8frag.html#ab1551d8043c2aa4410fb7dbb1fe3be7b',1,'watershader.frag']]],
-  ['amblight',['ambLight',['../watershader_8frag.html#a472f5a950fb37468d4c7063e1a66c412',1,'watershader.frag']]],
+  ['amblight',['ambLight',['../terrainshader_8frag.html#a472f5a950fb37468d4c7063e1a66c412',1,'ambLight():&#160;terrainshader.frag'],['../watershader_8frag.html#a472f5a950fb37468d4c7063e1a66c412',1,'ambLight():&#160;watershader.frag']]],
   ['antbar',['antBar',['../class_program.html#ae567a36cf97946d2229c48760425b537',1,'Program']]],
   ['arraylength',['arrayLength',['../class_file_handler.html#af7a77d4c88ec1b7f3881aec7115c0462',1,'FileHandler']]],
   ['average',['average',['../advect_velocity_x_shader_8comp.html#a92ca4d1d9776009ec7acf592a60ad35d',1,'average(int i, int j):&#160;advectVelocityXShader.comp'],['../advect_water_shader_8comp.html#a92ca4d1d9776009ec7acf592a60ad35d',1,'average(int i, int j):&#160;advectWaterShader.comp']]]

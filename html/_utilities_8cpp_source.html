@@ -148,15 +148,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00048"></a>00048     free(squareTexCoord);
 <a name="l00049"></a>00049 }
 <a name="l00050"></a>00050 
-<a name="l00051"></a><a class="code" href="_utilities_8h.html#aa506b4da68622401ef54b3c2b61f61c5">00051</a> Model* <a class="code" href="_utilities_8cpp.html#aa506b4da68622401ef54b3c2b61f61c5" title="Generate a cube.">generateCube</a>(GLfloat <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>) {
-<a name="l00052"></a>00052     GLfloat vertexArray[3 * 8] = {  -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00053"></a>00053                                     <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00054"></a>00054                                     <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00055"></a>00055                                     -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00056"></a>00056                                     -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00057"></a>00057                                     <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00058"></a>00058                                     <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>,
-<a name="l00059"></a>00059                                     -<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, -s};
+<a name="l00051"></a><a class="code" href="_utilities_8h.html#aa506b4da68622401ef54b3c2b61f61c5">00051</a> Model* <a class="code" href="_utilities_8cpp.html#aa506b4da68622401ef54b3c2b61f61c5" title="Generate a cube.">generateCube</a>(GLfloat s) {
+<a name="l00052"></a>00052     GLfloat vertexArray[3 * 8] = {  -s, -s, s,
+<a name="l00053"></a>00053                                     s, -s, s,
+<a name="l00054"></a>00054                                     s, s, s,
+<a name="l00055"></a>00055                                     -s, s, s,
+<a name="l00056"></a>00056                                     -s, -s, -s,
+<a name="l00057"></a>00057                                     s, -s, -s,
+<a name="l00058"></a>00058                                     s, s, -s,
+<a name="l00059"></a>00059                                     -s, s, -s};
 <a name="l00060"></a>00060 
 <a name="l00061"></a>00061     GLuint indexArray[6 * 2 * 3] = {0, 1, 2, 2, 3, 0, 
 <a name="l00062"></a>00062                                     3, 2, 6, 6, 7, 3, 
@@ -262,7 +262,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="_utilities_8cpp.html">Utilities.cpp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 20:07:55 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 20:27:12 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -12,7 +12,7 @@ var searchData=
   ['depthatdis1',['depthAtDis1',['../watershader_8frag.html#a752e5a7fd288f9a63cd779d466b8cb82',1,'watershader.frag']]],
   ['depthatdis2',['depthAtDis2',['../watershader_8frag.html#a7b82ad065848cc07d9e5ec736729b004',1,'watershader.frag']]],
   ['depthshader',['depthshader',['../class_program.html#af2e129519cc65348320bf3f36aeafa35',1,'Program']]],
-  ['difflight',['diffLight',['../watershader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118',1,'watershader.frag']]],
+  ['difflight',['diffLight',['../terrainshader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118',1,'diffLight():&#160;terrainshader.frag'],['../watershader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118',1,'diffLight():&#160;watershader.frag']]],
   ['displacement1',['displacement1',['../watershader_8frag.html#a10d40d1804789057b727b907c40ed46d',1,'watershader.frag']]],
   ['displacement2',['displacement2',['../watershader_8frag.html#afa72e0ef9ee018f933b0fe5aaa100b24',1,'watershader.frag']]],
   ['displacementdirection',['displacementDirection',['../watershader_8frag.html#aceec6bb374022e8a25abca4a2e2e6c09',1,'watershader.frag']]],

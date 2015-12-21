@@ -1,7 +1,7 @@
 var searchData=
 [
   ['cam',['cam',['../class_program.html#ab397a2824b4eb543be9fed5acc21ac24',1,'Program']]],
-  ['campos',['camPos',['../watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'watershader.frag']]],
+  ['campos',['camPos',['../terrainshader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;terrainshader.frag'],['../watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;watershader.frag']]],
   ['cellsize',['cellsize',['../structmapdata.html#ab3e025201e714562d699bd8cfedfdafe',1,'mapdata']]],
   ['color',['color',['../struct_light_params.html#a838a77b6a9b6bbb690d5c2afc7323d74',1,'LightParams::color()'],['../struct_light_param.html#a1162fe85cffdbf791838c610b92ba7a8',1,'LightParam::color()']]],
   ['cube_5ftexture',['cube_texture',['../skyshader_8frag.html#aa04e00bed6dca149efe486ad5f1df1f5',1,'skyshader.frag']]],
