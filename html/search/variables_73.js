@@ -4,8 +4,8 @@ var searchData=
   ['samp',['samp',['../class_height_field.html#aa278907f4a3b80ddcc67775edd113e0f',1,'HeightField']]],
   ['scale',['scale',['../height_map_8comp.html#ab5187c9a95c7c5872f2ea96ca3a0ef68',1,'heightMap.comp']]],
   ['screen',['screen',['../class_program.html#acd61da34f87f7393d04c4b46a820b26c',1,'Program']]],
-  ['screenh',['screenH',['../class_program.html#af9413b3bee4a475a1f326fe27f301a94',1,'Program']]],
-  ['screenw',['screenW',['../class_program.html#a34d0a54618d68052932de029a455adc2',1,'Program']]],
+  ['screenh',['screenH',['../class_camera.html#a24107943ad84bb3de790d642c4039d62',1,'Camera::screenH()'],['../class_program.html#af9413b3bee4a475a1f326fe27f301a94',1,'Program::screenH()']]],
+  ['screenw',['screenW',['../class_camera.html#a05d97743204fc0e843dc20b223e56529',1,'Camera::screenW()'],['../class_program.html#a34d0a54618d68052932de029a455adc2',1,'Program::screenW()']]],
   ['sgpu',['sgpu',['../class_program.html#af6d4f3298f16f35e5d90c08939b736df',1,'Program']]],
   ['shallowbuffers',['shallowBuffers',['../class_shallow_g_p_u.html#ac4acbc181095d4d7cc10b7e7320d3351',1,'ShallowGPU']]],
   ['shallowwatershader',['shallowwatershader',['../class_program.html#a94e352a7762cf519e2dfd062c2143334',1,'Program']]],
@@ -19,6 +19,7 @@ var searchData=
   ['specexp',['specExp',['../struct_light_param.html#ab3ad8c95b263f29b214742032d14d228',1,'LightParam']]],
   ['speclight',['specLight',['../watershader_8frag.html#a55dd81c3ff59be2cea5f141352957cbb',1,'watershader.frag']]],
   ['specularcomponent',['specularComponent',['../struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246',1,'LightParams']]],
+  ['speed',['speed',['../class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4',1,'Camera']]],
   ['surface',['Surface',['../classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5',1,'sdlTexture']]],
   ['surfacelight',['surfaceLight',['../watershader_8frag.html#acfbcfd962c029a5c0439dddbc5272b60',1,'watershader.frag']]]
 ];

@@ -5,8 +5,8 @@ var searchData=
   ['savedata',['SaveData',['../class_file_handler.html#ae9f5af9182b46c34bf669e2f31a984c7',1,'FileHandler::SaveData()'],['../class_height_field.html#a384363f6e93e314073af10e1ab5a6e84',1,'HeightField::saveData()']]],
   ['scale',['scale',['../height_map_8comp.html#ab5187c9a95c7c5872f2ea96ca3a0ef68',1,'heightMap.comp']]],
   ['screen',['screen',['../class_program.html#acd61da34f87f7393d04c4b46a820b26c',1,'Program']]],
-  ['screenh',['screenH',['../class_program.html#af9413b3bee4a475a1f326fe27f301a94',1,'Program']]],
-  ['screenw',['screenW',['../class_program.html#a34d0a54618d68052932de029a455adc2',1,'Program']]],
+  ['screenh',['screenH',['../class_camera.html#a24107943ad84bb3de790d642c4039d62',1,'Camera::screenH()'],['../class_program.html#af9413b3bee4a475a1f326fe27f301a94',1,'Program::screenH()']]],
+  ['screenw',['screenW',['../class_camera.html#a05d97743204fc0e843dc20b223e56529',1,'Camera::screenW()'],['../class_program.html#a34d0a54618d68052932de029a455adc2',1,'Program::screenW()']]],
   ['sdltexture',['sdlTexture',['../classsdl_texture.html',1,'sdlTexture'],['../classsdl_texture.html#af7e96433dae1b117f525332fd2180b70',1,'sdlTexture::sdlTexture()']]],
   ['sdltexture_2ecpp',['sdlTexture.cpp',['../sdl_texture_8cpp.html',1,'']]],
   ['sdltexture_2eh',['sdlTexture.h',['../sdl_texture_8h.html',1,'']]],
@@ -45,6 +45,8 @@ var searchData=
   ['specexp',['specExp',['../struct_light_param.html#ab3ad8c95b263f29b214742032d14d228',1,'LightParam']]],
   ['speclight',['specLight',['../watershader_8frag.html#a55dd81c3ff59be2cea5f141352957cbb',1,'watershader.frag']]],
   ['specularcomponent',['specularComponent',['../struct_light_params.html#a70c4d85de2901abaa7bc946a6c911246',1,'LightParams']]],
+  ['speed',['speed',['../class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4',1,'Camera']]],
+  ['strafe',['strafe',['../class_camera.html#a80bb311de03118d65633fc3e147da16b',1,'Camera']]],
   ['surface',['Surface',['../classsdl_texture.html#ae3952720911568d1ddd0c9f5b3de18d5',1,'sdlTexture']]],
   ['surfacelight',['surfaceLight',['../watershader_8frag.html#acfbcfd962c029a5c0439dddbc5272b60',1,'watershader.frag']]]
 ];

@@ -109,97 +109,628 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2951080d072c5aeeb309e96bba7b850c"></a><!-- doxytag: member="Camera::Camera" ref="a2951080d072c5aeeb309e96bba7b850c" args="(glm::vec3 startPos, int *initScreenW, int *initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler *terr)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (glm::vec3 startPos, int *initScreenW, int *initScreenH, int tH, int tW, int xzL, int yLL, int yLH, <a class="el" href="class_data_handler.html">DataHandler</a> *terr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad15c730764446cd3f7018a84d2a60cbc"></a><!-- doxytag: member="Camera::changeLookAtPos" ref="ad15c730764446cd3f7018a84d2a60cbc" args="(int xrel, int yrel)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>changeLookAtPos</b> (int xrel, int yrel)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5bb4027c7c7cf9b621066ce854ba2903"></a><!-- doxytag: member="Camera::forward" ref="a5bb4027c7c7cf9b621066ce854ba2903" args="(GLfloat d)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>forward</b> (GLfloat d)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae16078a9e30e106ae99679d1d652f3e9"></a><!-- doxytag: member="Camera::getPos" ref="ae16078a9e30e106ae99679d1d652f3e9" args="()" -->
-glm::vec3 *&#160;</td><td class="memItemRight" valign="bottom"><b>getPos</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ea45515e87c456d626e6f8c31938f59"></a><!-- doxytag: member="Camera::getRotSpeed" ref="a6ea45515e87c456d626e6f8c31938f59" args="()" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>getRotSpeed</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adee762b402acb398dafab88065547e0e"></a><!-- doxytag: member="Camera::getRotSpeedPtr" ref="adee762b402acb398dafab88065547e0e" args="()" -->
-GLfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>getRotSpeedPtr</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a606a74d4dc38f883922b88bb8f1f4b1a"></a><!-- doxytag: member="Camera::getSpeed" ref="a606a74d4dc38f883922b88bb8f1f4b1a" args="()" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>getSpeed</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32aa8f4d574cabd4be1094abb03bb35b"></a><!-- doxytag: member="Camera::getSpeedPtr" ref="a32aa8f4d574cabd4be1094abb03bb35b" args="()" -->
-GLfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>getSpeedPtr</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47e3bbb880512849a52370cbeb91e102"></a><!-- doxytag: member="Camera::getVTP" ref="a47e3bbb880512849a52370cbeb91e102" args="()" -->
-glm::mat4 *&#160;</td><td class="memItemRight" valign="bottom"><b>getVTP</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac91eeb059f63900686a3916b516c38c8"></a><!-- doxytag: member="Camera::getWTV" ref="ac91eeb059f63900686a3916b516c38c8" args="()" -->
-glm::mat4 *&#160;</td><td class="memItemRight" valign="bottom"><b>getWTV</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c3fec1b1517f85faf6e91f1f8967da6"></a><!-- doxytag: member="Camera::jump" ref="a2c3fec1b1517f85faf6e91f1f8967da6" args="(GLfloat d)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>jump</b> (GLfloat d)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8476d85cb5c6f33cf8efadc75d749131"></a><!-- doxytag: member="Camera::rotate" ref="a8476d85cb5c6f33cf8efadc75d749131" args="(char direction, GLfloat angle)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rotate</b> (char direction, GLfloat angle)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80bb311de03118d65633fc3e147da16b"></a><!-- doxytag: member="Camera::strafe" ref="a80bb311de03118d65633fc3e147da16b" args="(GLfloat d)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>strafe</b> (GLfloat d)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a2951080d072c5aeeb309e96bba7b850c">Camera</a> (glm::vec3 startPos, int *initScreenW, int *initScreenH, int tH, int tW, int xzL, int yLL, int yLH, <a class="el" href="class_data_handler.html">DataHandler</a> *terr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor to create the camera.  <a href="#a2951080d072c5aeeb309e96bba7b850c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ad15c730764446cd3f7018a84d2a60cbc">changeLookAtPos</a> (int xrel, int yrel)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the position the camera is looking at when the mouse is moved.  <a href="#ad15c730764446cd3f7018a84d2a60cbc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a5bb4027c7c7cf9b621066ce854ba2903">forward</a> (GLfloat d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the camera forward.  <a href="#a5bb4027c7c7cf9b621066ce854ba2903"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">glm::vec3 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ae16078a9e30e106ae99679d1d652f3e9">getPos</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the camera position.  <a href="#ae16078a9e30e106ae99679d1d652f3e9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a6ea45515e87c456d626e6f8c31938f59">getRotSpeed</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the camera rotation speed.  <a href="#a6ea45515e87c456d626e6f8c31938f59"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLfloat *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#adee762b402acb398dafab88065547e0e">getRotSpeedPtr</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the pointer to the camera rotation speed.  <a href="#adee762b402acb398dafab88065547e0e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a606a74d4dc38f883922b88bb8f1f4b1a">getSpeed</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the camera movement speed.  <a href="#a606a74d4dc38f883922b88bb8f1f4b1a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLfloat *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a32aa8f4d574cabd4be1094abb03bb35b">getSpeedPtr</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the pointer to the camera movement speed.  <a href="#a32aa8f4d574cabd4be1094abb03bb35b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">glm::mat4 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a47e3bbb880512849a52370cbeb91e102">getVTP</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the VTP matrix of the camera.  <a href="#a47e3bbb880512849a52370cbeb91e102"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">glm::mat4 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ac91eeb059f63900686a3916b516c38c8">getWTV</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the WTV matrix of the camera.  <a href="#ac91eeb059f63900686a3916b516c38c8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a2c3fec1b1517f85faf6e91f1f8967da6">jump</a> (GLfloat d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the camera up.  <a href="#a2c3fec1b1517f85faf6e91f1f8967da6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131">rotate</a> (char direction, GLfloat angle)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotates the camera.  <a href="#a8476d85cb5c6f33cf8efadc75d749131"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a80bb311de03118d65633fc3e147da16b">strafe</a> (GLfloat d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the camera left or right.  <a href="#a80bb311de03118d65633fc3e147da16b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fea244394e759a726b1c98b9d2ce9dc"></a><!-- doxytag: member="Camera::toggleFrozen" ref="a0fea244394e759a726b1c98b9d2ce9dc" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>toggleFrozen</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41b4ad5284c4441cb7db25a26a708a1e"></a><!-- doxytag: member="Camera::translate" ref="a41b4ad5284c4441cb7db25a26a708a1e" args="(GLfloat dx, GLfloat dy, GLfloat dz)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>translate</b> (GLfloat dx, GLfloat dy, GLfloat dz)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a0fea244394e759a726b1c98b9d2ce9dc">toggleFrozen</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches camera movement on/off. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e">translate</a> (GLfloat dx, GLfloat dy, GLfloat dz)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates the camera position.  <a href="#a41b4ad5284c4441cb7db25a26a708a1e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99f935c628b80d7dcbd77ac124a612b9"></a><!-- doxytag: member="Camera::unlock" ref="a99f935c628b80d7dcbd77ac124a612b9" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>unlock</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a99f935c628b80d7dcbd77ac124a612b9">unlock</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlocks the camera from it's bounding box. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46444dace430a4bda10b839055cf7555"></a><!-- doxytag: member="Camera::updateVTP" ref="a46444dace430a4bda10b839055cf7555" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateVTP</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a46444dace430a4bda10b839055cf7555">updateVTP</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the VTP matrix. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ca14384985f1896f2bfc53cc0cb9fd1"></a><!-- doxytag: member="Camera::updateWTV" ref="a1ca14384985f1896f2bfc53cc0cb9fd1" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateWTV</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22c3e0d7dd4f7c44d6a33f01cd88e397"></a><!-- doxytag: member="Camera::uploadCamData" ref="a22c3e0d7dd4f7c44d6a33f01cd88e397" args="(GLuint program)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>uploadCamData</b> (GLuint program)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1">updateWTV</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the WTV matrix. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a22c3e0d7dd4f7c44d6a33f01cd88e397">uploadCamData</a> (GLuint program)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Uploads the camera data to the specified shader.  <a href="#a22c3e0d7dd4f7c44d6a33f01cd88e397"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae574bf2e47b09e9b2eff62a43492e29c"></a><!-- doxytag: member="Camera::isInCollisionBox" ref="ae574bf2e47b09e9b2eff62a43492e29c" args="(glm::vec3 transVec, bool xz)" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isInCollisionBox</b> (glm::vec3 transVec, bool xz)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c">isInCollisionBox</a> (glm::vec3 transVec, bool xz)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether movement moves the camera outside of the permitted bounding box.  <a href="#ae574bf2e47b09e9b2eff62a43492e29c"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85ac2037f87011d6a5e886c0885d8a12"></a><!-- doxytag: member="Camera::drawDistance" ref="a85ac2037f87011d6a5e886c0885d8a12" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>drawDistance</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a85ac2037f87011d6a5e886c0885d8a12">drawDistance</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw distance. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b818b5086335d52616789d6c5bc3b26"></a><!-- doxytag: member="Camera::fi" ref="a5b818b5086335d52616789d6c5bc3b26" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>fi</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26">fi</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_camera.html">Camera</a> horizontal rotation angle. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a360a2eac51c83433a90f9f034c290083"></a><!-- doxytag: member="Camera::isFrozen" ref="a360a2eac51c83433a90f9f034c290083" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isFrozen</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a360a2eac51c83433a90f9f034c290083">isFrozen</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean to switch camera movement on/off. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae84a3148f5a7dfa566226ee8fa9991da"></a><!-- doxytag: member="Camera::lookAtPos" ref="ae84a3148f5a7dfa566226ee8fa9991da" args="" -->
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>lookAtPos</b></td></tr>
+glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da">lookAtPos</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The position the camera looks at. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04b5db2c530d8630660e8cfb93a4b3b5"></a><!-- doxytag: member="Camera::position" ref="a04b5db2c530d8630660e8cfb93a4b3b5" args="" -->
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5">position</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_camera.html">Camera</a> position. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17f21c17d75e6aa2cba48d4358f350dd"></a><!-- doxytag: member="Camera::rotSpeed" ref="a17f21c17d75e6aa2cba48d4358f350dd" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>rotSpeed</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a171ba4cc38bb347365027677163f8c1d"></a><!-- doxytag: member="Camera::screenH" ref="a171ba4cc38bb347365027677163f8c1d" args="" -->
-int *&#160;</td><td class="memItemRight" valign="bottom"><b>screenH</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd">rotSpeed</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_camera.html">Camera</a> rotation speed. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24107943ad84bb3de790d642c4039d62"></a><!-- doxytag: member="Camera::screenH" ref="a24107943ad84bb3de790d642c4039d62" args="" -->
+int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a24107943ad84bb3de790d642c4039d62">screenH</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to screen height. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05d97743204fc0e843dc20b223e56529"></a><!-- doxytag: member="Camera::screenW" ref="a05d97743204fc0e843dc20b223e56529" args="" -->
-int *&#160;</td><td class="memItemRight" valign="bottom"><b>screenW</b></td></tr>
+int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a05d97743204fc0e843dc20b223e56529">screenW</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to screen width. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a308e92b5d3ef0eea5cac7745df6e28f4"></a><!-- doxytag: member="Camera::speed" ref="a308e92b5d3ef0eea5cac7745df6e28f4" args="" -->
-GLfloat&#160;</td><td class="memItemRight" valign="bottom"><b>speed</b></td></tr>
+GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4">speed</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_camera.html">Camera</a> movement speed. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d29631b17e1a26aed28079d2aae00fe"></a><!-- doxytag: member="Camera::terrain" ref="a6d29631b17e1a26aed28079d2aae00fe" args="" -->
-<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>terrain</b></td></tr>
+<a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe">terrain</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the terrain data. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac617dc2d15e59a6706958983b69d6d42"></a><!-- doxytag: member="Camera::terrH" ref="ac617dc2d15e59a6706958983b69d6d42" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>terrH</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ac617dc2d15e59a6706958983b69d6d42">terrH</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain data height. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae138a1cf2cb3a0f36a8f9c266cab459b"></a><!-- doxytag: member="Camera::terrW" ref="ae138a1cf2cb3a0f36a8f9c266cab459b" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>terrW</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ae138a1cf2cb3a0f36a8f9c266cab459b">terrW</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Terrain data width. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96ca8cb9022eaa79ed126224976e7934"></a><!-- doxytag: member="Camera::theta" ref="a96ca8cb9022eaa79ed126224976e7934" args="" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>theta</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934">theta</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_camera.html">Camera</a> vertical rotation angle. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53c3290dae594a53daa86ae013eef783"></a><!-- doxytag: member="Camera::unlocked" ref="a53c3290dae594a53daa86ae013eef783" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>unlocked</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a53c3290dae594a53daa86ae013eef783">unlocked</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean to switch bounding box mode on/off. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fe5f351380fb118ffc600591769f049"></a><!-- doxytag: member="Camera::up" ref="a3fe5f351380fb118ffc600591769f049" args="" -->
-glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>up</b></td></tr>
+glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a3fe5f351380fb118ffc600591769f049">up</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The up vector. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6394b194025e356c79b753506d8ed256"></a><!-- doxytag: member="Camera::VTPMatrix" ref="a6394b194025e356c79b753506d8ed256" args="" -->
-glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>VTPMatrix</b></td></tr>
+glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a6394b194025e356c79b753506d8ed256">VTPMatrix</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">View-to-projection matrix. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebec47ff550163b0fd4516c8ae8d328f"></a><!-- doxytag: member="Camera::WTVMatrix" ref="aebec47ff550163b0fd4516c8ae8d328f" args="" -->
-glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>WTVMatrix</b></td></tr>
+glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#aebec47ff550163b0fd4516c8ae8d328f">WTVMatrix</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">World-to-view matrix. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4142ba6c032bb34f4febeab8abae3ea"></a><!-- doxytag: member="Camera::x" ref="af4142ba6c032bb34f4febeab8abae3ea" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#af4142ba6c032bb34f4febeab8abae3ea">x</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Used so mouse will not get stuck at window edges. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f8ac1c7414439ff508c5d7efb3db70a"></a><!-- doxytag: member="Camera::xzLim" ref="a7f8ac1c7414439ff508c5d7efb3db70a" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>xzLim</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a">xzLim</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to camera limiting borders around the terrain, world "walls". <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0652c54aa165cc8c16e126855686666"></a><!-- doxytag: member="Camera::yLimHi" ref="ab0652c54aa165cc8c16e126855686666" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>yLimHi</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ab0652c54aa165cc8c16e126855686666">yLimHi</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">World "ceiling". <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd7ef4f134330d58d44247f2279a5bd4"></a><!-- doxytag: member="Camera::yLimLo" ref="abd7ef4f134330d58d44247f2279a5bd4" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>yLimLo</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#abd7ef4f134330d58d44247f2279a5bd4">yLimLo</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">World "floor". <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="camera_8h_source.html#l00028">28</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<p>Definition at line <a class="el" href="camera_8h_source.html#l00031">31</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a2951080d072c5aeeb309e96bba7b850c"></a><!-- doxytag: member="Camera::Camera" ref="a2951080d072c5aeeb309e96bba7b850c" args="(glm::vec3 startPos, int *initScreenW, int *initScreenH, int tH, int tW, int xzL, int yLL, int yLH, DataHandler *terr)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_camera.html#a2951080d072c5aeeb309e96bba7b850c">Camera::Camera</a> </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3&#160;</td>
+          <td class="paramname"><em>startPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>initScreenW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>initScreenH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>xzL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>yLL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>yLH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_data_handler.html">DataHandler</a> *&#160;</td>
+          <td class="paramname"><em>terr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constructor to create the camera. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startPos</td><td>Starting camera position. </td></tr>
+    <tr><td class="paramname">initScreenW</td><td>Pointer to the initial screen width. </td></tr>
+    <tr><td class="paramname">initScreenH</td><td>Pointer to the initial screen height. </td></tr>
+    <tr><td class="paramname">tH</td><td>Terrain height. </td></tr>
+    <tr><td class="paramname">tW</td><td>Terrain width. </td></tr>
+    <tr><td class="paramname">xzL</td><td>Distance to the bounding box in the xz-plane outside the terrain model. </td></tr>
+    <tr><td class="paramname">yLL</td><td>Floor of the camera bounding box. </td></tr>
+    <tr><td class="paramname">yLH</td><td>Ceiling of the camera bounding box. </td></tr>
+    <tr><td class="paramname">terr</td><td>Pointer to the terrain. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00015">15</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ad15c730764446cd3f7018a84d2a60cbc"></a><!-- doxytag: member="Camera::changeLookAtPos" ref="ad15c730764446cd3f7018a84d2a60cbc" args="(int xrel, int yrel)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#ad15c730764446cd3f7018a84d2a60cbc">Camera::changeLookAtPos</a> </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>xrel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>yrel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Changes the position the camera is looking at when the mouse is moved. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xrel</td><td>Relative mouse motion along the x axis. </td></tr>
+    <tr><td class="paramname">yrel</td><td>Relative mouse motion along the y axis. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00165">165</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5bb4027c7c7cf9b621066ce854ba2903"></a><!-- doxytag: member="Camera::forward" ref="a5bb4027c7c7cf9b621066ce854ba2903" args="(GLfloat d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#a5bb4027c7c7cf9b621066ce854ba2903">Camera::forward</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Moves the camera forward. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>Amount to move the camera forward. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00118">118</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae16078a9e30e106ae99679d1d652f3e9"></a><!-- doxytag: member="Camera::getPos" ref="ae16078a9e30e106ae99679d1d652f3e9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 * <a class="el" href="class_camera.html#ae16078a9e30e106ae99679d1d652f3e9">Camera::getPos</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the camera position. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>camera position. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00192">192</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6ea45515e87c456d626e6f8c31938f59"></a><!-- doxytag: member="Camera::getRotSpeed" ref="a6ea45515e87c456d626e6f8c31938f59" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLfloat <a class="el" href="class_camera.html#a6ea45515e87c456d626e6f8c31938f59">Camera::getRotSpeed</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the camera rotation speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>camera rotation speed. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00201">201</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adee762b402acb398dafab88065547e0e"></a><!-- doxytag: member="Camera::getRotSpeedPtr" ref="adee762b402acb398dafab88065547e0e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLfloat * <a class="el" href="class_camera.html#adee762b402acb398dafab88065547e0e">Camera::getRotSpeedPtr</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the pointer to the camera rotation speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the camera rotation speed. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00204">204</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a606a74d4dc38f883922b88bb8f1f4b1a"></a><!-- doxytag: member="Camera::getSpeed" ref="a606a74d4dc38f883922b88bb8f1f4b1a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLfloat <a class="el" href="class_camera.html#a606a74d4dc38f883922b88bb8f1f4b1a">Camera::getSpeed</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the camera movement speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>camera movement speed. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00195">195</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a32aa8f4d574cabd4be1094abb03bb35b"></a><!-- doxytag: member="Camera::getSpeedPtr" ref="a32aa8f4d574cabd4be1094abb03bb35b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLfloat * <a class="el" href="class_camera.html#a32aa8f4d574cabd4be1094abb03bb35b">Camera::getSpeedPtr</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the pointer to the camera movement speed. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to the camera movement speed. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00198">198</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a47e3bbb880512849a52370cbeb91e102"></a><!-- doxytag: member="Camera::getVTP" ref="a47e3bbb880512849a52370cbeb91e102" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::mat4 * <a class="el" href="class_camera.html#a47e3bbb880512849a52370cbeb91e102">Camera::getVTP</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the VTP matrix of the camera. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>VTP matrix of the camera. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00189">189</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac91eeb059f63900686a3916b516c38c8"></a><!-- doxytag: member="Camera::getWTV" ref="ac91eeb059f63900686a3916b516c38c8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::mat4 * <a class="el" href="class_camera.html#ac91eeb059f63900686a3916b516c38c8">Camera::getWTV</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Getter for the WTV matrix of the camera. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>WTV matrix of the camera. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00186">186</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae574bf2e47b09e9b2eff62a43492e29c"></a><!-- doxytag: member="Camera::isInCollisionBox" ref="ae574bf2e47b09e9b2eff62a43492e29c" args="(glm::vec3 transVec, bool xz)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c">Camera::isInCollisionBox</a> </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3&#160;</td>
+          <td class="paramname"><em>transVec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>xz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Checks whether movement moves the camera outside of the permitted bounding box. </p>
+<p>The bounding box is decided by terrW, terrH, xzLim, yLimLo and yLimHi. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transVec</td><td>Vector corresponding to the translation attempted. </td></tr>
+    <tr><td class="paramname">xz</td><td>Boolean that decides if a check for xz or y should be made. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>false if tested movement would move the camera outside of it's bounding box, otherwise true. </dd></dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00046">46</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2c3fec1b1517f85faf6e91f1f8967da6"></a><!-- doxytag: member="Camera::jump" ref="a2c3fec1b1517f85faf6e91f1f8967da6" args="(GLfloat d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#a2c3fec1b1517f85faf6e91f1f8967da6">Camera::jump</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Moves the camera up. </p>
+<p>Note that up here means according to the camera view direction, not necessarily in world coordinates. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>Amount to move the camera up. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00134">134</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8476d85cb5c6f33cf8efadc75d749131"></a><!-- doxytag: member="Camera::rotate" ref="a8476d85cb5c6f33cf8efadc75d749131" args="(char direction, GLfloat angle)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131">Camera::rotate</a> </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Rotates the camera. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>Axis to rotate around. </td></tr>
+    <tr><td class="paramname">angle</td><td>Angle to rotate. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00072">72</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a80bb311de03118d65633fc3e147da16b"></a><!-- doxytag: member="Camera::strafe" ref="a80bb311de03118d65633fc3e147da16b" args="(GLfloat d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#a80bb311de03118d65633fc3e147da16b">Camera::strafe</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Moves the camera left or right. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>Amount to move the camera to the left (negative moves it to the right). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00125">125</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a41b4ad5284c4441cb7db25a26a708a1e"></a><!-- doxytag: member="Camera::translate" ref="a41b4ad5284c4441cb7db25a26a708a1e" args="(GLfloat dx, GLfloat dy, GLfloat dz)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e">Camera::translate</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>dx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>dy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLfloat&#160;</td>
+          <td class="paramname"><em>dz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Translates the camera position. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dx</td><td>Amount to move the camera along the x axis. </td></tr>
+    <tr><td class="paramname">dy</td><td>Amount to move the camera along the y axis. </td></tr>
+    <tr><td class="paramname">dz</td><td>Amount to move the camera along the z axis. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00089">89</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a22c3e0d7dd4f7c44d6a33f01cd88e397"></a><!-- doxytag: member="Camera::uploadCamData" ref="a22c3e0d7dd4f7c44d6a33f01cd88e397" args="(GLuint program)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_camera.html#a22c3e0d7dd4f7c44d6a33f01cd88e397">Camera::uploadCamData</a> </td>
+          <td>(</td>
+          <td class="paramtype">GLuint&#160;</td>
+          <td class="paramname"><em>program</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Uploads the camera data to the specified shader. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">program</td><td>Shader program to upload the camera information to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="camera_8cpp_source.html#l00153">153</a> of file <a class="el" href="camera_8cpp_source.html">camera.cpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="camera_8h_source.html">camera.h</a></li>
 <li>src/<a class="el" href="camera_8cpp_source.html">camera.cpp</a></li>
 </ul>
@@ -223,7 +754,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>yLimLo</b></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="class_camera.html">Camera</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 20:07:55 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

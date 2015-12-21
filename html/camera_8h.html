@@ -35,7 +35,7 @@
    <div id="projectname">Waterflow
    
    </div>
-   <div id="projectbrief">Visualize water in actual terrain</div>
+   <div id="projectbrief">Visualize water in terrain</div>
   </td>
   
   
@@ -52,6 +52,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -94,51 +95,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Defines</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">src/camera.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class for handling the camera.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;glew.h&quot;</code><br/>
+<code>#include &quot;Windows/sdl2/SDL.h&quot;</code><br/>
 <code>#include &quot;glm.hpp&quot;</code><br/>
-<code>#include &quot;gtc/matrix_transform.hpp&quot;</code><br/>
-<code>#include &quot;gtx/rotate_vector.hpp&quot;</code><br/>
-<code>#include &quot;gtc/type_ptr.hpp&quot;</code><br/>
+<code>#include &quot;<a class="el" href="read_data_8h_source.html">readData.h</a>&quot;</code><br/>
 </div>
 <p><a href="camera_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html">Camera</a></td></tr>
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="camera_8h.html#a816ab7d5c2ce1f0a01216042837beb93">GLM_FORCE_RADIANS</a></td></tr>
 </table>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a816ab7d5c2ce1f0a01216042837beb93"></a><!-- doxytag: member="camera.h::GLM_FORCE_RADIANS" ref="a816ab7d5c2ce1f0a01216042837beb93" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="camera_8h.html#a816ab7d5c2ce1f0a01216042837beb93">GLM_FORCE_RADIANS</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Class for handling the camera. </p>
 
-<p>Definition at line <a class="el" href="camera_8h_source.html#l00018">18</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+<p>Definition in file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
+</div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -151,7 +138,7 @@ Defines</h2></td></tr>
     <ul>
       <li class="navelem"><a class="el" href="camera_8h.html">camera.h</a>      </li>
 
-    <li class="footer">Generated by
+    <li class="footer">Generated on Mon Dec 21 2015 20:07:55 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

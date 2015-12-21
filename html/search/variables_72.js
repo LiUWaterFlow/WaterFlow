@@ -6,5 +6,6 @@ var searchData=
   ['readdata',['readdata',['../class_data_handler.html#a07ac01ed64a68b18e655df5c7517cbbb',1,'DataHandler']]],
   ['refllight',['reflLight',['../watershader_8frag.html#a4ab9f2876c70ef76a2097c1018ab5917',1,'watershader.frag']]],
   ['rehashtresh',['rehashTresh',['../class_voxelgrid.html#adf4a71324fbce8af29609cbe1e35e523',1,'Voxelgrid']]],
-  ['right',['right',['../watershader_8frag.html#a80975b382e2f3baa99f6f8d504bdd830',1,'watershader.frag']]]
+  ['right',['right',['../watershader_8frag.html#a80975b382e2f3baa99f6f8d504bdd830',1,'watershader.frag']]],
+  ['rotspeed',['rotSpeed',['../class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd',1,'Camera']]]
 ];

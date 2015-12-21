@@ -2,7 +2,7 @@ var files =
 [
     [ "main.cpp", null, null ],
     [ "src/camera.cpp", null, null ],
-    [ "src/camera.h", null, null ],
+    [ "src/camera.h", "camera_8h.html", null ],
     [ "src/fileHandler.cpp", "file_handler_8cpp.html", null ],
     [ "src/fileHandler.h", "file_handler_8h.html", null ],
     [ "src/flowSource.cpp", null, null ],

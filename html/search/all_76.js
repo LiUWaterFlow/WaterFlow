@@ -14,5 +14,5 @@ var searchData=
   ['voxelshader',['voxelShader',['../class_height_field.html#a49504aef5a63f521d589ea15b25fcb0c',1,'HeightField::voxelShader()'],['../class_voxelgrid.html#a056b801cec260ef17190e677caec62d5',1,'Voxelgrid::voxelShader()']]],
   ['voxelvao',['voxelVAO',['../class_height_field.html#a757bf243e37984ff11d17810f9819ba6',1,'HeightField::voxelVAO()'],['../class_voxelgrid.html#a3a7e86537dd18e535344b214f8f0cfa4',1,'Voxelgrid::voxelVAO()']]],
   ['voxs',['voxs',['../class_program.html#ae794815f232982f2720a92eec1ce4ad5',1,'Program::voxs()'],['../structneighs.html#a6320d0ede46493cdf1485af2d2dfd1ca',1,'neighs::voxs()']]],
-  ['vtpmatrix',['VTPMatrix',['../simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129',1,'VTPMatrix():&#160;simplevoxels.geom'],['../skyshader_8vert.html#a23771147f91ecedb051e874da9020129',1,'VTPMatrix():&#160;skyshader.vert']]]
+  ['vtpmatrix',['VTPMatrix',['../class_camera.html#a6394b194025e356c79b753506d8ed256',1,'Camera::VTPMatrix()'],['../simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129',1,'VTPMatrix():&#160;simplevoxels.geom'],['../skyshader_8vert.html#a23771147f91ecedb051e874da9020129',1,'VTPMatrix():&#160;skyshader.vert']]]
 ];

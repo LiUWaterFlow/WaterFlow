@@ -98,205 +98,212 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/camera.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">// Written by Gustav Svensk, acquired from</span>
-<a name="l00002"></a>00002 <span class="comment">// https://github.com/DrDante/TSBK03Project/</span>
-<a name="l00003"></a>00003 <span class="comment">// with permission, 2015-09-24.</span>
-<a name="l00004"></a>00004 
-<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;camera.h&quot;</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 <span class="comment">// Written by Gustav Svensk, acquired from</span>
+<a name="l00004"></a>00004 <span class="comment">// https://github.com/DrDante/TSBK03/</span>
+<a name="l00005"></a>00005 <span class="comment">// with permission, 2015-09-24.</span>
 <a name="l00006"></a>00006 
-<a name="l00007"></a>00007 
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;<a class="code" href="camera_8h.html" title="Class for handling the camera.">camera.h</a>&quot;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &quot;gtc/type_ptr.hpp&quot;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &quot;gtx/rotate_vector.hpp&quot;</span>
-<a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;cmath&gt;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;iostream&gt;</span>
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014 Camera::Camera(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH, <span class="keywordtype">int</span> tH, <span class="keywordtype">int</span> tW, <span class="keywordtype">int</span> xzL, <span class="keywordtype">int</span> yLL, <span class="keywordtype">int</span> yLH, <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terr)
-<a name="l00015"></a>00015 {
-<a name="l00016"></a>00016     unlocked = <span class="keyword">false</span>; 
-<a name="l00017"></a>00017     position = startPos;
-<a name="l00018"></a>00018     fi = 0.0f;
-<a name="l00019"></a>00019     theta = (GLfloat)M_PI / 2.0f;
-<a name="l00020"></a>00020     
-<a name="l00021"></a>00021     up = glm::vec3(0,1,0);
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023     screenW = initScreenW;
-<a name="l00024"></a>00024     screenH = initScreenH;
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026     terrH = tH;
-<a name="l00027"></a>00027     terrW = tW;
-<a name="l00028"></a>00028     xzLim = xzL;
-<a name="l00029"></a>00029     yLimLo = yLL;
-<a name="l00030"></a>00030     yLimHi = yLH;
-<a name="l00031"></a>00031     terrain = terr;
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033     rotSpeed = 0.01f;
-<a name="l00034"></a>00034     speed = 1.0f;
-<a name="l00035"></a>00035     drawDistance = 10000.0f;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037     isFrozen = <span class="keyword">false</span>;
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039     changeLookAtPos(0,0);
-<a name="l00040"></a>00040     updateVTP();
-<a name="l00041"></a>00041 }
-<a name="l00042"></a>00042 
-<a name="l00043"></a>00043 glm::mat4* Camera::getWTV() {
-<a name="l00044"></a>00044     <span class="keywordflow">return</span> &amp;WTVMatrix;
-<a name="l00045"></a>00045 }
-<a name="l00046"></a>00046 glm::mat4* Camera::getVTP() {
-<a name="l00047"></a>00047     <span class="keywordflow">return</span> &amp;VTPMatrix;
-<a name="l00048"></a>00048 }
-<a name="l00049"></a>00049 glm::vec3* Camera::getPos() {
-<a name="l00050"></a>00050     <span class="keywordflow">return</span> &amp;position;
-<a name="l00051"></a>00051 }
-<a name="l00052"></a>00052 GLfloat Camera::getSpeed() {
-<a name="l00053"></a>00053     <span class="keywordflow">return</span> speed;
-<a name="l00054"></a>00054 }
-<a name="l00055"></a>00055 GLfloat* Camera::getSpeedPtr() {
-<a name="l00056"></a>00056     <span class="keywordflow">return</span> &amp;speed;
-<a name="l00057"></a>00057 }
-<a name="l00058"></a>00058 GLfloat Camera::getRotSpeed() {
-<a name="l00059"></a>00059     <span class="keywordflow">return</span> rotSpeed;
-<a name="l00060"></a>00060 }
-<a name="l00061"></a>00061 GLfloat* Camera::getRotSpeedPtr() {
-<a name="l00062"></a>00062     <span class="keywordflow">return</span> &amp;rotSpeed;
-<a name="l00063"></a>00063 }
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065 <span class="keywordtype">void</span> Camera::toggleFrozen() {
-<a name="l00066"></a>00066     isFrozen = !isFrozen;
-<a name="l00067"></a>00067 }
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069 <span class="keywordtype">void</span> Camera::uploadCamData(GLuint program)
-<a name="l00070"></a>00070 {
-<a name="l00071"></a>00071     <span class="comment">// Upload camera matrix here</span>
-<a name="l00072"></a>00072     glUseProgram(program);
-<a name="l00073"></a>00073     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(VTPMatrix));
-<a name="l00074"></a>00074     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(WTVMatrix));
-<a name="l00075"></a>00075     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, glm::value_ptr(position));
-<a name="l00076"></a>00076 }
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078 <span class="keywordtype">void</span> Camera::updateWTV()
-<a name="l00079"></a>00079 {
-<a name="l00080"></a>00080     WTVMatrix = glm::lookAt(position, lookAtPos, up);
-<a name="l00081"></a>00081 }
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 <span class="keywordtype">void</span> Camera::updateVTP() {
-<a name="l00084"></a>00084     <span class="keywordtype">float</span> ratio = (GLfloat)(*screenW) / (GLfloat)(*screenH);
-<a name="l00085"></a>00085     VTPMatrix = glm::perspective((GLfloat)M_PI / 2, ratio, 1.0f, drawDistance);
-<a name="l00086"></a>00086 }
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 <span class="keywordtype">void</span> Camera::rotate(<span class="keywordtype">char</span> direction, GLfloat angle)
-<a name="l00089"></a>00089 {
-<a name="l00090"></a>00090     <span class="keywordflow">switch</span> (direction){
-<a name="l00091"></a>00091         <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>:
-<a name="l00092"></a>00092             lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(1, 0, 0));
-<a name="l00093"></a>00093             <span class="keywordflow">break</span>;
-<a name="l00094"></a>00094         <span class="keywordflow">case</span> <span class="charliteral">&#39;y&#39;</span>:
-<a name="l00095"></a>00095             lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 1, 0));
-<a name="l00096"></a>00096             <span class="keywordflow">break</span>;
-<a name="l00097"></a>00097         <span class="keywordflow">case</span> <span class="charliteral">&#39;z&#39;</span>:
-<a name="l00098"></a>00098             lookAtPos = glm::rotate(lookAtPos, angle, glm::vec3(0, 0, 1));
-<a name="l00099"></a>00099             <span class="keywordflow">break</span>;
-<a name="l00100"></a>00100     }
-<a name="l00101"></a>00101    
-<a name="l00102"></a>00102     updateWTV();
-<a name="l00103"></a>00103 }
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105 <span class="keywordtype">void</span> Camera::translate(GLfloat dx, GLfloat dy, GLfloat dz)
-<a name="l00106"></a>00106 {
-<a name="l00107"></a>00107     <span class="keywordflow">if</span> (!isFrozen) {
-<a name="l00108"></a>00108         glm::vec3 testVec = glm::vec3(dx, dy, dz);
-<a name="l00109"></a>00109         <span class="keywordflow">if</span> (!isInCollisionBox(glm::vec3(0, dy, 0), <span class="keyword">false</span>))
-<a name="l00110"></a>00110         {
-<a name="l00111"></a>00111             <span class="keywordflow">if</span> (dy &gt; 0)
-<a name="l00112"></a>00112             {
-<a name="l00113"></a>00113                 testVec.y = 0;
-<a name="l00114"></a>00114             }
-<a name="l00115"></a>00115             <span class="keywordflow">else</span>
-<a name="l00116"></a>00116             {
-<a name="l00117"></a>00117                 testVec.y = terrain-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(position.x, position.z) + yLimLo - position.y;
-<a name="l00118"></a>00118             }
-<a name="l00119"></a>00119         }
-<a name="l00120"></a>00120         <span class="keywordflow">if</span> (!isInCollisionBox(glm::vec3(dx, 0, 0), <span class="keyword">true</span>))
-<a name="l00121"></a>00121         {
-<a name="l00122"></a>00122             testVec.x = 0;
-<a name="l00123"></a>00123         }
-<a name="l00124"></a>00124         <span class="keywordflow">if</span> (!isInCollisionBox(glm::vec3(0, 0, dz), <span class="keyword">true</span>))
-<a name="l00125"></a>00125         {
-<a name="l00126"></a>00126             testVec.z = 0;
-<a name="l00127"></a>00127         }
-<a name="l00128"></a>00128         position = glm::vec3(glm::translate(glm::mat4(1.0f), testVec) * glm::vec4(position, 1));
-<a name="l00129"></a>00129         lookAtPos = glm::vec3(glm::translate(glm::mat4(1.0f), testVec) * glm::vec4(lookAtPos, 1));
-<a name="l00130"></a>00130         updateWTV();
-<a name="l00131"></a>00131     }
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;cmath&gt;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;iostream&gt;</span>
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 <span class="comment">// ===== Constructor =====</span>
+<a name="l00014"></a>00014 
+<a name="l00015"></a><a class="code" href="class_camera.html#a2951080d072c5aeeb309e96bba7b850c">00015</a> <a class="code" href="class_camera.html#a2951080d072c5aeeb309e96bba7b850c" title="Constructor to create the camera.">Camera::Camera</a>(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH, <span class="keywordtype">int</span> tH, <span class="keywordtype">int</span> tW, <span class="keywordtype">int</span> xzL, <span class="keywordtype">int</span> yLL, <span class="keywordtype">int</span> yLH, <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terr)
+<a name="l00016"></a>00016 {
+<a name="l00017"></a>00017     <a class="code" href="class_camera.html#a53c3290dae594a53daa86ae013eef783" title="Boolean to switch bounding box mode on/off.">unlocked</a> = <span class="keyword">false</span>; 
+<a name="l00018"></a>00018     <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a> = startPos;
+<a name="l00019"></a>00019     <a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a> = 0.0f;
+<a name="l00020"></a>00020     <a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a> = (GLfloat)M_PI / 2.0f;
+<a name="l00021"></a>00021     
+<a name="l00022"></a>00022     <a class="code" href="class_camera.html#a3fe5f351380fb118ffc600591769f049" title="The up vector.">up</a> = glm::vec3(0,1,0);
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024     <a class="code" href="class_camera.html#a05d97743204fc0e843dc20b223e56529" title="Pointer to screen width.">screenW</a> = initScreenW;
+<a name="l00025"></a>00025     <a class="code" href="class_camera.html#a24107943ad84bb3de790d642c4039d62" title="Pointer to screen height.">screenH</a> = initScreenH;
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027     <a class="code" href="class_camera.html#ac617dc2d15e59a6706958983b69d6d42" title="Terrain data height.">terrH</a> = tH;
+<a name="l00028"></a>00028     <a class="code" href="class_camera.html#ae138a1cf2cb3a0f36a8f9c266cab459b" title="Terrain data width.">terrW</a> = tW;
+<a name="l00029"></a>00029     <a class="code" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a" title="Distance to camera limiting borders around the terrain, world &quot;walls&quot;.">xzLim</a> = xzL;
+<a name="l00030"></a>00030     <a class="code" href="class_camera.html#abd7ef4f134330d58d44247f2279a5bd4" title="World &quot;floor&quot;.">yLimLo</a> = yLL;
+<a name="l00031"></a>00031     <a class="code" href="class_camera.html#ab0652c54aa165cc8c16e126855686666" title="World &quot;ceiling&quot;.">yLimHi</a> = yLH;
+<a name="l00032"></a>00032     <a class="code" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe" title="Pointer to the terrain data.">terrain</a> = terr;
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034     <a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd" title="Camera rotation speed.">rotSpeed</a> = 0.01f;
+<a name="l00035"></a>00035     <a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a> = 1.0f;
+<a name="l00036"></a>00036     <a class="code" href="class_camera.html#a85ac2037f87011d6a5e886c0885d8a12" title="Draw distance.">drawDistance</a> = 10000.0f;
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038     <a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083" title="Boolean to switch camera movement on/off.">isFrozen</a> = <span class="keyword">false</span>;
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040     <a class="code" href="class_camera.html#ad15c730764446cd3f7018a84d2a60cbc" title="Changes the position the camera is looking at when the mouse is moved.">changeLookAtPos</a>(0,0);
+<a name="l00041"></a>00041     <a class="code" href="class_camera.html#a46444dace430a4bda10b839055cf7555" title="Updates the VTP matrix.">updateVTP</a>();
+<a name="l00042"></a>00042 }
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044 <span class="comment">// ===== Methods =====</span>
+<a name="l00045"></a>00045 
+<a name="l00046"></a><a class="code" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c">00046</a> <span class="keywordtype">bool</span> <a class="code" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c" title="Checks whether movement moves the camera outside of the permitted bounding box.">Camera::isInCollisionBox</a>(glm::vec3 transVec, <span class="keywordtype">bool</span> xz)
+<a name="l00047"></a>00047 {
+<a name="l00048"></a>00048     <span class="keywordflow">if</span> (<a class="code" href="class_camera.html#a53c3290dae594a53daa86ae013eef783" title="Boolean to switch bounding box mode on/off.">unlocked</a>) {
+<a name="l00049"></a>00049         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00050"></a>00050     }
+<a name="l00051"></a>00051     glm::vec3 testVec = glm::vec3(glm::translate(glm::mat4(1.0f), transVec) * glm::vec4(<a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>, 1));
+<a name="l00052"></a>00052     <span class="keywordtype">bool</span> okToMove = <span class="keyword">true</span>;
+<a name="l00053"></a>00053     <span class="keywordflow">if</span> (xz)
+<a name="l00054"></a>00054     {
+<a name="l00055"></a>00055         <span class="comment">// Check x.</span>
+<a name="l00056"></a>00056         okToMove = okToMove &amp;&amp; testVec.x &gt; -<a class="code" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a" title="Distance to camera limiting borders around the terrain, world &quot;walls&quot;.">xzLim</a> &amp;&amp; testVec.x &lt; <a class="code" href="class_camera.html#ac617dc2d15e59a6706958983b69d6d42" title="Terrain data height.">terrH</a> + <a class="code" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a" title="Distance to camera limiting borders around the terrain, world &quot;walls&quot;.">xzLim</a>;
+<a name="l00057"></a>00057         <span class="comment">// Check z.</span>
+<a name="l00058"></a>00058         okToMove = okToMove &amp;&amp; testVec.z &gt; -xzLim &amp;&amp; testVec.z &lt; <a class="code" href="class_camera.html#ae138a1cf2cb3a0f36a8f9c266cab459b" title="Terrain data width.">terrW</a> + <a class="code" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a" title="Distance to camera limiting borders around the terrain, world &quot;walls&quot;.">xzLim</a>;
+<a name="l00059"></a>00059     }
+<a name="l00060"></a>00060     <span class="keywordflow">else</span>
+<a name="l00061"></a>00061     {
+<a name="l00062"></a>00062         <span class="comment">// Check y.</span>
+<a name="l00063"></a>00063         okToMove = okToMove &amp;&amp; testVec.y &gt;= <a class="code" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe" title="Pointer to the terrain data.">terrain</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(testVec.x, testVec.z) + <a class="code" href="class_camera.html#abd7ef4f134330d58d44247f2279a5bd4" title="World &quot;floor&quot;.">yLimLo</a> &amp;&amp; testVec.y &lt; <a class="code" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe" title="Pointer to the terrain data.">terrain</a>-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>() + <a class="code" href="class_camera.html#ab0652c54aa165cc8c16e126855686666" title="World &quot;ceiling&quot;.">yLimHi</a>;
+<a name="l00064"></a>00064     }
+<a name="l00065"></a>00065     <span class="keywordflow">return</span> okToMove;
+<a name="l00066"></a>00066 }
+<a name="l00067"></a>00067 
+<a name="l00068"></a><a class="code" href="class_camera.html#a99f935c628b80d7dcbd77ac124a612b9">00068</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a99f935c628b80d7dcbd77ac124a612b9" title="Unlocks the camera from it&#39;s bounding box.">Camera::unlock</a>(){
+<a name="l00069"></a>00069     <a class="code" href="class_camera.html#a53c3290dae594a53daa86ae013eef783" title="Boolean to switch bounding box mode on/off.">unlocked</a> = <span class="keyword">true</span>;
+<a name="l00070"></a>00070 }
+<a name="l00071"></a>00071 
+<a name="l00072"></a><a class="code" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131">00072</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131" title="Rotates the camera.">Camera::rotate</a>(<span class="keywordtype">char</span> direction, GLfloat angle)
+<a name="l00073"></a>00073 {
+<a name="l00074"></a>00074     <span class="keywordflow">switch</span> (direction){
+<a name="l00075"></a>00075     <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>:
+<a name="l00076"></a>00076         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> = <a class="code" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131" title="Rotates the camera.">glm::rotate</a>(<a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>, angle, glm::vec3(1, 0, 0));
+<a name="l00077"></a>00077         <span class="keywordflow">break</span>;
+<a name="l00078"></a>00078     <span class="keywordflow">case</span> <span class="charliteral">&#39;y&#39;</span>:
+<a name="l00079"></a>00079         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> = <a class="code" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131" title="Rotates the camera.">glm::rotate</a>(<a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>, angle, glm::vec3(0, 1, 0));
+<a name="l00080"></a>00080         <span class="keywordflow">break</span>;
+<a name="l00081"></a>00081     <span class="keywordflow">case</span> <span class="charliteral">&#39;z&#39;</span>:
+<a name="l00082"></a>00082         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> = <a class="code" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131" title="Rotates the camera.">glm::rotate</a>(<a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>, angle, glm::vec3(0, 0, 1));
+<a name="l00083"></a>00083         <span class="keywordflow">break</span>;
+<a name="l00084"></a>00084     }
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086     <a class="code" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1" title="Updates the WTV matrix.">updateWTV</a>();
+<a name="l00087"></a>00087 }
+<a name="l00088"></a>00088 
+<a name="l00089"></a><a class="code" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e">00089</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e" title="Translates the camera position.">Camera::translate</a>(GLfloat dx, GLfloat dy, GLfloat dz)
+<a name="l00090"></a>00090 {
+<a name="l00091"></a>00091     <span class="keywordflow">if</span> (!<a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083" title="Boolean to switch camera movement on/off.">isFrozen</a>) {
+<a name="l00092"></a>00092         glm::vec3 testVec = glm::vec3(dx, dy, dz);
+<a name="l00093"></a>00093         <span class="keywordflow">if</span> (!<a class="code" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c" title="Checks whether movement moves the camera outside of the permitted bounding box.">isInCollisionBox</a>(glm::vec3(0, dy, 0), <span class="keyword">false</span>))
+<a name="l00094"></a>00094         {
+<a name="l00095"></a>00095             <span class="keywordflow">if</span> (dy &gt; 0)
+<a name="l00096"></a>00096             {
+<a name="l00097"></a>00097                 testVec.y = 0;
+<a name="l00098"></a>00098             }
+<a name="l00099"></a>00099             <span class="keywordflow">else</span>
+<a name="l00100"></a>00100             {
+<a name="l00101"></a>00101                 testVec.y = <a class="code" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe" title="Pointer to the terrain data.">terrain</a>-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(<a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>.x, <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>.z) + <a class="code" href="class_camera.html#abd7ef4f134330d58d44247f2279a5bd4" title="World &quot;floor&quot;.">yLimLo</a> - <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>.y;
+<a name="l00102"></a>00102             }
+<a name="l00103"></a>00103         }
+<a name="l00104"></a>00104         <span class="keywordflow">if</span> (!<a class="code" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c" title="Checks whether movement moves the camera outside of the permitted bounding box.">isInCollisionBox</a>(glm::vec3(dx, 0, 0), <span class="keyword">true</span>))
+<a name="l00105"></a>00105         {
+<a name="l00106"></a>00106             testVec.x = 0;
+<a name="l00107"></a>00107         }
+<a name="l00108"></a>00108         <span class="keywordflow">if</span> (!<a class="code" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c" title="Checks whether movement moves the camera outside of the permitted bounding box.">isInCollisionBox</a>(glm::vec3(0, 0, dz), <span class="keyword">true</span>))
+<a name="l00109"></a>00109         {
+<a name="l00110"></a>00110             testVec.z = 0;
+<a name="l00111"></a>00111         }
+<a name="l00112"></a>00112         <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a> = glm::vec3(glm::translate(glm::mat4(1.0f), testVec) * glm::vec4(<a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>, 1));
+<a name="l00113"></a>00113         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> = glm::vec3(glm::translate(glm::mat4(1.0f), testVec) * glm::vec4(<a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>, 1));
+<a name="l00114"></a>00114         <a class="code" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1" title="Updates the WTV matrix.">updateWTV</a>();
+<a name="l00115"></a>00115     }
+<a name="l00116"></a>00116 }
+<a name="l00117"></a>00117 
+<a name="l00118"></a><a class="code" href="class_camera.html#a5bb4027c7c7cf9b621066ce854ba2903">00118</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a5bb4027c7c7cf9b621066ce854ba2903" title="Moves the camera forward.">Camera::forward</a>(GLfloat d)
+<a name="l00119"></a>00119 {
+<a name="l00120"></a>00120     glm::vec3 forward_vec = <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> - <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>;
+<a name="l00121"></a>00121     forward_vec = <a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a> * d * forward_vec;
+<a name="l00122"></a>00122     <a class="code" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e" title="Translates the camera position.">translate</a>(forward_vec.x, forward_vec.y, forward_vec.z);
+<a name="l00123"></a>00123 }
+<a name="l00124"></a>00124 
+<a name="l00125"></a><a class="code" href="class_camera.html#a80bb311de03118d65633fc3e147da16b">00125</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a80bb311de03118d65633fc3e147da16b" title="Moves the camera left or right.">Camera::strafe</a>(GLfloat d)
+<a name="l00126"></a>00126 {
+<a name="l00127"></a>00127     glm::vec3 strafe_vec = <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> - <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>;
+<a name="l00128"></a>00128     strafe_vec = glm::cross(<a class="code" href="class_camera.html#a3fe5f351380fb118ffc600591769f049" title="The up vector.">up</a>, strafe_vec);
+<a name="l00129"></a>00129     strafe_vec = glm::normalize(strafe_vec);
+<a name="l00130"></a>00130     strafe_vec = <a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a> * d * strafe_vec;
+<a name="l00131"></a>00131     <a class="code" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e" title="Translates the camera position.">translate</a>(strafe_vec.x, strafe_vec.y, strafe_vec.z);
 <a name="l00132"></a>00132 }
 <a name="l00133"></a>00133 
-<a name="l00134"></a>00134 <span class="keywordtype">void</span> Camera::forward(GLfloat d)
-<a name="l00135"></a>00135 {
-<a name="l00136"></a>00136     glm::vec3 forward_vec = lookAtPos - position;
-<a name="l00137"></a>00137     forward_vec = speed * d * forward_vec;
-<a name="l00138"></a>00138     translate(forward_vec.x, forward_vec.y, forward_vec.z);
-<a name="l00139"></a>00139 }
-<a name="l00140"></a>00140 
-<a name="l00141"></a>00141 <span class="keywordtype">void</span> Camera::strafe(GLfloat d)
-<a name="l00142"></a>00142 {
-<a name="l00143"></a>00143     glm::vec3 strafe_vec = lookAtPos - position;
-<a name="l00144"></a>00144     strafe_vec = glm::cross(up, strafe_vec);
-<a name="l00145"></a>00145     strafe_vec = glm::normalize(strafe_vec);
-<a name="l00146"></a>00146     strafe_vec = speed * d * strafe_vec;
-<a name="l00147"></a>00147     translate(strafe_vec.x, strafe_vec.y, strafe_vec.z);
-<a name="l00148"></a>00148 }
-<a name="l00149"></a>00149 
-<a name="l00150"></a>00150 <span class="keywordtype">void</span> Camera::jump(GLfloat d) {
-<a name="l00151"></a>00151     glm::vec3 temp_vec = lookAtPos - position;
-<a name="l00152"></a>00152     glm::vec3 jump_vec = glm::cross(up, temp_vec);
-<a name="l00153"></a>00153     jump_vec = glm::cross(temp_vec, jump_vec);
-<a name="l00154"></a>00154     jump_vec = glm::normalize(jump_vec);
-<a name="l00155"></a>00155     jump_vec = speed * d * jump_vec;
-<a name="l00156"></a>00156     translate(jump_vec.x, jump_vec.y, jump_vec.z);
-<a name="l00157"></a>00157 }
-<a name="l00158"></a>00158 
-<a name="l00159"></a>00159 <span class="keywordtype">void</span> Camera::changeLookAtPos(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel)
-<a name="l00160"></a>00160 {
-<a name="l00161"></a>00161     <span class="keywordflow">if</span> (!isFrozen) {
-<a name="l00162"></a>00162         <span class="keywordtype">float</span> eps = 0.001f;
-<a name="l00163"></a>00163 
-<a name="l00164"></a>00164         fi += rotSpeed * xrel;
-<a name="l00165"></a>00165         theta += rotSpeed * yrel;
-<a name="l00166"></a>00166         
-<a name="l00167"></a>00167         fi = fmod(fi, 2.0f * (GLfloat)M_PI);
-<a name="l00168"></a>00168         theta = theta &lt; (GLfloat)M_PI - eps ? (theta &gt; eps ? theta : eps) : (GLfloat)M_PI - eps;
+<a name="l00134"></a><a class="code" href="class_camera.html#a2c3fec1b1517f85faf6e91f1f8967da6">00134</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a2c3fec1b1517f85faf6e91f1f8967da6" title="Moves the camera up.">Camera::jump</a>(GLfloat d) {
+<a name="l00135"></a>00135     glm::vec3 temp_vec = <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a> - <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>;
+<a name="l00136"></a>00136     glm::vec3 jump_vec = glm::cross(<a class="code" href="class_camera.html#a3fe5f351380fb118ffc600591769f049" title="The up vector.">up</a>, temp_vec);
+<a name="l00137"></a>00137     jump_vec = glm::cross(temp_vec, jump_vec);
+<a name="l00138"></a>00138     jump_vec = glm::normalize(jump_vec);
+<a name="l00139"></a>00139     jump_vec = <a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a> * d * jump_vec;
+<a name="l00140"></a>00140     <a class="code" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e" title="Translates the camera position.">translate</a>(jump_vec.x, jump_vec.y, jump_vec.z);
+<a name="l00141"></a>00141 }
+<a name="l00142"></a>00142 
+<a name="l00143"></a><a class="code" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1">00143</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1" title="Updates the WTV matrix.">Camera::updateWTV</a>()
+<a name="l00144"></a>00144 {
+<a name="l00145"></a>00145     <a class="code" href="class_camera.html#aebec47ff550163b0fd4516c8ae8d328f" title="World-to-view matrix.">WTVMatrix</a> = glm::lookAt(<a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>, <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>, <a class="code" href="class_camera.html#a3fe5f351380fb118ffc600591769f049" title="The up vector.">up</a>);
+<a name="l00146"></a>00146 }
+<a name="l00147"></a>00147 
+<a name="l00148"></a><a class="code" href="class_camera.html#a46444dace430a4bda10b839055cf7555">00148</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a46444dace430a4bda10b839055cf7555" title="Updates the VTP matrix.">Camera::updateVTP</a>() {
+<a name="l00149"></a>00149     <span class="keywordtype">float</span> ratio = (GLfloat)(*<a class="code" href="class_camera.html#a05d97743204fc0e843dc20b223e56529" title="Pointer to screen width.">screenW</a>) / (GLfloat)(*<a class="code" href="class_camera.html#a24107943ad84bb3de790d642c4039d62" title="Pointer to screen height.">screenH</a>);
+<a name="l00150"></a>00150     <a class="code" href="class_camera.html#a6394b194025e356c79b753506d8ed256" title="View-to-projection matrix.">VTPMatrix</a> = glm::perspective((GLfloat)M_PI / 2, ratio, 1.0f, <a class="code" href="class_camera.html#a85ac2037f87011d6a5e886c0885d8a12" title="Draw distance.">drawDistance</a>);
+<a name="l00151"></a>00151 }
+<a name="l00152"></a>00152 
+<a name="l00153"></a><a class="code" href="class_camera.html#a22c3e0d7dd4f7c44d6a33f01cd88e397">00153</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a22c3e0d7dd4f7c44d6a33f01cd88e397" title="Uploads the camera data to the specified shader.">Camera::uploadCamData</a>(GLuint program)
+<a name="l00154"></a>00154 {
+<a name="l00155"></a>00155     glUseProgram(program);
+<a name="l00156"></a>00156     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;VTPMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(<a class="code" href="class_camera.html#a6394b194025e356c79b753506d8ed256" title="View-to-projection matrix.">VTPMatrix</a>));
+<a name="l00157"></a>00157     glUniformMatrix4fv(glGetUniformLocation(program, <span class="stringliteral">&quot;WTVMatrix&quot;</span>), 1, GL_FALSE, glm::value_ptr(<a class="code" href="class_camera.html#aebec47ff550163b0fd4516c8ae8d328f" title="World-to-view matrix.">WTVMatrix</a>));
+<a name="l00158"></a>00158     glUniform3fv(glGetUniformLocation(program, <span class="stringliteral">&quot;camPos&quot;</span>), 1, glm::value_ptr(<a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>));
+<a name="l00159"></a>00159 }
+<a name="l00160"></a>00160 
+<a name="l00161"></a><a class="code" href="class_camera.html#a0fea244394e759a726b1c98b9d2ce9dc">00161</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a0fea244394e759a726b1c98b9d2ce9dc" title="Switches camera movement on/off.">Camera::toggleFrozen</a>() {
+<a name="l00162"></a>00162     <a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083" title="Boolean to switch camera movement on/off.">isFrozen</a> = !<a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083" title="Boolean to switch camera movement on/off.">isFrozen</a>;
+<a name="l00163"></a>00163 }
+<a name="l00164"></a>00164 
+<a name="l00165"></a><a class="code" href="class_camera.html#ad15c730764446cd3f7018a84d2a60cbc">00165</a> <span class="keywordtype">void</span> <a class="code" href="class_camera.html#ad15c730764446cd3f7018a84d2a60cbc" title="Changes the position the camera is looking at when the mouse is moved.">Camera::changeLookAtPos</a>(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel)
+<a name="l00166"></a>00166 {
+<a name="l00167"></a>00167     <span class="keywordflow">if</span> (!<a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083" title="Boolean to switch camera movement on/off.">isFrozen</a>) {
+<a name="l00168"></a>00168         <span class="keywordtype">float</span> eps = 0.001f;
 <a name="l00169"></a>00169 
-<a name="l00170"></a>00170         lookAtPos.x = -sin(theta)*sin(fi) + position.x;
-<a name="l00171"></a>00171         lookAtPos.y = cos(theta) + position.y;
-<a name="l00172"></a>00172         lookAtPos.z = sin(theta)*cos(fi) + position.z;
-<a name="l00173"></a>00173 
-<a name="l00174"></a>00174         updateWTV();
-<a name="l00175"></a>00175     }
-<a name="l00176"></a>00176 }
-<a name="l00177"></a>00177 
-<a name="l00178"></a>00178 <span class="keywordtype">void</span> Camera::unlock(){
-<a name="l00179"></a>00179     unlocked = <span class="keyword">true</span>;
-<a name="l00180"></a>00180 }
-<a name="l00181"></a>00181 
-<a name="l00182"></a>00182 <span class="keywordtype">bool</span> Camera::isInCollisionBox(glm::vec3 transVec, <span class="keywordtype">bool</span> xz)
-<a name="l00183"></a>00183 {
-<a name="l00184"></a>00184     <span class="keywordflow">if</span> (unlocked) {
-<a name="l00185"></a>00185         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00186"></a>00186     }
-<a name="l00187"></a>00187     glm::vec3 testVec = glm::vec3(glm::translate(glm::mat4(1.0f), transVec) * glm::vec4(position, 1));
-<a name="l00188"></a>00188     <span class="keywordtype">bool</span> okToMove = <span class="keyword">true</span>;
-<a name="l00189"></a>00189     <span class="keywordflow">if</span> (xz)
-<a name="l00190"></a>00190     {
-<a name="l00191"></a>00191         okToMove = okToMove &amp;&amp; testVec.x &gt; -xzLim &amp;&amp; testVec.x &lt; terrH + xzLim; <span class="comment">// Check x</span>
-<a name="l00192"></a>00192         okToMove = okToMove &amp;&amp; testVec.z &gt; -xzLim &amp;&amp; testVec.z &lt; terrW + xzLim; <span class="comment">// Check z</span>
-<a name="l00193"></a>00193     }
-<a name="l00194"></a>00194     <span class="keywordflow">else</span>
-<a name="l00195"></a>00195     {
-<a name="l00196"></a>00196         okToMove = okToMove &amp;&amp; testVec.y &gt;= terrain-&gt;<a class="code" href="class_data_handler.html#ad025e108c9d923261eb02d7a7af0f1f7" title="Gives a height for a certain position in the terrain.">giveHeight</a>(testVec.x, testVec.z) + yLimLo &amp;&amp; testVec.y &lt; terrain-&gt;<a class="code" href="class_data_handler.html#a7f6dfabebf0453f459bc9f085c877bd8" title="Get the terrain scale.">getTerrainScale</a>() + yLimHi; <span class="comment">// Check y</span>
-<a name="l00197"></a>00197     }
-<a name="l00198"></a>00198     <span class="keywordflow">return</span> okToMove;
-<a name="l00199"></a>00199 }
+<a name="l00170"></a>00170         <a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a> += <a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd" title="Camera rotation speed.">rotSpeed</a> * xrel;
+<a name="l00171"></a>00171         <a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a> += <a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd" title="Camera rotation speed.">rotSpeed</a> * yrel;
+<a name="l00172"></a>00172         
+<a name="l00173"></a>00173         <a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a> = fmod(<a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a>, 2.0f * (GLfloat)M_PI);
+<a name="l00174"></a>00174         <a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a> = <a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a> &lt; (GLfloat)M_PI - eps ? (<a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a> &gt; eps ? <a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a> : eps) : (GLfloat)M_PI - eps;
+<a name="l00175"></a>00175 
+<a name="l00176"></a>00176         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>.x = -sin(<a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a>)*sin(<a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a>) + <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>.x;
+<a name="l00177"></a>00177         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>.y = cos(<a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a>) + <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>.y;
+<a name="l00178"></a>00178         <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>.z = sin(<a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a>)*cos(<a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a>) + <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>.z;
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180         <a class="code" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1" title="Updates the WTV matrix.">updateWTV</a>();
+<a name="l00181"></a>00181     }
+<a name="l00182"></a>00182 }
+<a name="l00183"></a>00183 
+<a name="l00184"></a>00184 <span class="comment">// ===== Getters =====</span>
+<a name="l00185"></a>00185 
+<a name="l00186"></a><a class="code" href="class_camera.html#ac91eeb059f63900686a3916b516c38c8">00186</a> glm::mat4* <a class="code" href="class_camera.html#ac91eeb059f63900686a3916b516c38c8" title="Getter for the WTV matrix of the camera.">Camera::getWTV</a>() {
+<a name="l00187"></a>00187     <span class="keywordflow">return</span> &amp;<a class="code" href="class_camera.html#aebec47ff550163b0fd4516c8ae8d328f" title="World-to-view matrix.">WTVMatrix</a>;
+<a name="l00188"></a>00188 }
+<a name="l00189"></a><a class="code" href="class_camera.html#a47e3bbb880512849a52370cbeb91e102">00189</a> glm::mat4* <a class="code" href="class_camera.html#a47e3bbb880512849a52370cbeb91e102" title="Getter for the VTP matrix of the camera.">Camera::getVTP</a>() {
+<a name="l00190"></a>00190     <span class="keywordflow">return</span> &amp;<a class="code" href="class_camera.html#a6394b194025e356c79b753506d8ed256" title="View-to-projection matrix.">VTPMatrix</a>;
+<a name="l00191"></a>00191 }
+<a name="l00192"></a><a class="code" href="class_camera.html#ae16078a9e30e106ae99679d1d652f3e9">00192</a> glm::vec3* <a class="code" href="class_camera.html#ae16078a9e30e106ae99679d1d652f3e9" title="Getter for the camera position.">Camera::getPos</a>() {
+<a name="l00193"></a>00193     <span class="keywordflow">return</span> &amp;<a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>;
+<a name="l00194"></a>00194 }
+<a name="l00195"></a><a class="code" href="class_camera.html#a606a74d4dc38f883922b88bb8f1f4b1a">00195</a> GLfloat <a class="code" href="class_camera.html#a606a74d4dc38f883922b88bb8f1f4b1a" title="Getter for the camera movement speed.">Camera::getSpeed</a>() {
+<a name="l00196"></a>00196     <span class="keywordflow">return</span> <a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a>;
+<a name="l00197"></a>00197 }
+<a name="l00198"></a><a class="code" href="class_camera.html#a32aa8f4d574cabd4be1094abb03bb35b">00198</a> GLfloat* <a class="code" href="class_camera.html#a32aa8f4d574cabd4be1094abb03bb35b" title="Getter for the pointer to the camera movement speed.">Camera::getSpeedPtr</a>() {
+<a name="l00199"></a>00199     <span class="keywordflow">return</span> &amp;<a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a>;
+<a name="l00200"></a>00200 }
+<a name="l00201"></a><a class="code" href="class_camera.html#a6ea45515e87c456d626e6f8c31938f59">00201</a> GLfloat <a class="code" href="class_camera.html#a6ea45515e87c456d626e6f8c31938f59" title="Getter for the camera rotation speed.">Camera::getRotSpeed</a>() {
+<a name="l00202"></a>00202     <span class="keywordflow">return</span> <a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd" title="Camera rotation speed.">rotSpeed</a>;
+<a name="l00203"></a>00203 }
+<a name="l00204"></a><a class="code" href="class_camera.html#adee762b402acb398dafab88065547e0e">00204</a> GLfloat* <a class="code" href="class_camera.html#adee762b402acb398dafab88065547e0e" title="Getter for the pointer to the camera rotation speed.">Camera::getRotSpeedPtr</a>() {
+<a name="l00205"></a>00205     <span class="keywordflow">return</span> &amp;<a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd" title="Camera rotation speed.">rotSpeed</a>;
+<a name="l00206"></a>00206 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -317,7 +324,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>camera.cpp</b>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 20:07:55 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -6,5 +6,5 @@ var searchData=
   ['waterterrain',['waterTerrain',['../class_program.html#a695cace84c7c72e8a5e339c5b536ddfb',1,'Program']]],
   ['wdist',['wdist',['../watershader_8frag.html#a0606d6d6b27ef2061761ee49dab3853b',1,'watershader.frag']]],
   ['width',['width',['../class_file_handler.html#a648b20cff90ba2d5dc3f6032db6e4003',1,'FileHandler::width()'],['../class_height_field.html#aa09b0d4467bdb84a2a7e6f5244200b8b',1,'HeightField::width()'],['../class_voxelgrid.html#a105802faf7a954cac413286276315c2e',1,'Voxelgrid::width()']]],
-  ['wtvmatrix',['WTVMatrix',['../simplevoxels_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1',1,'WTVMatrix():&#160;simplevoxels.vert'],['../skyshader_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1',1,'WTVMatrix():&#160;skyshader.vert']]]
+  ['wtvmatrix',['WTVMatrix',['../class_camera.html#aebec47ff550163b0fd4516c8ae8d328f',1,'Camera::WTVMatrix()'],['../simplevoxels_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1',1,'WTVMatrix():&#160;simplevoxels.vert'],['../skyshader_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1',1,'WTVMatrix():&#160;skyshader.vert']]]
 ];

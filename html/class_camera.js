@@ -26,7 +26,7 @@ var class_camera =
     [ "lookAtPos", "class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da", null ],
     [ "position", "class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5", null ],
     [ "rotSpeed", "class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd", null ],
-    [ "screenH", "class_camera.html#a171ba4cc38bb347365027677163f8c1d", null ],
+    [ "screenH", "class_camera.html#a24107943ad84bb3de790d642c4039d62", null ],
     [ "screenW", "class_camera.html#a05d97743204fc0e843dc20b223e56529", null ],
     [ "speed", "class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4", null ],
     [ "terrain", "class_camera.html#a6d29631b17e1a26aed28079d2aae00fe", null ],

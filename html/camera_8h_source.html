@@ -98,88 +98,103 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">src/camera.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef CAMERA_H</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define CAMERA_H</span>
-<a name="l00003"></a>00003 <span class="preprocessor"></span>
-<a name="l00004"></a>00004 <span class="preprocessor">#ifdef __APPLE__</span>
-<a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#   include &lt;OpenGL/gl3.h&gt;</span>
-<a name="l00006"></a>00006 <span class="preprocessor">#   include &lt;SDL2/SDL.h&gt;</span>
-<a name="l00007"></a>00007 <span class="preprocessor">#else</span>
-<a name="l00008"></a>00008 <span class="preprocessor"></span><span class="preprocessor">#   ifdef  __linux__</span>
-<a name="l00009"></a>00009 <span class="preprocessor"></span><span class="preprocessor">#       define GL_GLEXT_PROTOTYPES</span>
-<a name="l00010"></a>00010 <span class="preprocessor"></span><span class="preprocessor">#       include &lt;GL/gl.h&gt;</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#       include &lt;GL/glu.h&gt;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#       include &lt;GL/glx.h&gt;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#       include &lt;GL/glext.h&gt;</span>
-<a name="l00014"></a>00014 <span class="preprocessor">#       include &lt;SDL2/SDL.h&gt;</span>
-<a name="l00015"></a>00015 <span class="preprocessor">#   else</span>
-<a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#       include &quot;glew.h&quot;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#       include &quot;Windows/sdl2/SDL.h&quot;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#   endif</span>
-<a name="l00019"></a>00019 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00020"></a>00020 <span class="preprocessor"></span>
-<a name="l00021"></a>00021 <span class="preprocessor">#ifndef M_PI</span>
-<a name="l00022"></a>00022 <span class="preprocessor"></span><span class="preprocessor">#define M_PI           3.14159265358979323846f</span>
-<a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00024"></a>00024 <span class="preprocessor"></span>
-<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
-<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html" title="Contains datatypes and functions to handle input terrain.">readData.h</a>&quot;</span>
-<a name="l00027"></a>00027 
-<a name="l00028"></a><a class="code" href="class_camera.html">00028</a> <span class="keyword">class </span><a class="code" href="class_camera.html">Camera</a> {
-<a name="l00029"></a>00029 <span class="keyword">private</span>:
-<a name="l00030"></a>00030     <span class="comment">// x används för att musen inte ska fastna i kanterna på</span>
-<a name="l00031"></a>00031     <span class="comment">// fönstret</span>
-<a name="l00032"></a>00032     <span class="keywordtype">int</span> x;
-<a name="l00033"></a>00033     <span class="keywordtype">float</span> fi, theta, rotSpeed;
-<a name="l00034"></a>00034     <span class="keywordtype">int</span> *screenW, *screenH;
-<a name="l00035"></a>00035     GLfloat speed, drawDistance;
-<a name="l00036"></a>00036     <span class="keywordtype">bool</span> isFrozen;
-<a name="l00037"></a>00037     <span class="keywordtype">int</span> terrW, terrH, xzLim, yLimLo, yLimHi;
-<a name="l00038"></a>00038     <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terrain;
-<a name="l00039"></a>00039 
-<a name="l00040"></a>00040     glm::vec3 position;
-<a name="l00041"></a>00041     glm::vec3 lookAtPos;
-<a name="l00042"></a>00042     glm::vec3 up;
-<a name="l00043"></a>00043 
-<a name="l00044"></a>00044     glm::mat4 WTVMatrix;
-<a name="l00045"></a>00045     glm::mat4 VTPMatrix;
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047     <span class="keywordtype">bool</span> unlocked;
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049     <span class="keywordtype">bool</span> isInCollisionBox(glm::vec3 transVec, <span class="keywordtype">bool</span> xz);
-<a name="l00050"></a>00050 <span class="keyword">public</span>:
-<a name="l00051"></a>00051     <a class="code" href="class_camera.html">Camera</a>(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH, <span class="keywordtype">int</span> tH, <span class="keywordtype">int</span> tW, <span class="keywordtype">int</span> xzL, <span class="keywordtype">int</span> yLL, <span class="keywordtype">int</span> yLH, <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terr);
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053     <span class="keywordtype">void</span> unlock();
-<a name="l00054"></a>00054     <span class="keywordtype">void</span> rotate(<span class="keywordtype">char</span> direction, GLfloat angle);
-<a name="l00055"></a>00055     <span class="keywordtype">void</span> translate(GLfloat dx, GLfloat dy, GLfloat dz);
-<a name="l00056"></a>00056     <span class="keywordtype">void</span> forward(GLfloat d);
-<a name="l00057"></a>00057     <span class="keywordtype">void</span> strafe(GLfloat d);
-<a name="l00058"></a>00058     <span class="keywordtype">void</span> jump(GLfloat d);
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060     <span class="keywordtype">void</span> updateWTV();
-<a name="l00061"></a>00061     <span class="keywordtype">void</span> updateVTP();
-<a name="l00062"></a>00062     <span class="keywordtype">void</span> uploadCamData(GLuint program);
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064     glm::mat4* getWTV(); 
-<a name="l00065"></a>00065     glm::mat4* getVTP();
-<a name="l00066"></a>00066     glm::vec3* getPos();
-<a name="l00067"></a>00067     GLfloat getSpeed();
-<a name="l00068"></a>00068     GLfloat* getSpeedPtr();
-<a name="l00069"></a>00069     GLfloat getRotSpeed();
-<a name="l00070"></a>00070     GLfloat* getRotSpeedPtr();
-<a name="l00071"></a>00071     <span class="keywordtype">void</span> toggleFrozen();
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073     <span class="comment">/*************************************************************</span>
-<a name="l00074"></a>00074 <span class="comment">     * change_look_at_pos:</span>
-<a name="l00075"></a>00075 <span class="comment">     * Tar xrel från MouseMotionEvent och y som absolut koordinat</span>
-<a name="l00076"></a>00076 <span class="comment">     * width, height är storlek på nuvarande fönster</span>
-<a name="l00077"></a>00077 <span class="comment">     * Sätter look_at_pos därefter</span>
-<a name="l00078"></a>00078 <span class="comment">     * **********************************************************/</span>
-<a name="l00079"></a>00079     <span class="keywordtype">void</span> changeLookAtPos(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel);
-<a name="l00080"></a>00080 };
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082 <span class="preprocessor">#endif</span>
+<a href="camera_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
+<a name="l00002"></a>00002 
+<a name="l00003"></a>00003 
+<a name="l00004"></a>00004 <span class="preprocessor">#ifndef CAMERA_H</span>
+<a name="l00005"></a>00005 <span class="preprocessor"></span><span class="preprocessor">#define CAMERA_H</span>
+<a name="l00006"></a>00006 <span class="preprocessor"></span>
+<a name="l00007"></a>00007 <span class="preprocessor">#ifdef __APPLE__</span>
+<a name="l00008"></a>00008 <span class="preprocessor"></span><span class="preprocessor">#   include &lt;OpenGL/gl3.h&gt;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#   include &lt;SDL2/SDL.h&gt;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#else</span>
+<a name="l00011"></a>00011 <span class="preprocessor"></span><span class="preprocessor">#   ifdef  __linux__</span>
+<a name="l00012"></a>00012 <span class="preprocessor"></span><span class="preprocessor">#       define GL_GLEXT_PROTOTYPES</span>
+<a name="l00013"></a>00013 <span class="preprocessor"></span><span class="preprocessor">#       include &lt;GL/gl.h&gt;</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#       include &lt;GL/glu.h&gt;</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#       include &lt;GL/glx.h&gt;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#       include &lt;GL/glext.h&gt;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#       include &lt;SDL2/SDL.h&gt;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#   else</span>
+<a name="l00019"></a>00019 <span class="preprocessor"></span><span class="preprocessor">#       include &quot;glew.h&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#       include &quot;Windows/sdl2/SDL.h&quot;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#   endif</span>
+<a name="l00022"></a>00022 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00023"></a>00023 <span class="preprocessor"></span>
+<a name="l00024"></a>00024 <span class="preprocessor">#ifndef M_PI</span>
+<a name="l00025"></a>00025 <span class="preprocessor"></span><span class="preprocessor">#define M_PI           3.14159265358979323846f</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00027"></a>00027 <span class="preprocessor"></span>
+<a name="l00028"></a>00028 <span class="preprocessor">#include &quot;glm.hpp&quot;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#include &quot;<a class="code" href="read_data_8h.html" title="Contains datatypes and functions to handle input terrain.">readData.h</a>&quot;</span>
+<a name="l00030"></a>00030 
+<a name="l00031"></a><a class="code" href="class_camera.html">00031</a> <span class="keyword">class </span><a class="code" href="class_camera.html">Camera</a>
+<a name="l00032"></a>00032 {
+<a name="l00033"></a>00033 <span class="keyword">private</span>:
+<a name="l00034"></a><a class="code" href="class_camera.html#af4142ba6c032bb34f4febeab8abae3ea">00034</a>     <span class="keywordtype">int</span> <a class="code" href="class_camera.html#af4142ba6c032bb34f4febeab8abae3ea" title="Used so mouse will not get stuck at window edges.">x</a>;                      
+<a name="l00035"></a><a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26">00035</a>     <span class="keywordtype">float</span> <a class="code" href="class_camera.html#a5b818b5086335d52616789d6c5bc3b26" title="Camera horizontal rotation angle.">fi</a>;                   
+<a name="l00036"></a><a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934">00036</a>     <span class="keywordtype">float</span> <a class="code" href="class_camera.html#a96ca8cb9022eaa79ed126224976e7934" title="Camera vertical rotation angle.">theta</a>;                
+<a name="l00037"></a><a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd">00037</a>     <span class="keywordtype">float</span> <a class="code" href="class_camera.html#a17f21c17d75e6aa2cba48d4358f350dd" title="Camera rotation speed.">rotSpeed</a>;             
+<a name="l00038"></a><a class="code" href="class_camera.html#a05d97743204fc0e843dc20b223e56529">00038</a>     <span class="keywordtype">int</span> *<a class="code" href="class_camera.html#a05d97743204fc0e843dc20b223e56529" title="Pointer to screen width.">screenW</a>;               
+<a name="l00039"></a><a class="code" href="class_camera.html#a24107943ad84bb3de790d642c4039d62">00039</a>     <span class="keywordtype">int</span> *<a class="code" href="class_camera.html#a24107943ad84bb3de790d642c4039d62" title="Pointer to screen height.">screenH</a>;               
+<a name="l00040"></a><a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4">00040</a>     GLfloat <a class="code" href="class_camera.html#a308e92b5d3ef0eea5cac7745df6e28f4" title="Camera movement speed.">speed</a>;              
+<a name="l00041"></a><a class="code" href="class_camera.html#a85ac2037f87011d6a5e886c0885d8a12">00041</a>     GLfloat <a class="code" href="class_camera.html#a85ac2037f87011d6a5e886c0885d8a12" title="Draw distance.">drawDistance</a>;       
+<a name="l00042"></a><a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083">00042</a>     <span class="keywordtype">bool</span> <a class="code" href="class_camera.html#a360a2eac51c83433a90f9f034c290083" title="Boolean to switch camera movement on/off.">isFrozen</a>;              
+<a name="l00043"></a><a class="code" href="class_camera.html#ae138a1cf2cb3a0f36a8f9c266cab459b">00043</a>     <span class="keywordtype">int</span> <a class="code" href="class_camera.html#ae138a1cf2cb3a0f36a8f9c266cab459b" title="Terrain data width.">terrW</a>;                  
+<a name="l00044"></a><a class="code" href="class_camera.html#ac617dc2d15e59a6706958983b69d6d42">00044</a>     <span class="keywordtype">int</span> <a class="code" href="class_camera.html#ac617dc2d15e59a6706958983b69d6d42" title="Terrain data height.">terrH</a>;                  
+<a name="l00045"></a><a class="code" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a">00045</a>     <span class="keywordtype">int</span> <a class="code" href="class_camera.html#a7f8ac1c7414439ff508c5d7efb3db70a" title="Distance to camera limiting borders around the terrain, world &quot;walls&quot;.">xzLim</a>;                  
+<a name="l00046"></a><a class="code" href="class_camera.html#abd7ef4f134330d58d44247f2279a5bd4">00046</a>     <span class="keywordtype">int</span> <a class="code" href="class_camera.html#abd7ef4f134330d58d44247f2279a5bd4" title="World &quot;floor&quot;.">yLimLo</a>;                 
+<a name="l00047"></a><a class="code" href="class_camera.html#ab0652c54aa165cc8c16e126855686666">00047</a>     <span class="keywordtype">int</span> <a class="code" href="class_camera.html#ab0652c54aa165cc8c16e126855686666" title="World &quot;ceiling&quot;.">yLimHi</a>;                 
+<a name="l00048"></a><a class="code" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe">00048</a>     <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* <a class="code" href="class_camera.html#a6d29631b17e1a26aed28079d2aae00fe" title="Pointer to the terrain data.">terrain</a>;       
+<a name="l00049"></a><a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5">00049</a>     glm::vec3 <a class="code" href="class_camera.html#a04b5db2c530d8630660e8cfb93a4b3b5" title="Camera position.">position</a>;         
+<a name="l00050"></a><a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da">00050</a>     glm::vec3 <a class="code" href="class_camera.html#ae84a3148f5a7dfa566226ee8fa9991da" title="The position the camera looks at.">lookAtPos</a>;        
+<a name="l00051"></a><a class="code" href="class_camera.html#a3fe5f351380fb118ffc600591769f049">00051</a>     glm::vec3 <a class="code" href="class_camera.html#a3fe5f351380fb118ffc600591769f049" title="The up vector.">up</a>;               
+<a name="l00052"></a><a class="code" href="class_camera.html#aebec47ff550163b0fd4516c8ae8d328f">00052</a>     glm::mat4 <a class="code" href="class_camera.html#aebec47ff550163b0fd4516c8ae8d328f" title="World-to-view matrix.">WTVMatrix</a>;        
+<a name="l00053"></a><a class="code" href="class_camera.html#a6394b194025e356c79b753506d8ed256">00053</a>     glm::mat4 <a class="code" href="class_camera.html#a6394b194025e356c79b753506d8ed256" title="View-to-projection matrix.">VTPMatrix</a>;        
+<a name="l00054"></a><a class="code" href="class_camera.html#a53c3290dae594a53daa86ae013eef783">00054</a>     <span class="keywordtype">bool</span> <a class="code" href="class_camera.html#a53c3290dae594a53daa86ae013eef783" title="Boolean to switch bounding box mode on/off.">unlocked</a>;              
+<a name="l00055"></a>00055 
+<a name="l00062"></a>00062     <span class="keywordtype">bool</span> <a class="code" href="class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c" title="Checks whether movement moves the camera outside of the permitted bounding box.">isInCollisionBox</a>(glm::vec3 transVec, <span class="keywordtype">bool</span> xz);
+<a name="l00063"></a>00063 <span class="keyword">public</span>:
+<a name="l00075"></a>00075     <a class="code" href="class_camera.html#a2951080d072c5aeeb309e96bba7b850c" title="Constructor to create the camera.">Camera</a>(glm::vec3 startPos, <span class="keywordtype">int</span>* initScreenW, <span class="keywordtype">int</span>* initScreenH, <span class="keywordtype">int</span> tH, <span class="keywordtype">int</span> tW, <span class="keywordtype">int</span> xzL, <span class="keywordtype">int</span> yLL, <span class="keywordtype">int</span> yLH, <a class="code" href="class_data_handler.html" title="Loads and modifies terrain data for easier use.">DataHandler</a>* terr);
+<a name="l00076"></a>00076 
+<a name="l00078"></a>00078     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a99f935c628b80d7dcbd77ac124a612b9" title="Unlocks the camera from it&#39;s bounding box.">unlock</a>();
+<a name="l00079"></a>00079 
+<a name="l00084"></a>00084     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a8476d85cb5c6f33cf8efadc75d749131" title="Rotates the camera.">rotate</a>(<span class="keywordtype">char</span> direction, GLfloat angle);
+<a name="l00085"></a>00085 
+<a name="l00091"></a>00091     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a41b4ad5284c4441cb7db25a26a708a1e" title="Translates the camera position.">translate</a>(GLfloat dx, GLfloat dy, GLfloat dz);
+<a name="l00092"></a>00092 
+<a name="l00096"></a>00096     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a5bb4027c7c7cf9b621066ce854ba2903" title="Moves the camera forward.">forward</a>(GLfloat d);
+<a name="l00097"></a>00097 
+<a name="l00101"></a>00101     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a80bb311de03118d65633fc3e147da16b" title="Moves the camera left or right.">strafe</a>(GLfloat d);
+<a name="l00102"></a>00102 
+<a name="l00108"></a>00108     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a2c3fec1b1517f85faf6e91f1f8967da6" title="Moves the camera up.">jump</a>(GLfloat d);
+<a name="l00109"></a>00109 
+<a name="l00111"></a>00111     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a1ca14384985f1896f2bfc53cc0cb9fd1" title="Updates the WTV matrix.">updateWTV</a>();
+<a name="l00112"></a>00112 
+<a name="l00114"></a>00114     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a46444dace430a4bda10b839055cf7555" title="Updates the VTP matrix.">updateVTP</a>();
+<a name="l00115"></a>00115 
+<a name="l00119"></a>00119     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a22c3e0d7dd4f7c44d6a33f01cd88e397" title="Uploads the camera data to the specified shader.">uploadCamData</a>(GLuint program);
+<a name="l00120"></a>00120 
+<a name="l00122"></a>00122     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#a0fea244394e759a726b1c98b9d2ce9dc" title="Switches camera movement on/off.">toggleFrozen</a>();
+<a name="l00123"></a>00123 
+<a name="l00128"></a>00128     <span class="keywordtype">void</span> <a class="code" href="class_camera.html#ad15c730764446cd3f7018a84d2a60cbc" title="Changes the position the camera is looking at when the mouse is moved.">changeLookAtPos</a>(<span class="keywordtype">int</span> xrel, <span class="keywordtype">int</span> yrel);
+<a name="l00129"></a>00129 
+<a name="l00132"></a>00132     glm::mat4* <a class="code" href="class_camera.html#ac91eeb059f63900686a3916b516c38c8" title="Getter for the WTV matrix of the camera.">getWTV</a>();
+<a name="l00133"></a>00133 
+<a name="l00136"></a>00136     glm::mat4* <a class="code" href="class_camera.html#a47e3bbb880512849a52370cbeb91e102" title="Getter for the VTP matrix of the camera.">getVTP</a>();
+<a name="l00137"></a>00137 
+<a name="l00140"></a>00140     glm::vec3* <a class="code" href="class_camera.html#ae16078a9e30e106ae99679d1d652f3e9" title="Getter for the camera position.">getPos</a>();
+<a name="l00141"></a>00141 
+<a name="l00144"></a>00144     GLfloat <a class="code" href="class_camera.html#a606a74d4dc38f883922b88bb8f1f4b1a" title="Getter for the camera movement speed.">getSpeed</a>();
+<a name="l00145"></a>00145 
+<a name="l00148"></a>00148     GLfloat* <a class="code" href="class_camera.html#a32aa8f4d574cabd4be1094abb03bb35b" title="Getter for the pointer to the camera movement speed.">getSpeedPtr</a>();
+<a name="l00149"></a>00149 
+<a name="l00152"></a>00152     GLfloat <a class="code" href="class_camera.html#a6ea45515e87c456d626e6f8c31938f59" title="Getter for the camera rotation speed.">getRotSpeed</a>();
+<a name="l00153"></a>00153 
+<a name="l00156"></a>00156     GLfloat* <a class="code" href="class_camera.html#adee762b402acb398dafab88065547e0e" title="Getter for the pointer to the camera rotation speed.">getRotSpeedPtr</a>();
+<a name="l00157"></a>00157 };
+<a name="l00158"></a>00158 
+<a name="l00159"></a>00159 <span class="preprocessor">#endif // CAMERA_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -198,9 +213,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
   <div id="nav-path" class="navpath">
     <ul>
-      <li class="navelem"><b>camera.h</b>      </li>
+      <li class="navelem"><a class="el" href="camera_8h.html">camera.h</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 20:07:55 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
