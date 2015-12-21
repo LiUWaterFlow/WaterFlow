@@ -316,7 +316,7 @@ private:
 	/// @see Print
 	void PrintTerrainHeight(int iteration = -1) const;
 
-	/// @brief A helperfunction that prints the m_velocity_< array to the console
+	/// @brief A helperfunction that prints the m_velocity_z array to the console
 	///
 	/// @param iteration if provided also prints iteration number
 	/// @see Print
