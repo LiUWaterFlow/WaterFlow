@@ -8,7 +8,7 @@
 #include "gtc/type_ptr.hpp"
 #include <iostream>
 
-#include "ShallowNewton.h"
+#include "HeightFieldCPU.h"
 #include "ShallowWater2.h"
 #include "shallowWater3.h"
 
@@ -62,7 +62,7 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	const unsigned int size_y = 20;
 	if (choice == 1)
 	{
-		ShallowNewton newton(size_x, size_y);
+		HeightFieldCPU newton(size_x, size_y);
 		return newton.run();
 	}
 	else if (choice == 2)

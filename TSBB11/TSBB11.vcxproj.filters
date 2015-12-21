@@ -63,7 +63,7 @@
     <ClCompile Include="src\shallowWater3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShallowNewton.cpp">
+    <ClCompile Include="src\heightFieldCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,7 +113,7 @@
     <ClInclude Include="src\shallowWater3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShallowNewton.h">
+    <ClInclude Include="src\heightFieldCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

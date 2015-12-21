@@ -71,7 +71,6 @@ void ShallowWater3::RunSimulation(const float timestep)
 			gridPoint east = grid(x + 1, y, m_grid);
 
 			std::cout << "Before Fixing shores" << std::endl;
-			Print
 
 			fixShore(west, center, east);
 			fixShore(north, center, south);

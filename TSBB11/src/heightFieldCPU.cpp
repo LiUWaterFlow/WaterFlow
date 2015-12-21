@@ -1,4 +1,4 @@
-#include "ShallowNewton.h"
+#include "HeightFieldCPU.h"
 #include "GL_utilities.h"
 #include "Utilities.h"
 #include <algorithm>
@@ -9,7 +9,7 @@
 #include <iostream>
 #include <iomanip>
 
-int ShallowNewton::run()
+int HeightFieldCPU::run()
 {
 	/*Start by setting data*/
 	AddTerrainHeight(0.0f);
@@ -49,7 +49,7 @@ int ShallowNewton::run()
 	return 1; //then end it here
 }
 
-float ShallowNewton::getHeight(int i, int j, float ourWater, float ourTot) {
+float HeightFieldCPU::getHeight(int i, int j, float ourWater, float ourTot) {
 	if (i < 0 || j < 0 || i > m_sizeX - 1 || j > m_sizeY- 1){
 		return 0.0f;
 	}
@@ -65,7 +65,7 @@ float ShallowNewton::getHeight(int i, int j, float ourWater, float ourTot) {
 	return glm::clamp(diff, -ourWater / 4.0f, theirWater / 4.0f);
 }
 
-void ShallowNewton::RunSimulation(float dt) {
+void HeightFieldCPU::RunSimulation(float dt) {
 
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -97,7 +97,7 @@ void ShallowNewton::RunSimulation(float dt) {
 
 ///////////////////////////////////////////////////////7
 ////////////////////////////////////////////////////////
-float ShallowNewton::SumArray(std::vector<float>& arr) const
+float HeightFieldCPU::SumArray(std::vector<float>& arr) const
 {
 	float sum = 0.0f;
 	for (unsigned int x = 1; x < m_sizeX - 1; x++)
@@ -115,7 +115,7 @@ float ShallowNewton::SumArray(std::vector<float>& arr) const
 *Print function and helper print function
 *=========================================================
 */
-void ShallowNewton::Print(std::vector<float> arr, std::string msg, int iter) const
+void HeightFieldCPU::Print(std::vector<float> arr, std::string msg, int iter) const
 {
 	PrintHelper("BEGIN", msg, iter);
 	for (unsigned int i = 0; i < m_sizeX; i++)
@@ -132,7 +132,7 @@ void ShallowNewton::Print(std::vector<float> arr, std::string msg, int iter) con
 	std::cout << std::flush;
 }
 
-void ShallowNewton::Print(std::vector<bool> arr, std::string msg, int iter) const
+void HeightFieldCPU::Print(std::vector<bool> arr, std::string msg, int iter) const
 {
 	PrintHelper("BEGIN", msg, iter);
 	for (unsigned int i = 0; i < m_sizeX; i++)
@@ -150,11 +150,11 @@ void ShallowNewton::Print(std::vector<bool> arr, std::string msg, int iter) cons
 }
 
 
-void ShallowNewton::PrintNumber(float value) const
+void HeightFieldCPU::PrintNumber(float value) const
 {
 	std::cout << std::fixed << std::setw(7) << std::setprecision(3) << value << " ";
 }
-void ShallowNewton::PrintHelper(std::string start_end, std::string msg, int iter) const
+void HeightFieldCPU::PrintHelper(std::string start_end, std::string msg, int iter) const
 {
 	if (iter != -1) {
 		std::cout << "========== " << start_end << " " << msg << " " << iter << " ==========\n\n";
@@ -163,17 +163,17 @@ void ShallowNewton::PrintHelper(std::string start_end, std::string msg, int iter
 		std::cout << "========== " << start_end << " " << msg << " ==========\n\n";
 	}
 }
-void ShallowNewton::Pause() const
+void HeightFieldCPU::Pause() const
 {
 	std::getchar();
 }
-void ShallowNewton::Pause(std::string msg) const
+void HeightFieldCPU::Pause(std::string msg) const
 {
 	std::cout << msg << std::endl;
 	std::getchar();
 }
 
-void ShallowNewton::PrintWaterHeightSum(int iter)
+void HeightFieldCPU::PrintWaterHeightSum(int iter)
 {
 	SumOfArray = SumArray(m_water_height);
 	SumDifference = SumOfArray / OldSumArray - 1;
@@ -194,15 +194,15 @@ void ShallowNewton::PrintWaterHeightSum(int iter)
 *No iteration input gives no numbering
 *=========================================================
 */
-void ShallowNewton::PrintWaterHeight(int iteration) const
+void HeightFieldCPU::PrintWaterHeight(int iteration) const
 {
 	Print(m_water_height, "WATER_HEIGHT", iteration);
 }
-void ShallowNewton::PrintTerrainHeight(int iteration) const
+void HeightFieldCPU::PrintTerrainHeight(int iteration) const
 {
 	Print(m_terrain_height, "TERRAIN_HEIGHT", iteration);
 }
-void ShallowNewton::PrintVelocity_X(int iteration) const
+void HeightFieldCPU::PrintVelocity_X(int iteration) const
 {
 	Print(m_velocity_z, "VELOCITY_X", iteration);
 }
@@ -213,21 +213,21 @@ void ShallowNewton::PrintVelocity_X(int iteration) const
 *=========================================================
 *Warning: Bool is strange, needed to move PrintNumber thingie over here
 */
-void ShallowNewton::PrintWaterHeight(unsigned int x, unsigned int y) const
+void HeightFieldCPU::PrintWaterHeight(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	PrintNumber(m_water_height.at(index));
 	std::cout << std::flush;
 }
-void ShallowNewton::PrintTerrainHeight(unsigned int x, unsigned int y) const
+void HeightFieldCPU::PrintTerrainHeight(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	PrintNumber(m_terrain_height.at(index));
 	std::cout << std::flush;
 }
-void ShallowNewton::PrintVelocity_X(unsigned int x, unsigned int y) const
+void HeightFieldCPU::PrintVelocity_X(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -241,7 +241,7 @@ void ShallowNewton::PrintVelocity_X(unsigned int x, unsigned int y) const
 *=========================================================
 *
 */
-void ShallowNewton::PrintWaterHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void HeightFieldCPU::PrintWaterHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -254,7 +254,7 @@ void ShallowNewton::PrintWaterHeight(unsigned int from_x, unsigned int to_x, uns
 	}
 	std::cout << std::flush;
 }
-void ShallowNewton::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void HeightFieldCPU::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -267,7 +267,7 @@ void ShallowNewton::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, u
 	}
 	std::cout << std::flush;
 }
-void ShallowNewton::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void HeightFieldCPU::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -286,7 +286,7 @@ void ShallowNewton::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsi
 *=========================================================
 *
 */
-void ShallowNewton::SetWaterHeight(float value)
+void HeightFieldCPU::SetWaterHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -297,7 +297,7 @@ void ShallowNewton::SetWaterHeight(float value)
 		}
 	}
 }
-void ShallowNewton::SetTerrainHeight(float value)
+void HeightFieldCPU::SetTerrainHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -308,7 +308,7 @@ void ShallowNewton::SetTerrainHeight(float value)
 		}
 	}
 }
-void ShallowNewton::setVelocity_X(float value)
+void HeightFieldCPU::setVelocity_X(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -325,19 +325,19 @@ void ShallowNewton::setVelocity_X(float value)
 *=========================================================
 *
 */
-void ShallowNewton::SetWaterHeight(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SetWaterHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_water_height.at(index) = value;
 }
-void ShallowNewton::SetTerrainHeight(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SetTerrainHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) = value;
 }
-void ShallowNewton::setVelocity_X(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::setVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -350,7 +350,7 @@ void ShallowNewton::setVelocity_X(float value, unsigned int x, unsigned int y)
 *=========================================================
 *
 */
-void ShallowNewton::SetWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SetWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -362,7 +362,7 @@ void ShallowNewton::SetWaterHeight(float value, unsigned int from_x, unsigned in
 		}
 	}
 }
-void ShallowNewton::SetTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SetTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -374,7 +374,7 @@ void ShallowNewton::SetTerrainHeight(float value, unsigned int from_x, unsigned 
 		}
 	}
 }
-void ShallowNewton::setVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::setVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -393,7 +393,7 @@ void ShallowNewton::setVelocity_X(float value, unsigned int from_x, unsigned int
 *=========================================================
 *
 */
-void ShallowNewton::AddWaterHeight(float value)
+void HeightFieldCPU::AddWaterHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -405,7 +405,7 @@ void ShallowNewton::AddWaterHeight(float value)
 	}
 }
 
-void ShallowNewton::AddTerrainHeight(float value)
+void HeightFieldCPU::AddTerrainHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -417,7 +417,7 @@ void ShallowNewton::AddTerrainHeight(float value)
 	}
 }
 
-void ShallowNewton::AddVelocity_X(float value)
+void HeightFieldCPU::AddVelocity_X(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -435,19 +435,19 @@ void ShallowNewton::AddVelocity_X(float value)
 *=========================================================
 *
 */
-void ShallowNewton::AddWaterHeight(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::AddWaterHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_water_height.at(index) += value;
 }
-void ShallowNewton::AddTerrainHeight(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::AddTerrainHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) += value;
 }
-void ShallowNewton::AddVelocity_X(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::AddVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -459,7 +459,7 @@ void ShallowNewton::AddVelocity_X(float value, unsigned int x, unsigned int y)
 *=========================================================
 *
 */
-void ShallowNewton::AddWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::AddWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -471,7 +471,7 @@ void ShallowNewton::AddWaterHeight(float value, unsigned int from_x, unsigned in
 		}
 	}
 }
-void ShallowNewton::AddTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::AddTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -483,7 +483,7 @@ void ShallowNewton::AddTerrainHeight(float value, unsigned int from_x, unsigned 
 		}
 	}
 }
-void ShallowNewton::AddVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::AddVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -501,15 +501,15 @@ void ShallowNewton::AddVelocity_X(float value, unsigned int from_x, unsigned int
 *=========================================================
 *
 */
-void ShallowNewton::SubWaterHeight(float value)
+void HeightFieldCPU::SubWaterHeight(float value)
 {
 	AddWaterHeight(-value);
 }
-void ShallowNewton::SubTerrainHeight(float value)
+void HeightFieldCPU::SubTerrainHeight(float value)
 {
 	AddTerrainHeight(-value);
 }
-void ShallowNewton::SubVelocity_X(float value)
+void HeightFieldCPU::SubVelocity_X(float value)
 {
 	AddVelocity_X(-value);
 }
@@ -519,15 +519,15 @@ void ShallowNewton::SubVelocity_X(float value)
 *=========================================================
 *
 */
-void ShallowNewton::SubWaterHeight(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SubWaterHeight(float value, unsigned int x, unsigned int y)
 {
 	AddWaterHeight(-value, x, y);
 }
-void ShallowNewton::SubTerrainHeight(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SubTerrainHeight(float value, unsigned int x, unsigned int y)
 {
 	AddTerrainHeight(-value, x, y);
 }
-void ShallowNewton::SubVelocity_X(float value, unsigned int x, unsigned int y)
+void HeightFieldCPU::SubVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	AddVelocity_X(-value, x, y);
 }
@@ -537,22 +537,22 @@ void ShallowNewton::SubVelocity_X(float value, unsigned int x, unsigned int y)
 *=========================================================
 *
 */
-void ShallowNewton::SubWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SubWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddWaterHeight(-value, from_x, to_x, from_y, to_y);
 }
-void ShallowNewton::SubTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SubTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddTerrainHeight(-value, from_x, to_x, from_y, to_y);
 }
-void ShallowNewton::SubVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void HeightFieldCPU::SubVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddVelocity_X(-value, from_x, to_x, from_y, to_y);
 }
 
 
 
-ShallowNewton::ShallowNewton(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY)
+HeightFieldCPU::HeightFieldCPU(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY)
 {
 	m_terrain_height.resize(sizeX*sizeY);
 	m_water_height.resize(sizeX*sizeY);
@@ -561,6 +561,6 @@ ShallowNewton::ShallowNewton(const unsigned int sizeX, const unsigned int sizeY)
 }
 
 
-ShallowNewton::~ShallowNewton()
+HeightFieldCPU::~HeightFieldCPU()
 {
 }

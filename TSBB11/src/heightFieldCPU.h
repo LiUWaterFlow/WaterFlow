@@ -1,15 +1,15 @@
 ﻿#pragma once
-#ifndef SHALLOWNEWTON_H
-#define SHALLOWNEWTON_H
+#ifndef HeightFieldCPU_H
+#define HeightFieldCPU_H
 
 #include <vector>
 #include <string>
 
-class ShallowNewton
+class HeightFieldCPU
 {
 public:
-	ShallowNewton(const unsigned int sizeX = 6, const unsigned int sizeY = 6);
-	~ShallowNewton();
+	HeightFieldCPU(const unsigned int sizeX = 6, const unsigned int sizeY = 6);
+	~HeightFieldCPU();
 
 	/*This is a temporary function that is called from the main program
 	*Everything except gridSize can be manipulated here. If grid size wants
@@ -101,4 +101,4 @@ private:
 	float OldSumArray;
 };
 
-#endif //SHALLOWNEWTON_H
+#endif //HeightFieldCPU_H
