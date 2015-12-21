@@ -1,17 +1,17 @@
 #pragma once
-#ifndef SHALLOWWATER2_H
-#define SHALLOWWATER2_H
+#ifndef ShallowWaterCPU_H
+#define ShallowWaterCPU_H
 
 #include "./common/glm/glm.hpp"
 #include <vector>
 #include <string>
 
 #define GRAVITY -9.81f
-class ShallowWater2
+class ShallowWaterCPU
 {
 public:
-	ShallowWater2(const unsigned int sizeX = 6, const unsigned int sizeY = 6);
-	~ShallowWater2();
+	ShallowWaterCPU(const unsigned int sizeX = 6, const unsigned int sizeY = 6);
+	~ShallowWaterCPU();
 
 	/*This is a temporary function that is called from the main program
 	 *Everything except gridSize can be manipulated here. If grid size wants

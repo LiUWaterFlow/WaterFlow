@@ -144,7 +144,7 @@ public:
 
 	/*=======================================================
 	* These are special functions that should be removed later
-	* They are here so the testcode from ShallowWater2 runs
+	* They are here so the testcode from ShallowWaterCPU runs
 	*==========================================================*/
 	/*set functions*/
 	void SetVelocity_X(float value) { SetMomentum_X(value); }

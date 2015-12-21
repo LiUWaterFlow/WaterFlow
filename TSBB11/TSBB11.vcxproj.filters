@@ -57,13 +57,13 @@
     <ClCompile Include="src\common\Utilities.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShallowWater2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\shallowWater3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\heightFieldCPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shallowWaterCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,13 +107,13 @@
     <ClInclude Include="src\shallowWater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShallowWater2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\shallowWater3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\heightFieldCPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shallowWaterCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,11 +1,11 @@
-#include "ShallowWater2.h"
+#include "ShallowWaterCPU.h"
 #include <assert.h>
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <stdbool.h> //so bools can be passed with typename in printValue
 
-int ShallowWater2::runDebug()
+int ShallowWaterCPU::runDebug()
 {
 	/*Start by setting data*/
 	AddTerrainHeight(0.0f);
@@ -45,7 +45,7 @@ int ShallowWater2::runDebug()
 	return 1; //then end it here
 }
 
-float ShallowWater2::bilinjearInterpolation(std::vector<float>& array, float point_x, float point_y)
+float ShallowWaterCPU::bilinjearInterpolation(std::vector<float>& array, float point_x, float point_y)
 {
 	//picking out the nearby points
 	const int X = (int)point_x;
@@ -64,7 +64,7 @@ float ShallowWater2::bilinjearInterpolation(std::vector<float>& array, float poi
 }
 
 //update the current height by looking backwards
-void ShallowWater2::Advect(std::vector<float>& array,const float dt, VELTYPE type)
+void ShallowWaterCPU::Advect(std::vector<float>& array,const float dt, VELTYPE type)
 {
 	for (unsigned int i = 1; i < m_sizeX - 1; i++)
 	{
@@ -79,15 +79,15 @@ void ShallowWater2::Advect(std::vector<float>& array,const float dt, VELTYPE typ
 				float v = 0; //speed y
 				switch (type)
 				{
-				case ShallowWater2::VELTYPE::HEIGHT:
+				case ShallowWaterCPU::VELTYPE::HEIGHT:
 					u += (m_velocity_x[index] + m_velocity_x[index + 1])*0.5f;
 					v += (m_velocity_y[index] + m_velocity_y[index + m_sizeX])*0.5f;
 					break;
-				case ShallowWater2::VELTYPE::X_VEL:
+				case ShallowWaterCPU::VELTYPE::X_VEL:
 					u += m_velocity_x[index];
 					v += (m_velocity_y[index] + m_velocity_y[index + 1] + m_velocity_y[index + m_sizeX] + m_velocity_y[index + m_sizeX + 1])*0.25f;
 					break;
-				case ShallowWater2::VELTYPE::Y_VEL:
+				case ShallowWaterCPU::VELTYPE::Y_VEL:
 					u += (m_velocity_x[index] + m_velocity_x[index + 1] + m_velocity_x[index + m_sizeX] + m_velocity_x[index + 1 + m_sizeX])*0.25f;
 					v += m_velocity_y[index];
 					break;
@@ -114,7 +114,7 @@ void ShallowWater2::Advect(std::vector<float>& array,const float dt, VELTYPE typ
 	std::swap(temp, array);
 }
 
-void ShallowWater2::UpdateHeight(const float dt)
+void ShallowWaterCPU::UpdateHeight(const float dt)
 {
 	for (unsigned int i = 1; i < m_sizeX - 1; i++)
 	{
@@ -131,7 +131,7 @@ void ShallowWater2::UpdateHeight(const float dt)
 	}
 }
 
-void ShallowWater2::UpdateVelocity(const float dt, std::vector<float>& total_height) //this uses total height of water
+void ShallowWaterCPU::UpdateVelocity(const float dt, std::vector<float>& total_height) //this uses total height of water
 {
 	//update velocity in X
 	for (unsigned int  i = 2; i < m_sizeX - 1; i++)
@@ -154,7 +154,7 @@ void ShallowWater2::UpdateVelocity(const float dt, std::vector<float>& total_hei
 	}
 }
 
-void ShallowWater2::SetReflectBoundary()
+void ShallowWaterCPU::SetReflectBoundary()
 {
 	for (unsigned int i = 0; i < m_sizeX; i++)
 	{
@@ -172,7 +172,7 @@ void ShallowWater2::SetReflectBoundary()
 	}
 }
 
-void ShallowWater2::AddTerrainHeight(std::vector<float>& array)
+void ShallowWaterCPU::AddTerrainHeight(std::vector<float>& array)
 {
 	for (unsigned int i = 0; i < m_sizeX; i++)
 	{
@@ -184,7 +184,7 @@ void ShallowWater2::AddTerrainHeight(std::vector<float>& array)
 	}
 }
 
-void ShallowWater2::ComputeFluidFlags(std::vector<float>& ground_height, std::vector<float>& fluid_height)
+void ShallowWaterCPU::ComputeFluidFlags(std::vector<float>& ground_height, std::vector<float>& fluid_height)
 {
 	const float epsilon = 0.00001f;
 	for (unsigned int i = 1; i < m_sizeX - 1; i++)
@@ -233,7 +233,7 @@ void ShallowWater2::ComputeFluidFlags(std::vector<float>& ground_height, std::ve
 	}
 }
 
-void ShallowWater2::RunSimulation(const float dt)
+void ShallowWaterCPU::RunSimulation(const float dt)
 {
 	std::vector<float> advect_water = m_water_height;
 	std::vector<float> advect_velocity_x = m_velocity_x;
@@ -311,7 +311,7 @@ void ShallowWater2::RunSimulation(const float dt)
 	ResetTemp();
 }
 
-void ShallowWater2::ResetTemp()
+void ShallowWaterCPU::ResetTemp()
 {
 	for (unsigned int x = 0; x < m_sizeX ; x++)
 	{
@@ -324,7 +324,7 @@ void ShallowWater2::ResetTemp()
 	}
 }
 
-float ShallowWater2::SumArray(std::vector<float>& arr) const
+float ShallowWaterCPU::SumArray(std::vector<float>& arr) const
 {
 	float sum = 0.0f;
 	for (unsigned int x = 1 ; x < m_sizeX-1 ; x++)
@@ -342,7 +342,7 @@ float ShallowWater2::SumArray(std::vector<float>& arr) const
 *Print function and helper print function
 *=========================================================
 */
-void ShallowWater2::Print(std::vector<float> arr, std::string msg, int iter) const
+void ShallowWaterCPU::Print(std::vector<float> arr, std::string msg, int iter) const
 {
 	PrintHelper("BEGIN", msg, iter);
 	for (unsigned int j = 0; j < m_sizeY; j++)
@@ -359,7 +359,7 @@ void ShallowWater2::Print(std::vector<float> arr, std::string msg, int iter) con
 	std::cout << std::flush;
 }
 
-void ShallowWater2::Print(std::vector<bool> arr, std::string msg, int iter) const
+void ShallowWaterCPU::Print(std::vector<bool> arr, std::string msg, int iter) const
 {
 	PrintHelper("BEGIN", msg, iter);
 	for (unsigned int i = 0; i < m_sizeX; i++)
@@ -377,11 +377,11 @@ void ShallowWater2::Print(std::vector<bool> arr, std::string msg, int iter) cons
 }
 
 
-void ShallowWater2::PrintNumber(float value) const
+void ShallowWaterCPU::PrintNumber(float value) const
 {
 	std::cout << std::fixed << std::setw(7) << std::setprecision(3) << value << " ";
 }
-void ShallowWater2::PrintHelper(std::string start_end, std::string msg, int iter) const
+void ShallowWaterCPU::PrintHelper(std::string start_end, std::string msg, int iter) const
 {
 	if (iter != -1) {
 		std::cout << "========== " << start_end << " " <<  msg << " " << iter << " ==========\n\n";
@@ -390,20 +390,20 @@ void ShallowWater2::PrintHelper(std::string start_end, std::string msg, int iter
 		std::cout << "========== " << start_end << " " << msg << " ==========\n\n";
 	}
 }
-void ShallowWater2::Pause() const
+void ShallowWaterCPU::Pause() const
 {
 	std::string dummy;
 	std::getline(std::cin, dummy);
 	//std::getchar();
 }
-void ShallowWater2::Pause(std::string msg) const
+void ShallowWaterCPU::Pause(std::string msg) const
 {
 	std::cout << msg << std::endl;
 	Pause();
 	//std::getchar();
 }
 
-void ShallowWater2::PrintWaterHeightSum(int iter)
+void ShallowWaterCPU::PrintWaterHeightSum(int iter)
 {
 	SumOfArray = SumArray(m_water_height);
 	SumDifference = SumOfArray/OldSumArray - 1;
@@ -424,27 +424,27 @@ void ShallowWater2::PrintWaterHeightSum(int iter)
  *No iteration input gives no numbering
  *=========================================================
  */
-void ShallowWater2::PrintWaterHeight(int iteration) const
+void ShallowWaterCPU::PrintWaterHeight(int iteration) const
 {
 	Print(m_water_height, "WATER_HEIGHT", iteration);
 }
-void ShallowWater2::PrintTerrainHeight(int iteration) const
+void ShallowWaterCPU::PrintTerrainHeight(int iteration) const
 {
 	Print(m_terrain_height, "TERRAIN_HEIGHT", iteration);
 }
-void ShallowWater2::PrintVelocity_X(int iteration) const
+void ShallowWaterCPU::PrintVelocity_X(int iteration) const
 {
 	Print(m_velocity_x, "VELOCITY_X", iteration);
 }
-void ShallowWater2::PrintVelocity_Y(int iteration) const
+void ShallowWaterCPU::PrintVelocity_Y(int iteration) const
 {
 	Print(m_velocity_y, "VELOCITY_Y", iteration);
 }
-void ShallowWater2::PrintWaterBool(int iteration) const
+void ShallowWaterCPU::PrintWaterBool(int iteration) const
 {
 	Print(m_fluid, "WATER_BOOL", iteration);
 }
-void ShallowWater2::PrintWaterFillLevel(int iteration) const
+void ShallowWaterCPU::PrintWaterFillLevel(int iteration) const
 {
 	Print(m_fillLevel, "WATER_FILL_LEVEL", iteration);
 }
@@ -455,42 +455,42 @@ void ShallowWater2::PrintWaterFillLevel(int iteration) const
 *=========================================================
 *Warning: Bool is strange, needed to move PrintNumber thingie over here
 */
-void ShallowWater2::PrintWaterHeight(unsigned int x, unsigned int y) const
+void ShallowWaterCPU::PrintWaterHeight(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	PrintNumber(m_water_height.at(index));
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintTerrainHeight(unsigned int x, unsigned int y) const
+void ShallowWaterCPU::PrintTerrainHeight(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	PrintNumber(m_terrain_height.at(index));
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintVelocity_X(unsigned int x, unsigned int y) const
+void ShallowWaterCPU::PrintVelocity_X(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	PrintNumber(m_velocity_x.at(index));
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintVelocity_Y(unsigned int x, unsigned int y) const
+void ShallowWaterCPU::PrintVelocity_Y(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	PrintNumber(m_velocity_y.at(index));
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintWaterBool(unsigned int x, unsigned int y) const
+void ShallowWaterCPU::PrintWaterBool(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	std::cout << std::fixed << std::setprecision(3) << m_fluid.at(index) << " ";
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintWaterFillLevel(unsigned int x, unsigned int y) const
+void ShallowWaterCPU::PrintWaterFillLevel(unsigned int x, unsigned int y) const
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -504,7 +504,7 @@ void ShallowWater2::PrintWaterFillLevel(unsigned int x, unsigned int y) const
 *=========================================================
 *
 */
-void ShallowWater2::PrintWaterHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void ShallowWaterCPU::PrintWaterHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -517,7 +517,7 @@ void ShallowWater2::PrintWaterHeight(unsigned int from_x, unsigned int to_x, uns
 	}
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void ShallowWaterCPU::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -530,7 +530,7 @@ void ShallowWater2::PrintTerrainHeight(unsigned int from_x, unsigned int to_x, u
 	}
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void ShallowWaterCPU::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -543,7 +543,7 @@ void ShallowWater2::PrintVelocity_X(unsigned int from_x, unsigned int to_x, unsi
 	}
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintVelocity_Y(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void ShallowWaterCPU::PrintVelocity_Y(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -556,7 +556,7 @@ void ShallowWater2::PrintVelocity_Y(unsigned int from_x, unsigned int to_x, unsi
 	}
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintWaterBool(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void ShallowWaterCPU::PrintWaterBool(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -569,7 +569,7 @@ void ShallowWater2::PrintWaterBool(unsigned int from_x, unsigned int to_x, unsig
 	}
 	std::cout << std::flush;
 }
-void ShallowWater2::PrintWaterFillLevel(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
+void ShallowWaterCPU::PrintWaterFillLevel(unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y) const
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -589,7 +589,7 @@ void ShallowWater2::PrintWaterFillLevel(unsigned int from_x, unsigned int to_x, 
 *=========================================================
 *
 */
-void ShallowWater2::SetWaterHeight(float value)
+void ShallowWaterCPU::SetWaterHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -600,7 +600,7 @@ void ShallowWater2::SetWaterHeight(float value)
 		}
 	}
 }
-void ShallowWater2::SetTerrainHeight(float value)
+void ShallowWaterCPU::SetTerrainHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -611,7 +611,7 @@ void ShallowWater2::SetTerrainHeight(float value)
 		}
 	}
 }
-void ShallowWater2::SetVelocity_X(float value)
+void ShallowWaterCPU::SetVelocity_X(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -622,7 +622,7 @@ void ShallowWater2::SetVelocity_X(float value)
 		}
 	}
 }
-void ShallowWater2::SetVelocity_Y(float value)
+void ShallowWaterCPU::SetVelocity_Y(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -639,25 +639,25 @@ void ShallowWater2::SetVelocity_Y(float value)
 *=========================================================
 *
 */
-void ShallowWater2::SetWaterHeight(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SetWaterHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_water_height.at(index) = value;
 }
-void ShallowWater2::SetTerrainHeight(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SetTerrainHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) = value;
 }
-void ShallowWater2::SetVelocity_X(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SetVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_velocity_x.at(index) = value;
 }
-void ShallowWater2::SetVelocity_Y(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SetVelocity_Y(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -670,7 +670,7 @@ void ShallowWater2::SetVelocity_Y(float value, unsigned int x, unsigned int y)
 *=========================================================
 *
 */
-void ShallowWater2::SetWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SetWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -682,7 +682,7 @@ void ShallowWater2::SetWaterHeight(float value, unsigned int from_x, unsigned in
 		}
 	}
 }
-void ShallowWater2::SetTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SetTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -694,7 +694,7 @@ void ShallowWater2::SetTerrainHeight(float value, unsigned int from_x, unsigned 
 		}
 	}
 }
-void ShallowWater2::SetVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SetVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -706,7 +706,7 @@ void ShallowWater2::SetVelocity_X(float value, unsigned int from_x, unsigned int
 		}
 	}
 }
-void ShallowWater2::SetVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SetVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -725,7 +725,7 @@ void ShallowWater2::SetVelocity_Y(float value, unsigned int from_x, unsigned int
 *=========================================================
 *
 */
-void ShallowWater2::AddWaterHeight(float value)
+void ShallowWaterCPU::AddWaterHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -737,7 +737,7 @@ void ShallowWater2::AddWaterHeight(float value)
 	}
 }
 
-void ShallowWater2::AddTerrainHeight(float value)
+void ShallowWaterCPU::AddTerrainHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -751,7 +751,7 @@ void ShallowWater2::AddTerrainHeight(float value)
 
 // slope surface (topograpgy) with or without wall
 /*
-void ShallowWater2::AddTerrainHeight(float value)
+void ShallowWaterCPU::AddTerrainHeight(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -768,7 +768,7 @@ void ShallowWater2::AddTerrainHeight(float value)
 	//}
 }*/
 
-void ShallowWater2::AddVelocity_X(float value)
+void ShallowWaterCPU::AddVelocity_X(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -779,7 +779,7 @@ void ShallowWater2::AddVelocity_X(float value)
 		}
 	}
 }
-void ShallowWater2::AddVelocity_Y(float value)
+void ShallowWaterCPU::AddVelocity_Y(float value)
 {
 	for (unsigned int x = 0; x < m_sizeX; x++)
 	{
@@ -796,25 +796,25 @@ void ShallowWater2::AddVelocity_Y(float value)
 *=========================================================
 *
 */
-void ShallowWater2::AddWaterHeight(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::AddWaterHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_water_height.at(index) += value;
 }
-void ShallowWater2::AddTerrainHeight(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::AddTerrainHeight(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_terrain_height.at(index) += value;
 }
-void ShallowWater2::AddVelocity_X(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::AddVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
 	m_velocity_x.at(index) += value;
 }
-void ShallowWater2::AddVelocity_Y(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::AddVelocity_Y(float value, unsigned int x, unsigned int y)
 {
 	assert(x >= 0 && x <= m_sizeX && y >= 0 && y <= m_sizeY); //make sure we dont go outside array size
 	const unsigned int index = x + y*m_sizeX;
@@ -826,7 +826,7 @@ void ShallowWater2::AddVelocity_Y(float value, unsigned int x, unsigned int y)
 *=========================================================
 *
 */
-void ShallowWater2::AddWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::AddWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -838,7 +838,7 @@ void ShallowWater2::AddWaterHeight(float value, unsigned int from_x, unsigned in
 		}
 	}
 }
-void ShallowWater2::AddTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::AddTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -850,7 +850,7 @@ void ShallowWater2::AddTerrainHeight(float value, unsigned int from_x, unsigned 
 		}
 	}
 }
-void ShallowWater2::AddVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::AddVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -862,7 +862,7 @@ void ShallowWater2::AddVelocity_X(float value, unsigned int from_x, unsigned int
 		}
 	}
 }
-void ShallowWater2::AddVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::AddVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	assert(from_x >= 0 && to_x <= m_sizeX && from_y >= 0 && to_y <= m_sizeY); //make sure we dont go outside array size
 	for (unsigned int x = from_x; x < to_x; x++)
@@ -880,19 +880,19 @@ void ShallowWater2::AddVelocity_Y(float value, unsigned int from_x, unsigned int
 *=========================================================
 *
 */
-void ShallowWater2::SubWaterHeight(float value)
+void ShallowWaterCPU::SubWaterHeight(float value)
 {
 	AddWaterHeight(-value);
 }
-void ShallowWater2::SubTerrainHeight(float value)
+void ShallowWaterCPU::SubTerrainHeight(float value)
 {
 	AddTerrainHeight(-value);
 }
-void ShallowWater2::SubVelocity_X(float value)
+void ShallowWaterCPU::SubVelocity_X(float value)
 {
 	AddVelocity_X(-value);
 }
-void ShallowWater2::SubVelocity_Y(float value)
+void ShallowWaterCPU::SubVelocity_Y(float value)
 {
 	AddVelocity_Y(-value);
 }
@@ -902,19 +902,19 @@ void ShallowWater2::SubVelocity_Y(float value)
 *=========================================================
 *
 */
-void ShallowWater2::SubWaterHeight(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SubWaterHeight(float value, unsigned int x, unsigned int y)
 {
 	AddWaterHeight(-value, x, y);
 }
-void ShallowWater2::SubTerrainHeight(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SubTerrainHeight(float value, unsigned int x, unsigned int y)
 {
 	AddTerrainHeight(-value, x, y);
 }
-void ShallowWater2::SubVelocity_X(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SubVelocity_X(float value, unsigned int x, unsigned int y)
 {
 	AddVelocity_X(-value, x, y);
 }
-void ShallowWater2::SubVelocity_Y(float value, unsigned int x, unsigned int y)
+void ShallowWaterCPU::SubVelocity_Y(float value, unsigned int x, unsigned int y)
 {
 	AddVelocity_Y(-value, x, y);
 }
@@ -924,19 +924,19 @@ void ShallowWater2::SubVelocity_Y(float value, unsigned int x, unsigned int y)
 *=========================================================
 *
 */
-void ShallowWater2::SubWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SubWaterHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddWaterHeight(-value, from_x, to_x, from_y, to_y);
 }
-void ShallowWater2::SubTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SubTerrainHeight(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddTerrainHeight(-value, from_x, to_x, from_y, to_y);
 }
-void ShallowWater2::SubVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SubVelocity_X(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddVelocity_X(-value, from_x, to_x, from_y, to_y);
 }
-void ShallowWater2::SubVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
+void ShallowWaterCPU::SubVelocity_Y(float value, unsigned int from_x, unsigned int to_x, unsigned int from_y, unsigned int to_y)
 {
 	AddVelocity_Y(-value, from_x, to_x, from_y, to_y);
 }
@@ -947,7 +947,7 @@ void ShallowWater2::SubVelocity_Y(float value, unsigned int from_x, unsigned int
 *=========================================================
 *
 */
-ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY), iter(0u)
+ShallowWaterCPU::ShallowWaterCPU(const unsigned int sizeX, const unsigned int sizeY) : m_sizeX(sizeX), m_sizeY(sizeY), iter(0u)
 {
 	m_water_height.resize(sizeX*sizeY);
 	m_velocity_x.resize(sizeX*sizeY);
@@ -958,6 +958,6 @@ ShallowWater2::ShallowWater2(const unsigned int sizeX, const unsigned int sizeY)
 	temp.resize(sizeX*sizeY);
 }
 
-ShallowWater2::~ShallowWater2()
+ShallowWaterCPU::~ShallowWaterCPU()
 {
 }

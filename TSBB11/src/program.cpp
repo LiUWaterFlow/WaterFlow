@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "HeightFieldCPU.h"
-#include "ShallowWater2.h"
+#include "ShallowWaterCPU.h"
 #include "shallowWater3.h"
 
 Program::Program() {
@@ -67,7 +67,7 @@ int Program::runSimulation(unsigned int sizeX, unsigned int sizeY)
 	}
 	else if (choice == 2)
 	{
-		ShallowWater2 navier(size_x, size_y);
+		ShallowWaterCPU navier(size_x, size_y);
 		return navier.runDebug();
 	}
 	else if (choice == 3)
