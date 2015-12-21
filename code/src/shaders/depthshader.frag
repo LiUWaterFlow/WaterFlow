@@ -1,23 +1,28 @@
 /// @file depthshader.frag
-/// @brief Fragment shader for depth map rendering
+/// @brief Fragment shader for depth map rendering.
 
 #version 150
 
-in vec2 out_TexCoord;
-in vec3 out_ObjPos;
+// ===== Uniforms =====
 
-out vec4 out_Color;
+uniform sampler2D height_texUnit;	///< Terrain geometry (normal and height) texture.
+uniform vec3 size;					///< Data size.
+uniform float maxDepth;				///< Max depth variable (for tweaking depth grayscale saturation).
 
-uniform sampler2D height_texUnit;	// Terrain normal and height texture.
 
-uniform vec3 size;			// Height scale.
-uniform float maxDepth;
+// ===== In/Out params =====
 
-// Underwater triangulation components.
-float depth;
+in vec2 out_TexCoord;				///< Fragment texture coordinate.
+in vec3 out_ObjPos;					///< Fragment position.
 
-// Texture lookups.
-vec4 terrainDataUnderSurface;
+out vec4 out_Color;					///< Fragment (out) pixel value.
+
+
+// ===== Variables needed =====
+
+float depth;						///< Water depth at fragment.
+vec4 terrainDataUnderSurface;		///< Terrain geometry under fragment.
+
 
 void main(void)
 {
@@ -27,7 +32,8 @@ void main(void)
 	// Depth at fragment.
 	depth = out_ObjPos.y - size.y * terrainDataUnderSurface.a;
 	
-	if (depth < 0 || out_ObjPos.z < 1 || out_ObjPos.x < 1 ){
+	if (depth < 0 || out_ObjPos.z < 1 || out_ObjPos.x < 1 )
+	{
 		discard;
 	}
 	
