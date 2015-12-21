@@ -1,4 +1,4 @@
-/// @file textureData.comp
+/// @file normConv.comp
 /// @brief Compute shader to perform normalized convolution
 ///
 /// Calculates new values for all inputs that are negative. Positive values in the 

@@ -1,3 +1,7 @@
+/// @file advectWaterShader.comp
+/// @brief Compute shader for advecting the water for shallow water implementations
+///
+
 #version 430
 
 layout(local_size_x = 16, local_size_y = 16) in;
@@ -79,9 +83,7 @@ float bilinjearInterpolation(float point_x, float point_y)
 
 	float t1 = point_y - float(y);
 	float t0 = 1.0f - t1;
-
-
-	//Jens hittar på. 	
+	
 	int ypos = clamp(y+1,0,size.y-1);
 	int xpos = clamp(x+1,0,size.x-1);
 	
@@ -135,8 +137,5 @@ void main(){
 		
 		water1[offset] =bilinjearInterpolation(source_point_x, source_point_y);
 		//water1[offset] =average(int(source_point_x), int(source_point_y));
-		
-		
-		
 	}
 }
