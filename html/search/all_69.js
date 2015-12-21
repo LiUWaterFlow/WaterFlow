@@ -18,5 +18,5 @@ var searchData=
   ['isfrozen',['isFrozen',['../class_camera.html#a360a2eac51c83433a90f9f034c290083',1,'Camera']]],
   ['isincollisionbox',['isInCollisionBox',['../class_camera.html#ae574bf2e47b09e9b2eff62a43492e29c',1,'Camera']]],
   ['isrunning',['isRunning',['../class_program.html#a71dc4ccfa65beb8173109a07f3990f26',1,'Program']]],
-  ['istrtovector',['iStrToVector',['../xml_parsing_8h.html#ad07366eb0018d98b50a2d948080ca729',1,'xmlParsing.cpp']]]
+  ['istrtovector',['iStrToVector',['../xml_parsing_8cpp.html#ad07366eb0018d98b50a2d948080ca729',1,'iStrToVector(std::string str):&#160;xmlParsing.cpp'],['../xml_parsing_8h.html#ad07366eb0018d98b50a2d948080ca729',1,'iStrToVector(std::string str):&#160;xmlParsing.cpp']]]
 ];

@@ -2,8 +2,9 @@ var searchData=
 [
   ['cam',['cam',['../class_program.html#ab397a2824b4eb543be9fed5acc21ac24',1,'Program']]],
   ['camera',['Camera',['../class_camera.html',1,'Camera'],['../class_camera.html#a2951080d072c5aeeb309e96bba7b850c',1,'Camera::Camera()']]],
+  ['camera_2ecpp',['camera.cpp',['../camera_8cpp.html',1,'']]],
   ['camera_2eh',['camera.h',['../camera_8h.html',1,'']]],
-  ['campos',['camPos',['../terrainshader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;terrainshader.frag'],['../watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;watershader.frag']]],
+  ['campos',['camPos',['../shallowwatershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;shallowwatershader.frag'],['../terrainshader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;terrainshader.frag'],['../watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'camPos():&#160;watershader.frag']]],
   ['cellsize',['cellsize',['../structmapdata.html#ab3e025201e714562d699bd8cfedfdafe',1,'mapdata']]],
   ['changelookatpos',['changeLookAtPos',['../class_camera.html#ad15c730764446cd3f7018a84d2a60cbc',1,'Camera']]],
   ['checkkeys',['checkKeys',['../class_program.html#a3410448e2325bd75c6e31bc455d6edb8',1,'Program']]],

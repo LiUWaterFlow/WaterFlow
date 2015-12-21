@@ -369,7 +369,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00269"></a>00269     <span class="keywordtype">int</span> numPing = 20;
 <a name="l00270"></a>00270     GLint numData = <a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a59d4bfabc536dc25f3f8ecc5c7072e8d" title="Getter for the width of the data.">getDataWidth</a>()*<a class="code" href="class_height_field.html#a0f02cb289183bf7857113ef1dc0707be" title="Handle to the terrain. (Datahandler).">terr</a>-&gt;<a class="code" href="class_data_handler.html#a9e505125aaa7270ae2475ba09c4b1111" title="Getter for the height of the data.">getDataHeight</a>();
 <a name="l00271"></a>00271 
-<a name="l00272"></a>00272     <span class="keywordflow">if</span> (flowChange(<a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>, dt)) {
+<a name="l00272"></a>00272     <span class="keywordflow">if</span> (<a class="code" href="xml_parsing_8cpp.html#aff279980788f8efb845e1062089be5a0" title="This function progresses the pressure time for the flowsources provided and checks if there has ocure...">flowChange</a>(<a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>, dt)) {
 <a name="l00273"></a>00273         GLfloat* f = <span class="keyword">new</span> <span class="keywordtype">float</span>[<a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>];
 <a name="l00274"></a>00274         std::fill_n(f, <a class="code" href="class_height_field.html#aac703a712d4674e5a4d7e6c5e94d0b60" title="Width of the textures (buffers) used for the simulations.">texWidth</a>*<a class="code" href="class_height_field.html#a71dc972bb0f69da264c3b033e6405e50" title="Height of the textures (buffers) used for the simulations.">texHeight</a>, 0.0f);
 <a name="l00275"></a>00275         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="class_height_field.html#af4e2c642db2d01a8dde982adb9e2b139" title="Flow sources.">xmlFlow</a>.size(); i++) {
@@ -477,7 +477,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="height_field_8cpp.html">heightField.cpp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 20:27:12 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 22:46:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

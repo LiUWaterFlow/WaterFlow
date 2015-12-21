@@ -4,7 +4,7 @@ var searchData=
   ['unew',['unew',['../class_height_field.html#a5c3fd828f346a99a1e249a0a4f7af735',1,'HeightField']]],
   ['unlock',['unlock',['../class_camera.html#a99f935c628b80d7dcbd77ac124a612b9',1,'Camera']]],
   ['unlocked',['unlocked',['../class_camera.html#a53c3290dae594a53daa86ae013eef783',1,'Camera']]],
-  ['up',['up',['../class_camera.html#a3fe5f351380fb118ffc600591769f049',1,'Camera::up()'],['../watershader_8frag.html#a21963c1b8a6f6a8fc16e912adf113be8',1,'up():&#160;watershader.frag']]],
+  ['up',['up',['../class_camera.html#a3fe5f351380fb118ffc600591769f049',1,'Camera::up()'],['../shallowwatershader_8frag.html#a21963c1b8a6f6a8fc16e912adf113be8',1,'up():&#160;shallowwatershader.frag'],['../watershader_8frag.html#a21963c1b8a6f6a8fc16e912adf113be8',1,'up():&#160;watershader.frag']]],
   ['update',['update',['../class_flow_source.html#a70cbe7c173437ef03d7eec12f500199d',1,'FlowSource::update()'],['../classmy_drawable.html#a120ae902ac9ce680b8f87418e5228ec1',1,'myDrawable::update()'],['../class_sky_cube.html#ae8314929ebf0a899218235f81ab39238',1,'SkyCube::update()'],['../class_height_map.html#a8b52621356a17ff2ab865ad2d5559d89',1,'HeightMap::update()'],['../class_program.html#a1e0347fbe4d1bb37f98a8ecf43cdcc95',1,'Program::update()']]],
   ['updateheightprogram',['updateHeightProgram',['../class_shallow_g_p_u.html#a2b0209e0d8d0278ceb4af2f651ef6c52',1,'ShallowGPU']]],
   ['updateheightshader_2ecomp',['updateHeightShader.comp',['../update_height_shader_8comp.html',1,'']]],

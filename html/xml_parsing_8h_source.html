@@ -127,38 +127,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00033"></a><a class="code" href="structinit___data__struct.html#aab5f1591b2f96413addf23b568685e66">00033</a>     std::vector&lt;Flood_Fill_data*&gt; <a class="code" href="structinit___data__struct.html#aab5f1591b2f96413addf23b568685e66" title="Vctor containing pionters to flood fill structs used for creating large scale lakes.">FFData</a>; 
 <a name="l00034"></a>00034 };
 <a name="l00035"></a>00035 
-<a name="l00039"></a>00039 std::vector&lt;float&gt; fStrToVector(std::string str);
+<a name="l00039"></a>00039 std::vector&lt;float&gt; <a class="code" href="xml_parsing_8cpp.html#a0de587f4a597747382371f3546a3976e" title="Converts a string with CSV to a vector with floats.">fStrToVector</a>(std::string str);
 <a name="l00040"></a>00040 
-<a name="l00044"></a>00044 std::vector&lt;int&gt; iStrToVector(std::string str);
+<a name="l00044"></a>00044 std::vector&lt;int&gt; <a class="code" href="xml_parsing_8cpp.html#ad07366eb0018d98b50a2d948080ca729" title="Converts a string with CSV to a vector with int.">iStrToVector</a>(std::string str);
 <a name="l00045"></a>00045 
-<a name="l00050"></a>00050 <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node <a class="code" href="watershader_8frag.html#a251125d5d29683e1458005f28de9845f" title="Time variable.">time</a>);
+<a name="l00050"></a>00050 <span class="keywordtype">void</span> <a class="code" href="xml_parsing_8cpp.html#a86df4518021c2206b1db3aacb7d0462d" title="This function parses the pressure data in the given xml nodes.">parsePressure</a>(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node <a class="code" href="shallowwatershader_8frag.html#a251125d5d29683e1458005f28de9845f" title="Time variable.">time</a>);
 <a name="l00051"></a>00051 
-<a name="l00055"></a>00055 <span class="keywordtype">void</span> parsePosition(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
+<a name="l00055"></a>00055 <span class="keywordtype">void</span> <a class="code" href="xml_parsing_8cpp.html#aeed36cfb6e61afc083de19e3a4149d5b" title="This function parses the position data in the given xml node.">parsePosition</a>(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
 <a name="l00056"></a>00056 
-<a name="l00061"></a>00061 <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node <a class="code" href="watershader_8frag.html#a251125d5d29683e1458005f28de9845f" title="Time variable.">time</a>);
+<a name="l00061"></a>00061 <span class="keywordtype">void</span> <a class="code" href="xml_parsing_8cpp.html#a6e35121f61218a4aa715dbe4eaf28066" title="This function parses the normals data in the given xml nodes.">parseNormal</a>(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node <a class="code" href="shallowwatershader_8frag.html#a251125d5d29683e1458005f28de9845f" title="Time variable.">time</a>);
 <a name="l00062"></a>00062 
-<a name="l00066"></a>00066 <span class="keywordtype">void</span> parseTotalWater(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
+<a name="l00066"></a>00066 <span class="keywordtype">void</span> <a class="code" href="xml_parsing_8cpp.html#a33a1bfd12f751836dca16d1173d961b6" title="This function parses the total water value in the given xml node.">parseTotalWater</a>(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
 <a name="l00067"></a>00067 
-<a name="l00071"></a>00071 <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
+<a name="l00071"></a>00071 <span class="keywordtype">void</span> <a class="code" href="xml_parsing_8cpp.html#a0073e599b7b1e7cf28efcd15d577f413" title="This function parses the radius value in the given xml node.">parseRadius</a>(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node);
 <a name="l00072"></a>00072 
-<a name="l00078"></a>00078 std::vector&lt;FlowSource*&gt; loadFlows(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00078"></a>00078 std::vector&lt;FlowSource*&gt; <a class="code" href="xml_parsing_8cpp.html#a5bb94de317ebdd420db4ceb9bc680b75" title="This function creates and populates FlowSource objects from a given XML file.">loadFlows</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00079"></a>00079 
 <a name="l00080"></a>00080 
-<a name="l00085"></a>00085 <span class="keywordtype">bool</span> flowChange(std::vector&lt;FlowSource*&gt; flows, <span class="keywordtype">float</span> <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>);
+<a name="l00085"></a>00085 <span class="keywordtype">bool</span> <a class="code" href="xml_parsing_8cpp.html#aff279980788f8efb845e1062089be5a0" title="This function progresses the pressure time for the flowsources provided and checks if there has ocure...">flowChange</a>(std::vector&lt;FlowSource*&gt; flows, <span class="keywordtype">float</span> <a class="code" href="add_height_shader_8comp.html#a97357e98eaffc814a4a8996e8811ee20" title="Simulation timestep.">dt</a>);
 <a name="l00086"></a>00086 
-<a name="l00090"></a>00090 std::string loadMapPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00090"></a>00090 std::string <a class="code" href="xml_parsing_8cpp.html#a831a30cc46acb983cb45cfacc21486b1" title="Loads a path given in the data node from a XML file.">loadMapPath</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00091"></a>00091 
-<a name="l00095"></a>00095 std::string loadVelSavePath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00095"></a>00095 std::string <a class="code" href="xml_parsing_8cpp.html#ab1971c06335eb8dd55e667b285e012d8" title="Loads a path given in the data node from a XML file.">loadVelSavePath</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00096"></a>00096 
-<a name="l00100"></a>00100 std::string loadHeightSavePath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00100"></a>00100 std::string <a class="code" href="xml_parsing_8cpp.html#a8631972bf5bbd9cfbdbc0a2a4b506cd6" title="Loads a path given in the data node from a XML file.">loadHeightSavePath</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00101"></a>00101 
-<a name="l00105"></a>00105 std::string loadVelLoadPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00105"></a>00105 std::string <a class="code" href="xml_parsing_8cpp.html#a0a84cc25343bf95d7b849834c4ede0a2" title="Loads a path given in the data node from a XML file.">loadVelLoadPath</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00106"></a>00106 
-<a name="l00110"></a>00110 std::string loadHeightLoadPath(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00110"></a>00110 std::string <a class="code" href="xml_parsing_8cpp.html#a28b6a1436acecac86bfea5e9ffed2b8f" title="Loads a path given in the data node from a XML file.">loadHeightLoadPath</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00111"></a>00111 
-<a name="l00115"></a>00115 std::vector&lt;Flood_Fill_data*&gt; loadFFData(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
+<a name="l00115"></a>00115 std::vector&lt;Flood_Fill_data*&gt; <a class="code" href="xml_parsing_8cpp.html#a60274f38c64eb7c805e921e32c1472a1" title="Loads all flood objects given in the floods node from a XML file to a vector.">loadFFData</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* xmlFile);
 <a name="l00116"></a>00116 
-<a name="l00119"></a>00119 <span class="keywordtype">void</span> deleteAllFlows(std::vector&lt;FlowSource*&gt; srces);
+<a name="l00119"></a>00119 <span class="keywordtype">void</span> <a class="code" href="xml_parsing_8cpp.html#af56f09b13f2870063e6c632e4dde426c" title="This function removes flowSources to free up memory.">deleteAllFlows</a>(std::vector&lt;FlowSource*&gt; srces);
 <a name="l00120"></a>00120 
 <a name="l00121"></a>00121 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
@@ -181,7 +181,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="xml_parsing_8h.html">xmlParsing.h</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 20:27:12 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 22:46:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
