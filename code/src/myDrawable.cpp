@@ -291,8 +291,7 @@ void HeightMap::generateHeightTexture() {
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, drawBuffers[3]);
 
 	glDispatchCompute((GLuint)ceil((GLfloat)dataWidth / 16.0f), (GLuint)ceil((GLfloat)dataHeight / 16.0f), 1);
-	//glFinish();
-	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	
 	printError("Generate terrain texture data");
 }
 
