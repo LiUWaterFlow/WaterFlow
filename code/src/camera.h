@@ -1,3 +1,8 @@
+/// @file camera.h
+/// @brief Pretty general camera class
+///
+/// Written by Gustav Svensk, free to use as long as this note about the original author remain
+
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -18,13 +23,13 @@
 #	endif
 #endif
 
-#ifndef M_PI
-#define M_PI           3.14159265358979323846f
-#endif
+
 
 #include "glm.hpp"
 #include "readData.h"
 
+/// @class Camera
+/// @brief Pretty general camera class
 class Camera {
 private:
 	// x används för att musen inte ska fastna i kanterna på

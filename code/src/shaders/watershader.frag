@@ -17,7 +17,8 @@ struct LightParam {
 	float specExp;	///< Specular exponent for the light
 };
 
-layout(std140, binding = 0) uniform LightInfo {
+layout(std140, binding = 0) uniform LightInfo ///< All the lights are stored in this buffer
+{
 	LightParam lights[2];
 };
 
@@ -225,7 +226,7 @@ void main(void)
 	
 	bottomLight *= texDataAtBottom.rgb;
 	//Color dependant attenuation.
-	bottomLight = vec3(bottomLight.r * ktransr, bottomLight.g * ktransg, bottomLight.b * ktransb);.
+	bottomLight = vec3(bottomLight.r * ktransr, bottomLight.g * ktransg, bottomLight.b * ktransb);
 	
 	out_Color = vec4(bottomLight + surfaceLight, 1.0);
 }

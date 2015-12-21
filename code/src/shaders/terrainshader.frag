@@ -17,7 +17,8 @@ struct LightParam {
 	float specExp;	///< Specular exponent for the light
 };
 
-layout(std140, binding = 0) uniform LightInfo {
+layout(std140, binding = 0) uniform LightInfo ///< All the lights are stored in this buffer
+{
 	LightParam lights[2];
 };
 
