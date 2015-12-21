@@ -5,6 +5,9 @@ var searchData=
   ['advectvelocityxprogram',['advectVelocityXProgram',['../class_shallow_g_p_u.html#a149f44c7be2d828774134b5505ab15d9',1,'ShallowGPU']]],
   ['advectvelocityyprogram',['advectVelocityYProgram',['../class_shallow_g_p_u.html#a82df26f926f49b30e2fe3d4943a0010d',1,'ShallowGPU']]],
   ['advectwaterprogram',['advectWaterProgram',['../class_shallow_g_p_u.html#a675afa38097d77e9482b9230ff2759c5',1,'ShallowGPU']]],
+  ['airrefind',['airRefInd',['../watershader_8frag.html#ac7b706a6ddcead1759d995bc262a84b6',1,'watershader.frag']]],
+  ['alpha',['alpha',['../watershader_8frag.html#ab1551d8043c2aa4410fb7dbb1fe3be7b',1,'watershader.frag']]],
+  ['amblight',['ambLight',['../watershader_8frag.html#a472f5a950fb37468d4c7063e1a66c412',1,'watershader.frag']]],
   ['antbar',['antBar',['../class_program.html#ae567a36cf97946d2229c48760425b537',1,'Program']]],
   ['arraylength',['arrayLength',['../class_file_handler.html#af7a77d4c88ec1b7f3881aec7115c0462',1,'FileHandler']]]
 ];

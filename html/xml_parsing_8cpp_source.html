@@ -154,7 +154,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00054"></a>00054 }
 <a name="l00055"></a>00055 
 <a name="l00056"></a>00056 <span class="comment">// This function parses the pressure values from the XML file by takeing the Pressure node, the PressureTime node and a pointer to a FlowSource object as input and adding the contents to the provided Object.</span>
-<a name="l00057"></a><a class="code" href="xml_parsing_8h.html#a86df4518021c2206b1db3aacb7d0462d">00057</a> <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node time){
+<a name="l00057"></a><a class="code" href="xml_parsing_8h.html#a86df4518021c2206b1db3aacb7d0462d">00057</a> <span class="keywordtype">void</span> parsePressure(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node pres, pugi::xml_node <a class="code" href="watershader_8frag.html#a251125d5d29683e1458005f28de9845f" title="Time variable.">time</a>){
 <a name="l00058"></a>00058   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
 <a name="l00059"></a>00059   std::string pstr = pres.attribute(<span class="stringliteral">&quot;p&quot;</span>).value();
 <a name="l00060"></a>00060   std::vector&lt;float&gt; timevec = fStrToVector(timestr);
@@ -172,7 +172,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00072"></a>00072 }
 <a name="l00073"></a>00073 
 <a name="l00074"></a>00074 <span class="comment">// This function parses the xyz direction of A Normal node and the time of a NormalTime node, then adds the result to an FlowSource Object given by pointer.</span>
-<a name="l00075"></a><a class="code" href="xml_parsing_8h.html#a6e35121f61218a4aa715dbe4eaf28066">00075</a> <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node time){
+<a name="l00075"></a><a class="code" href="xml_parsing_8h.html#a6e35121f61218a4aa715dbe4eaf28066">00075</a> <span class="keywordtype">void</span> parseNormal(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node norm, pugi::xml_node <a class="code" href="watershader_8frag.html#a251125d5d29683e1458005f28de9845f" title="Time variable.">time</a>){
 <a name="l00076"></a>00076   std::string timestr = time.attribute(<span class="stringliteral">&quot;t&quot;</span>).value();
 <a name="l00077"></a>00077   std::vector&lt;float&gt; ndir;
 <a name="l00078"></a>00078   std::vector&lt;std::vector&lt;float&gt; &gt; nvec;
@@ -196,7 +196,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00096"></a>00096 }
 <a name="l00097"></a>00097 
 <a name="l00098"></a><a class="code" href="xml_parsing_8h.html#a0073e599b7b1e7cf28efcd15d577f413">00098</a> <span class="keywordtype">void</span> parseRadius(<a class="code" href="class_flow_source.html" title="Contains the parameters of a flow source..">FlowSource</a>* obj, pugi::xml_node node){
-<a name="l00099"></a>00099   <span class="keywordtype">float</span> r;
+<a name="l00099"></a>00099   <span class="keywordtype">float</span> <a class="code" href="watershader_8frag.html#a16bd7f237eaea7a9b8fcdb85abe9a669" title="Reflected light vector.">r</a>;
 <a name="l00100"></a>00100   r = node.attribute(<span class="stringliteral">&quot;r&quot;</span>).as_float();
 <a name="l00101"></a>00101   obj-&gt;<a class="code" href="class_flow_source.html#ac1a40c4629c8dcd35ddc693858167f09" title="Sets the radius of the source.">setRadius</a>(r);
 <a name="l00102"></a>00102 }
@@ -308,7 +308,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><b>xmlParsing.cpp</b>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

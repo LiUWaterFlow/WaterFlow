@@ -2,6 +2,7 @@ var searchData=
 [
   ['cam',['cam',['../class_program.html#ab397a2824b4eb543be9fed5acc21ac24',1,'Program']]],
   ['camera',['Camera',['../class_camera.html',1,'']]],
+  ['campos',['camPos',['../watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000',1,'watershader.frag']]],
   ['cellsize',['cellsize',['../structmapdata.html#ab3e025201e714562d699bd8cfedfdafe',1,'mapdata']]],
   ['checkkeys',['checkKeys',['../class_program.html#a3410448e2325bd75c6e31bc455d6edb8',1,'Program']]],
   ['clean',['clean',['../class_program.html#a9ea8bf33b0305ade5a80c1009c3f83a4',1,'Program']]],

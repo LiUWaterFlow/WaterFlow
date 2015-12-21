@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['keof',['kEOF',['../loadobj_8c.html#a2cc64fbcd8599ea78d287aacf6b58eb9',1,'loadobj.c']]],
-  ['keydown',['keyDown',['../_g_l__utilities_8c.html#a63249f2a54cb9b3fff257daf7c7930f8',1,'GL_utilities.c']]],
-  ['keyisdown',['keyIsDown',['../_g_l__utilities_8c.html#a8d09d991086be73e17a53f1ecc7dfad5',1,'keyIsDown(unsigned char c):&#160;GL_utilities.c'],['../_g_l__utilities_8h.html#a8d09d991086be73e17a53f1ecc7dfad5',1,'keyIsDown(unsigned char c):&#160;GL_utilities.c']]],
-  ['keymap',['keymap',['../_g_l__utilities_8c.html#ac6e89b9acd8c3b2506a3be3dca3c34de',1,'GL_utilities.c']]],
-  ['keyup',['keyUp',['../_g_l__utilities_8c.html#a78f6ec96acbb8156cd856466cf3848e5',1,'GL_utilities.c']]],
-  ['kint',['kInt',['../loadobj_8c.html#ad892cc054a5dff9810a73f9b97dc3f34',1,'loadobj.c']]],
-  ['kreal',['kReal',['../loadobj_8c.html#a16f7ecbe428859698885e91d2eb0b39f',1,'loadobj.c']]],
-  ['kunknown',['kUnknown',['../loadobj_8c.html#a8edfffb58e9c5693f5ee5ebe31058d26',1,'loadobj.c']]]
+  ['kamb',['kamb',['../watershader_8frag.html#ac79d189182b7dae83dde63c53c99a338',1,'watershader.frag']]],
+  ['kblue',['kblue',['../watershader_8frag.html#add5bc8653e190b7637ea8c614ba57eda',1,'watershader.frag']]],
+  ['kdiff',['kdiff',['../watershader_8frag.html#a534b0f187964092fa265b862effad631',1,'watershader.frag']]],
+  ['krefl',['krefl',['../watershader_8frag.html#ab6d28c8ee242bc3ebc2ab569ffe3e5ad',1,'watershader.frag']]],
+  ['ktransb',['ktransb',['../watershader_8frag.html#a37e43f2baa4cd7cec3c0efabf307cc32',1,'watershader.frag']]],
+  ['ktransg',['ktransg',['../watershader_8frag.html#a3350fcc192f97ba2b13d6d4295b3209f',1,'watershader.frag']]],
+  ['ktransr',['ktransr',['../watershader_8frag.html#acc40b70aa60fc25df46539de9fdbe78f',1,'watershader.frag']]]
 ];

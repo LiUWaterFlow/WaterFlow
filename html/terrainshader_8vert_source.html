@@ -115,9 +115,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00015"></a>00015 in vec3 in_Normal;      <span class="comment">// Vertex-normal.</span>
 <a name="l00016"></a>00016 in vec2 in_TexCoord; <span class="comment">//not currently used</span>
 <a name="l00017"></a>00017 
-<a name="l00018"></a>00018 out vec3 out_Normal;
-<a name="l00019"></a>00019 out vec2 out_TexCoord;<span class="comment">// not currently used</span>
-<a name="l00020"></a>00020 out vec3 out_ObjPos;
+<a name="l00018"></a>00018 out vec3 <a class="code" href="watershader_8frag.html#a9aef44521bc8c077f92fa90eae3bd221" title="Fragment normal.">out_Normal</a>;
+<a name="l00019"></a>00019 out vec2 <a class="code" href="depthshader_8frag.html#a4a88bada04274f33f37d505f2b0ae42d" title="Fragment texture coordinate.">out_TexCoord</a>;<span class="comment">// not currently used</span>
+<a name="l00020"></a>00020 out vec3 <a class="code" href="depthshader_8frag.html#a8a5f78384762d4e4864ee4f3b5ad82fc" title="Fragment position.">out_ObjPos</a>;
 <a name="l00021"></a>00021 
 <a name="l00022"></a>00022 uniform mat4 <a class="code" href="simplevoxels_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1" title="Transformation matrix from World to View space.">WTVMatrix</a>;
 <a name="l00023"></a>00023 uniform mat4 <a class="code" href="simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129" title="Transformation matrix from View to Projection space.">VTPMatrix</a>;
@@ -152,9 +152,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00052"></a>00052 <span class="comment">    out_Col_j = (v[off0]-v[off3]) + (v[off0] -v[off4]); </span>
 <a name="l00053"></a>00053 <span class="comment">    */</span>
 <a name="l00054"></a>00054     
-<a name="l00055"></a>00055     out_Normal = in_Normal;
-<a name="l00056"></a>00056     out_TexCoord = in_TexCoord; <span class="comment">// not currently used</span>
-<a name="l00057"></a>00057     out_ObjPos = <a class="code" href="skyshader_8vert.html#affd81139dd5666ee11605b5993847112" title="Input vertex position.">in_Position</a>;
+<a name="l00055"></a>00055     <a class="code" href="watershader_8frag.html#a9aef44521bc8c077f92fa90eae3bd221" title="Fragment normal.">out_Normal</a> = in_Normal;
+<a name="l00056"></a>00056     <a class="code" href="depthshader_8frag.html#a4a88bada04274f33f37d505f2b0ae42d" title="Fragment texture coordinate.">out_TexCoord</a> = in_TexCoord; <span class="comment">// not currently used</span>
+<a name="l00057"></a>00057     <a class="code" href="depthshader_8frag.html#a8a5f78384762d4e4864ee4f3b5ad82fc" title="Fragment position.">out_ObjPos</a> = <a class="code" href="skyshader_8vert.html#affd81139dd5666ee11605b5993847112" title="Input vertex position.">in_Position</a>;
 <a name="l00058"></a>00058 
 <a name="l00059"></a>00059     gl_Position = <a class="code" href="simplevoxels_8geom.html#a23771147f91ecedb051e874da9020129" title="Transformation matrix from View to Projection space.">VTPMatrix</a> * <a class="code" href="simplevoxels_8vert.html#a7b2e5b97aa459ccb18884ec2cae926b1" title="Transformation matrix from World to View space.">WTVMatrix</a> * vec4(<a class="code" href="skyshader_8vert.html#affd81139dd5666ee11605b5993847112" title="Input vertex position.">in_Position</a>, 1.0);
 <a name="l00060"></a>00060 }
@@ -178,7 +178,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="terrainshader_8vert.html">terrainshader.vert</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

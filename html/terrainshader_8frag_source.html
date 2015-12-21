@@ -116,31 +116,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00021"></a>00021     <a class="code" href="struct_light_param.html">LightParam</a> lights[2];
 <a name="l00022"></a>00022 };
 <a name="l00023"></a>00023 
-<a name="l00024"></a>00024 in vec3 out_Normal;
-<a name="l00025"></a>00025 in vec2 out_TexCoord;<span class="comment">// not currently used</span>
-<a name="l00026"></a>00026 in vec3 out_ObjPos;
+<a name="l00024"></a>00024 in vec3 <a class="code" href="watershader_8frag.html#a9aef44521bc8c077f92fa90eae3bd221" title="Fragment normal.">out_Normal</a>;
+<a name="l00025"></a>00025 in vec2 <a class="code" href="depthshader_8frag.html#a4a88bada04274f33f37d505f2b0ae42d" title="Fragment texture coordinate.">out_TexCoord</a>;<span class="comment">// not currently used</span>
+<a name="l00026"></a>00026 in vec3 <a class="code" href="depthshader_8frag.html#a8a5f78384762d4e4864ee4f3b5ad82fc" title="Fragment position.">out_ObjPos</a>;
 <a name="l00027"></a>00027 
-<a name="l00028"></a>00028 out vec4 <a class="code" href="skyshader_8frag.html#a0dc90d8afd1e497c842d12d86ece9085" title="The output color.">out_Color</a>;
+<a name="l00028"></a>00028 out vec4 <a class="code" href="depthshader_8frag.html#a0dc90d8afd1e497c842d12d86ece9085" title="Fragment (out) pixel value.">out_Color</a>;
 <a name="l00029"></a>00029 
-<a name="l00030"></a>00030 uniform vec3 camPos;    <span class="comment">// Kamerapositionen.</span>
+<a name="l00030"></a>00030 uniform vec3 <a class="code" href="watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000" title="Camera position.">camPos</a>;    <span class="comment">// Kamerapositionen.</span>
 <a name="l00031"></a>00031 
 <a name="l00032"></a>00032 uniform vec3 <a class="code" href="add_flow_shader_8comp.html#aed22e6adc3355ad6b2430d85fd5c481e" title="width height">size</a>;
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034 uniform sampler2D terr_texUnit;
-<a name="l00035"></a>00035 uniform sampler2D height_texUnit;   <span class="comment">// Terrain normal and height texture.</span>
+<a name="l00034"></a>00034 uniform sampler2D <a class="code" href="watershader_8frag.html#af0de3ce9fcc74174d2a9d0591a3f5475" title="Terrain (color) texture.">terr_texUnit</a>;
+<a name="l00035"></a>00035 uniform sampler2D <a class="code" href="depthshader_8frag.html#a504f7ef403f348c8afe4a20b9653bec9" title="Terrain geometry (normal and height) texture.">height_texUnit</a>;   <span class="comment">// Terrain normal and height texture.</span>
 <a name="l00036"></a>00036 
-<a name="l00037"></a>00037 vec3 r;
-<a name="l00038"></a>00038 vec3 s;             <span class="comment">// Incomming light.</span>
-<a name="l00039"></a>00039 vec3 eye;           <span class="comment">// vector from object to camera.</span>
+<a name="l00037"></a>00037 vec3 <a class="code" href="watershader_8frag.html#a16bd7f237eaea7a9b8fcdb85abe9a669" title="Reflected light vector.">r</a>;
+<a name="l00038"></a>00038 vec3 <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>;             <span class="comment">// Incomming light.</span>
+<a name="l00039"></a>00039 vec3 <a class="code" href="watershader_8frag.html#a59c7cca5ec718e42f0b3d58b033932c1" title="Vector from the fragment to the camera.">eye</a>;           <span class="comment">// vector from object to camera.</span>
 <a name="l00040"></a>00040 
 <a name="l00041"></a>00041 
 <a name="l00042"></a>00042 <span class="comment">// Phong-modellen:</span>
-<a name="l00043"></a>00043 <span class="keywordtype">float</span> kamb;
-<a name="l00044"></a>00044 <span class="keywordtype">float</span> kdiff;
+<a name="l00043"></a>00043 <span class="keywordtype">float</span> <a class="code" href="watershader_8frag.html#ac79d189182b7dae83dde63c53c99a338" title="Ambient light coefficient.">kamb</a>;
+<a name="l00044"></a>00044 <span class="keywordtype">float</span> <a class="code" href="watershader_8frag.html#a534b0f187964092fa265b862effad631" title="Diffuse light coefficient.">kdiff</a>;
 <a name="l00045"></a>00045 <span class="keywordtype">float</span> kspec;
-<a name="l00046"></a>00046 vec3 ambLight;      <span class="comment">// Ambient.</span>
-<a name="l00047"></a>00047 vec3 diffLight;     <span class="comment">// Diffuse.</span>
-<a name="l00048"></a>00048 vec3 specLight;     <span class="comment">// Specular.</span>
+<a name="l00046"></a>00046 vec3 <a class="code" href="watershader_8frag.html#a472f5a950fb37468d4c7063e1a66c412" title="Ambient light color.">ambLight</a>;      <span class="comment">// Ambient.</span>
+<a name="l00047"></a>00047 vec3 <a class="code" href="watershader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118" title="Diffuse light color.">diffLight</a>;     <span class="comment">// Diffuse.</span>
+<a name="l00048"></a>00048 vec3 <a class="code" href="watershader_8frag.html#a55dd81c3ff59be2cea5f141352957cbb" title="Specular light color.">specLight</a>;     <span class="comment">// Specular.</span>
 <a name="l00049"></a>00049 vec3 totalLight;    <span class="comment">// total light.</span>
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051 <span class="comment">//in float out_Col_i;</span>
@@ -149,33 +149,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00054"></a>00054 <span class="keywordtype">void</span> main(<span class="keywordtype">void</span>)
 <a name="l00055"></a>00055 {
 <a name="l00056"></a>00056     <span class="comment">// Incomming and reflecting light is calculated for every lightsource</span>
-<a name="l00057"></a>00057     s = normalize(lights[0].pos - (1 - lights[0].isDir) * out_ObjPos);
-<a name="l00058"></a>00058     r = normalize(2 * out_Normal * dot(normalize(s), normalize(out_Normal)) - s);
+<a name="l00057"></a>00057     <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a> = normalize(lights[0].pos - (1 - lights[0].isDir) * <a class="code" href="depthshader_8frag.html#a8a5f78384762d4e4864ee4f3b5ad82fc" title="Fragment position.">out_ObjPos</a>);
+<a name="l00058"></a>00058     <a class="code" href="watershader_8frag.html#a16bd7f237eaea7a9b8fcdb85abe9a669" title="Reflected light vector.">r</a> = normalize(2 * <a class="code" href="watershader_8frag.html#a9aef44521bc8c077f92fa90eae3bd221" title="Fragment normal.">out_Normal</a> * dot(normalize(<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>), normalize(<a class="code" href="watershader_8frag.html#a9aef44521bc8c077f92fa90eae3bd221" title="Fragment normal.">out_Normal</a>)) - <a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>);
 <a name="l00059"></a>00059 
 <a name="l00060"></a>00060     <span class="comment">// eye-vector is calculated.</span>
-<a name="l00061"></a>00061     eye = normalize(camPos - out_ObjPos);
+<a name="l00061"></a>00061     <a class="code" href="watershader_8frag.html#a59c7cca5ec718e42f0b3d58b033932c1" title="Vector from the fragment to the camera.">eye</a> = normalize(<a class="code" href="watershader_8frag.html#ad5f1108f376121fda3fe33d3deb96000" title="Camera position.">camPos</a> - <a class="code" href="depthshader_8frag.html#a8a5f78384762d4e4864ee4f3b5ad82fc" title="Fragment position.">out_ObjPos</a>);
 <a name="l00062"></a>00062 
 <a name="l00063"></a>00063     <span class="comment">// Light according to phong model</span>
-<a name="l00064"></a>00064     kamb = 0.1;
-<a name="l00065"></a>00065     kdiff = 0.5;
+<a name="l00064"></a>00064     <a class="code" href="watershader_8frag.html#ac79d189182b7dae83dde63c53c99a338" title="Ambient light coefficient.">kamb</a> = 0.1;
+<a name="l00065"></a>00065     <a class="code" href="watershader_8frag.html#a534b0f187964092fa265b862effad631" title="Diffuse light coefficient.">kdiff</a> = 0.5;
 <a name="l00066"></a>00066     kspec = 0.5;
-<a name="l00067"></a>00067     ambLight = kamb * vec3(1.0, 1.0, 1.0);
-<a name="l00068"></a>00068     diffLight = vec3(0.0, 0.0, 0.0);
-<a name="l00069"></a>00069     specLight = vec3(0.0, 0.0, 0.0);
+<a name="l00067"></a>00067     <a class="code" href="watershader_8frag.html#a472f5a950fb37468d4c7063e1a66c412" title="Ambient light color.">ambLight</a> = <a class="code" href="watershader_8frag.html#ac79d189182b7dae83dde63c53c99a338" title="Ambient light coefficient.">kamb</a> * vec3(1.0, 1.0, 1.0);
+<a name="l00068"></a>00068     <a class="code" href="watershader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118" title="Diffuse light color.">diffLight</a> = vec3(0.0, 0.0, 0.0);
+<a name="l00069"></a>00069     <a class="code" href="watershader_8frag.html#a55dd81c3ff59be2cea5f141352957cbb" title="Specular light color.">specLight</a> = vec3(0.0, 0.0, 0.0);
 <a name="l00070"></a>00070     <span class="comment">// Diffuse-light calculated</span>
-<a name="l00071"></a>00071     diffLight += kdiff * lights[0].color * max(0.0, dot(s, normalize(out_Normal)));
+<a name="l00071"></a>00071     <a class="code" href="watershader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118" title="Diffuse light color.">diffLight</a> += <a class="code" href="watershader_8frag.html#a534b0f187964092fa265b862effad631" title="Diffuse light coefficient.">kdiff</a> * lights[0].color * max(0.0, dot(<a class="code" href="watershader_8frag.html#a1196de69544a2f154d290caa143b0145" title="Incident light vector.">s</a>, normalize(<a class="code" href="watershader_8frag.html#a9aef44521bc8c077f92fa90eae3bd221" title="Fragment normal.">out_Normal</a>)));
 <a name="l00072"></a>00072     <span class="comment">// Specular light calculated</span>
-<a name="l00073"></a>00073     specLight += kspec * lights[0].color * max(0.0, pow(dot(r, eye), lights[0].specExp));
+<a name="l00073"></a>00073     <a class="code" href="watershader_8frag.html#a55dd81c3ff59be2cea5f141352957cbb" title="Specular light color.">specLight</a> += kspec * lights[0].color * max(0.0, pow(dot(<a class="code" href="watershader_8frag.html#a16bd7f237eaea7a9b8fcdb85abe9a669" title="Reflected light vector.">r</a>, <a class="code" href="watershader_8frag.html#a59c7cca5ec718e42f0b3d58b033932c1" title="Vector from the fragment to the camera.">eye</a>), lights[0].specExp));
 <a name="l00074"></a>00074 
 <a name="l00075"></a>00075     totalLight = vec3(0.0, 0.0, 0.0);
 <a name="l00076"></a>00076     <span class="comment">// the different light components is added to total light</span>
-<a name="l00077"></a>00077     totalLight += ambLight;
-<a name="l00078"></a>00078     totalLight += diffLight;
-<a name="l00079"></a>00079     totalLight += specLight;
+<a name="l00077"></a>00077     totalLight += <a class="code" href="watershader_8frag.html#a472f5a950fb37468d4c7063e1a66c412" title="Ambient light color.">ambLight</a>;
+<a name="l00078"></a>00078     totalLight += <a class="code" href="watershader_8frag.html#a510b10bbd0c89d520ea6b3b74dae3118" title="Diffuse light color.">diffLight</a>;
+<a name="l00079"></a>00079     totalLight += <a class="code" href="watershader_8frag.html#a55dd81c3ff59be2cea5f141352957cbb" title="Specular light color.">specLight</a>;
 <a name="l00080"></a>00080 
 <a name="l00081"></a>00081     <span class="comment">// Just to check that the terrain data texture is working</span>
-<a name="l00082"></a>00082     vec3 terrainData = vec3(texture(terr_texUnit, out_TexCoord)) * totalLight;
-<a name="l00083"></a>00083     <a class="code" href="skyshader_8frag.html#a0dc90d8afd1e497c842d12d86ece9085" title="The output color.">out_Color</a> = vec4(terrainData, 1.0f);
+<a name="l00082"></a>00082     vec3 terrainData = vec3(texture(<a class="code" href="watershader_8frag.html#af0de3ce9fcc74174d2a9d0591a3f5475" title="Terrain (color) texture.">terr_texUnit</a>, <a class="code" href="depthshader_8frag.html#a4a88bada04274f33f37d505f2b0ae42d" title="Fragment texture coordinate.">out_TexCoord</a>)) * totalLight;
+<a name="l00083"></a>00083     <a class="code" href="depthshader_8frag.html#a0dc90d8afd1e497c842d12d86ece9085" title="Fragment (out) pixel value.">out_Color</a> = vec4(terrainData, 1.0f);
 <a name="l00084"></a>00084 }
 </pre></div></div><!-- contents -->
 </div>
@@ -197,7 +197,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="terrainshader_8frag.html">terrainshader.frag</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

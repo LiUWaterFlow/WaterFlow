@@ -496,7 +496,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00396"></a><a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185">00396</a> <span class="keywordtype">void</span> <a class="code" href="class_program.html#a741d3785e72b557c43098c67c6560185" title="Get data from mouse click.">Program::handleMouseButton</a>(SDL_Event* event) {
 <a name="l00397"></a>00397     <span class="keyword">const</span> Uint8 *keystate = SDL_GetKeyboardState(NULL);
 <a name="l00398"></a>00398     <span class="keywordflow">if</span> (keystate[SDL_SCANCODE_LSHIFT] &amp;&amp; !<a class="code" href="class_program.html#a493bb9224256680646ad4b665dcf7cbb" title="Bool to check if the mouse is hidden or not.">mouseHidden</a>) {
-<a name="l00399"></a>00399         <span class="keywordtype">float</span> depth;
+<a name="l00399"></a>00399         <span class="keywordtype">float</span> <a class="code" href="depthshader_8frag.html#a845896541a0621f5fbd11f0d115ce463" title="Water depth at fragment.">depth</a>;
 <a name="l00400"></a>00400         <span class="keywordtype">int</span> x;
 <a name="l00401"></a>00401         <span class="keywordtype">int</span> y;
 <a name="l00402"></a>00402         GLint viewport[4] = { 0, 0, 0, 0 };
@@ -549,7 +549,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="program_8cpp.html">program.cpp</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 16:27:05 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 18:40:38 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
