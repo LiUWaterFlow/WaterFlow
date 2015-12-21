@@ -1,5 +1,5 @@
 /// @file Utilities.h
-/// This file contains useful functions that doesn't quite fit anywhere else.
+/// @brief This file contains useful functions that doesn't quite fit anywhere else.
 
 #ifndef UTILITIES_H
 #define UTILITIES_H

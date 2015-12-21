@@ -1,5 +1,5 @@
 /// @file Utilities.cpp
-/// This file implements useful functions not part of the other libraries.
+/// @brief This file implements useful functions not part of the other libraries.
 
 #ifdef __APPLE__
 	#include <OpenGL/gl3.h>
