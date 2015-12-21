@@ -109,7 +109,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;vector&gt;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &lt;cstdint&gt;</span>
 <a name="l00011"></a>00011 
-<a name="l00018"></a><a class="code" href="class_file_handler.html">00018</a> <span class="keyword">class </span><a class="code" href="class_file_handler.html">FileHandler</a>
+<a name="l00018"></a><a class="code" href="class_file_handler.html">00018</a> <span class="keyword">class </span><a class="code" href="class_file_handler.html" title="Used to store float arrays, and/or load them from files.">FileHandler</a>
 <a name="l00019"></a>00019 {
 <a name="l00020"></a>00020 <span class="keyword">private</span>:
 <a name="l00021"></a><a class="code" href="class_file_handler.html#aae2daf19efe51db6e9db5b93322f0eb6">00021</a>     <span class="keywordtype">float</span>* <a class="code" href="class_file_handler.html#aae2daf19efe51db6e9db5b93322f0eb6" title="Pointer to the float array.">fArray</a>;              
@@ -117,22 +117,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00023"></a><a class="code" href="class_file_handler.html#a648b20cff90ba2d5dc3f6032db6e4003">00023</a>     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a648b20cff90ba2d5dc3f6032db6e4003" title="Width (side information).">width</a>;                  
 <a name="l00024"></a><a class="code" href="class_file_handler.html#acbbe0a5c3d0cc602fe8765497c79e196">00024</a>     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#acbbe0a5c3d0cc602fe8765497c79e196" title="Height (side information).">height</a>;                 
 <a name="l00025"></a>00025 <span class="keyword">public</span>:
-<a name="l00033"></a>00033     <a class="code" href="class_file_handler.html#a464e8173f8f981af24cb327ce1ef86dd" title="Constructor, takes file path as parameter.">FileHandler</a>(<span class="keywordtype">int</span> dWidth, <span class="keywordtype">int</span> dHeight);
-<a name="l00034"></a>00034 
-<a name="l00043"></a>00043     <span class="keywordtype">void</span> <a class="code" href="class_file_handler.html#ae9f5af9182b46c34bf669e2f31a984c7" title="Stores data, both as variables in the object and as a file.">SaveData</a>(std::string path);
-<a name="l00044"></a>00044 
-<a name="l00052"></a>00052     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#ac5e48eb872d460a786398fa815db15a0" title="Loads data from a file specified by fPath into the object.">LoadData</a>(std::string path);
-<a name="l00053"></a>00053 
-<a name="l00056"></a>00056     <span class="keywordtype">float</span>** <a class="code" href="class_file_handler.html#ac08c9c7059e4aaf68cc6e8d686542fa0" title="Getter for the stored float array.">GetArray</a>();
-<a name="l00057"></a>00057 
-<a name="l00060"></a>00060     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a68afad1dc41b2dc751ee6c9c0902e175" title="Getter for the stored float array length.">GetArrayLength</a>();
-<a name="l00061"></a>00061 
-<a name="l00064"></a>00064     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a23dc125e3d120f16058a3ea7fa963c29" title="Getter for the data width.">GetDataWidth</a>();
-<a name="l00065"></a>00065 
-<a name="l00068"></a>00068     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a80fe70aa4d3a8967a52a9ad49b76df87" title="Getter for the data height.">GetDataHeight</a>();
-<a name="l00069"></a>00069 };
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="preprocessor">#endif // FILEHANDLER_H</span>
+<a name="l00034"></a>00034     <a class="code" href="class_file_handler.html#a464e8173f8f981af24cb327ce1ef86dd" title="Constructor, takes file path as parameter.">FileHandler</a>(<span class="keywordtype">int</span> dWidth, <span class="keywordtype">int</span> dHeight);
+<a name="l00035"></a>00035 
+<a name="l00041"></a>00041     <span class="keywordtype">void</span> <a class="code" href="class_file_handler.html#ae9f5af9182b46c34bf669e2f31a984c7" title="Stores data, both as variables in the object and as a file.">SaveData</a>(std::string path);
+<a name="l00042"></a>00042 
+<a name="l00050"></a>00050     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#ac5e48eb872d460a786398fa815db15a0" title="Loads data from a file specified by fPath into the object.">LoadData</a>(std::string path);
+<a name="l00051"></a>00051 
+<a name="l00054"></a>00054     <span class="keywordtype">float</span>** <a class="code" href="class_file_handler.html#ac08c9c7059e4aaf68cc6e8d686542fa0" title="Getter for the stored float array.">GetArray</a>();
+<a name="l00055"></a>00055 
+<a name="l00058"></a>00058     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a68afad1dc41b2dc751ee6c9c0902e175" title="Getter for the stored float array length.">GetArrayLength</a>();
+<a name="l00059"></a>00059 
+<a name="l00062"></a>00062     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a23dc125e3d120f16058a3ea7fa963c29" title="Getter for the data width.">GetDataWidth</a>();
+<a name="l00063"></a>00063 
+<a name="l00066"></a>00066     <span class="keywordtype">int</span> <a class="code" href="class_file_handler.html#a80fe70aa4d3a8967a52a9ad49b76df87" title="Getter for the data height.">GetDataHeight</a>();
+<a name="l00067"></a>00067 };
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069 <span class="preprocessor">#endif // FILEHANDLER_H</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -153,7 +153,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="file_handler_8h.html">fileHandler.h</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:27 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

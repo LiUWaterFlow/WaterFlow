@@ -35,7 +35,6 @@ var files =
     [ "src/shaders/heightMap.comp", "height_map_8comp.html", "height_map_8comp" ],
     [ "src/shaders/normals.comp", "normals_8comp.html", "normals_8comp" ],
     [ "src/shaders/normConv.comp", "norm_conv_8comp.html", "norm_conv_8comp" ],
-    [ "src/shaders/perserveShader.comp", "perserve_shader_8comp.html", "perserve_shader_8comp" ],
     [ "src/shaders/preserveShader.comp", null, null ],
     [ "src/shaders/shallowwatershader.frag", "shallowwatershader_8frag.html", "shallowwatershader_8frag" ],
     [ "src/shaders/simplevoxels.frag", "simplevoxels_8frag.html", "simplevoxels_8frag" ],

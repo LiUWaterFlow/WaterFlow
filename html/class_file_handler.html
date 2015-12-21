@@ -104,6 +104,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <!-- doxytag: class="FileHandler" -->
+<p>Used to store float arrays, and/or load them from files.  
+ <a href="class_file_handler.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="file_handler_8h_source.html">fileHandler.h</a>&gt;</code></p>
+
 <p><a href="class_file_handler-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
@@ -138,7 +143,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Width (side information). <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
+<div class="textblock"><p>Used to store float arrays, and/or load them from files. </p>
+<p>Use the fileHandler class to either store a generic float array, with some side information, or to load side information and a float array from the specified path. When attempting to load a file that does not exist, <a class="el" href="class_file_handler.html#ac5e48eb872d460a786398fa815db15a0" title="Loads data from a file specified by fPath into the object.">LoadData()</a> returns -1, otherwise 0. </p>
+
 <p>Definition at line <a class="el" href="file_handler_8h_source.html#l00018">18</a> of file <a class="el" href="file_handler_8h_source.html">fileHandler.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a464e8173f8f981af24cb327ce1ef86dd"></a><!-- doxytag: member="FileHandler::FileHandler" ref="a464e8173f8f981af24cb327ce1ef86dd" args="(int dWidth, int dHeight)" -->
@@ -170,7 +177,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <p>path must either point to a file saved with this class, or towards a location where data should be saved. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>path to data file. </td></tr>
+    <tr><td class="paramname">dWidth</td><td>Width of the data to save, these are also set automatically when loading) </td></tr>
+    <tr><td class="paramname">dHeight</td><td>Height of the data to save, these are also set automatically when loading) </td></tr>
   </table>
   </dd>
 </dl>
@@ -310,10 +318,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <p>specified by fPath. Note that the file indicated by fPath will be created if it does not exist, and it will be overwritten if it does exist. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">fArr</td><td>float array to store. </td></tr>
-    <tr><td class="paramname">aSize</td><td>length of the float array. </td></tr>
-    <tr><td class="paramname">dWidth</td><td>width (side information to store). </td></tr>
-    <tr><td class="paramname">dHeight</td><td>height (side information to store). </td></tr>
+    <tr><td class="paramname">path</td><td>Path to the file to save, should be specified in the XML file </td></tr>
   </table>
   </dd>
 </dl>
@@ -346,7 +351,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
     <ul>
       <li class="navelem"><a class="el" href="class_file_handler.html">FileHandler</a>      </li>
 
-    <li class="footer">Generated on Mon Dec 21 2015 00:40:28 for Waterflow by
+    <li class="footer">Generated on Mon Dec 21 2015 16:13:42 for Waterflow by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
